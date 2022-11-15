@@ -1,13 +1,24 @@
-import type { NextPage } from "next";
 import Seo from "../components/Seo";
+import styled from "styled-components";
 
-const Home: NextPage = () => {
+// const Home: NextPage = () => {
+//   return (
+//     <>
+//       <Seo title="Home" />
+//       <div>Home</div>
+//     </>
+//   );
+// };
+
+export default function Home() {
   return (
     <>
       <Seo title="Home" />
-      <div>Home</div>
+      <Test>Home</Test>
     </>
   );
-};
+}
 
-export default Home;
+const Test = styled.div`
+  background-color: red;
+`;

@@ -1,14 +1,18 @@
-import "../styles/globals.css";
+// import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Layout from "../components/Layout";
 import Seo from "../components/Seo";
+import { GlobalStyle } from "../styles/GlobalStyle";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
-      <Seo title="Hi Five"></Seo>
-      <Component {...pageProps} />
-    </Layout>
+    <>
+      <GlobalStyle />
+      <Layout>
+        <Seo title="Hi Five"></Seo>
+        <Component {...pageProps} />
+      </Layout>
+    </>
   );
 }
 
