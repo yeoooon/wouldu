@@ -20,5 +20,6 @@ export default function Home() {
 }
 
 const Test = styled.div`
-  background-color: red;
+  background-color: ${props => props.theme.color.background};
+  font-size: ${props => props.theme.fontSize.textLg};
 `;

@@ -28,5 +28,4 @@ a {
     background: black;
   }
 }
-
 `;
