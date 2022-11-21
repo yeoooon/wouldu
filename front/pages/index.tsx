@@ -5,6 +5,9 @@ import { GlobalStyle } from "../styles/global-style";
 import { colors, fontSize, borderSize } from "../styles/common_style";
 import { darkTheme, lightTheme } from "../styles/theme";
 import { Wrapper, Container, Box } from "../styles/layout";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userAtom } from "../recoil/user";
+import { useEffect } from "react";
 
 // const Home: NextPage = () => {
 //   return (

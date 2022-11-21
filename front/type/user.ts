@@ -1,8 +1,10 @@
-export interface UserJoinForm {
+export interface User {
   id: string;
   nickname: string;
   password: string;
   confirmPassword: string;
 }
 
-export type UserLoginForm = Omit<UserJoinForm, "nickname" | "confirmPassword">;
+export interface UserJoinForm extends Pick<User, "id" | "nickname" | "password" | "confirmPassword"> {}
+
+export interface UserLoginForm extends Omit<User, "nickname" | "confirmPassword"> {}
