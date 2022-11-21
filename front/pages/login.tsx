@@ -2,18 +2,37 @@ import Link from "next/link";
 import styled from "styled-components";
 import Seo from "../components/Seo";
 import { colors } from "../styles/common_style";
+import { useForm } from "react-hook-form";
+// import { UserLoginForm } from "@type/user";
 
 export default function login() {
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   watch,
+  //   formState: { errors },
+  // } = useForm<UserLoginForm>();
+
+  // const onSubmit = handleSubmit(data => console.log(data));
+
   return (
     <LoginWrap>
+      <Seo title="로그인" />
       <LoginContainer>
-        <Seo title="로그인" />
         <LoginTitle>로그인</LoginTitle>
+
+        {/* <form onSubmit={onSubmit}> */}
         <InputBox>
           <LoginInput placeholder="아이디를 입력하세요." />
-          <LoginInput placeholder="비밀번호를 입력하세요." />
+          <ErrorMessage>error!!!</ErrorMessage>
         </InputBox>
-        <button>로그인</button>
+        <InputBox>
+          <LoginInput placeholder="아이디를 입력하세요." />
+          <ErrorMessage>error!!!</ErrorMessage>
+        </InputBox>
+
+        <LoginButton>로그인</LoginButton>
+        {/* </form> */}
         <div>
           <div>SNS 간편로그인 </div>
           {/* <div />  이미지
@@ -58,9 +77,20 @@ const LoginContainer = styled.div`
 const InputBox = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 10px;
+`;
+const ErrorMessage = styled.p`
+  color: ${colors.red};
+  align-self: flex-end;
+  font-size: ${props => props.theme.fontSize.textXs};
 `;
 
 const LoginInput = styled.input`
+  width: 500px;
+  height: 50px;
+  font-size: ${props => props.theme.fontSize.textMain};
+  padding: 0 10px;
+
   border: none;
   background-color: ${props => props.theme.color.background};
   border-bottom: 1px solid ${colors.gray_300};
@@ -68,4 +98,13 @@ const LoginInput = styled.input`
   &:first-child {
     margin-bottom: 10px;
   }
+`;
+
+const LoginButton = styled.button`
+  width: 500px;
+  height: 50px;
+  border: none;
+  font-size: ${props => props.theme.fontSize.textMain};
+  background-color: ${props => props.theme.color.button};
+  color: ${props => props.theme.color.white};
 `;
