@@ -4,16 +4,9 @@ import { Container, Wrapper, Box} from "../styles/layout";
 export default function Diary() {
   return(
     <Wrapper>
-      <CalendarContainer>
-        Calendar
-      </CalendarContainer>
       <Container>
-        todo-list
+        mypage
       </Container>
     </Wrapper>
   );
 };
-
-const CalendarContainer = styled(Container)`
-  width: 50em;
-`;

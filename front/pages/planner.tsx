@@ -3,28 +3,26 @@ import { Container, Wrapper, Box} from "../styles/layout";
 
 export default function Planner() {
   return(
-    <Wrapper>
+    <PlannerWrapper>
       <CalendarContainer>
         Calendar
       </CalendarContainer>
       <TodoContainer>
         todo-list
       </TodoContainer>
-    </Wrapper>
+    </PlannerWrapper>
   );
 };
 
-const PlannerWrpper = styled(Wrapper)`
-  display: flex;
-  justify-content: space-around;
+const PlannerWrapper = styled(Wrapper)`
+  display: grid;
+  grid-template-columns: 60% 35%;
+  gap: 15px;
 `;
 
 const CalendarContainer = styled(Container)`
-  width: 30em;
   height: 95vh;
-  margin-left: 15px;
 `;
 
 const TodoContainer = styled(CalendarContainer)`
-  width: 30em;
 `
