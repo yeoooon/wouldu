@@ -6,6 +6,8 @@ import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "../styles/global-style";
 import { darkTheme, lightTheme } from "../styles/theme";
 import { useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import Error from "@components/Error";
 
 export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
   const [isLightTheme, setIsLightTheme] = useState(true);
@@ -15,10 +17,12 @@ export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
   return (
     <ThemeProvider theme={isLightTheme ? lightTheme : darkTheme}>
       <GlobalStyle />
-      <Layout>
-        <Seo pageTitle={pageTitle} pageDesc={pageDesc}></Seo>
-        <Component {...pageProps} />
-      </Layout>
+      <ErrorBoundary FallbackComponent={Error}>
+        <Layout>
+          <Seo pageTitle={pageTitle} pageDesc={pageDesc}></Seo>
+          <Component {...pageProps} />
+        </Layout>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 }

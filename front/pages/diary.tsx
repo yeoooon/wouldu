@@ -1,8 +1,12 @@
 import { SeoPageProps } from "@components/Seo";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { Container, Wrapper, Box } from "../styles/layout";
 
 export default function Diary() {
+  // useEffect(() => {
+  //   throw Error("error");
+  // }, []);
   return (
     <Wrapper>
       <CalendarContainer>Calendar</CalendarContainer>
