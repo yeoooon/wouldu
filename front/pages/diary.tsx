@@ -7,11 +7,15 @@ export default function Diary() {
   // useEffect(() => {
   //   throw Error("error");
   // }, []);
-  return (
-    <Wrapper>
-      <CalendarContainer>Calendar</CalendarContainer>
-      <Container>todo-list</Container>
-    </Wrapper>
+  return(
+    <DiaryWrapper>
+      <ListContainer>
+        list
+      </ListContainer>
+      <DiaryContainer>
+        diary
+      </DiaryContainer>
+    </DiaryWrapper>
   );
 }
 
@@ -24,6 +28,18 @@ export async function getServerSideProps() {
   };
 }
 
-const CalendarContainer = styled(Container)`
-  width: 50em;
+const DiaryWrapper = styled(Wrapper)`
+  display: grid;
+  grid-template-columns: 25% 70%;
+  gap: 15px;
 `;
+
+
+const ListContainer = styled(Container)`
+  height: 95vh;
+  margin-left: 15px;
+`;
+
+const DiaryContainer = styled(ListContainer)`
+  margin-right: 15px;
+`

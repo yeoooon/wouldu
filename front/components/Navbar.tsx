@@ -26,22 +26,6 @@ export default function NavBar() {
             </LinkButton>
           </Link>
         ))}
-        {/* 
-        <Link href="/planner">
-         <LinkButton>
-            <a>일정관리</a>
-          </LinkButton>
-        </Link>
-        <Link href="/diary">
-        <LinkButton>
-            <a>교환일기</a>
-          </LinkButton>
-        </Link>
-        <Link href="/mypage">
-          <LinkButton>
-            <a>마이페이지</a>
-          </LinkButton>
-        </Link> */}
       </NavLink>
       <Box>로그아웃</Box>
     </Nav>
@@ -51,15 +35,16 @@ export default function NavBar() {
 const Nav = styled(Container)`
   display: flex;
   flex-direction: column;
-  width: 19%;
+  width: 240px;
   height: 100vh;
   justify-content: flex-start;
   padding: 2em 0;
+  margin: 0;
 `;
 
 const NavLink = styled(Container)`
   flex-direction: column;
-  margin: 1.5em;
+  margin: 1.5em 1em 5em 1em;
   width: 100%;
 `;
 
@@ -76,12 +61,16 @@ const LinkButton = styled.div`
   &.active {
     background-color: rgba(219, 202, 244, 0.5);
     border-radius: 0px 50px 50px 0px;
-    width: 90%;
+    width: 100%;
     a {
       color: ${props => props.theme.color.fontPoint};
       font-size: ${props => props.theme.fontSize.textLg};
       font-weight: bold;
     }
+  }
+  &:hover {
+    background-color: rgba(245, 245, 245, 0.5);
+    /* font-size: ${props=> props.theme.fontSize.textLg}; */
   }
 `;
 
