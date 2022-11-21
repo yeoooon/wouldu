@@ -14,9 +14,12 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${props => props.theme.color.nav};
+  border-radius: 10px;
 `;
 export const Box = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
+  color: ${props => props.theme.color.fontMain};
 `;
