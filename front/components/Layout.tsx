@@ -1,3 +1,5 @@
+import styled from "styled-components";
+import { Container } from "../styles/layout";
 import NavBar from "./Navbar";
 
 export interface LayoutProps {
@@ -6,9 +8,13 @@ export interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <>
+    <LayoutWrapper>
       <NavBar />
       <div>{children}</div>
-    </>
+    </LayoutWrapper>
   );
 }
+
+const LayoutWrapper = styled.div`
+  display: flex;
+`;
