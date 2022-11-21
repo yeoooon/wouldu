@@ -6,8 +6,8 @@ import { Box, Container } from "../styles/layout";
 
 export default function NavBar() {
   const router = useRouter();
-  const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"]
-  const navLinks = ["/", "/planner", "/diary", "/mypage"]
+  const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
+  const navLinks = ["/", "/planner", "/diary", "/mypage"];
 
   return (
     <Nav>
@@ -20,15 +20,13 @@ export default function NavBar() {
       {/* navigation 구현 */}
       <NavLink>
         {navMenus.map((menu, index) => (
-        <Link href={navLinks[index]} key={index}>
-          <LinkButton
-            className={router.pathname === navLinks[index] ? "active" : ""}
-          >
-            <a>{menu}</a>
-          </LinkButton>
-       </Link>
+          <Link href={navLinks[index]} key={index}>
+            <LinkButton className={router.pathname === navLinks[index] ? "active" : ""}>
+              <a>{menu}</a>
+            </LinkButton>
+          </Link>
         ))}
-{/* 
+        {/* 
         <Link href="/planner">
          <LinkButton>
             <a>일정관리</a>
@@ -48,7 +46,7 @@ export default function NavBar() {
       <Box>로그아웃</Box>
     </Nav>
   );
-};
+}
 
 const Nav = styled(Container)`
   display: flex;
@@ -81,12 +79,10 @@ const LinkButton = styled.div`
     width: 90%;
     a {
       color: ${props => props.theme.color.fontPoint};
-      font-size: ${props=> props.theme.fontSize.textLg};
+      font-size: ${props => props.theme.fontSize.textLg};
       font-weight: bold;
     }
-
   }
-
 `;
 
 const UserBox = styled(Container)`

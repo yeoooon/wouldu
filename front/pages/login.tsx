@@ -4,6 +4,7 @@ import Seo from "../components/Seo";
 import { colors } from "../styles/common_style";
 import { useForm } from "react-hook-form";
 // import { UserLoginForm } from "@type/user";
+import { SeoPageProps } from "@components/Seo";
 
 export default function login() {
   // const {
@@ -17,7 +18,6 @@ export default function login() {
 
   return (
     <LoginWrap>
-      <Seo title="로그인" />
       <LoginContainer>
         <LoginTitle>로그인</LoginTitle>
 
@@ -49,6 +49,14 @@ export default function login() {
       </LoginContainer>
     </LoginWrap>
   );
+}
+export async function getServerSideProps() {
+  return {
+    props: {
+      pageTitle: "로그인",
+      pageDesc: "우쥬 로그인 페이지 입니다.",
+    },
+  };
 }
 
 const LoginWrap = styled.div`
@@ -103,8 +111,4 @@ const LoginInput = styled.input`
 const LoginButton = styled.button`
   width: 500px;
   height: 50px;
-  border: none;
-  font-size: ${props => props.theme.fontSize.textMain};
-  background-color: ${props => props.theme.color.button};
-  color: ${props => props.theme.color.white};
 `;
