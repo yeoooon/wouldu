@@ -7,13 +7,24 @@ export default function Planner() {
       <CalendarContainer>
         Calendar
       </CalendarContainer>
-      <Container>
+      <TodoContainer>
         todo-list
-      </Container>
+      </TodoContainer>
     </Wrapper>
   );
 };
 
-const CalendarContainer = styled(Container)`
-  width: 50em;
+const PlannerWrpper = styled(Wrapper)`
+  display: flex;
+  justify-content: space-around;
 `;
+
+const CalendarContainer = styled(Container)`
+  width: 30em;
+  height: 95vh;
+  margin-left: 15px;
+`;
+
+const TodoContainer = styled(CalendarContainer)`
+  width: 30em;
+`

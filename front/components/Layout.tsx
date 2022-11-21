@@ -16,5 +16,7 @@ export default function Layout({ children }: LayoutProps) {
 }
 
 const LayoutWrapper = styled.div`
+  width: 1280px;
+  height: 720px;
   display: flex;
 `;
