@@ -22,6 +22,7 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 16px;
     border-radius: ${props => props.theme.borderSize.borderSm};
     border: none;
+    cursor: pointer;
     padding: 0.4em 1.2em;
     &:hover {
       background-color: ${props => props.theme.color.buttonHover};
@@ -40,6 +41,7 @@ export const GlobalStyle = createGlobalStyle`
   a {
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
   }
 
   @media (prefers-color-scheme: dark) {

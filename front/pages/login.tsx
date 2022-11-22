@@ -2,17 +2,11 @@ import Link from "next/link";
 import styled from "styled-components";
 import { colors } from "../styles/common_style";
 import { useForm } from "react-hook-form";
-import { UserLoginForm } from "@type/user";
+import { LOGIN, UserLoginForm } from "@type/user";
 import { SeoPageProps } from "@components/Seo";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import { Box, Container, Wrapper } from "@styles/layout";
-
-const LOGIN = {
-  NORMAL: "normal",
-  KAKAO: "kakao",
-  GOOGLE: "google",
-};
 
 const login = () => {
   const {

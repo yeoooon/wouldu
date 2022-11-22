@@ -1,3 +1,9 @@
+export const LOGIN = {
+  NORMAL: "normal",
+  KAKAO: "kakao",
+  GOOGLE: "google",
+};
+
 export interface User {
   id: string;
   nickname: string;
