@@ -3,18 +3,19 @@ import styled from "styled-components";
 import Seo from "../components/Seo";
 import { colors } from "../styles/common_style";
 import { useForm } from "react-hook-form";
-// import { UserLoginForm } from "@type/user";
+import { UserLoginForm } from "@type/user";
 import { SeoPageProps } from "@components/Seo";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 export default function login() {
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   watch,
-  //   formState: { errors },
-  // } = useForm<UserLoginForm>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<UserLoginForm>();
 
-  // const onSubmit = handleSubmit(data => console.log(data));
+  const onSubmit = handleSubmit(data => console.log(data));
 
   return (
     <LoginWrap>
@@ -50,7 +51,9 @@ export default function login() {
     </LoginWrap>
   );
 }
-export async function getServerSideProps() {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  console.log(context);
+
   return {
     props: {
       pageTitle: "로그인",

@@ -4,17 +4,10 @@ import styled from "styled-components";
 import { Container, Wrapper, Box } from "../styles/layout";
 
 export default function Diary() {
-  // useEffect(() => {
-  //   throw Error("error");
-  // }, []);
-  return(
+  return (
     <DiaryWrapper>
-      <ListContainer>
-        list
-      </ListContainer>
-      <DiaryContainer>
-        diary
-      </DiaryContainer>
+      <ListContainer>list</ListContainer>
+      <DiaryContainer>diary</DiaryContainer>
     </DiaryWrapper>
   );
 }
@@ -34,7 +27,6 @@ const DiaryWrapper = styled(Wrapper)`
   gap: 15px;
 `;
 
-
 const ListContainer = styled(Container)`
   height: 95vh;
   margin-left: 15px;
@@ -42,4 +34,4 @@ const ListContainer = styled(Container)`
 
 const DiaryContainer = styled(ListContainer)`
   margin-right: 15px;
-`
+`;
