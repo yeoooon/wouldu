@@ -1,4 +1,5 @@
-.env 
+.development.env 
+ormconfig.json
 
 # compiled output
 /dist
