@@ -2,10 +2,10 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column({ length: 30 })
+  @Column({ length: 30, unique: true })
   email: string;
 
   @Column({ length: 10 })
@@ -19,4 +19,7 @@ export class User {
 
   @Column({ length: 100, default: null })
   profileImgUrl: string;
+
+  @Column()
+  signupVerifyToken: string;
 }
