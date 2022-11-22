@@ -29,18 +29,31 @@ const login = () => {
       <LoginContainer>
         <LoginTitle>로그인</LoginTitle>
 
-        {/* <form onSubmit={onSubmit}> */}
-        <InputBox>
-          <LoginInput placeholder="아이디를 입력하세요." />
-          <ErrorMessage>error!!!</ErrorMessage>
-        </InputBox>
-        <InputBox>
-          <LoginInput placeholder="아이디를 입력하세요." />
-          <ErrorMessage>error!!!</ErrorMessage>
-        </InputBox>
+        <form onSubmit={onSubmit}>
+          <InputBox>
+            <LoginInput
+              placeholder="이메일을 입력하세요."
+              {...register("id", {
+                required: true,
+                pattern: {
+                  value:
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  message: "잘못된 이메일 형식입니다.",
+                },
+              })}
+            />
+            <ErrorMessage>{errors?.id?.message}</ErrorMessage>
+          </InputBox>
+          <InputBox>
+            <LoginInput
+              placeholder="비밀번호를 입력하세요."
+              {...register("password", { required: true, minLength: { value: 8, message: "8자 이상 입력해주세요." } })}
+            />
+            <ErrorMessage>{errors?.password?.message}</ErrorMessage>
+          </InputBox>
 
-        <LoginButton>로그인</LoginButton>
-        {/* </form> */}
+          <LoginButton>로그인</LoginButton>
+        </form>
         <SocialContainer>
           <p>SNS 간편로그인 </p>
           <SocialBox>
