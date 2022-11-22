@@ -1,18 +1,11 @@
 import Link from "next/link";
 import styled from "styled-components";
 import Seo from "../components/Seo";
+import MypageTab from "../components/mypage/mypagetab";
 
 import { Wrapper, Container, Box } from "../styles/layout";
-import { colors } from "../styles/common_style";
 
-export default function mypage() {
-  const Mypage = styled.div`
-    .sidebar {
-      position: fixed;
-      left: 0;
-    }
-  `
-
+const mypage = () => {
   return (
     <>
       <Seo title="마이페이지" />
@@ -22,10 +15,12 @@ export default function mypage() {
       <Wrapper>
       <div>
         <Container>
-          본문
+          <MypageTab></MypageTab>
         </Container>
       </div>
       </Wrapper>
     </>
   );
 }
+
+export default mypage;
