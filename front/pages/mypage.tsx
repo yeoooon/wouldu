@@ -4,6 +4,7 @@ import { Wrapper, Container, Box } from "../styles/layout";
 
 import MypageTab from "../components/mypage/mypagetab";
 import MyInfo from "../components/mypage/myinfo";
+import EditProfile from "../components/mypage/editprofile";
 
 const Mypage = () => {
   return (
@@ -14,7 +15,8 @@ const Mypage = () => {
         </div>
         <MypageArea>
           <div className="tab"><MypageTab></MypageTab></div>
-          <div className="main"><MyInfo></MyInfo></div>
+          {/* <div className="main"><MyInfo></MyInfo></div> */}
+          <div className="main"><EditProfile></EditProfile></div>
         </MypageArea>
       </Wrapper>
     </>
