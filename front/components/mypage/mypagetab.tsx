@@ -19,9 +19,11 @@ const MypageTab = () => {
 }
 
 const Tab = styled.div`
-  background-color: ${props => props.theme.color.background};
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+
+  width: 300px;
+
   p {
     font-size: ${props => props.theme.fontSize.textMain};
     margin: 0.5rem 0.5rem;

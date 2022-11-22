@@ -1,26 +1,51 @@
 import Link from "next/link";
 import styled from "styled-components";
-import Seo from "../components/Seo";
-import MypageTab from "../components/mypage/mypagetab";
-
 import { Wrapper, Container, Box } from "../styles/layout";
 
-const mypage = () => {
+import MypageTab from "../components/mypage/mypagetab";
+import MyInfo from "../components/mypage/myinfo";
+
+const Mypage = () => {
   return (
     <>
-      <Seo title="마이페이지" />
-      <div className="sidebar">
-        사이드 바 메뉴
-      </div>
       <Wrapper>
-      <div>
-        <Container>
-          <MypageTab></MypageTab>
-        </Container>
-      </div>
+        <div className="sidebar">
+          사이드 바 메뉴
+        </div>
+        <MypageArea>
+          <div className="tab"><MypageTab></MypageTab></div>
+          <div className="main"><MyInfo></MyInfo></div>
+        </MypageArea>
       </Wrapper>
     </>
   );
 }
 
-export default mypage;
+const MypageArea = styled(Container)`
+  display: grid;
+  grid-template-rows: 1fr 2fr;
+  grid-template-columns: 0.5fr 1fr 0.5fr;
+
+  grid-template-areas:
+    " .  tab  . "
+    " .  main . ";
+  
+  align-content: center;
+  
+  .tab {
+    grid-area: tab;
+    align-self: start;
+    justify-self: center;
+    padding-top: 2rem;
+  }
+
+  .main {
+    grid-area: main;
+    align-self: start;
+  }
+
+  width: 900px;
+  height: 500px;
+`
+
+export default Mypage;
