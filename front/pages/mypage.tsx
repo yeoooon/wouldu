@@ -5,7 +5,9 @@ import { Wrapper, Container, Box } from "../styles/layout";
 import MypageTab from "../components/mypage/mypagetab";
 import MyInfo from "../components/mypage/myinfo";
 import EditProfile from "../components/mypage/editprofile";
-import EditMatching from "../components/mypage/editmatching";
+import BeforeMatching from "../components/mypage/beforematching";
+import AfterMatching from "../components/mypage/aftermatching";
+import ChangePassword from "../components/mypage/changepassword";
 
 const Mypage = () => {
   return (
@@ -18,7 +20,9 @@ const Mypage = () => {
           <div className="tab"><MypageTab></MypageTab></div>
           {/* <div className="main"><MyInfo></MyInfo></div> */}
           {/* <div className="main"><EditProfile></EditProfile></div> */}
-          <div className="main"><EditMatching></EditMatching></div>
+          {/* <div className="main"><BeforeMatching></BeforeMatching></div> */}
+          {/* <div className="main"><AfterMatching></AfterMatching></div> */}
+          <div className="main"><ChangePassword></ChangePassword></div>
         </MypageArea>
       </Wrapper>
     </>
@@ -27,7 +31,7 @@ const Mypage = () => {
 
 const MypageArea = styled(Container)`
   display: grid;
-  grid-template-rows: 1fr 2fr;
+  grid-template-rows: 0.5fr 1.5fr;
   grid-template-columns: 0.5fr 1fr 0.5fr;
 
   grid-template-areas:
