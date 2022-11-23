@@ -12,12 +12,19 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { User } from './entities/user.entity';
 
 @Controller('user')
+@ApiTags('유저 API')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('register')
+  @ApiOperation({
+    summary: '회원 가입 API',
+    description: 'email, nickname, password를 입력하여 유저를 생성한다.',
+  })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
