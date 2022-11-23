@@ -15,3 +15,8 @@ export interface User {
 export interface UserJoinForm extends Pick<User, "id" | "nickname" | "password" | "confirmPassword"> {}
 
 export interface UserLoginForm extends Pick<User, "id" | "password"> {}
+
+export interface PasswordForm {
+  curPassword: string;
+  newPassword: string;
+}
