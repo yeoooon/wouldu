@@ -30,6 +30,7 @@ const Textarea = styled.textarea`
   border: none;
   padding: 1.5em;
   border-radius: 10px;
+  outline: none;
   background-color: ${props => props.theme.color.purpleBox};
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   resize: none;
