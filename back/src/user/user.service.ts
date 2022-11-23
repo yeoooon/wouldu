@@ -12,7 +12,6 @@ import * as bcrypt from 'bcrypt';
 import * as uuid from 'uuid';
 
 import { EmailService } from '../email/email.service';
-import { AuthService } from './auth.service';
 
 @Injectable()
 export class UserService {
@@ -20,7 +19,6 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private emailService: EmailService,
-    private authService: AuthService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -70,8 +68,14 @@ export class UserService {
     return '회원가입 완료';
   }
 
+  async findOneById(id: string): Promise<User | undefined> {
+    return this.userRepository.findOne({
+      where: { id: id },
+    });
+  }
+
   async checkUserExistsByEmail(emailAddress: string): Promise<boolean> {
-    const user = await this.userRepository.findOne({
+    const user = this.userRepository.findOne({
       where: { email: emailAddress },
     });
     return user !== null;
@@ -87,10 +91,6 @@ export class UserService {
   findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
-
-  // findOne(id: number): Promise<User> {
-  //   return this.userRepository.findOne({ id });
-  // }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
