@@ -17,7 +17,7 @@ export class User {
   nickname: string;
 
   @Column({ length: 100 })
-  password: string;
+  hashedPassword: string;
 
   @Column({ length: 30, default: null })
   socialId: string;

@@ -38,7 +38,7 @@ export class UserService {
     const signupVerifyToken = uuid.v1();
     user.email = email;
     user.nickname = nickname;
-    user.password = await bcrypt.hash(password, 10);
+    user.hashedPassword = await bcrypt.hash(password, 10);
     user.socialId = socialId === undefined ? null : socialId;
     user.profileImgUrl = profileImgUrl === undefined ? null : profileImgUrl;
     user.signupVerifyToken = signupVerifyToken;
