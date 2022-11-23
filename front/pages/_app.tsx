@@ -8,6 +8,7 @@ import { darkTheme, lightTheme } from "../styles/theme";
 import { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Error from "@components/Error";
+import { RecoilRoot } from 'recoil';
 
 export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
   const [isLightTheme, setIsLightTheme] = useState(true);
@@ -18,10 +19,12 @@ export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
     <ThemeProvider theme={isLightTheme ? lightTheme : darkTheme}>
       <GlobalStyle />
       <ErrorBoundary FallbackComponent={Error}>
-        <Layout>
-          <Seo pageTitle={pageTitle} pageDesc={pageDesc}></Seo>
-          <Component {...pageProps} />
-        </Layout>
+        <RecoilRoot>
+          <Layout>
+            <Seo pageTitle={pageTitle} pageDesc={pageDesc}></Seo>
+            <Component {...pageProps} />
+          </Layout>
+        </RecoilRoot>
       </ErrorBoundary>
     </ThemeProvider>
   );
