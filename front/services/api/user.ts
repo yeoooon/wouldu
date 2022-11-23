@@ -1,4 +1,4 @@
-import { UserJoinForm } from "@type/user";
+import { UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 
@@ -7,12 +7,28 @@ export const userJoin = async (joinInfo: UserJoinForm) => {
   const requestData = JSON.stringify(joinInfo);
 
   try {
-    const { data } = await axiosInstance.post("", requestData);
+    const { data } = await axiosInstance.post("user/login", requestData);
+    return data;
+  } catch (err) {
+    console.log(err);
+    // if (axios.isAxiosError(err) && err.response?.status === 400) {
+    //   return err.response.status;
+    // }
+  }
+};
+
+//로그인
+export const requestLogin = async (loginInfo: UserLoginForm) => {
+  const requestData = JSON.stringify(loginInfo);
+
+  try {
+    const { data } = await axiosInstance.post("user/join", requestData);
     sessionStorage.setItem("userToken", data.token);
     return data;
   } catch (err) {
-    if (axios.isAxiosError(err)) {
-      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
-    }
+    console.log(err);
+    // if (axios.isAxiosError(err) && err.response?.status === 400) {
+    //   return err.response.status;
+    // }
   }
 };
