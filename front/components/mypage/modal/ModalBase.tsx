@@ -24,9 +24,13 @@ const ModalBase = () => {
 
 const ModalBox = styled(Box)`
   flex-direction: column;
-  background-color: ${props => props.theme.color.background};
+  background-color: ${props => props.theme.color.purpleBox};
 
   padding: 1rem 1rem;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: ${props => props.theme.color.border};
 `
 
 const QuitArea = styled.div`
