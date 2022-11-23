@@ -21,11 +21,11 @@ const Mypage = () => {
         <MypageArea>
           <div className="tab"><MypageTab></MypageTab></div>
           {/* <div className="main"><MyInfo></MyInfo></div> */}
-          {/* <div className="main"><EditProfile></EditProfile></div> */}
+          <div className="main"><EditProfile></EditProfile></div>
           {/* <div className="main"><BeforeMatching></BeforeMatching></div> */}
           {/* <div className="main"><AfterMatching></AfterMatching></div> */}
           {/* <div className="main"><ChangePassword></ChangePassword></div> */}
-          <div className="main"><ModalBase></ModalBase></div>
+          {/* <div className="main"><ModalBase></ModalBase></div> */}
         </MypageArea>
       </Wrapper>
     </>
