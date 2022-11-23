@@ -6,6 +6,7 @@ export const LOGIN = {
 
 export interface User {
   id: string;
+  token: string;
   nickname: string;
   password: string;
   confirmPassword: string;
@@ -13,4 +14,9 @@ export interface User {
 
 export interface UserJoinForm extends Pick<User, "id" | "nickname" | "password" | "confirmPassword"> {}
 
-export interface UserLoginForm extends Omit<User, "nickname" | "confirmPassword"> {}
+export interface UserLoginForm extends Pick<User, "id" | "password"> {}
+
+export interface PasswordForm {
+  curPassword: string;
+  newPassword: string;
+}

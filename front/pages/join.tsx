@@ -7,6 +7,8 @@ import { SeoPageProps } from "@components/Seo";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import { Box, Container, Wrapper } from "@styles/layout";
+import { userJoin } from "../services/api/user";
+import Router from "next/router";
 
 const join = () => {
   const {
@@ -16,7 +18,10 @@ const join = () => {
     formState: { errors },
   } = useForm<UserJoinForm>();
 
-  const onSubmit = handleSubmit(data => console.log(data));
+  const onSubmit = handleSubmit(data => {
+    userJoin(data);
+    Router.push("/login");
+  });
 
   return (
     <JoinWrap>

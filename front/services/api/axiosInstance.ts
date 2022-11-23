@@ -5,32 +5,24 @@ export const BASE_URL = `http://${window.location.hostname}:5001`;
 
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,
+  timeout: 3000,
 });
 
 axiosInstance.interceptors.request.use(
-  config => ({
-    // 요청을 보내기 전에 수행할 일
-    ...config,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }),
+  async config => {
+    config.headers = config.headers ?? {};
+
+    //요청을 보내기 전에 수행할 일
+    if (config.data instanceof FormData) {
+      config.headers["Content-Type"] = "multipart/form-data";
+    } else {
+      config.headers["Content-Type"] = "application/json";
+    }
+    config.headers.Authorization = `Bearer ${sessionStorage.getItem("userToken")}`;
+    return config;
+  },
   error => {
     // 오류 요청을 보내기전 수행할 일
-    // ...
-    return Promise.reject(error);
-  },
-);
-
-// 응답 인터셉터 추가
-axiosInstance.interceptors.response.use(
-  function (response) {
-    // 응답 데이터를 가공
-    // ...
-    return response;
-  },
-  function (error) {
-    // 오류 응답을 처리
     // ...
     return Promise.reject(error);
   },
