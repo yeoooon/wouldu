@@ -2,12 +2,14 @@ import Link from "next/link";
 import styled from "styled-components";
 import { Wrapper, Container, Box } from "../styles/layout";
 
-import MypageTab from "../components/mypage/mypagetab";
-import MyInfo from "../components/mypage/myinfo";
-import EditProfile from "../components/mypage/editprofile";
-import BeforeMatching from "../components/mypage/beforematching";
-import AfterMatching from "../components/mypage/aftermatching";
-import ChangePassword from "../components/mypage/changepassword";
+import MypageTab from "../components/mypage/MypageTab";
+import MyInfo from "../components/mypage/MyInfo";
+import EditProfile from "../components/mypage/EditProfile";
+import BeforeMatching from "../components/mypage/BeforeMatching";
+import AfterMatching from "../components/mypage/AfterMatching";
+import ChangePassword from "../components/mypage/ChangePassword";
+
+import ModalBase from "../components/mypage/modal/ModalBase";
 
 const Mypage = () => {
   return (
@@ -22,7 +24,8 @@ const Mypage = () => {
           {/* <div className="main"><EditProfile></EditProfile></div> */}
           {/* <div className="main"><BeforeMatching></BeforeMatching></div> */}
           {/* <div className="main"><AfterMatching></AfterMatching></div> */}
-          <div className="main"><ChangePassword></ChangePassword></div>
+          {/* <div className="main"><ChangePassword></ChangePassword></div> */}
+          <div className="main"><ModalBase></ModalBase></div>
         </MypageArea>
       </Wrapper>
     </>
