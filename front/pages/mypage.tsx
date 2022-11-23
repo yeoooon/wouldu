@@ -5,6 +5,7 @@ import { Wrapper, Container, Box } from "../styles/layout";
 import MypageTab from "../components/mypage/mypagetab";
 import MyInfo from "../components/mypage/myinfo";
 import EditProfile from "../components/mypage/editprofile";
+import EditMatching from "../components/mypage/editmatching";
 
 const Mypage = () => {
   return (
@@ -16,7 +17,8 @@ const Mypage = () => {
         <MypageArea>
           <div className="tab"><MypageTab></MypageTab></div>
           {/* <div className="main"><MyInfo></MyInfo></div> */}
-          <div className="main"><EditProfile></EditProfile></div>
+          {/* <div className="main"><EditProfile></EditProfile></div> */}
+          <div className="main"><EditMatching></EditMatching></div>
         </MypageArea>
       </Wrapper>
     </>
