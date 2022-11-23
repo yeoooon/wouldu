@@ -8,20 +8,19 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100vh;
   background-color: ${props => props.theme.color.background};
-  border: 1px solid pink;
 `;
 export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: ${props => props.theme.color.nav};
+  color: ${props => props.theme.color.fontMain};
   border-radius: 10px;
-  border: 1px solid yellow;
 `;
 export const Box = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  border: 1px solid black;
+  color: ${props => props.theme.color.fontMain};
 `;
