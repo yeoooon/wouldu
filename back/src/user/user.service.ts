@@ -27,9 +27,13 @@ export class UserService {
     const user = new User();
     const { email, nickname, password, socialId, profileImgUrl } =
       createUserDto;
-    const userExist = await this.checkUserExists(email);
-    if (userExist) {
+    const emailExist = await this.checkUserExistsByEmail(email);
+    if (emailExist) {
       throw new UnprocessableEntityException('이메일 중복');
+    }
+    const nicknameExist = await this.checkUserExistsByNickname(nickname);
+    if (nicknameExist) {
+      throw new UnprocessableEntityException('닉네임 중복');
     }
     const signupVerifyToken = uuid.v1();
     user.email = email;
@@ -66,9 +70,16 @@ export class UserService {
     return '회원가입 완료';
   }
 
-  async checkUserExists(emailAddress: string): Promise<boolean> {
+  async checkUserExistsByEmail(emailAddress: string): Promise<boolean> {
     const user = await this.userRepository.findOne({
       where: { email: emailAddress },
+    });
+    return user !== null;
+  }
+
+  async checkUserExistsByNickname(nickname: string): Promise<boolean> {
+    const user = await this.userRepository.findOne({
+      where: { nickname },
     });
     return user !== null;
   }

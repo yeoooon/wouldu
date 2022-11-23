@@ -1,4 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -8,7 +13,7 @@ export class User {
   @Column({ length: 30, unique: true })
   email: string;
 
-  @Column({ length: 10 })
+  @Column({ length: 10, unique: true })
   nickname: string;
 
   @Column({ length: 100 })
@@ -25,4 +30,11 @@ export class User {
 
   @Column()
   status: string;
+
+  @Column({
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  registeredAt: Date;
 }
