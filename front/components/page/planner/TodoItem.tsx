@@ -54,7 +54,7 @@ const TodoBox = styled(Box)`
   position: relative;
   justify-content: space-between;
   padding: 1em 2em;
-  width: 18em;
+  width: 100%;
   height: 4em;
   margin-bottom: 1em;
   background-color: ${props => props.theme.color.purpleBox};

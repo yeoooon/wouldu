@@ -29,7 +29,7 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
-  input {
+  textarea, input {
     border: 1px solid ${props => props.theme.color.border};
     color: ${props => props.theme.color.fontMain};
     ::placeholder {

@@ -40,6 +40,8 @@ const Nav = styled(Container)`
   justify-content: flex-start;
   padding: 2em 0;
   margin: 0;
+  border-radius: 0;
+  box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
 `;
 
 const NavLink = styled(Container)`

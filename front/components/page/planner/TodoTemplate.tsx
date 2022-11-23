@@ -17,6 +17,9 @@ const TodoTemplate = () => {
 
 const TemplateContainer = styled(Container)`
   flex-direction: column;
+  width: 100%;
+  padding: 8%;
+  overflow-y: auto;
 `;
 
 export default TodoTemplate

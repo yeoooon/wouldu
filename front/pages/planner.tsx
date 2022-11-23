@@ -33,6 +33,7 @@ const PlannerWrapper = styled(Wrapper)`
 
 const CalendarContainer = styled(Container)`
   height: 95vh;
+  border: 1px solid ${props => props.theme.color.border};
 `;
 
 const TodoContainer = styled(CalendarContainer)`

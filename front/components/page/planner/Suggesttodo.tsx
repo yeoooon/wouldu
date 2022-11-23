@@ -19,14 +19,16 @@ const Suggesttodo = () => {
 const SuggestContainer = styled(Container)`
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
 `;
 
 export const TitleBox = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 1em 0;
   margin-top: 1em;
+  width: 100%;
   p {
     margin-left: 0.3em;
     color: ${props => props.theme.color.fontMain};
@@ -34,4 +36,4 @@ export const TitleBox = styled.div`
   }
 `;
 
-export default Suggesttodo
+export default Suggesttodo;

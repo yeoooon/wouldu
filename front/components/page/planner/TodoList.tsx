@@ -17,7 +17,6 @@ const TodoList = () => {
         <Check />
         <p>오늘의 추천 활동</p>
       </TitleBox>
-      <TodoItem text='text' done={true} />
       {todos?.map(todo => (
         <TodoItem
           key={todo.id}
@@ -34,6 +33,7 @@ const ListContainer = styled(Container)`
   flex-direction: column;
   height: 90%;
   align-items: flex-start;
+  width: 100%;
 `;
 
 export const TitleBox = styled.div`
