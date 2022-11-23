@@ -8,3 +8,8 @@ export const userAtom = atom<User | null>({
   default: null,
   effects_UNSTABLE: [persistAtom],
 });
+
+export const loginStateSelector = selector({
+  key: "loginState",
+  get: ({ get }) => (sessionStorage.getItem("userTokien") && get(userAtom)?.token ? true : false),
+});

@@ -3,17 +3,19 @@ import { config } from "process";
 
 export const BASE_URL = `http://${window.location.hostname}:5001`;
 
-export const axiosInstance = axios.create({
-  baseURL: BASE_URL,
-});
+export const axiosInstance = axios.create({});
+
+axiosInstance.defaults.baseURL = BASE_URL;
+axiosInstance.defaults.timeout = 3000;
+axiosInstance.defaults.headers.put["Content-Type"] = "application/json";
+axiosInstance.defaults.headers.post["Content-Type"] = "application/json";
+axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("userToken")}`;
 
 axiosInstance.interceptors.request.use(
-  config => ({
+  async config => ({
     // 요청을 보내기 전에 수행할 일
     ...config,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: {},
   }),
   error => {
     // 오류 요청을 보내기전 수행할 일
