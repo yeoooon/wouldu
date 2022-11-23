@@ -38,6 +38,7 @@ export class UserService {
     user.socialId = socialId === undefined ? null : socialId;
     user.profileImgUrl = profileImgUrl === undefined ? null : profileImgUrl;
     user.signupVerifyToken = signupVerifyToken;
+    user.status = '가입 중';
     await this.userRepository.save(user);
     await this.sendMemberJoinEmail(email, signupVerifyToken);
   }
@@ -53,11 +54,16 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: { signupVerifyToken },
     });
+
     if (!user) {
       throw new NotFoundException('유저가 존재하지 않습니다.');
     }
 
-    return this.authService.login(user.email, user.password);
+    user.status = '가입 완료';
+    await this.userRepository.save(user);
+
+    // return this.authService.login(user.email, user.password);
+    return '회원가입 완료';
   }
 
   async checkUserExists(emailAddress: string): Promise<boolean> {
@@ -71,9 +77,9 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  findOne(id: number): Promise<User> {
-    return this.userRepository.findOneBy({ id });
-  }
+  // findOne(id: number): Promise<User> {
+  //   return this.userRepository.findOne({ id });
+  // }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;

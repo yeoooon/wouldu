@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { EmailService } from './email/email.service';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { AuthService } from './user/auth.service';
 
 @Module({
   imports: [
@@ -25,6 +26,6 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, EmailService],
+  providers: [AppService, EmailService, AuthService],
 })
 export class AppModule {}

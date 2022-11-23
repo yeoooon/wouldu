@@ -17,7 +17,4 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   profileImgUrl: string;
-
-  @IsString()
-  signupVerifyToken: string;
 }

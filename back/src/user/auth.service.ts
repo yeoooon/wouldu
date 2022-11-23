@@ -10,9 +10,9 @@ export class AuthService {
   //     @Inject(authConfig.KEY) private config: ConfigType<typeof authConfig>,
   // ){}
   login(email: string, password: string) {
-    const payload = { id: email, password };
-    return jwt.sign(payload, this.config.jwtSecret, {
-      expiresIn: '1d',
-    });
+    // const payload = { id: email, password };
+    // return jwt.sign(payload, this.config.jwtSecret, {
+    //   expiresIn: '1d',
+    // });
   }
 }
