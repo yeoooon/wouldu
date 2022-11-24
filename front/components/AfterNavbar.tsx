@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
 
-export default function NavBar() {
+export default function AfterNavBar() {
   const router = useRouter();
   const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];

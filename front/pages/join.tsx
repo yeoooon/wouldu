@@ -20,9 +20,13 @@ const join = () => {
 
   const onSubmit = handleSubmit(data => {
     delete data.confirmPassword;
-    userJoin(data).then(res => {
-      console.log(res);
-      Router.push("/login");
+    userJoin(data).then(status => {
+      if (status === 200) {
+        alert("회원가입이 완료되었습니다. 가입한 이메일에 메일함을 확인해주세요.");
+        Router.push("/login");
+      } else if (status === 422) {
+        alert("이미 가입된 이메일 입니다. 다른 이메일로 가입해 주세요.");
+      }
     });
   });
 

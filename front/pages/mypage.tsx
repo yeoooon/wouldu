@@ -15,13 +15,15 @@ const Mypage = () => {
   return (
     <>
       <Wrapper>
-        <div className="sidebar">
-          사이드 바 메뉴
-        </div>
+        <div className="sidebar">사이드 바 메뉴</div>
         <MypageArea>
-          <div className="tab"><MypageTab></MypageTab></div>
+          <div className="tab">
+            <MypageTab></MypageTab>
+          </div>
           {/* <div className="main"><MyInfo></MyInfo></div> */}
-          <div className="main"><EditProfile></EditProfile></div>
+          <div className="main">
+            <EditProfile></EditProfile>
+          </div>
           {/* <div className="main"><BeforeMatching></BeforeMatching></div> */}
           {/* <div className="main"><AfterMatching></AfterMatching></div> */}
           {/* <div className="main"><ChangePassword></ChangePassword></div> */}
@@ -30,7 +32,7 @@ const Mypage = () => {
       </Wrapper>
     </>
   );
-}
+};
 
 const MypageArea = styled(Container)`
   display: grid;
@@ -40,9 +42,9 @@ const MypageArea = styled(Container)`
   grid-template-areas:
     " .  tab  . "
     " .  main . ";
-  
+
   align-content: center;
-  
+
   .tab {
     grid-area: tab;
     align-self: start;
@@ -57,6 +59,6 @@ const MypageArea = styled(Container)`
 
   width: 900px;
   height: 500px;
-`
+`;
 
 export default Mypage;

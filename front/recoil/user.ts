@@ -3,6 +3,8 @@ import { atom, selector } from "recoil";
 import { recoilPersist } from "recoil-persist";
 const { persistAtom } = recoilPersist();
 
+const localStorage = typeof window !== `undefined` ? window.localStorage : null;
+
 export const userAtom = atom<User | null>({
   key: "user",
   default: null,
@@ -11,5 +13,15 @@ export const userAtom = atom<User | null>({
 
 export const loginStateSelector = selector({
   key: "loginState",
-  get: ({ get }) => (sessionStorage.getItem("userToken") && get(userAtom)?.token ? true : false),
+  get: ({ get }) =>
+    typeof window !== "undefined"
+      ? sessionStorage.getItem("userToken") && get(userAtom)?.access_token
+        ? true
+        : false
+      : null,
 });
+
+// export const loginStateSelector = atom<boolean>({
+//   key: "test",
+//   default: false,
+// });

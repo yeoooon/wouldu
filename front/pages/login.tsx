@@ -8,11 +8,15 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { requestLogin } from "../services/api/user";
-import { useSetRecoilState } from "recoil";
-import { userAtom } from "../recoil/user";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { loginStateSelector, userAtom } from "../recoil/user";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const login = () => {
-  const setUser = useSetRecoilState(userAtom);
+  const router = useRouter();
+  const [user, setUser] = useRecoilState(userAtom);
+  const isLogin = useRecoilValue(loginStateSelector);
   const {
     register,
     handleSubmit,
@@ -20,10 +24,24 @@ const login = () => {
     formState: { errors },
   } = useForm<UserLoginForm>();
 
-  const onLoginSubmit = async (data: UserLoginForm) => {
-    await requestLogin(data);
+  useEffect(() => {
+    console.log(user);
+    console.log(isLogin);
+  }, [user, isLogin]);
 
-    //setUser
+  const onLoginSubmit = async (data: UserLoginForm) => {
+    try {
+      const { access_token } = await requestLogin(data);
+      if (access_token) {
+        //현재 백엔드에서 access_token만 줘서 임으로 데이터 넣어줌.
+        console.log("로그인!");
+        setUser({ email: "hjinnny@naver.com", access_token, nickname: "hyejin" });
+
+        router.push("/");
+      }
+    } catch (err) {}
+
+    // setUser({ email: "hjinnny@naver.com", access_token, nickname: "hyejin" });
   };
 
   return (

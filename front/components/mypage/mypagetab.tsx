@@ -16,7 +16,7 @@ const MypageTab = () => {
       <p>연결 관리</p>
     </Tab>
   );
-}
+};
 
 const Tab = styled.div`
   display: flex;
@@ -40,6 +40,6 @@ const Tab = styled.div`
   p.clicked {
     color: ${props => props.theme.color.fontMain};
   }
-`
+`;
 
 export default MypageTab;
