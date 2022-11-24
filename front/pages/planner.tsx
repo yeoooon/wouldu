@@ -1,4 +1,4 @@
-import Calendar from "@components/page/planner/Calendar";
+import ReactCalendar from "@components/page/planner/ReactCalendar";
 import TodoTemplate from "@components/page/planner/TodoTemplate";
 import { SeoPageProps } from "@components/Seo";
 import styled from "styled-components";
@@ -8,14 +8,14 @@ export default function Planner() {
   return(
     <PlannerWrapper>
       <CalendarContainer>
-        <Calendar />
+        <ReactCalendar />
       </CalendarContainer>
       <TodoContainer>
         <TodoTemplate />
       </TodoContainer>
     </PlannerWrapper>
   );
-}
+};
 
 export async function getServerSideProps() {
   return {
@@ -35,12 +35,11 @@ const PlannerWrapper = styled(Wrapper)`
 const CalendarContainer = styled(Container)`
   height: 95vh;
   border: 1px solid ${props => props.theme.color.border};
+  width: 100%;
 `;
 
 const TodoContainer = styled(CalendarContainer)`
   flex-direction: column;
-  width: 100%;
-  height: 95vh;
   justify-content: flex-start;
   position: relative;
 `
