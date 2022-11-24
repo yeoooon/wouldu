@@ -8,7 +8,8 @@ import { darkTheme, lightTheme } from "../styles/theme";
 import { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Error from "@components/Error";
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, useRecoilValue } from "recoil";
+import { loginStateSelector } from "../recoil/user";
 
 export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
   const [isLightTheme, setIsLightTheme] = useState(true);

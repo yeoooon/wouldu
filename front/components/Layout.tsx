@@ -1,17 +1,31 @@
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { loginStateSelector } from "../recoil/user";
 import { Container } from "../styles/layout";
-import NavBar from "./Navbar";
+import AfterNavbar from "./AfterNavbar";
+import BeforeNavBar from "./BeforeNavbar";
 
 export interface LayoutProps {
   children: React.ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
+  const isLoginState = useRecoilValue(loginStateSelector);
   return (
-    <LayoutWrapper>
-      <NavBar />
-      <div>{children}</div>
-    </LayoutWrapper>
+    <>
+      {isLoginState && (
+        <LayoutWrapper>
+          <AfterNavbar />
+          <div>{children}</div>
+        </LayoutWrapper>
+      )}
+      {isLoginState || (
+        <>
+          <BeforeNavBar />
+          <div>{children}</div>
+        </>
+      )}
+    </>
   );
 }
 

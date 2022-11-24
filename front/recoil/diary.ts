@@ -1,6 +1,6 @@
-import { atom } from 'recoil';
+import { atom } from "recoil";
 
 export const diarywriteState = atom({
-  key: 'istextareaopen',
+  key: "istextareaopen",
   default: false,
 });
