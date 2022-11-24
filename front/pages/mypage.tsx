@@ -15,9 +15,6 @@ const Mypage = () => {
   return (
     <>
       <Wrapper>
-        <div className="sidebar">
-          사이드 바 메뉴
-        </div>
         <MypageArea>
           <div className="tab"><MypageTab></MypageTab></div>
           {/* <div className="main"><MyInfo></MyInfo></div> */}
@@ -30,6 +27,15 @@ const Mypage = () => {
       </Wrapper>
     </>
   );
+}
+
+export const getServerSideProps = async () => {
+  return {
+    props: {
+      pageTitle: "마이페이지",
+      pageDesc: "우쥬 마이페이지 입니다.",
+    },
+  };
 }
 
 const MypageArea = styled(Container)`
