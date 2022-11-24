@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import styled from "styled-components";
 import { Wrapper, Container, Box } from "../styles/layout";
 

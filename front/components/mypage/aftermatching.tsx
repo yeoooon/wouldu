@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styled from "styled-components";
 import { Container } from "../../styles/layout";
 
@@ -8,11 +9,11 @@ const AfterMatching = () => {
         <span><p>나와 상대방의 일기장</p>수정 아이콘</span>
         <div className="profile">
           <div className="user">
-            <div className="icon">프로필 아이콘</div>
+            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
             <p className="userName">로그인한 유저 닉네임</p>
           </div>
           <div className="mate">
-            <div className="icon">프로필 아이콘</div>
+            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
             <p className="mateName">상대방 유저 닉네임</p>
           </div>
         </div>
@@ -53,11 +54,6 @@ const InfoBox = styled(Container)`
   p {
     color: ${props => props.theme.color.fontMain};
     font-size: ${props => props.theme.fontSize.textMain};
-  }
-
-  .icon {
-    width: 100px;
-    height: 100px;
   }
 `
 

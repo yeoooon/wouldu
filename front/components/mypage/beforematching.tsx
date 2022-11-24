@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styled from "styled-components";
 import { Container } from "../../styles/layout";
 
@@ -8,11 +9,11 @@ const BeforeMatching = () => {
         <p>일상을 공유하고 싶은 사람과 일기를 연결하세요!</p>
         <div className="profile">
           <div className="user">
-            <div className="icon">프로필 아이콘</div>
+            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
             <p className="userName">로그인한 유저 닉네임</p>
           </div>
           <div className="mate">
-            <div className="icon">프로필 아이콘</div>
+            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
             <p className="mateName">?</p>
           </div>
         </div>
