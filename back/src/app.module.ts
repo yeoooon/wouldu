@@ -1,11 +1,29 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './user/user.module';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { DiaryModule } from './diary/diary.module';
 import { FriendModule } from './friend/friend.module';
 
 @Module({
-  imports: [FriendModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.development.env',
+    }),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DATABASE_HOST,
+      port: 3306,
+      username: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
+      database: 'wouldu',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    }),
+    UserModule,
+    AuthModule,
+    DiaryModule,
+    FriendModule,
+  ],
 })
 export class AppModule {}
