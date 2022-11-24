@@ -29,14 +29,13 @@ export async function getServerSideProps() {
 
 const DiaryWrapper = styled(Wrapper)`
   display: grid;
-  grid-template-columns: 25% 70%;
-  gap: 15px;
+  grid-template-columns: 26% 70%;
   width: 100%;
+  gap: 1.5%;
 `;
 
 const SidebarContainer = styled(Container)`
   height: 95vh;
-  margin-left: 15px;
   position: relative;
   border: 1px solid ${props => props.theme.color.border};
 `;

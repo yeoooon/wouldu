@@ -1,8 +1,14 @@
-import { Container } from '@styles/layout'
+import { Box, Container } from '@styles/layout'
 import React from 'react'
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components'
+import { diarywriteState } from '../../../recoil/diary';
 
 const DiaryTextarea = () => {
+  const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
+
+  const handleBackClick = () => setIsTextareaOpen(!isTextareaOpen);
+
   return (
     <TextContainer>
         <Textarea
@@ -10,9 +16,14 @@ const DiaryTextarea = () => {
           placeholder="오늘의 일기를 작성해주세요.
           수정, 삭제가 불가하니 신중하게 적어주세요 *^^*"
         />
-        <SaveButton>
-          나의 일기 저장하기
-        </SaveButton>
+        <ButtonBox>
+          <BackButton onClick={handleBackClick}>
+            뒤로 가기
+          </BackButton>
+          <SaveButton>
+            나의 일기 저장하기
+          </SaveButton>
+        </ButtonBox>
     </TextContainer>
   )
 }
@@ -36,11 +47,14 @@ const Textarea = styled.textarea`
   resize: none;
   overflow-y: auto;
 `;
+const ButtonBox = styled(Box)`
+  width: 100%;
+  justify-content: space-between;
+`;
 const SaveButton = styled.button`
   margin-top: 1em;
   padding: 0.7em 2em;
-  align-self: flex-end;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `;
-
+const BackButton =styled(SaveButton)``;
 export default DiaryTextarea;

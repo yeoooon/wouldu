@@ -1,21 +1,18 @@
-import { Box, Container } from '@styles/layout'
-import React from 'react'
-import styled from 'styled-components'
-import DiaryListItem from './DiaryListItem'
+import { Box, Container } from '@styles/layout';
+import React from 'react';
+import styled from 'styled-components';
+import DiaryListItem from './DiaryListItem';
 
 const DiarySidebar = () => {
   return (
     <SidebarContainer>
       <MonthBox>
-        11월의 기록
+        2022년 11월
       </MonthBox>
       <DiaryListItem />
-      <DiaryListItem />
-      <DiaryListItem />
-      <DiaryListItem />
     </SidebarContainer>
-  )
-}
+  );
+};
 
 const SidebarContainer = styled(Container)`
   display: flex;
@@ -35,6 +32,5 @@ const MonthBox = styled(Box)`
   font-weight: 500;
   line-height: 26px;
 `;
-
 
 export default DiarySidebar;
