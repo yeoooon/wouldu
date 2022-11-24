@@ -1,12 +1,12 @@
 import Image from "next/image";
 import styled from "styled-components";
-import { Container } from "../../styles/layout";
+import { Container } from "../../../styles/layout";
 
 const MyInfo = () => {
   return (
     <>
       <InfoBox>
-        <div className="icon">profile icon</div>
+        <Image src="/icon/user.svg" alt="user" width={100} height={100} />
         <div className="nickname">닉네임</div>
         <div className="email">이메일</div>
         <ButtonArea>
@@ -33,11 +33,6 @@ const InfoBox = styled(Container)`
 
   .email {
     font-size: ${props => props.theme.fontSize.textXs}
-  }
-
-  .icon {
-    width: 100px;
-    height: 100px;
   }
 `
 

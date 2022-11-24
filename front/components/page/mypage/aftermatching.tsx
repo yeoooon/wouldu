@@ -1,25 +1,26 @@
+import Image from "next/image";
 import styled from "styled-components";
-import { Container } from "../../styles/layout";
+import { Container } from "../../../styles/layout";
 
-const BeforeMatching = () => {
+const AfterMatching = () => {
   return (
     <>
       <InfoBox>
-        <p>일상을 공유하고 싶은 사람과 일기를 연결하세요!</p>
+        <span><p>나와 상대방의 일기장</p>수정 아이콘</span>
         <div className="profile">
           <div className="user">
-            <div className="icon">프로필 아이콘</div>
+            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
             <p className="userName">로그인한 유저 닉네임</p>
           </div>
           <div className="mate">
-            <div className="icon">프로필 아이콘</div>
-            <p className="mateName">?</p>
+            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
+            <p className="mateName">상대방 유저 닉네임</p>
           </div>
         </div>
-        <div className="matchCode">
-          <p>나의 연결 코드</p>
-          <p className="code">123456</p>
-          <button>상대방 연결 코드 입력</button>
+        <div className="dday">
+          <p>연결한 지</p>
+          <p>1일</p>
+          <button>연결 끊기</button>
         </div>        
       </InfoBox>
 
@@ -54,15 +55,6 @@ const InfoBox = styled(Container)`
     color: ${props => props.theme.color.fontMain};
     font-size: ${props => props.theme.fontSize.textMain};
   }
-
-  p.code {
-    font-weight: bold;
-  }
-
-  .icon {
-    width: 100px;
-    height: 100px;
-  }
 `
 
-export default BeforeMatching;
+export default AfterMatching;
