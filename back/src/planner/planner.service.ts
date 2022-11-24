@@ -4,7 +4,7 @@ import {
     UnprocessableEntityException,
   } from '@nestjs/common';
   import { InjectRepository } from '@nestjs/typeorm';
-  import { Repository } from 'typeorm';
+  import { Between, Repository } from 'typeorm';
 import { CreatePlannerDto } from './dto/create-planner.dto';
 import { UpdatePlannerDto } from './dto/update-planner.dto';
 import { Planner } from './entities/planner.entity';
@@ -52,6 +52,7 @@ import { Planner } from './entities/planner.entity';
     async changePriority(id: string, priority: number) {
       const planner = await this.findOne(id);
       planner.priority = priority;
+      
       await this.plannerRepository.save(planner);
     }
   
@@ -69,15 +70,35 @@ import { Planner } from './entities/planner.entity';
       await this.plannerRepository.delete(id);
     }
 
-    findAll(): Promise<Planner[]> {
-      return this.plannerRepository.find();
-    }
-
-    findOne(id: string): Promise<Planner> {
-    return this.plannerRepository.findOne({
-      where : {id}
+    findAll(userId: string): Promise<Planner[]> {
+      return this.plannerRepository.find({
+        where : {userId}
     });
     }
 
+    findOne(id: string): Promise<Planner> {
+      return this.plannerRepository.findOne({
+        where : {id}
+    });
+    }
+    
+    // 보류
+    findWeek(id: string): Promise<Planner[]> {
+      return this.plannerRepository.find({
+        where : {id}
+      });
+    }
+
+    findMonth(id: string, refDate: Date): Promise<Planner[]> {
+      console.log(refDate)
+      return this.plannerRepository.find({
+        where: {
+          date: Between(
+              new Date(2022, 11, 20), 
+              new Date(2022, 12, 26)
+          ),
+      }
+      });
+    }
   }
   

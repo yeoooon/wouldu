@@ -5,6 +5,7 @@ import {
     Body,
     Put,
     Param,
+    Query,
     Delete,
     Patch,
   } from '@nestjs/common';
@@ -27,14 +28,26 @@ import { PlannerService } from './planner.service';
       return this.plannerService.createPlan(createPlannerDto);
     }
   
-    @Get()
-    findAll() {
-      return this.plannerService.findAll();
+    @Get(':userId')
+    findAll(@Param("userId") userId: string) {
+      return this.plannerService.findAll(userId);
     }
   
     @Get(':id')
     findOne(@Param('id') id: string) {
       return this.plannerService.findOne(id);
+    }
+
+    @Get("week/:userId")
+    async Week(@Param("userId") id: string) {
+      const data = await this.plannerService.findWeek(id)
+      return data
+    }
+
+    @Get("month/:userId")
+    async Month(@Param("userId") id: string, @Query("refDate") refDate: Date) {
+      const data = await this.plannerService.findMonth(id, refDate)
+      return data
     }
   
     @Put(':id')
@@ -53,7 +66,7 @@ import { PlannerService } from './planner.service';
     }
 
     @Patch("priority/:id")
-    changPriority(@Param('id') id: string, @Body("priority") priority: number) {
+    changPriority(@Param('id') id: string, @Query("priority") priority: number) {
       return this.plannerService.changePriority(id, priority)
     }
   }
