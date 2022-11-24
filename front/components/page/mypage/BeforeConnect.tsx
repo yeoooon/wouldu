@@ -2,7 +2,7 @@ import Image from "next/image";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
 
-const BeforeMatching = () => {
+const BeforeConnect = () => {
   return (
     <>
       <InfoBox>
@@ -66,4 +66,4 @@ const InfoBox = styled(Container)`
   }
 `
 
-export default BeforeMatching;
+export default BeforeConnect;

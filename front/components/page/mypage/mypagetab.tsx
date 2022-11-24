@@ -1,19 +1,25 @@
-import Link from "next/link";
 import { useState } from "react";
 
 import styled from "styled-components";
 import React from "react";
+import { pageProps } from "../../../pages/mypage";
 
-const MypageTab = () => {
+const MypageTab = ({ pageState, setPageState }: pageProps) => {
   const [clicked, setClicked] = useState(false);
 
   return (
     <Tab>
-      <p className="clicked">내 정보</p>
+      <p className={pageState === "mypage" ? "clicked" : ""} onClick={() => setPageState("mypage")}>
+        내 정보
+      </p>
       <hr></hr>
-      <p>프로필 수정</p>
+      <p className={pageState === "profile" ? "clicked" : ""} onClick={() => setPageState("profile")}>
+        프로필 수정
+      </p>
       <hr></hr>
-      <p>연결 관리</p>
+      <p className={pageState === "connect" ? "clicked" : ""} onClick={() => setPageState("connect")}>
+        연결 관리
+      </p>
     </Tab>
   );
 };
