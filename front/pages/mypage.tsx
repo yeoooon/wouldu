@@ -1,16 +1,15 @@
-import Link from "next/link";
-import Image from "next/image";
+import { useState } from "react";
 import styled from "styled-components";
 import { Wrapper, Container, Box } from "../styles/layout";
 
-import MypageTab from "../components/mypage/MypageTab";
-import MyInfo from "../components/mypage/MyInfo";
-import EditProfile from "../components/mypage/EditProfile";
-import BeforeMatching from "../components/mypage/BeforeMatching";
-import AfterMatching from "../components/mypage/AfterMatching";
-import ChangePassword from "../components/mypage/ChangePassword";
+import MypageTab from "../components/page/mypage/MypageTab";
+import MyInfo from "../components/page/mypage/MyInfo";
+import EditProfile from "../components/page/mypage/EditProfile";
+import BeforeMatching from "../components/page/mypage/BeforeMatching";
+import AfterMatching from "../components/page/mypage/AfterMatching";
+import ChangePassword from "../components/page/mypage/ChangePassword";
 
-import ModalBase from "../components/mypage/modal/ModalBase";
+import ModalBase from "../components/page/mypage/modal/ModalBase";
 
 const Mypage = () => {
   return (

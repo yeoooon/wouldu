@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styled from "styled-components";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Container } from "../../styles/layout";
+import { Container } from "../../../styles/layout";
 
 interface EditProfileFormValue {
   profileImage: File

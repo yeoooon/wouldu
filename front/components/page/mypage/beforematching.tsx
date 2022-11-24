@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styled from "styled-components";
-import { Container } from "../../styles/layout";
+import { Container } from "../../../styles/layout";
 
 const BeforeMatching = () => {
   return (

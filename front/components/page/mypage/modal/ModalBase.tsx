@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Box } from "../../../styles/layout";
+import { Box } from "../../../../styles/layout";
 
 import CloseAccountConfirm from "./CloseAccountConfirm";
 import MatchCodeSubmit from "./MatchCodeSubmit";
