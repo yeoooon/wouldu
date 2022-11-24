@@ -27,7 +27,7 @@ const ContentArea = styled(Container)`
   "button";
 
   width: 100%;
-  height: 80%;
+  height: 70vh;
   
   padding: 1.5rem 0;
 `

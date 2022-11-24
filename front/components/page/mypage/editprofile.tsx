@@ -20,21 +20,23 @@ const EditProfile = () => {
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <div className="info">
           <ProfileArea>
-            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
+            <Image src="/icon/user.svg" alt="user" width={80} height={80} />
             <label>프로필 사진 업로드</label>
             <input {...register("profileImage")} type="file"></input>
             <p>허용 확장자 *.jpg, *.png | 최대 nKB</p>          
-          </ProfileArea>            
+          </ProfileArea>    
           <InputArea>
-            <label>이메일</label>
-            <input disabled placeholder="123456@naver.com"></input>
+            <Email>
+              <label>이메일</label>
+              <input disabled placeholder="123456@naver.com"></input>
+            </Email>
+            <Nickname>
+              <label>닉네임</label>
+              <input {...register("nickname", {
+                required: "수정할 닉네임을 입력해 주세요.",
+              })}></input>
+            </Nickname>             
           </InputArea>
-          <InputArea>
-            <label>닉네임</label>
-            <input {...register("nickname", {
-              required: "수정할 닉네임을 입력해 주세요.",
-            })}></input>
-          </InputArea>          
         </div>
         <div className="button">
           <button type="submit">수정</button>
@@ -63,7 +65,7 @@ const ContentArea = styled(Container)`
 
     align-self: end;
 
-    gap: 10px;
+    gap: 2.5rem;
   }
 
   .button {
@@ -74,7 +76,7 @@ const ContentArea = styled(Container)`
   }
 
   width: 100%;
-  height: 80%;
+  height: 70vh;
   
   padding: 1.5rem 0;
 `
@@ -87,10 +89,23 @@ const ProfileArea = styled.div`
   align-self: center;
 
   gap: 10px;
-  margin-bottom: 1.5rem;
 `
 
 const InputArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 10px;
+`
+
+const Email = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+`
+
+const Nickname = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
