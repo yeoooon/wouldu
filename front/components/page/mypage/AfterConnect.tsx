@@ -7,21 +7,21 @@ const AfterConnect = () => {
     <>
       <InfoBox>
         <span><p>나와 상대방의 일기장</p>수정 아이콘</span>
-        <div className="profile">
-          <div className="user">
+        <Profile>
+          <User>
             <Image src="/icon/user.svg" alt="user" width={80} height={80} />
-            <p className="userName">로그인한 유저 닉네임</p>
-          </div>
-          <div className="mate">
+            <p className="userName">나</p>
+          </User>
+          <Mate>
             <Image src="/icon/user.svg" alt="user" width={80} height={80} />
-            <p className="mateName">상대방 유저 닉네임</p>
-          </div>
-        </div>
-        <div className="dday">
+            <p className="mateName">상대방</p>
+          </Mate>
+        </Profile>
+        <Dday>
           <p>연결한 지</p>
           <p>1일</p>
-          <button>연결 끊기</button>
-        </div>        
+        </Dday>     
+        <button>연결 끊기</button>   
       </InfoBox>
 
     </>
@@ -31,18 +31,8 @@ const AfterConnect = () => {
 const InfoBox = styled(Container)`
   display: flex;
   flex-direction: column;
+  align-items: center; 
 
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;  
-  }
-
-  .profile {
-    display: flex;
-    flex-direction: row;
-  }
-  
   div, button {
     margin: 0.5rem 0;
   }
@@ -55,6 +45,30 @@ const InfoBox = styled(Container)`
     color: ${props => props.theme.color.fontMain};
     font-size: ${props => props.theme.fontSize.textMain};
   }
+`
+
+const Profile = styled.div`
+  display: flex;
+  flex-direction: row;
+
+
+`
+
+const User = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+`
+const Mate = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const Dday = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 export default AfterConnect;
