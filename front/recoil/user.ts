@@ -11,5 +11,5 @@ export const userAtom = atom<User | null>({
 
 export const loginStateSelector = selector({
   key: "loginState",
-  get: ({ get }) => (sessionStorage.getItem("userTokien") && get(userAtom)?.token ? true : false),
+  get: ({ get }) => (sessionStorage.getItem("userToken") && get(userAtom)?.token ? true : false),
 });
