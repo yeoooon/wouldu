@@ -16,17 +16,15 @@ const EditProfile = () => {
   }
 
   return (
-    <>
-      <InfoBox>
-        <form onSubmit={handleSubmit(onSubmitHandler)}>
-          <InputArea>
-            <ProfileArea>
-              <Image src="/icon/user.svg" alt="user" width={100} height={100} />
-              <label>프로필 사진 업로드</label>
-              <input {...register("profileImage")} type="file"></input>
-              <p>허용 확장자 *.jpg, *.png | 최대 nKB</p>          
-            </ProfileArea>            
-          </InputArea>
+    <ContentArea>
+      <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <div className="info">
+          <ProfileArea>
+            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
+            <label>프로필 사진 업로드</label>
+            <input {...register("profileImage")} type="file"></input>
+            <p>허용 확장자 *.jpg, *.png | 최대 nKB</p>          
+          </ProfileArea>            
           <InputArea>
             <label>이메일</label>
             <input disabled placeholder="123456@naver.com"></input>
@@ -36,21 +34,49 @@ const EditProfile = () => {
             <input {...register("nickname", {
               required: "수정할 닉네임을 입력해 주세요.",
             })}></input>
-          </InputArea>
-          <InputArea><button type="submit">수정</button></InputArea>
-        </form>
-      </InfoBox>
-    </>
+          </InputArea>          
+        </div>
+        <div className="button">
+          <button type="submit">수정</button>
+        </div>
+      </form>
+    </ContentArea>
   )
 }
 
-const InfoBox = styled(Container)`
-  display: flex;
-  flex-direction: column;
+const ContentArea = styled(Container)`
+  form {
+    height: 100%;
+    
+    display: grid;
+    grid-template-rows: 70% 30%;
 
-  button, p {
-    font-size: ${props => props.theme.fontSize.textXs}
+    grid-template-areas:
+    "info"
+    "button";
   }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    align-self: end;
+
+    gap: 10px;
+  }
+
+  .button {
+    align-self: start;
+    justify-self: center;
+
+    margin-top: 3rem;
+  }
+
+  width: 100%;
+  height: 80%;
+  
+  padding: 1.5rem 0;
 `
 
 const ProfileArea = styled.div`
@@ -58,21 +84,16 @@ const ProfileArea = styled.div`
   flex-direction: column;
   align-items: center;
 
-  input, p {
-    margin: 0.2rem 0;
-  }
+  align-self: center;
 
-  label {
-    margin: 0.5rem 0;
-  }
+  gap: 10px;
+  margin-bottom: 1.5rem;
 `
 
 const InputArea = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-
-  margin-top: 1rem;
 `
 
 export default EditProfile;
