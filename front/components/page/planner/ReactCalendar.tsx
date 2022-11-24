@@ -1,22 +1,30 @@
+import React, { useEffect, useState } from "react";
 import { Container } from "@styles/layout";
-import { SERVER_PROPS_ID } from "next/dist/shared/lib/constants";
-import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import styled from "styled-components";
-import reset from "styled-reset";
 
 const ReactCalendar = () => {
-  const [value, onChange] = useState(new Date());
-  const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const [value, onChange] = useState<Date | null>(null);
+  
+  // value 가 넘어가는 시점이 문제였음.
+  // 1) ReactCalendar.tsx 라는 CSR 컴포넌트를 품고 있는 planner.tsx 컴포넌트가 SSR을 마쳐야 함.
+  // 2) ReactCalendar UI 내부에서 쓰는 값들은 CSR이 끝나는 시점에 들어가줘야 함.
+
+  useEffect(() => {
+    onChange(new Date());
+  }, []);
+
   return (
-    <CalendarContainer>
-      <CalendarCustom 
-        onChange={onChange} 
-        value={value}
-        formatDay={(locale, date) => date.toLocaleString("en", {day: "numeric"})}
-      />
-    </CalendarContainer>
+    value && (
+      <CalendarContainer>
+        <CalendarCustom
+          onChange={onChange}
+          value={value}
+          formatDay={(locale, date) => date.toLocaleString("en", { day: "numeric" })}
+        />
+      </CalendarContainer>
+    )
   );
 };
 
@@ -26,7 +34,6 @@ const CalendarContainer = styled(Container)`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: lightcoral; */
 `;
 
 const CalendarCustom = styled(Calendar)`

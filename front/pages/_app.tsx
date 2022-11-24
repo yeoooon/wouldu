@@ -5,7 +5,7 @@ import Seo, { SeoPageProps } from "../components/Seo";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "../styles/global-style";
 import { darkTheme, lightTheme } from "../styles/theme";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Error from "@components/Error";
 import { RecoilRoot, useRecoilValue } from "recoil";
@@ -18,15 +18,17 @@ export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
 
   return (
     <ThemeProvider theme={isLightTheme ? lightTheme : darkTheme}>
-      <GlobalStyle />
-      <ErrorBoundary FallbackComponent={Error}>
-        <RecoilRoot>
-          <Layout>
-            <Seo pageTitle={pageTitle} pageDesc={pageDesc}></Seo>
-            <Component {...pageProps} />
-          </Layout>
-        </RecoilRoot>
-      </ErrorBoundary>
+      <RecoilRoot>
+        <GlobalStyle />
+        <ErrorBoundary FallbackComponent={Error}>
+          <Suspense fallback={<div>loading...</div>}>
+            <Layout>
+              <Seo pageTitle={pageTitle} pageDesc={pageDesc}></Seo>
+              <Component {...pageProps} />
+            </Layout>       
+          </Suspense>
+        </ErrorBoundary>
+      </RecoilRoot>
     </ThemeProvider>
   );
-}
+};
