@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import * as uuid from 'uuid';
 
 import { EmailService } from '../email/email.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
@@ -19,6 +20,7 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private emailService: EmailService,
+    private authService: AuthService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -40,7 +42,7 @@ export class UserService {
     user.socialId = socialId === undefined ? null : socialId;
     user.profileImgUrl = profileImgUrl === undefined ? null : profileImgUrl;
     user.signupVerifyToken = signupVerifyToken;
-    user.status = '가입 중';
+    user.registerProgress = 0;
     await this.userRepository.save(user);
     await this.sendMemberJoinEmail(email, signupVerifyToken);
   }
@@ -52,7 +54,7 @@ export class UserService {
     );
   }
 
-  async verifyEmail(signupVerifyToken: string): Promise<string> {
+  async verifyEmail(signupVerifyToken: string): Promise<any> {
     const user = await this.userRepository.findOne({
       where: { signupVerifyToken },
     });
@@ -61,11 +63,10 @@ export class UserService {
       throw new NotFoundException('유저가 존재하지 않습니다.');
     }
 
-    user.status = '가입 완료';
+    user.registerProgress = 1;
     await this.userRepository.save(user);
 
-    // return this.authService.login(user.email, user.password);
-    return '회원가입 완료';
+    return this.authService.login(user);
   }
 
   async findOneById(id: string): Promise<User | undefined> {
