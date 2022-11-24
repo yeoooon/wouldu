@@ -1,3 +1,4 @@
+import Calendar from "@components/page/planner/Calendar";
 import TodoTemplate from "@components/page/planner/TodoTemplate";
 import { SeoPageProps } from "@components/Seo";
 import styled from "styled-components";
@@ -7,7 +8,7 @@ export default function Planner() {
   return(
     <PlannerWrapper>
       <CalendarContainer>
-        Calendar
+        <Calendar />
       </CalendarContainer>
       <TodoContainer>
         <TodoTemplate />
