@@ -7,6 +7,7 @@ import { EmailService } from './email/email.service';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './user/auth.service';
+import { PlannerModule } from './planner/planner.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthService } from './user/auth.service';
     }),
     UserModule,
     AuthModule,
+    PlannerModule,
   ],
   controllers: [AppController],
   providers: [AppService, EmailService, AuthService],
