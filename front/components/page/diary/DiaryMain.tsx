@@ -42,6 +42,7 @@ const TextBox = styled(Box)`
   width: 100%;
   align-items: flex-start;
   margin-bottom: 1em;
+  padding: 0 0.5em;
 `;
 const Title = styled.h1`
   font-weight: bold;

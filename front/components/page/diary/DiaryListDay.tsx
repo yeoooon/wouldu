@@ -12,7 +12,7 @@ const DiaryListDay = () => {
 };
 
 const DateBox = styled(Box)`
-  width: 3.2em;
+  width: 3.5em;
   height: 3.5em;
   background-color: ${props => props.theme.color.purpleBox};
   border-radius: 0;
