@@ -1,23 +1,20 @@
-import Link from "next/link";
+import { useState } from "react";
 import styled from "styled-components";
 import { Wrapper, Container, Box } from "../styles/layout";
 
-import MypageTab from "../components/mypage/MypageTab";
-import MyInfo from "../components/mypage/MyInfo";
-import EditProfile from "../components/mypage/EditProfile";
-import BeforeMatching from "../components/mypage/BeforeMatching";
-import AfterMatching from "../components/mypage/AfterMatching";
-import ChangePassword from "../components/mypage/ChangePassword";
+import MypageTab from "../components/page/mypage/MypageTab";
+import MyInfo from "../components/page/mypage/MyInfo";
+import EditProfile from "../components/page/mypage/EditProfile";
+import BeforeMatching from "../components/page/mypage/BeforeMatching";
+import AfterMatching from "../components/page/mypage/AfterMatching";
+import ChangePassword from "../components/page/mypage/ChangePassword";
 
-import ModalBase from "../components/mypage/modal/ModalBase";
+import ModalBase from "../components/page/mypage/modal/ModalBase";
 
 const Mypage = () => {
   return (
     <>
       <Wrapper>
-        <div className="sidebar">
-          사이드 바 메뉴
-        </div>
         <MypageArea>
           <div className="tab"><MypageTab></MypageTab></div>
           {/* <div className="main"><MyInfo></MyInfo></div> */}
@@ -30,6 +27,15 @@ const Mypage = () => {
       </Wrapper>
     </>
   );
+}
+
+export const getServerSideProps = async () => {
+  return {
+    props: {
+      pageTitle: "마이페이지",
+      pageDesc: "우쥬 마이페이지 입니다.",
+    },
+  };
 }
 
 const MypageArea = styled(Container)`

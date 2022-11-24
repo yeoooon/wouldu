@@ -1,6 +1,7 @@
+import Image from "next/image";
 import styled from "styled-components";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Container } from "../../styles/layout";
+import { Container } from "../../../styles/layout";
 
 interface EditProfileFormValue {
   profileImage: File
@@ -20,7 +21,7 @@ const EditProfile = () => {
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <InputArea>
             <ProfileArea>
-              <div className="icon">icon</div>
+              <Image src="/icon/user.svg" alt="user" width={100} height={100} />
               <label>프로필 사진 업로드</label>
               <input {...register("profileImage")} type="file"></input>
               <p>허용 확장자 *.jpg, *.png | 최대 nKB</p>          
@@ -50,12 +51,6 @@ const InfoBox = styled(Container)`
   button, p {
     font-size: ${props => props.theme.fontSize.textXs}
   }
-
-  .icon {
-    width: 100px;
-    height: 100px;
-    align-self: center;
-  }
 `
 
 const ProfileArea = styled.div`
@@ -63,15 +58,19 @@ const ProfileArea = styled.div`
   flex-direction: column;
   align-items: center;
 
-  label, input, p {
+  input, p {
     margin: 0.2rem 0;
+  }
+
+  label {
+    margin: 0.5rem 0;
   }
 `
 
 const InputArea = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
 
   margin-top: 1rem;
 `
