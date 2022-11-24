@@ -9,11 +9,11 @@ const BeforeConnect = () => {
         <p>일상을 공유하고 싶은 사람과 일기를 연결하세요!</p>
         <Profile>
           <User>
-            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
+            <Image src="/icon/user.svg" alt="user" width={80} height={80} />
             <p className="userName">로그인한 유저 닉네임</p>
           </User>
           <Mate>
-            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
+            <Image src="/icon/user.svg" alt="user" width={80} height={80} />
             <p className="mateName">?</p>
           </Mate>
         </Profile>
@@ -54,7 +54,7 @@ const ContentArea = styled(Container)`
   }
 
   .button {
-    align-self: center;
+    align-self: start;
   }
 `
 

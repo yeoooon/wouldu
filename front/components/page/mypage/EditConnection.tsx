@@ -10,8 +10,8 @@ const EditConnection = () => {
 
   return (
     <>
-      <button>연결 전</button>
-      <button>연결 후</button>
+      <button onClick={() => setConnectState(false)}>연결 전</button>
+      <button onClick={() => setConnectState(true)}>연결 후</button>
       {connectState? <AfterConnect></AfterConnect> : <BeforeConnect></BeforeConnect>}
     </>
   )
