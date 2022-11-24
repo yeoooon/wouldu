@@ -1,28 +1,36 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { Wrapper, Container, Box } from "../styles/layout";
 
 import MypageTab from "../components/page/mypage/MypageTab";
 import MyInfo from "../components/page/mypage/MyInfo";
 import EditProfile from "../components/page/mypage/EditProfile";
-import BeforeMatching from "../components/page/mypage/BeforeMatching";
-import AfterMatching from "../components/page/mypage/AfterMatching";
+import EditConnection from "../components/page/mypage/EditConnection";
 import ChangePassword from "../components/page/mypage/ChangePassword";
 
 import ModalBase from "../components/page/mypage/modal/ModalBase";
 
+export type pageSelect = "mypage" | "profile" | "connect";
+export interface pageProps {
+  pageState: pageSelect;
+  setPageState: Dispatch<SetStateAction<pageSelect>>;
+}
+
 const Mypage = () => {
+  const [pageState, setPageState] = useState<pageSelect>("mypage");
+
   return (
     <>
       <Wrapper>
         <MypageArea>
-          <div className="tab"><MypageTab></MypageTab></div>
-          {/* <div className="main"><MyInfo></MyInfo></div> */}
-          <div className="main"><EditProfile></EditProfile></div>
-          {/* <div className="main"><BeforeMatching></BeforeMatching></div> */}
-          {/* <div className="main"><AfterMatching></AfterMatching></div> */}
-          {/* <div className="main"><ChangePassword></ChangePassword></div> */}
-          {/* <div className="main"><ModalBase></ModalBase></div> */}
+          <div className="tab">
+            <MypageTab pageState={pageState} setPageState={setPageState}></MypageTab>
+          </div>
+          <div className="main">
+            {pageState === "mypage" && <MyInfo></MyInfo>}
+            {pageState === "profile" && <EditProfile></EditProfile>}
+            {pageState === "connect" && <EditConnection></EditConnection>}
+          </div>
         </MypageArea>
       </Wrapper>
     </>
