@@ -42,7 +42,7 @@ export class UserService {
     user.socialId = socialId === undefined ? null : socialId;
     user.profileImgUrl = profileImgUrl === undefined ? null : profileImgUrl;
     user.signupVerifyToken = signupVerifyToken;
-    user.registerProgress = '가입 중';
+    user.registerProgress = 0;
     await this.userRepository.save(user);
     await this.sendMemberJoinEmail(email, signupVerifyToken);
   }
@@ -63,7 +63,7 @@ export class UserService {
       throw new NotFoundException('유저가 존재하지 않습니다.');
     }
 
-    user.registerProgress = '가입 완료';
+    user.registerProgress = 1;
     await this.userRepository.save(user);
 
     return this.authService.login(user);
