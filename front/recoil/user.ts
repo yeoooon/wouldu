@@ -11,17 +11,17 @@ export const userAtom = atom<User | null>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const loginStateSelector = selector({
-  key: "loginState",
-  get: ({ get }) =>
-    typeof window !== "undefined"
-      ? sessionStorage.getItem("userToken") && get(userAtom)?.access_token
-        ? true
-        : false
-      : null,
-});
-
-// export const loginStateSelector = atom<boolean>({
-//   key: "test",
-//   default: false,
+// export const loginStateSelector = selector({
+//   key: "loginState",
+//   get: ({ get }) =>
+//     typeof window !== "undefined"
+//       ? sessionStorage.getItem("userToken") && get(userAtom)?.access_token
+//         ? true
+//         : false
+//       : null,
 // });
+
+export const loginStateSelector = atom<boolean>({
+  key: "test",
+  default: true,
+});
