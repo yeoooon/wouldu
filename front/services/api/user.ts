@@ -3,9 +3,10 @@ import { axiosInstance } from "./axiosInstance";
 
 //회원가입
 export const userJoin = async (joinInfo: UserJoinForm) => {
+  const bodyData = JSON.stringify(joinInfo);
   try {
-    const { data } = await axiosInstance.post("user/login", joinInfo);
-    return data;
+    const { status } = await axiosInstance.post("user/register", bodyData);
+    return status;
   } catch (err) {
     console.log(err);
     // if (axios.isAxiosError(err) && err.response?.status === 400) {
@@ -17,8 +18,9 @@ export const userJoin = async (joinInfo: UserJoinForm) => {
 //로그인
 export const requestLogin = async (loginInfo: UserLoginForm) => {
   try {
-    const { data } = await axiosInstance.post("user/join", loginInfo);
+    const { data } = await axiosInstance.post("auth/join", loginInfo);
     sessionStorage.setItem("userToken", data.token);
+    console.log("user api", data);
     return data;
   } catch (err) {
     console.log(err);

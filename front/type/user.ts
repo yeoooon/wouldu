@@ -5,16 +5,16 @@ export const LOGIN = {
 };
 
 export interface User {
-  id: string;
+  email: string;
   token: string;
   nickname: string;
   password: string;
-  confirmPassword: string;
+  confirmPassword?: string;
 }
 
-export interface UserJoinForm extends Pick<User, "id" | "nickname" | "password" | "confirmPassword"> {}
+export interface UserJoinForm extends Pick<User, "email" | "nickname" | "password" | "confirmPassword"> {}
 
-export interface UserLoginForm extends Pick<User, "id" | "password"> {}
+export interface UserLoginForm extends Pick<User, "email" | "password"> {}
 
 export interface PasswordForm {
   curPassword: string;

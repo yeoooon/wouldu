@@ -7,8 +7,12 @@ import { SeoPageProps } from "@components/Seo";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import { Box, Container, Wrapper } from "@styles/layout";
+import { requestLogin } from "../services/api/user";
+import { useSetRecoilState } from "recoil";
+import { userAtom } from "../recoil/user";
 
 const login = () => {
+  const setUser = useSetRecoilState(userAtom);
   const {
     register,
     handleSubmit,
@@ -16,18 +20,22 @@ const login = () => {
     formState: { errors },
   } = useForm<UserLoginForm>();
 
-  const onSubmit = handleSubmit(data => console.log(data));
+  const onLoginSubmit = async (data: UserLoginForm) => {
+    await requestLogin(data);
+
+    //setUser
+  };
 
   return (
     <LoginWrap>
       <LoginContainer>
         <LoginTitle>로그인</LoginTitle>
 
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit(onLoginSubmit)}>
           <InputBox>
             <LoginInput
               placeholder="이메일을 입력하세요."
-              {...register("id", {
+              {...register("email", {
                 required: true,
                 pattern: {
                   value:
@@ -36,12 +44,12 @@ const login = () => {
                 },
               })}
             />
-            <ErrorMessage>{errors?.id?.message}</ErrorMessage>
+            <ErrorMessage>{errors?.email?.message}</ErrorMessage>
           </InputBox>
           <InputBox>
             <LoginInput
               placeholder="비밀번호를 입력하세요."
-              {...register("password", { required: true, minLength: { value: 8, message: "8자 이상 입력해주세요." } })}
+              {...register("password", { required: true, minLength: { value: 4, message: "4자 이상 입력해주세요." } })}
             />
             <ErrorMessage>{errors?.password?.message}</ErrorMessage>
           </InputBox>

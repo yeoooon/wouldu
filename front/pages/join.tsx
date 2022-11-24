@@ -19,8 +19,11 @@ const join = () => {
   } = useForm<UserJoinForm>();
 
   const onSubmit = handleSubmit(data => {
-    userJoin(data);
-    Router.push("/login");
+    delete data.confirmPassword;
+    userJoin(data).then(res => {
+      console.log(res);
+      Router.push("/login");
+    });
   });
 
   return (
@@ -32,7 +35,7 @@ const join = () => {
           <InputBox>
             <JoinInput
               placeholder="이메일"
-              {...register("id", {
+              {...register("email", {
                 required: "이메일을 입력해주세요.",
                 pattern: {
                   value:
@@ -41,7 +44,7 @@ const join = () => {
                 },
               })}
             />
-            <ErrorMessage>{errors?.id?.message}</ErrorMessage>
+            <ErrorMessage>{errors?.email?.message}</ErrorMessage>
           </InputBox>
           <InputBox>
             <JoinInput
