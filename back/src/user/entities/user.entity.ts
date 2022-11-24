@@ -29,7 +29,7 @@ export class User {
   signupVerifyToken: string;
 
   @Column()
-  status: string;
+  registerProgress: string;
 
   @Column({
     type: 'timestamp',
