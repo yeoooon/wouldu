@@ -4,16 +4,18 @@ import {
   NotFoundException,
   Post,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import { LocalAuthGuard } from './guard/local-auth.guard';
 
 @Controller('auth')
 @ApiTags('인증 API')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // @UseGuards()
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   @ApiOperation({
     summary: '로그인 API',
@@ -25,14 +27,7 @@ export class AuthController {
     "password":"your password"
     }`,
   })
-  async login(
-    @Body('email') email: string,
-    @Body('password') password: string,
-  ) {
-    const user = await this.authService.login({ email, password });
-    if (user === null) {
-      throw new NotFoundException('이메일이나 비밀번호가 틀렸습니다.');
-    }
-    return user;
+  async login(@Request() req) {
+    return this.authService.login(req.user);
   }
 }

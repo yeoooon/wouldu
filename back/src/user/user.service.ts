@@ -75,7 +75,7 @@ export class UserService {
   }
 
   async checkUserExistsByEmail(emailAddress: string): Promise<boolean> {
-    const user = this.userRepository.findOne({
+    const user = await this.userRepository.findOne({
       where: { email: emailAddress },
     });
     return user !== null;
