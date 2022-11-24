@@ -12,8 +12,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { User } from './entities/user.entity';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
 @ApiTags('유저 API')
@@ -25,6 +24,13 @@ export class UserController {
     summary: '회원 가입 API',
     description: 'email, nickname, password를 입력하여 유저를 생성한다.',
   })
+  @ApiBody({
+    description: `{
+    "email":"your email",
+    "nickname":"your nickname",
+    "password":"your password"
+    }`,
+  })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -33,12 +39,6 @@ export class UserController {
   async verifyEmail(@Query() query): Promise<string> {
     const { signupVerifyToken } = query;
     return await this.userService.verifyEmail(signupVerifyToken);
-  }
-
-  @UseGuards()
-  @Post('login')
-  login(@Body() createUserDto: CreateUserDto) {
-    return 'login';
   }
 
   @Get()
