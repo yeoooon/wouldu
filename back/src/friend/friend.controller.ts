@@ -1,9 +1,8 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { ExpressAdapter } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { FriendService } from './friend.service';
 import { Request } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('friend')
 @ApiTags('친구 API')
@@ -20,9 +19,11 @@ export class FriendController {
     "code":"code"
     }`,
   })
-  @ApiBearerAuth('access-token')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   sendFriendRequest(@Req() request: Request, @Body('code') code: string) {
-    return this.friendService.sendFriendRequest(request['currentUserId'], code);
+    console.log(request.user);
+    return this.friendService.sendFriendRequest(request.user['userId'], code);
   }
 
   @Get('/request')

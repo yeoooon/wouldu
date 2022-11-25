@@ -21,12 +21,15 @@ export function setupSwagger(app: INestApplication): void {
     .setTitle('NestJS Study API Docs')
     .setDescription('NestJS Study API description')
     .setVersion('1.0.0')
-    .addBearerAuth({
-      type: 'http',
-      scheme: 'bearer',
-      name: 'JWT',
-      in: 'header',
-    })
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        in: 'header',
+      },
+      'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

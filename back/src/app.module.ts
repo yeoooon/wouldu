@@ -23,6 +23,8 @@ import { FriendModule } from './friend/friend.module';
       database: 'wouldu',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       timezone: 'Asia/Seoul',
+      // synchronize: true,
+      ssl: { rejectUnauthorized: true },
     }),
     UserModule,
     AuthModule,
@@ -39,6 +41,6 @@ import { FriendModule } from './friend/friend.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoginRequiredMiddleware).forRoutes('planner', 'friend');
+    consumer.apply(LoginRequiredMiddleware).forRoutes('planner');
   }
 }
