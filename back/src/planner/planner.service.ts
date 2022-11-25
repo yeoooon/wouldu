@@ -87,9 +87,9 @@ import { Planner } from './entities/planner.entity';
 
     async checkIfThereIsPlanOrNot(date: Date) {
       const plans = await this.plannerRepository.find({
-        where : {date}
+        where : {date, isRecommended:0}
       });
-      if (plans.length === 1) {
+      if (plans.length === 0) {
         return 0
       } else {
         return 1
