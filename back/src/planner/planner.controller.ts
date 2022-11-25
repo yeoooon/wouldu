@@ -60,7 +60,7 @@ import { PlannerService } from './planner.service';
     @Get('check/:date')
     @ApiOperation({
       summary: '일정 유무 확인 API',
-      description: 'param으로 date를 넣으면 해당 날짜에 일정이 있었는지(1) 없었는지(0) 알려줌(수정요망)',
+      description: 'param으로 date를 넣으면 해당 날짜에 일정이 있었는지(1) 없었는지(0) 알려줌',
     })
     checkIfThereIsPlanOrNot(@Param('date') date: Date) {
       return this.plannerService.checkIfThereIsPlanOrNot(date);

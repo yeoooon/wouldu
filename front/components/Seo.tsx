@@ -1,8 +1,10 @@
+import { DehydratedState } from "@tanstack/react-query";
 import Head from "next/head";
 
 export type SeoPageProps = {
   pageTitle: string;
   pageDesc: string;
+  dehydratedState?: DehydratedState;
 };
 
 export default function Seo({ pageTitle, pageDesc }: SeoPageProps) {

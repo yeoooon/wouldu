@@ -1,21 +1,21 @@
-import ReactCalendar from "@components/page/planner/ReactCalendar";
+import Calendar from "@components/page/planner/Calendar";
 import TodoTemplate from "@components/page/planner/TodoTemplate";
 import { SeoPageProps } from "@components/Seo";
 import styled from "styled-components";
 import { Container, Wrapper, Box } from "../styles/layout";
 
 export default function Planner() {
-  return(
+  return (
     <PlannerWrapper>
       <CalendarContainer>
-        <ReactCalendar />
+        <Calendar />
       </CalendarContainer>
       <TodoContainer>
         <TodoTemplate />
       </TodoContainer>
     </PlannerWrapper>
   );
-};
+}
 
 export async function getServerSideProps() {
   return {
@@ -42,4 +42,4 @@ const TodoContainer = styled(CalendarContainer)`
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
-`
+`;

@@ -1,44 +1,31 @@
-import { Box } from '@styles/layout';
-import React, { useState } from 'react'
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import styled, { css } from 'styled-components';
-import { todosState } from '../../../recoil/todos';
-import CircleCheck from '/public/icon/circlecheck.svg';
-import CircleCheckBack from '/public/icon/circlecheckback.svg';
-import Trash from '/public/icon/trash.svg';
+import { Box } from "@styles/layout";
+import { Planner } from "@type/planner";
+import React, { useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import styled, { css } from "styled-components";
+import CircleCheck from "/public/icon/circlecheck.svg";
+import CircleCheckBack from "/public/icon/circlecheckback.svg";
+import Trash from "/public/icon/trash.svg";
 
-interface Todoprops {
-  id?: number,
-  text: string,
-  done: boolean,
-}
-
-const TodoItem = ({id, text, done}: Todoprops) => {
-  const [todoList, setTodoList] = useRecoilState(todosState);
-
+const TodoItem = (plan: Planner) => {
   const handleToggle = () => {
-    setTodoList(items => items.map(item =>
-      item.id === id ? {...item, done: !done} : item
-    ));
+    // isCompleted 상태 바꾸며, patch 요청
+    // 계속 누를때마다 요청을 하는거면...? nest patch는 일부분만 가긴하지만 부하걸릴것이 걱정이다.
   };
   const handleRemoveTodo = () => {
-    setTodoList(items => items.filter(item => item.id !== id));
+    //delete 요청
   };
 
   return (
-    <TodoBox 
-      className={done ? "finish" : ""}
-    >
-      <CheckBox onClick={handleToggle}>
-        {done ? <CircleCheckSvg /> : <CircleCheckBackSvg />}
-      </CheckBox>
-      <Text>{text}</Text>
+    <TodoBox className={plan.isCompleted ? "finish" : ""}>
+      <CheckBox onClick={handleToggle}>{plan.isCompleted ? <CircleCheckSvg /> : <CircleCheckBackSvg />}</CheckBox>
+      <Text>{plan.description}</Text>
       <Remove onClick={handleRemoveTodo}>
         <Trash />
       </Remove>
     </TodoBox>
-  )
-}
+  );
+};
 
 const Remove = styled.div`
   display: flex;
@@ -98,10 +85,8 @@ const CheckCircle = styled.div`
   cursor: pointer;
 `;
 
-const CircleCheckSvg = styled(CircleCheck)`
-`;
+const CircleCheckSvg = styled(CircleCheck)``;
 
-const CircleCheckBackSvg = styled(CircleCheckBack)`
-`;
+const CircleCheckBackSvg = styled(CircleCheckBack)``;
 
 export default TodoItem;
