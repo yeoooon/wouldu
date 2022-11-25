@@ -4,6 +4,9 @@ import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { DiaryModule } from './diary/diary.module';
+import { FriendModule } from './friend/friend.module';
+import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -22,6 +25,7 @@ import { DiaryModule } from './diary/diary.module';
     UserModule,
     AuthModule,
     DiaryModule,
+    FriendModule,
   ],
 })
 export class AppModule {}
