@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import Logo from "/public/icon/logoblack.svg";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
@@ -11,7 +12,9 @@ export default function AfterNavBar() {
 
   return (
     <Nav>
-      <Image src="/icon/logoblack.svg" alt="logo" width={180} height={60} />
+      <LogoBox>
+        <Logo width={180} height={60} />
+      </LogoBox>
       <UserBox>
         <Image src="/icon/user.svg" alt="user" width={60} height={60} />
         <TextBox1>닉네임</TextBox1>
@@ -42,6 +45,10 @@ const Nav = styled(Container)`
   margin: 0;
   border-radius: 0;
   box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
+`;
+const LogoBox = styled(Logo)`
+  width: 100%;
+  overflow: visible;
 `;
 
 const NavLink = styled(Container)`
@@ -78,7 +85,7 @@ const LinkButton = styled.div`
 
 const UserBox = styled(Container)`
   flex-direction: column;
-  margin: 3em 2em;
+  padding: 2em;
 `;
 
 const TextBox1 = styled(Box)`
