@@ -6,6 +6,7 @@ import {
     Put,
     Param,
     Query,
+    Req,
     Delete,
     Patch,
   } from '@nestjs/common';
@@ -29,13 +30,19 @@ import { PlannerService } from './planner.service';
     }
   
     @Get(':userId')
-    findAll(@Param("userId") userId: string) {
-      return this.plannerService.findAll(userId);
+    findAll(@Param("userId") userId: string, @Query("date") date: Date) {
+      return this.plannerService.findAllByDate(userId, date);
     }
   
     @Get(':id')
     findOne(@Param('id') id: number) {
       return this.plannerService.findOne(id);
+    }
+
+    @Get('check/:date')
+    checkIfThereIsPlanOrNot(@Req() request: Request, @Param('date') date: Date) {
+      console.log(request['currentUserId'])
+      return this.plannerService.checkIfThereIsPlanOrNot(date);
     }
   
     @Put(':id')
