@@ -13,13 +13,15 @@ import Check from "/public/icon/check.svg";
 const TodoList = () => {
   const [todos, setTodos] = useState<Planner[] | null>(null);
 
+  //day는 나중에 프롭스로 달력 일정에 따라 바뀌도록 설정해야함.
+  const day = "2022-11-25";
+
+  const { data: planData } = useQuery(["plan", day], () => getDayPlan(day));
+
   useEffect(() => {
-    (async () => {
-      const data = await getDayPlan(formatDate(new Date())); // 임의로 현재날짜 전달
-      // console.log(data);
-      setTodos(data);
-    })();
-  }, []);
+    setTodos(planData);
+    console.log("useQuery", planData);
+  }, [planData]);
 
   return (
     <ListContainer>
