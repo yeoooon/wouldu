@@ -8,6 +8,7 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { todosState } from "../../../recoil/todos";
 import { createPlan } from "../../../services/api/planner";
+import { formatDate } from "../../../services/utils/formatDate";
 import CirclePlus from "/public/icon/circleplus.svg";
 
 const TodoCreate = () => {
@@ -23,16 +24,6 @@ const TodoCreate = () => {
   } = useForm<{ description: string }>();
 
   const handleToggle = () => setOpen(!open);
-
-  const formatDate = (date: Date) => {
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1 < 9 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) +
-      "-" +
-      (date.getDate() < 9 ? "0" + date.getDate() : date.getDate())
-    );
-  };
 
   const onCreateSubmit = async (data: Planner) => {
     //나중에 useMutation 적용

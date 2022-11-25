@@ -1,16 +1,26 @@
-import { Container } from '@styles/layout';
-import React from 'react';
-import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
-import { todosState } from '../../../recoil/todos';
-import TodoItem from './TodoItem';
-import Check from '/public/icon/check.svg';
-
+import { Container } from "@styles/layout";
+import { useQuery } from "@tanstack/react-query";
+import { Planner } from "@type/planner";
+import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import styled from "styled-components";
+import { todosState } from "../../../recoil/todos";
+import { getDayPlan } from "../../../services/api/planner";
+import { formatDate } from "../../../services/utils/formatDate";
+import TodoItem from "./TodoItem";
+import Check from "/public/icon/check.svg";
 
 const TodoList = () => {
-  const todos = useRecoilValue(todosState);
-  // console.log(todos)
-  console.log(todos);
+  const [todos, setTodos] = useState<Planner[] | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getDayPlan(formatDate(new Date())); // 임의로 현재날짜 전달
+      // console.log(data);
+      setTodos(data);
+    })();
+  }, []);
+
   return (
     <ListContainer>
       <TitleBox>
@@ -18,16 +28,11 @@ const TodoList = () => {
         <p>오늘의 추천 활동</p>
       </TitleBox>
       {todos?.map(todo => (
-        <TodoItem
-          key={todo.id}
-          id={todo.id}
-          text={todo.text}
-          done={todo.done}
-        />
+        <TodoItem key={todo.id} id={todo.id} description={todo.description} isCompleted={todo.isCompleted} />
       ))}
     </ListContainer>
-  )
-}
+  );
+};
 
 const ListContainer = styled(Container)`
   flex-direction: column;
@@ -49,4 +54,4 @@ export const TitleBox = styled.div`
   }
 `;
 
-export default TodoList
+export default TodoList;

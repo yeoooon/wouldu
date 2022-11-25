@@ -16,6 +16,7 @@ export const getPlans = async (userId: string) => {
 
 //지정한 날짜의 일정
 export const getDayPlan = async (date: string) => {
+  console.log(date);
   try {
     const { data } = await axiosInstance.get(`planner/${date}`);
     return data;
