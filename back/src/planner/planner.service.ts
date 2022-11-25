@@ -17,9 +17,9 @@ import { Planner } from './entities/planner.entity';
       private plannerRepository: Repository<Planner>,
     ) {}
   
-    async createPlan(createPlannerDto: CreatePlannerDto) {
+    async createPlan(userId : string, createPlannerDto: CreatePlannerDto) {
       const planner = new Planner();
-      const { description, date, imgUrl, userId, priority } =
+      const { description, date, imgUrl, priority } =
         createPlannerDto;
       
       planner.description = description;
@@ -30,19 +30,20 @@ import { Planner } from './entities/planner.entity';
       await this.plannerRepository.save(planner);
     }  
 
-    async recommendPlan(createPlannerDto: CreatePlannerDto) {
-      const planner = new Planner();
-      const { description, date, imgUrl, userId } =
-        createPlannerDto;
+    // 현재는 연결된 api가 없어서 userId 생성을 못하니 이거 해결하고 풀기
+    // async recommendPlan(createPlannerDto: CreatePlannerDto) {
+    //   const planner = new Planner();
+    //   const { description, date, imgUrl } =
+    //     createPlannerDto;
       
-      planner.description = description;
-      planner.date = date;
-      planner.imgUrl = imgUrl === undefined ? null : imgUrl;
-      planner.isRecommended = 1;
-      planner.userId = userId;
-      planner.priority = 1;
-      await this.plannerRepository.save(planner);
-    }  
+    //   planner.description = description;
+    //   planner.date = date;
+    //   planner.imgUrl = imgUrl === undefined ? null : imgUrl;
+    //   planner.isRecommended = 1;
+    //   planner.userId = userId;
+    //   planner.priority = 1;
+    //   await this.plannerRepository.save(planner);
+    // }  
 
     async changeCompletionStatus(id: number) {
       const planner = await this.findOne(id);
@@ -72,6 +73,7 @@ import { Planner } from './entities/planner.entity';
     }
 
     findAllByDate(userId: string, date: Date): Promise<Planner[]> {
+      console.log(date)
       return this.plannerRepository.find({
         where : {userId, date}
     });

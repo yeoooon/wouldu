@@ -12,9 +12,6 @@ export class CreatePlannerDto {
   @IsOptional()
   imgUrl: string;
 
-  @IsString()
-  userId: string;
-
   @IsNumber()
   priority: number;
 }

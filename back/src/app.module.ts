@@ -22,13 +22,14 @@ import { JwtModule } from '@nestjs/jwt';
       password: process.env.DATABASE_PASSWORD,
       database: 'wouldu',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      timezone: 'Asia/Seoul',
     }),
     UserModule,
     AuthModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
       signOptions: {
-        expiresIn: '600s',
+        expiresIn: '6000s',
       },
     }),
     DiaryModule,
