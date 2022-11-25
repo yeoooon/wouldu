@@ -10,25 +10,31 @@ import { ErrorBoundary } from "react-error-boundary";
 import Error from "@components/Error";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import { loginStateSelector } from "../recoil/user";
+import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
   const [isLightTheme, setIsLightTheme] = useState(true);
   const { pageTitle, pageDesc } = pageProps;
-  console.log(pageTitle, pageDesc);
+
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <ThemeProvider theme={isLightTheme ? lightTheme : darkTheme}>
       <RecoilRoot>
-        <GlobalStyle />
-        <ErrorBoundary FallbackComponent={Error}>
-          <Suspense fallback={<div>loading...</div>}>
-            <Layout>
-              <Seo pageTitle={pageTitle} pageDesc={pageDesc}></Seo>
-              <Component {...pageProps} />
-            </Layout>       
-          </Suspense>
-        </ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <GlobalStyle />
+            <ErrorBoundary FallbackComponent={Error}>
+              <Suspense fallback={<div>loading...</div>}>
+                <Layout>
+                  <Seo pageTitle={pageTitle} pageDesc={pageDesc}></Seo>
+                  <Component {...pageProps} />
+                </Layout>
+              </Suspense>
+            </ErrorBoundary>
+          </Hydrate>
+        </QueryClientProvider>
       </RecoilRoot>
     </ThemeProvider>
   );
-};
+}

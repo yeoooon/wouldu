@@ -1,16 +1,27 @@
-import { Container } from '@styles/layout';
-import React from 'react';
-import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
-import { todosState } from '../../../recoil/todos';
-import TodoItem from './TodoItem';
-import Check from '/public/icon/check.svg';
-
+import { Container } from "@styles/layout";
+import { useQuery } from "@tanstack/react-query";
+import { Planner } from "@type/planner";
+import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import styled from "styled-components";
+import { getDayPlan } from "../../../services/api/planner";
+import { formatDate } from "../../../services/utils/formatDate";
+import TodoItem from "./TodoItem";
+import Check from "/public/icon/check.svg";
 
 const TodoList = () => {
-  const todos = useRecoilValue(todosState);
-  // console.log(todos)
-  console.log(todos);
+  const [todos, setTodos] = useState<Planner[] | null>(null);
+
+  //day는 나중에 프롭스로 달력 일정에 따라 바뀌도록 설정해야함.
+  const day = "2022-11-25";
+
+  const { data: planData } = useQuery(["plan", day], () => getDayPlan(day));
+
+  useEffect(() => {
+    setTodos(planData);
+    console.log("useQuery", planData);
+  }, [planData]);
+
   return (
     <ListContainer>
       <TitleBox>
@@ -18,16 +29,11 @@ const TodoList = () => {
         <p>오늘의 추천 활동</p>
       </TitleBox>
       {todos?.map(todo => (
-        <TodoItem
-          key={todo.id}
-          id={todo.id}
-          text={todo.text}
-          done={todo.done}
-        />
+        <TodoItem key={todo.id} id={todo.id} description={todo.description} isCompleted={todo.isCompleted} />
       ))}
     </ListContainer>
-  )
-}
+  );
+};
 
 const ListContainer = styled(Container)`
   flex-direction: column;
@@ -49,4 +55,4 @@ export const TitleBox = styled.div`
   }
 `;
 
-export default TodoList
+export default TodoList;
