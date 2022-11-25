@@ -24,10 +24,10 @@ export const requestLogin = async (loginInfo: UserLoginForm) => {
     sessionStorage.setItem("userToken", data.access_token);
     return data;
   } catch (err) {
-    console.log(err);
-    if (axios.isAxiosError(err) && err.response?.status === 401) {
-      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
-    }
+    console.log("requestLgoin error!!!!!", err);
+    // if (axios.isAxiosError(err) && err.response?.status === 401) {
+    //   alert("이메일 또는 비밀번호가 일치하지 않습니다.");
+    // }
   }
 };
 

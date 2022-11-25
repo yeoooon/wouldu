@@ -14,10 +14,6 @@ export interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   const isLoginState = useRecoilValue(loginStateSelector);
 
-  useEffect(() => {
-    console.log("test", isLoginState);
-  }, [isLoginState]);
-
   return (
     <>
       {isLoginState && (

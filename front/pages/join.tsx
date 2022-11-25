@@ -21,7 +21,7 @@ const join = () => {
   const onSubmit = handleSubmit(data => {
     delete data.confirmPassword;
     userJoin(data).then(status => {
-      if (status === 200) {
+      if (status === 201) {
         alert("회원가입이 완료되었습니다. 가입한 이메일에 메일함을 확인해주세요.");
         Router.push("/login");
       } else if (status === 422) {
@@ -114,7 +114,6 @@ const join = () => {
 export const getServerSideProps = (context: GetServerSidePropsContext) => {
   console.log(context.resolvedUrl);
   console.log(context);
-  console.log("haha");
 
   return {
     props: {

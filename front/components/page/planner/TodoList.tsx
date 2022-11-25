@@ -19,7 +19,6 @@ const TodoList = () => {
 
   useEffect(() => {
     setTodos(planData);
-    console.log("useQuery", planData);
   }, [planData]);
 
   return (

@@ -34,8 +34,6 @@ const login = () => {
         router.push("/");
       }
     } catch (err) {}
-
-    // setUser({ email: "hjinnny@naver.com", access_token, nickname: "hyejin" });
   };
 
   return (
