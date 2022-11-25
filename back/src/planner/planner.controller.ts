@@ -34,39 +34,27 @@ import { PlannerService } from './planner.service';
     }
   
     @Get(':id')
-    findOne(@Param('id') id: string) {
+    findOne(@Param('id') id: number) {
       return this.plannerService.findOne(id);
-    }
-
-    @Get("week/:userId")
-    async Week(@Param("userId") id: string) {
-      const data = await this.plannerService.findWeek(id)
-      return data
-    }
-
-    @Get("month/:userId")
-    async Month(@Param("userId") id: string, @Query("refDate") refDate: Date) {
-      const data = await this.plannerService.findMonth(id, refDate)
-      return data
     }
   
     @Put(':id')
-    update(@Param('id') id: string, @Body() updateUserDto: UpdatePlannerDto) {
+    update(@Param('id') id: number, @Body() updateUserDto: UpdatePlannerDto) {
       return this.plannerService.updatePlan(id, updateUserDto);
     }
   
     @Delete(':id')
-    remove(@Param('id') id: string) {
+    remove(@Param('id') id: number) {
       return this.plannerService.deletePlan(id);
     }
 
     @Patch(":id")
-    changCompletionStatus(@Param('id') id: string) {
+    changCompletionStatus(@Param('id') id: number) {
       return this.plannerService.changeCompletionStatus(id)
     }
 
     @Patch("priority/:id")
-    changPriority(@Param('id') id: string, @Query("priority") priority: number) {
+    changPriority(@Param('id') id: number, @Query("priority") priority: number) {
       return this.plannerService.changePriority(id, priority)
     }
   }

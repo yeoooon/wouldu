@@ -6,8 +6,8 @@ import {
   
   @Entity()
   export class Planner {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+    @PrimaryGeneratedColumn('increment')
+    id: number;
   
     @Column({ length: 100 })
     description: string;
