@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { loginStateSelector } from "../recoil/user";
 import { Container } from "../styles/layout";
 import AfterNavbar from "./AfterNavbar";
 import BeforeNavBar from "./BeforeNavbar";
+import About from "./page/about/About";
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -11,17 +13,24 @@ export interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const isLoginState = useRecoilValue(loginStateSelector);
+
+  useEffect(() => {
+    console.log("test", isLoginState);
+  }, [isLoginState]);
+
   return (
     <>
       {isLoginState && (
         <LayoutWrapper>
           <AfterNavbar />
+          {/* <div>로그인된상태</div> */}
           <div>{children}</div>
         </LayoutWrapper>
       )}
       {isLoginState || (
         <>
           <BeforeNavBar />
+          {/* <About /> */}
           <div>{children}</div>
         </>
       )}

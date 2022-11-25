@@ -16,18 +16,12 @@ import { useEffect } from "react";
 const login = () => {
   const router = useRouter();
   const [user, setUser] = useRecoilState(userAtom);
-  const isLogin = useRecoilValue(loginStateSelector);
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<UserLoginForm>();
-
-  useEffect(() => {
-    console.log(user);
-    console.log(isLogin);
-  }, [user, isLogin]);
 
   const onLoginSubmit = async (data: UserLoginForm) => {
     try {
@@ -108,7 +102,6 @@ const login = () => {
 export const getServerSideProps = (context: GetServerSidePropsContext) => {
   console.log(context.resolvedUrl);
   console.log(context);
-  console.log("haha");
 
   return {
     props: {

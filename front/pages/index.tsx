@@ -13,9 +13,6 @@ import About from "@components/page/about/About";
 
 const Home: NextPage = () => {
   const isLoginState = useRecoilValue(loginStateSelector);
-  useEffect(() => {
-    console.log("isLoginState", isLoginState);
-  }, [isLoginState]);
 
   return (
     <>

@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  webpack: (config) => {
+  webpack: config => {
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
@@ -10,6 +10,15 @@ const nextConfig = {
     });
     return config;
   },
-}
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: "/stamp",
+  //       destination: "/",
+  //       permanent: false,
+  //     },
+  //   ];
+  // },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
