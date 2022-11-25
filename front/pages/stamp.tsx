@@ -1,5 +1,7 @@
+import EmotionCalendar from "@components/page/stamp/EmotionCalendar";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { GetServerSidePropsContext } from "next";
+import { Calendar } from "react-calendar";
 import styled from "styled-components";
 
 const stamp = () => {
@@ -10,7 +12,12 @@ const stamp = () => {
         <LeftBox>오늘의할일</LeftBox>
       </LeftContainer>
       <RightContainer>
-        <Box>스탬프</Box>
+        <CalendarBox>
+          <EmotionCalendar />
+        </CalendarBox>
+        <EmotionBox>
+          감정분석
+        </EmotionBox>
       </RightContainer>
     </StampWrapper>
   );
@@ -49,4 +56,13 @@ const LeftBox = styled(Box)`
   width: 100%;
   height: 49%;
   background-color: ${props => props.theme.color.nav};
+`;
+
+const CalendarBox = styled.div`
+  width: 100%;
+  height: 60vh;
+  margin: 1vh 0;
+`;
+const EmotionBox = styled(CalendarBox)`
+  height: 30vh;
 `;
