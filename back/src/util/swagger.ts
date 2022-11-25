@@ -1,5 +1,15 @@
 import { INestApplication } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import {
+  SwaggerModule,
+  DocumentBuilder,
+  SwaggerCustomOptions,
+} from '@nestjs/swagger';
+
+const swaggerCustomOptions: SwaggerCustomOptions = {
+  swaggerOptions: {
+    persistAuthorization: true,
+  },
+};
 
 /**
  * Swagger 세팅
@@ -11,8 +21,14 @@ export function setupSwagger(app: INestApplication): void {
     .setTitle('NestJS Study API Docs')
     .setDescription('NestJS Study API description')
     .setVersion('1.0.0')
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      name: 'JWT',
+      in: 'header',
+    })
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup('api-docs', app, document, swaggerCustomOptions);
 }

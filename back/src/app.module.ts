@@ -4,10 +4,10 @@ import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { DiaryModule } from './diary/diary.module';
-import { AuthService } from './auth/auth.service';
 import { PlannerModule } from './planner/planner.module';
 import { LoginRequiredMiddleware } from './middleware/login_required.middleware';
 import { JwtModule } from '@nestjs/jwt';
+import { FriendModule } from './friend/friend.module';
 
 @Module({
   imports: [
@@ -34,12 +34,11 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     DiaryModule,
     PlannerModule,
+    FriendModule,
   ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoginRequiredMiddleware)
-      .forRoutes('planner');
+    consumer.apply(LoginRequiredMiddleware).forRoutes('planner', 'friend');
   }
 }

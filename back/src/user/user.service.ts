@@ -43,8 +43,13 @@ export class UserService {
     user.profileImgUrl = profileImgUrl === undefined ? null : profileImgUrl;
     user.signupVerifyToken = signupVerifyToken;
     user.registerProgress = 0;
+    user.friendCode = this.makeFriendCode();
     await this.userRepository.save(user);
     await this.sendMemberJoinEmail(email, signupVerifyToken);
+  }
+
+  makeFriendCode(): string {
+    return Math.random().toString(36).substring(2, 8);
   }
 
   async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
@@ -72,6 +77,12 @@ export class UserService {
   async findOneById(id: string): Promise<User | undefined> {
     return this.userRepository.findOne({
       where: { id: id },
+    });
+  }
+
+  async findOneByCode(code: string): Promise<User | undefined> {
+    return this.userRepository.findOne({
+      where: { friendCode: code },
     });
   }
 
