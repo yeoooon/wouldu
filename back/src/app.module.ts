@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { DiaryModule } from './diary/diary.module';
 import { AuthService } from './auth/auth.service';
 import { PlannerModule } from './planner/planner.module';
+import { LoginRequiredMiddleware } from './middleware/login_required.middleware';
 
 @Module({
   imports: [
@@ -27,4 +28,10 @@ import { PlannerModule } from './planner/planner.module';
     PlannerModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoginRequiredMiddleware)
+      .forRoutes('planner');
+  }
+}

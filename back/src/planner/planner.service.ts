@@ -4,6 +4,7 @@ import {
     UnprocessableEntityException,
   } from '@nestjs/common';
   import { InjectRepository } from '@nestjs/typeorm';
+import { Console } from 'console';
   import { Repository } from 'typeorm';
 import { CreatePlannerDto } from './dto/create-planner.dto';
 import { UpdatePlannerDto } from './dto/update-planner.dto';
@@ -70,9 +71,9 @@ import { Planner } from './entities/planner.entity';
       await this.plannerRepository.delete(id);
     }
 
-    findAll(userId: string): Promise<Planner[]> {
+    findAllByDate(userId: string, date: Date): Promise<Planner[]> {
       return this.plannerRepository.find({
-        where : {userId}
+        where : {userId, date}
     });
     }
 
@@ -80,6 +81,17 @@ import { Planner } from './entities/planner.entity';
       return this.plannerRepository.findOne({
         where : {id}
     });
+    }
+
+    async checkIfThereIsPlanOrNot(date: Date) {
+      const plans = await this.plannerRepository.find({
+        where : {date}
+      });
+      if (plans.length === 1) {
+        return 0
+      } else {
+        return 1
+      }
     }
   }
   

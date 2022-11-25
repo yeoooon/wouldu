@@ -29,13 +29,18 @@ import { PlannerService } from './planner.service';
     }
   
     @Get(':userId')
-    findAll(@Param("userId") userId: string) {
-      return this.plannerService.findAll(userId);
+    findAll(@Param("userId") userId: string, @Query("date") date: Date) {
+      return this.plannerService.findAllByDate(userId, date);
     }
   
     @Get(':id')
     findOne(@Param('id') id: number) {
       return this.plannerService.findOne(id);
+    }
+
+    @Get('check/:date')
+    checkIfThereIsPlanOrNot(@Param('date') date: Date) {
+      return this.plannerService.checkIfThereIsPlanOrNot(date);
     }
   
     @Put(':id')
