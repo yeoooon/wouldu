@@ -13,5 +13,6 @@ export class CreatePlannerDto {
   imgUrl: string;
 
   @IsNumber()
+  @IsOptional()
   priority: number;
 }

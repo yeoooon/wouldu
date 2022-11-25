@@ -1,10 +1,7 @@
 import {
     Injectable,
-    NotFoundException,
-    UnprocessableEntityException,
   } from '@nestjs/common';
   import { InjectRepository } from '@nestjs/typeorm';
-import { Console } from 'console';
   import { Repository } from 'typeorm';
 import { CreatePlannerDto } from './dto/create-planner.dto';
 import { UpdatePlannerDto } from './dto/update-planner.dto';
