@@ -4,9 +4,12 @@ import { Container } from "../../../styles/layout";
 
 const AfterConnect = () => {
   return (
-    <>
-      <InfoBox>
-        <span><p>나와 상대방의 일기장</p>수정 아이콘</span>
+    <ContentArea>
+      <div className="info">
+        <DiaryName>
+          <p>나와 상대방의 일기장</p>
+          <button>수정</button>
+        </DiaryName>
         <Profile>
           <User>
             <Image src="/icon/user.svg" alt="user" width={80} height={80} />
@@ -20,55 +23,81 @@ const AfterConnect = () => {
         <Dday>
           <p>연결한 지</p>
           <p>1일</p>
-        </Dday>     
-        <button>연결 끊기</button>   
-      </InfoBox>
-
-    </>
+        </Dday>        
+      </div>
+      <div className="button">
+        <button>연결 끊기</button>          
+      </div>
+    </ContentArea>
   )
 }
 
-const InfoBox = styled(Container)`
+const ContentArea = styled(Container)`
+  display: grid;
+  grid-template-rows: 70% 30%;
+
+  grid-template-areas:
+  "info"
+  "button";
+
+  width: 100%;
+  height: 70vh;
+  
+  padding: 1.5rem 0;
+
+  .info, .button {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+
+    gap: 1.5rem;
+  }
+
+  .info {
+    align-self: center;
+  }
+
+  .button {
+    align-self: start;
+  }
+`
+
+const DiaryName = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center; 
+  flex-direction: row;
+  align-items: center;
 
-  div, button {
-    margin: 0.5rem 0;
-  }
-
-  button {
-    font-size: ${props => props.theme.fontSize.textXs};
-  }
-
-  p {
-    color: ${props => props.theme.color.fontMain};
-    font-size: ${props => props.theme.fontSize.textMain};
-  }
+  gap: 10px;
 `
 
 const Profile = styled.div`
   display: flex;
   flex-direction: row;
 
-
+  gap: 20px;
 `
 
 const User = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center; 
+
+  gap: 10px;
 `
 const Mate = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  gap: 10px;
 `
 
 const Dday = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  gap: 10px;
 `
 
 export default AfterConnect;

@@ -20,20 +20,16 @@ const Mypage = () => {
   const [pageState, setPageState] = useState<pageSelect>("mypage");
 
   return (
-    <>
-      <Wrapper>
-        <MypageArea>
-          <div className="tab">
-            <MypageTab pageState={pageState} setPageState={setPageState}></MypageTab>
-          </div>
-          <div className="main">
-            {pageState === "mypage" && <MyInfo></MyInfo>}
-            {pageState === "profile" && <EditProfile></EditProfile>}
-            {pageState === "connect" && <EditConnection></EditConnection>}
-          </div>
-        </MypageArea>
-      </Wrapper>
-    </>
+    <MypageArea>
+      <div className="tab">
+        <MypageTab pageState={pageState} setPageState={setPageState}></MypageTab>
+      </div>
+      <div className="main">
+        {pageState === "mypage" && <MyInfo></MyInfo>}
+        {pageState === "profile" && <EditProfile></EditProfile>}
+        {pageState === "connect" && <EditConnection></EditConnection>}
+      </div>
+    </MypageArea>
   );
 };
 
@@ -46,10 +42,10 @@ export const getServerSideProps = async () => {
   };
 };
 
-const MypageArea = styled(Container)`
+const MypageArea = styled(Wrapper)`
   display: grid;
-  grid-template-rows: 0.5fr 1.5fr;
-  grid-template-columns: 0.5fr 1fr 0.5fr;
+  grid-template-rows: 20% 80%;
+  grid-template-columns: 10% 80% 10%;
 
   grid-template-areas:
     " .  tab  . "
@@ -59,18 +55,17 @@ const MypageArea = styled(Container)`
 
   .tab {
     grid-area: tab;
-    align-self: start;
+    align-self: center;
     justify-self: center;
-    padding-top: 2rem;
   }
 
   .main {
     grid-area: main;
-    align-self: start;
-  }
+    align-self: center;
 
-  width: 900px;
-  height: 500px;
-`;
+    width: 100%;
+    height: 100%;
+  }
+`
 
 export default Mypage;

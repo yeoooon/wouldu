@@ -4,28 +4,40 @@ import { Container } from "../../../styles/layout";
 
 const MyInfo = () => {
   return (
-    <>
-      <InfoBox>
+    <ContentArea>
+      <InfoArea className="info">
         <Image src="/icon/user.svg" alt="user" width={100} height={100} />
-        <div className="nickname">닉네임</div>
-        <div className="email">이메일</div>
-        <ButtonArea>
-          <button>비밀번호 수정</button>
-          <button>회원 탈퇴</button>            
-        </ButtonArea>
-
-      </InfoBox>
-    </>
+        <p className="nickname">닉네임</p>
+        <p className="email">이메일</p>        
+      </InfoArea>
+      <ButtonArea className="button">
+        <button>비밀번호 수정</button>
+        <button>회원 탈퇴</button>            
+      </ButtonArea>
+    </ContentArea>
   );
 }
 
-const InfoBox = styled(Container)`
+const ContentArea = styled(Container)`
+  display: grid;
+  grid-template-rows: 60% 40%;
+
+  grid-template-areas:
+  "info"
+  "button";
+
+  width: 100%;
+  height: 70vh;
+  
+  padding: 1.5rem 0;
+`
+
+const InfoArea = styled.div`
   display: flex;
   flex-direction: column;
-  
-  div, button {
-    margin: 0.5rem 0;
-  }
+  align-items: center;
+
+  gap: 15px;
 
   .nickname {
     font-size: ${props => props.theme.fontSize.textMain};
@@ -39,9 +51,12 @@ const InfoBox = styled(Container)`
 const ButtonArea = styled.div`
   display: flex;
   flex-direction: column;
+  align-self: start;
+  
+  gap: 15px;
 
   button {
-    font-size: ${props => props.theme.fontSize.textXs}
+    font-size: ${props => props.theme.fontSize.textMain}
   }
 `
 

@@ -4,65 +4,91 @@ import { Container } from "../../../styles/layout";
 
 const BeforeConnect = () => {
   return (
-    <>
-      <InfoBox>
+    <ContentArea>
+      <div className="info">
         <p>일상을 공유하고 싶은 사람과 일기를 연결하세요!</p>
-        <div className="profile">
-          <div className="user">
-            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
+        <Profile>
+          <User>
+            <Image src="/icon/user.svg" alt="user" width={80} height={80} />
             <p className="userName">로그인한 유저 닉네임</p>
-          </div>
-          <div className="mate">
-            <Image src="/icon/user.svg" alt="user" width={100} height={100} />
+          </User>
+          <Mate>
+            <Image src="/icon/user.svg" alt="user" width={80} height={80} />
             <p className="mateName">?</p>
-          </div>
-        </div>
-        <div className="matchCode">
+          </Mate>
+        </Profile>
+        <MatchCode>
           <p>나의 연결 코드</p>
-          <p className="code">123456</p>
-          <button>상대방 연결 코드 입력</button>
-        </div>        
-      </InfoBox>
-
-    </>
+          <p className="code">123456</p>          
+        </MatchCode>
+      </div>
+      <div className="button">
+        <button>상대방 연결 코드 입력</button>
+      </div> 
+    </ContentArea>
   )
 }
 
-const InfoBox = styled(Container)`
-  display: flex;
-  flex-direction: column;
+const ContentArea = styled(Container)`
+  display: grid;
+  grid-template-rows: 70% 30%;
 
-  div {
+  grid-template-areas:
+  "info"
+  "button";
+
+  width: 100%;
+  height: 70vh;
+  
+  padding: 1.5rem 0;
+
+  .info, .button {
     display: flex;
     flex-direction: column;
-    align-items: center;  
+    align-items: center; 
   }
 
-  .profile {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  div, button {
-    margin: 0.5rem 0;
+  .info {
+    align-self: center;
+    gap: 2rem;
   }
 
-  button {
-    font-size: ${props => props.theme.fontSize.textXs};
+  .button {
+    align-self: start;
   }
+`
 
-  p {
-    color: ${props => props.theme.color.fontMain};
-    font-size: ${props => props.theme.fontSize.textMain};
-  }
+const User = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
 
-  p.code {
+  gap: 15px;
+`
+const Mate = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 15px;
+`
+
+const Profile = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  gap: 20px;
+`
+
+const MatchCode = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 10px;
+
+  .code {
     font-weight: bold;
-  }
-
-  .icon {
-    width: 100px;
-    height: 100px;
   }
 `
 
