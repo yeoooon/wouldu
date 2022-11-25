@@ -37,4 +37,7 @@ export class User {
     default: () => 'CURRENT_TIMESTAMP',
   })
   registeredAt: Date;
+
+  @Column()
+  friendCode: string;
 }
