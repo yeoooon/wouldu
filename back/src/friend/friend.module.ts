@@ -19,12 +19,13 @@ import { FriendService } from './friend.service';
     JwtModule.register({
       secret: 'secret',
       signOptions: {
-        expiresIn: '60s',
+        expiresIn: '600s',
       },
     }),
     AuthModule,
   ],
   controllers: [FriendController],
   providers: [FriendService, UserService, EmailService, AuthService],
+  exports: [TypeOrmModule],
 })
 export class FriendModule {}

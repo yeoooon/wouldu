@@ -1,5 +1,6 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity()
 export class FriendRequest {
   @PrimaryGeneratedColumn('increment')
   id: number;
@@ -9,4 +10,7 @@ export class FriendRequest {
 
   @Column()
   toUserId: string;
+
+  @Column()
+  requestProgress: number;
 }

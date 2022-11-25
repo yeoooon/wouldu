@@ -38,6 +38,6 @@ import { FriendModule } from './friend/friend.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoginRequiredMiddleware).forRoutes('planner');
+    consumer.apply(LoginRequiredMiddleware).forRoutes('planner', 'friend');
   }
 }
