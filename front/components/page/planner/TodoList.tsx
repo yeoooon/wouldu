@@ -4,7 +4,6 @@ import { Planner } from "@type/planner";
 import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { todosState } from "../../../recoil/todos";
 import { getDayPlan } from "../../../services/api/planner";
 import { formatDate } from "../../../services/utils/formatDate";
 import TodoItem from "./TodoItem";

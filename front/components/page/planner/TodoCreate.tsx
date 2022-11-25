@@ -1,20 +1,18 @@
 import { colors } from "@styles/common_style";
 import { Box, Container } from "@styles/layout";
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
 import { Todos } from "@type/todos";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { todosState } from "../../../recoil/todos";
 import { createPlan } from "../../../services/api/planner";
 import { formatDate } from "../../../services/utils/formatDate";
 import CirclePlus from "/public/icon/circleplus.svg";
 
 const TodoCreate = () => {
   const [open, setOpen] = useState(false);
-  const setTodoList = useSetRecoilState(todosState);
-  const [text, setText] = useState("");
 
   const {
     register,
@@ -22,19 +20,24 @@ const TodoCreate = () => {
     resetField,
     formState: { errors },
   } = useForm<{ description: string }>();
+  const queryClient = useQueryClient();
 
   const handleToggle = () => setOpen(!open);
 
-  const onCreateSubmit = async (data: Planner) => {
-    //나중에 useMutation 적용
-    // 아직 status 몇번으로 전송되는지 확인 안되서 임의로 작성
+  //달력날짜에 프롭스로 받아서 변경될 예정
+  const day = formatDate(new Date());
 
+  const updateMutation = useMutation((data: Planner) => createPlan(data), {
+    onSuccess: () => {
+      console.log("update onSuccess");
+      queryClient.invalidateQueries(["plan", day]);
+    },
+  });
+
+  const onCreateSubmit = async (data: Planner) => {
     //추후에 달력에 날짜 지정에따라서 달라지게 해야함.
     // priority는 옵션임으로, 우선 1로 셋팅해놓음.
-    const date = formatDate(new Date());
-    console.log({ date, ...data });
-    await createPlan({ date, ...data, priority: 1 });
-
+    updateMutation.mutate({ date: day, ...data, priority: 1 });
     setOpen(false);
     resetField("description");
   };

@@ -3,7 +3,6 @@ import { Planner } from "@type/planner";
 import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled, { css } from "styled-components";
-import { todosState } from "../../../recoil/todos";
 import CircleCheck from "/public/icon/circlecheck.svg";
 import CircleCheckBack from "/public/icon/circlecheckback.svg";
 import Trash from "/public/icon/trash.svg";
