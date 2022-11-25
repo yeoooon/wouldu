@@ -6,6 +6,7 @@ import {
     Put,
     Param,
     Query,
+    Req,
     Delete,
     Patch,
   } from '@nestjs/common';
@@ -39,7 +40,8 @@ import { PlannerService } from './planner.service';
     }
 
     @Get('check/:date')
-    checkIfThereIsPlanOrNot(@Param('date') date: Date) {
+    checkIfThereIsPlanOrNot(@Req() request: Request, @Param('date') date: Date) {
+      console.log(request['currentUserId'])
       return this.plannerService.checkIfThereIsPlanOrNot(date);
     }
   

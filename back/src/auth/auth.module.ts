@@ -12,13 +12,15 @@ import { LocalStrategy } from './local.strategy';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    ConfigModule,
+    ConfigModule.forRoot({
+      envFilePath: '.development.env',
+    }),
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: 'secret',
+      secret: process.env.JWT_SECRET_KEY,
       signOptions: {
-        expiresIn: '60s',
+        expiresIn: '600s',
       },
     }),
   ],
