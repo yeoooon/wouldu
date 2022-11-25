@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Container, Wrapper, Box } from "../styles/layout";
 
 export default function Planner() {
-  return(
+  return (
     <PlannerWrapper>
       <CalendarContainer>
         <ReactCalendar />
@@ -15,7 +15,7 @@ export default function Planner() {
       </TodoContainer>
     </PlannerWrapper>
   );
-};
+}
 
 export async function getServerSideProps() {
   return {
@@ -42,4 +42,4 @@ const TodoContainer = styled(CalendarContainer)`
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
-`
+`;

@@ -1,62 +1,81 @@
-import { Box, Container } from '@styles/layout';
-import { Todos } from '@type/todos';
-import React, { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
-import styled from 'styled-components';
-import { todosState } from '../../../recoil/todos';
-import CirclePlus from '/public/icon/circleplus.svg';
-
-let id = 0
-const getId = () => id++;
+import { colors } from "@styles/common_style";
+import { Box, Container } from "@styles/layout";
+import { Planner } from "@type/planner";
+import { Todos } from "@type/todos";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
+import styled from "styled-components";
+import { todosState } from "../../../recoil/todos";
+import { createPlan } from "../../../services/api/planner";
+import CirclePlus from "/public/icon/circleplus.svg";
 
 const TodoCreate = () => {
   const [open, setOpen] = useState(false);
   const setTodoList = useSetRecoilState(todosState);
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    resetField,
+    formState: { errors },
+  } = useForm<{ description: string }>();
 
   const handleToggle = () => setOpen(!open);
-  const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const {currentTarget: {value}} = event;
-    setText(value);
-  }
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-    setTodoList((oldTodoList) => [
-      ...oldTodoList,
-      {
-        id: getId(),
-        text,
-        done: false,
-      },
-    ]);
-    setOpen(false)
-    setText("")
+
+  const formatDate = (date: Date) => {
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1 < 9 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) +
+      "-" +
+      (date.getDate() < 9 ? "0" + date.getDate() : date.getDate())
+    );
+  };
+
+  const onCreateSubmit = async (data: Planner) => {
+    //나중에 useMutation 적용
+    // 아직 status 몇번으로 전송되는지 확인 안되서 임의로 작성
+
+    //추후에 달력에 날짜 지정에따라서 달라지게 해야함.
+    // priority는 옵션임으로, 우선 1로 셋팅해놓음.
+    const date = formatDate(new Date());
+    console.log({ date, ...data });
+    await createPlan({ date, ...data, priority: 1 });
+
+    setOpen(false);
+    resetField("description");
   };
 
   return (
     <>
-    {open ? 
-    <CreateContainer>
-      <InsertForm onSubmit={handleSubmit}>
+      {open ? (
+        <CreateContainer>
+          <InsertForm onSubmit={handleSubmit(onCreateSubmit)}>
+            <BtnBox onClick={handleToggle}>
+              <CircleCloseSvg />
+            </BtnBox>
+            <Input
+              autoFocus
+              placeholder="할일을 입력 하세요."
+              {...register("description", {
+                required: true,
+                minLength: { value: 2, message: "2자 이상 입력해주세요." },
+              })}
+            />
+            <ErrorMessage>{errors?.description?.message}</ErrorMessage>
+            <button type="submit">입력</button>
+          </InsertForm>
+        </CreateContainer>
+      ) : (
         <BtnBox onClick={handleToggle}>
-          <CircleCloseSvg />
+          <CirclePlusSvg />
         </BtnBox>
-        <Input
-          autoFocus
-          placeholder='할일을 입력 하세요'
-          onChange={handleChange}
-          value={text}
-        />
-      </InsertForm>
-    </CreateContainer>
-    :
-    <BtnBox onClick={handleToggle}>
-      <CirclePlusSvg />
-    </BtnBox>
-    }
+      )}
     </>
-  )
-}
+  );
+};
 
 const CreateContainer = styled(Container)`
   flex-direction: column;
@@ -95,6 +114,12 @@ const Input = styled.input`
   height: 2.5em;
   margin: 1em;
   width: 80%;
+`;
+
+const ErrorMessage = styled.p`
+  color: ${colors.red};
+  align-self: flex-end;
+  font-size: ${props => props.theme.fontSize.textXs};
 `;
 
 export default TodoCreate;
