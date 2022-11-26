@@ -1,10 +1,8 @@
 import {
     Injectable,
-    NotFoundException,
-    UnprocessableEntityException,
   } from '@nestjs/common';
   import { InjectRepository } from '@nestjs/typeorm';
-import { Console } from 'console';
+import { User } from 'src/user/entities/user.entity';
   import { Repository } from 'typeorm';
 import { CreatePlannerDto } from './dto/create-planner.dto';
 import { UpdatePlannerDto } from './dto/update-planner.dto';
@@ -17,7 +15,7 @@ import { Planner } from './entities/planner.entity';
       private plannerRepository: Repository<Planner>,
     ) {}
   
-    async createPlan(userId : string, createPlannerDto: CreatePlannerDto) {
+    async createPlan(userId : User, createPlannerDto: CreatePlannerDto) {
       const planner = new Planner();
       const { description, date, imgUrl, priority } =
         createPlannerDto;
@@ -25,7 +23,7 @@ import { Planner } from './entities/planner.entity';
       planner.description = description;
       planner.date = date;
       planner.imgUrl = imgUrl === undefined ? null : imgUrl;
-      planner.userId = userId;
+      planner.user = userId;
       planner.priority = priority;
       await this.plannerRepository.save(planner);
     }  
@@ -72,10 +70,10 @@ import { Planner } from './entities/planner.entity';
       await this.plannerRepository.delete(id);
     }
 
-    findAllByDate(userId: string, date: Date): Promise<Planner[]> {
+    findAllByDate(user: User, date: Date): Promise<Planner[]> {
       console.log(date)
       return this.plannerRepository.find({
-        where : {userId, date}
+        where : {user, date}
     });
     }
 

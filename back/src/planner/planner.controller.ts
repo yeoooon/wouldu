@@ -25,13 +25,6 @@ import { PlannerService } from './planner.service';
       summary: '계획 생성 API',
       description: 'description, date를 입력하여 계획을 생성',
     })
-    @ApiBody({
-      description: `{
-      "description":"설명",
-      "date":"yyyy-mm-dd",
-      "priority":"우선순위"
-      }`,
-    })
     create(@Req() request: Request, @Body() createPlannerDto: CreatePlannerDto) {
       const userId = request['currentUserId']
       return this.plannerService.createPlan(userId, createPlannerDto);

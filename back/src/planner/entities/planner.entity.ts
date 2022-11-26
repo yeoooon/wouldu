@@ -1,7 +1,10 @@
+import { IsNotEmpty } from 'class-validator';
+import { User } from 'src/user/entities/user.entity';
 import {
     Entity,
     Column,
-    PrimaryGeneratedColumn
+    PrimaryGeneratedColumn,
+    ManyToOne,
   } from 'typeorm';
   
   @Entity()
@@ -12,7 +15,7 @@ import {
     @Column({ length: 100 })
     description: string;
   
-    @Column({ type: 'date' })
+    @Column({ type : 'date', nullable: false })
     date: Date;
   
     @Column({ default: 0 })
@@ -24,8 +27,8 @@ import {
     @Column({ length: 100, default: null })
     imgUrl: string;
   
-    @Column({ length: 50 })
-    userId: string;
+    @ManyToOne(() => User, (user) => user.planners)
+    user: User;
   
     @Column({
       type: 'timestamp',

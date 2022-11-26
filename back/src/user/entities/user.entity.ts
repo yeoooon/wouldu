@@ -1,8 +1,9 @@
+import { Planner } from 'src/planner/entities/planner.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -37,4 +38,7 @@ export class User {
     default: () => 'CURRENT_TIMESTAMP',
   })
   registeredAt: Date;
+
+  @OneToMany(() => Planner, (planner) => planner.user)
+  planners: Planner[]
 }
