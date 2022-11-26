@@ -5,15 +5,18 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class LoginRequiredMiddleware implements NestMiddleware {
-  constructor(private readonly authService: AuthService, private jwtService: JwtService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private jwtService: JwtService,
+  ) {}
   use(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers["authorization"]?.split(" ")[1] ?? "wrong";
-    
-    if (token === "wrong") {
-      throw new Error("wrong token");
+    const token = req.headers['authorization']?.split(' ')[1] ?? 'wrong';
+
+    if (token === 'wrong') {
+      throw new Error('wrong token');
     }
 
-    const jwtDecoded = this.jwtService.verify(token)
+    const jwtDecoded = this.jwtService.verify(token);
     req['currentUserId'] = jwtDecoded.userId;
     next();
   }

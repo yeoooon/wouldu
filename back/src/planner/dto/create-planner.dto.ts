@@ -16,10 +16,10 @@ export class CreatePlannerDto {
   @IsUrl()
   @IsOptional()
   @ApiPropertyOptional()
-  imgUrl: string;
+  imgUrl?: string;
 
   @IsNumber()
   @IsOptional()
   @ApiPropertyOptional()
-  priority: number;
+  priority?: number;
 }
