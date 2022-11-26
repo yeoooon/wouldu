@@ -9,6 +9,8 @@ import EditConnection from "../components/page/mypage/EditConnection";
 import ChangePassword from "../components/page/mypage/ChangePassword";
 
 import ModalBase from "../components/page/mypage/modal/ModalBase";
+import withGetServerSideProps from "../hocs/withGetServersideProps";
+import { GetServerSidePropsContext } from "next";
 
 export type pageSelect = "mypage" | "profile" | "connect";
 export interface pageProps {
@@ -33,14 +35,11 @@ const Mypage = () => {
   );
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
-    props: {
-      pageTitle: "마이페이지",
-      pageDesc: "우쥬 마이페이지 입니다.",
-    },
+    props: {},
   };
-};
+});
 
 const MypageArea = styled(Wrapper)`
   display: grid;
@@ -66,6 +65,6 @@ const MypageArea = styled(Wrapper)`
     width: 100%;
     height: 100%;
   }
-`
+`;
 
 export default Mypage;

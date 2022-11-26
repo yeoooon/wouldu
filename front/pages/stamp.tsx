@@ -3,6 +3,7 @@ import { Box, Container, Wrapper } from "@styles/layout";
 import { GetServerSidePropsContext } from "next";
 import { Calendar } from "react-calendar";
 import styled from "styled-components";
+import withGetServerSideProps from "../hocs/withGetServersideProps";
 
 const stamp = () => {
   return (
@@ -15,9 +16,7 @@ const stamp = () => {
         <CalendarBox>
           <EmotionCalendar />
         </CalendarBox>
-        <EmotionBox>
-          감정분석
-        </EmotionBox>
+        <EmotionBox>감정분석</EmotionBox>
       </RightContainer>
     </StampWrapper>
   );
@@ -25,14 +24,11 @@ const stamp = () => {
 
 export default stamp;
 
-export const getServerSideProps = (context: GetServerSidePropsContext) => {
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
-    props: {
-      pageTitle: "스탬프",
-      pageDesc: "우쥬 스탬프 페이지 입니다.",
-    },
+    props: {},
   };
-};
+});
 
 const StampWrapper = styled(Wrapper)`
   justify-content: space-evenly;

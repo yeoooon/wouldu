@@ -9,6 +9,7 @@ import Image from "next/image";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { userJoin } from "../services/api/user";
 import Router from "next/router";
+import withGetServerSideProps from "../hocs/withGetServersideProps";
 
 const join = () => {
   const {
@@ -111,17 +112,12 @@ const join = () => {
     </JoinWrap>
   );
 };
-export const getServerSideProps = (context: GetServerSidePropsContext) => {
-  console.log(context.resolvedUrl);
-  console.log(context);
 
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
-    props: {
-      pageTitle: "로그인",
-      pageDesc: "우쥬 로그인 페이지 입니다.",
-    },
+    props: {},
   };
-};
+});
 
 export default join;
 

@@ -1,8 +1,10 @@
 import DiaryMain from "@components/page/diary/DiaryMain";
 import DiarySidebar from "@components/page/diary/DiarySidebar";
 import { SeoPageProps } from "@components/Seo";
+import { GetServerSidePropsContext } from "next";
 import { useEffect } from "react";
 import styled from "styled-components";
+import withGetServerSideProps from "../hocs/withGetServersideProps";
 import { Container, Wrapper, Box } from "../styles/layout";
 
 export default function Diary() {
@@ -18,14 +20,11 @@ export default function Diary() {
   );
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
-    props: {
-      pageTitle: "교환일기",
-      pageDesc: "우쥬 교환일기 페이지 입니다.",
-    },
+    props: {},
   };
-}
+});
 
 const DiaryWrapper = styled(Wrapper)`
   display: grid;
@@ -40,5 +39,4 @@ const SidebarContainer = styled(Container)`
   border: 1px solid ${props => props.theme.color.border};
 `;
 
-const DiaryContainer = styled(SidebarContainer)`
-`;
+const DiaryContainer = styled(SidebarContainer)``;

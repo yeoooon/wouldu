@@ -12,6 +12,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginStateSelector, userAtom } from "../recoil/user";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import withGetServerSideProps from "../hocs/withGetServersideProps";
 
 const login = () => {
   const router = useRouter();
@@ -97,17 +98,12 @@ const login = () => {
     </LoginWrap>
   );
 };
-export const getServerSideProps = (context: GetServerSidePropsContext) => {
-  console.log(context.resolvedUrl);
-  console.log(context);
 
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
-    props: {
-      pageTitle: "로그인",
-      pageDesc: "우쥬 로그인 페이지 입니다.",
-    },
+    props: {},
   };
-};
+});
 
 export default login;
 
