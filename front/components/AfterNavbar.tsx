@@ -4,12 +4,23 @@ import Logo from "/public/icon/logoblack.svg";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
+import { useRecoilState } from "recoil";
+import { userAtom } from "../recoil/user";
 
 export default function AfterNavBar() {
   const router = useRouter();
   const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
 
+  const [user, setUser] = useRecoilState(userAtom);
+
+  const onClickLogout = () => {
+    const result = confirm("로그아웃 하시겠어요?");
+    if (result) {
+      setUser(null);
+      router.push("/");
+    }
+  };
   return (
     <Nav>
       <LogoBox>
@@ -30,7 +41,7 @@ export default function AfterNavBar() {
           </Link>
         ))}
       </NavLink>
-      <Box>로그아웃</Box>
+      <a onClick={onClickLogout}>로그아웃</a>
     </Nav>
   );
 }
