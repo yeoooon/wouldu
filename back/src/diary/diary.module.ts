@@ -8,6 +8,6 @@ import { Diary } from './entities/diary.entity';
   imports: [TypeOrmModule.forFeature([Diary])],
   controllers: [DiaryController],
   providers: [DiaryService],
-  exports: [TypeOrmModule],
+  exports: [DiaryService],
 })
 export class DiaryModule {}

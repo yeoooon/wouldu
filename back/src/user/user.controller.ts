@@ -24,13 +24,6 @@ export class UserController {
     summary: '회원 가입 API',
     description: 'email, nickname, password를 입력하여 유저를 생성한다.',
   })
-  @ApiBody({
-    description: `{
-    "email":"your email",
-    "nickname":"your nickname",
-    "password":"your password"
-    }`,
-  })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }

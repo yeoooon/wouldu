@@ -20,27 +20,22 @@ import { FriendModule } from './friend/friend.module';
       port: 3306,
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
-      database: 'wouldu',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      database: process.env.DATABASE_NAME,
+      autoLoadEntities: true,
       timezone: 'Asia/Seoul',
       // synchronize: true,
       ssl: { rejectUnauthorized: true },
     }),
     UserModule,
     AuthModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET_KEY,
-      signOptions: {
-        expiresIn: '6000s',
-      },
-    }),
     DiaryModule,
     PlannerModule,
     FriendModule,
   ],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoginRequiredMiddleware).forRoutes('planner');
-  }
-}
+export class AppModule {}
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(LoginRequiredMiddleware).forRoutes('planner');
+//   }
+// }

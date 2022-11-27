@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'friendRequest' })
+@Entity({ name: 'friend_request' })
 export class FriendRequest {
   @PrimaryGeneratedColumn('increment')
   id: number;
