@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -62,5 +63,19 @@ export class FriendService {
     friend.fromUserId = friendRequest.fromUserId;
     friend.toUserId = friendRequest.toUserId;
     await this.friendRepository.save(friend);
+  }
+
+  async findFriendId(userId: string) {
+    const from = await this.friendRepository.findOne({
+      where: { fromUserId: userId },
+    });
+    const to = await this.friendRepository.findOne({
+      where: { toUserId: userId },
+    });
+    if (from === null && to === null) {
+      throw new BadRequestException('맺은 친구가 없습니다.');
+    }
+    const friend = from === null ? to : from;
+    return friend.id;
   }
 }
