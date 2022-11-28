@@ -24,6 +24,7 @@ export class DiaryService {
   }
 
   async findDiary(currentUserId: string) {
-    return this.diaryDAO.getMany({ where: {} });
+    const friendId = await this.friendService.findFriendId(currentUserId);
+    return this.diaryDAO.getMany({ where: { friendId: friendId } });
   }
 }
