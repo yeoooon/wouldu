@@ -15,7 +15,7 @@ export class Diary {
   friendId: number;
 
   @Column()
-  title: string;
+  authorId: string;
 
   @Column()
   content: string;
