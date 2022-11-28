@@ -14,18 +14,19 @@ export default function AfterNavBar() {
   const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
 
-  const userAtomData = useRecoilValue(userAtom);
+  const [userAtomData, setUserAtomData] = useRecoilState(userAtom);
   const [user, setUser] = useState<User | null>();
 
   useEffect(() => {
     setUser(userAtomData);
   }, []);
 
-  const onClickLogout = () => {
+  const onClickLogout = async () => {
     const result = confirm("로그아웃 하시겠어요?");
     if (result) {
+      await router.push("/");
       setUser(null);
-      router.push("/");
+      setUserAtomData(null);
     }
   };
   return (

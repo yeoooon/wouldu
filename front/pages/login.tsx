@@ -59,6 +59,7 @@ const login = () => {
           </InputBox>
           <InputBox>
             <LoginInput
+              type="password"
               placeholder="비밀번호를 입력하세요."
               {...register("password", { required: true, minLength: { value: 4, message: "4자 이상 입력해주세요." } })}
             />
