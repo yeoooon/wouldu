@@ -19,7 +19,7 @@ export class FriendController {
     "code":"code"
     }`,
   })
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard('jwt'))
   sendFriendRequest(@Req() request: Request, @Body('code') code: string) {
     console.log(request.user);
