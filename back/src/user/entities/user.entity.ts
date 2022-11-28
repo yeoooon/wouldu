@@ -1,9 +1,5 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-} from 'typeorm';
+import { Planner } from 'src/planner/entities/planner.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class User {
@@ -40,4 +36,7 @@ export class User {
 
   @Column()
   friendCode: string;
+
+  @OneToMany(() => Planner, (planner) => planner.user)
+  planners: Planner[];
 }
