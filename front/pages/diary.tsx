@@ -1,9 +1,9 @@
+import styled from "styled-components";
+import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import DiaryMain from "@components/page/diary/DiaryMain";
 import DiarySidebar from "@components/page/diary/DiarySidebar";
-import { SeoPageProps } from "@components/Seo";
-import { useEffect } from "react";
-import styled from "styled-components";
 import { Container, Wrapper, Box } from "../styles/layout";
+import { getDiaries } from "../services/api/diary";
 
 export default function Diary() {
   return (
@@ -18,14 +18,17 @@ export default function Diary() {
   );
 }
 
-export async function getServerSideProps() {
-  return {
-    props: {
-      pageTitle: "교환일기",
-      pageDesc: "우쥬 교환일기 페이지 입니다.",
-    },
-  };
-}
+// export async function getStaticProps() {
+//   const queryClient = new QueryClient();
+
+//   await queryClient.prefetchQuery('diary', () => getDiaries());
+  
+//   return {
+//     props: {
+//       dehydratedState: dehydrate(queryClient),
+//     }
+//   }
+// }
 
 const DiaryWrapper = styled(Wrapper)`
   display: grid;

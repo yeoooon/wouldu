@@ -1,8 +1,8 @@
 import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
-import { DiaryForm } from "@type/diary";
+import { Diary } from "@type/diary";
 
-export const postDiary = async (diaryData: DiaryForm) => {
+export const postDiary = async (diaryData: Diary) => {
   const bodyData = JSON.stringify(diaryData);
 
   try {
@@ -12,6 +12,20 @@ export const postDiary = async (diaryData: DiaryForm) => {
   }
 }
 
-// export const getDiaries = async ()
-// 월 별로 가져오는 것 하나, 특정 날짜로 가져오는 것 하나?
-// api 호출 -> return diaries & recoil/diary에 state 생성
+// 월 별 다이어리 데이터 가져오기
+export const getDiaries = async (date: string) => {
+  try {
+    // const { data } = await axiosInstance.get(url);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// 특정 날짜 하루의 다이어리 가져오기
+export const getDiary = async (date: string) => {
+  try {
+    // const { data } = await axiosInstance.get(url);
+  } catch (err) {
+    console.log(err);
+  }
+}

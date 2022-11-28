@@ -1,15 +1,32 @@
 import { Box } from '@styles/layout';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DiaryListDay from './DiaryListDay';
 import { testContent } from './UserDiary';
+import { useQuery } from '@tanstack/react-query';
+import { getDiaries } from '../../../services/api/diary';
+import { Diary } from '../../../type/diary';
 
 const DiaryListItem = () => {
+  const [diaryList, setDiaryList] = useState<void | undefined>(undefined);
+
+  const dateToGetDiaries = '2022-11';
+
+  const { data: diaryData } = useQuery(['diary', dateToGetDiaries], () => getDiaries(dateToGetDiaries));
+
+  useEffect(() => {
+    setDiaryList(diaryData);
+  }, [diaryData]);
+
   return (
-    <ListItemBox>
-      <DiaryListDay />
-      <Text>{testContent.content.length < 30 ? testContent.content : testContent.content.substring(0, 30) + "..."}</Text>
-    </ListItemBox>
+    <>
+      {diaryList?.map(diary => (
+        <ListItemBox>
+          <DiaryListDay />
+          <Text>{diary.content.length < 30 ? diary.content : diary.content.substring(0, 30) + "..."}</Text>
+        </ListItemBox>
+      ))}
+    </>
   )
 }
 
