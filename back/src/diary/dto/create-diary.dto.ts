@@ -3,10 +3,6 @@ import { IsNumber, IsString } from 'class-validator';
 
 export class CreateDiaryDto {
   @ApiProperty()
-  @IsNumber()
-  friendId: number;
-
-  @ApiProperty()
   @IsString()
   content: string;
 }

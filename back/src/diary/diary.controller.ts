@@ -14,8 +14,7 @@ export class DiaryController {
   @Post()
   @ApiOperation({
     summary: '교환일기 작성 API',
-    description:
-      'friendId, title, content, date를 입력하여 새 교환일기를 생성한다.',
+    description: 'content를 입력하여 새 교환일기를 생성한다.',
   })
   @UseGuards(AuthGuard('jwt'))
   create(@Req() request: Request, @Body() createDiaryDto: CreateDiaryDto) {
