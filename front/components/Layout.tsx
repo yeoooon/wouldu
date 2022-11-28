@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { loginStateSelector } from "../recoil/user";
@@ -12,7 +12,12 @@ export interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const isLoginState = useRecoilValue(loginStateSelector);
+  const isLoginStateAtom = useRecoilValue(loginStateSelector);
+  const [isLoginState, setIsLoginState] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLoginState(isLoginStateAtom);
+  }, [isLoginStateAtom]);
 
   return (
     <>
