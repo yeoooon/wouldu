@@ -3,11 +3,10 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'friend_request' })
-export class FriendRequest {
+@Entity()
+export class Friend {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -17,12 +16,6 @@ export class FriendRequest {
   @Column()
   toUserId: string;
 
-  @Column()
-  requestProgress: number;
-
   @CreateDateColumn({ type: 'datetime' })
   createdAt?: Date;
-
-  @UpdateDateColumn({ type: 'datetime' })
-  updatedAt?: Date;
 }

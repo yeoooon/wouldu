@@ -1,5 +1,11 @@
 import { Planner } from 'src/planner/entities/planner.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
