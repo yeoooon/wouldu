@@ -14,14 +14,6 @@ export class DiaryController {
     description:
       'friendId, title, content, date를 입력하여 새 교환일기를 생성한다.',
   })
-  @ApiBody({
-    description: `{
-    "friendId":"friendId",
-    "title":"title",
-    "content":"content",
-    "date":"date"
-    }`,
-  })
   create(@Body() createDiaryDto: CreateDiaryDto) {
     return this.diaryService.create(createDiaryDto);
   }

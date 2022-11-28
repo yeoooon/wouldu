@@ -1,23 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { DiaryDAO } from './dao/diary.dao';
 import { CreateDiaryDto } from './dto/create-diary.dto';
 import { Diary } from './entities/diary.entity';
 
 @Injectable()
 export class DiaryService {
-  constructor(
-    @InjectRepository(Diary)
-    private diaryRepository: Repository<Diary>,
-  ) {}
+  constructor(private readonly diaryDAO: DiaryDAO) {}
 
   async create(createDiaryDto: CreateDiaryDto) {
     const diary = new Diary();
-    const { friendId, title, content, date } = createDiaryDto;
+    const { friendId, content } = createDiaryDto;
     diary.friendId = friendId;
-    diary.title = title;
     diary.content = content;
-    diary.date = date;
-    await this.diaryRepository.save(diary);
+    diary.date = new Date();
+    return this.diaryDAO.createOne(diary);
   }
 }

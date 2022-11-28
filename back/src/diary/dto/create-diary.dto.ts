@@ -1,15 +1,12 @@
-import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsString } from 'class-validator';
 
 export class CreateDiaryDto {
+  @ApiProperty()
   @IsNumber()
   friendId: number;
 
-  @IsString()
-  title: string;
-
+  @ApiProperty()
   @IsString()
   content: string;
-
-  @IsDateString()
-  date: Date;
 }
