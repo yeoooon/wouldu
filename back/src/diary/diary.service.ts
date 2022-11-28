@@ -9,10 +9,11 @@ import { Diary } from './entities/diary.entity';
 export class DiaryService {
   constructor(private readonly diaryDAO: DiaryDAO) {}
 
-  async create(createDiaryDto: CreateDiaryDto) {
+  async create(currentUserId: string, createDiaryDto: CreateDiaryDto) {
     const diary = new Diary();
     const { friendId, content } = createDiaryDto;
     diary.friendId = friendId;
+    diary.authorId = currentUserId;
     diary.content = content;
     diary.date = new Date();
     return this.diaryDAO.createOne(diary);

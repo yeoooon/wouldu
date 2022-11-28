@@ -1,10 +1,13 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DiaryService } from './diary.service';
 import { CreateDiaryDto } from './dto/create-diary.dto';
+import { Request } from 'express';
 
 @Controller('diary')
 @ApiTags('교환일기 API')
+@ApiBearerAuth('access-token')
 export class DiaryController {
   constructor(private readonly diaryService: DiaryService) {}
 
@@ -14,7 +17,8 @@ export class DiaryController {
     description:
       'friendId, title, content, date를 입력하여 새 교환일기를 생성한다.',
   })
-  create(@Body() createDiaryDto: CreateDiaryDto) {
-    return this.diaryService.create(createDiaryDto);
+  @UseGuards(AuthGuard('jwt'))
+  create(@Req() request: Request, @Body() createDiaryDto: CreateDiaryDto) {
+    return this.diaryService.create(request.user['userId'], createDiaryDto);
   }
 }
