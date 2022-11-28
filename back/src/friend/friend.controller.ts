@@ -3,6 +3,7 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FriendService } from './friend.service';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { SendFriendRequestDTO } from './dto/send.friend.request.dto';
 
 @Controller('friend')
 @ApiTags('친구 API')
@@ -14,15 +15,13 @@ export class FriendController {
     summary: '친구 요청 API',
     description: '친구 코드를 통해 친구 요청을 보낸다.',
   })
-  @ApiBody({
-    description: `{
-    "code":"code"
-    }`,
-  })
   @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard('jwt'))
-  sendFriendRequest(@Req() request: Request, @Body('code') code: string) {
-    console.log(request.user);
+  sendFriendRequest(
+    @Req() request: Request,
+    @Body() sendFriendRequestDTO: SendFriendRequestDTO,
+  ) {
+    const { code } = sendFriendRequestDTO;
     return this.friendService.sendFriendRequest(request.user['userId'], code);
   }
 
@@ -39,10 +38,6 @@ export class FriendController {
   @ApiOperation({
     summary: '친구 수락 API',
     description: '친구 요청을 수락한다.',
-  })
-  @ApiBody({
-    description: `{
-    }`,
   })
   acceptFriendRequest(@Body('code') code: string) {
     return this.friendService.acceptFriendRequest();
