@@ -17,6 +17,7 @@ import { CreatePlannerDto } from './dto/create-planner.dto';
 import { UpdatePlannerDto } from './dto/update-planner.dto';
 import { PlannerService } from './planner.service';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('planner')
 @ApiTags('플래너 API')
@@ -31,7 +32,7 @@ export class PlannerController {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
   create(@Req() request: Request, @Body() createPlannerDto: CreatePlannerDto) {
-    const userId = request['currentUserId'];
+    const userId = request.user['userId'];
     return this.plannerService.createPlan(userId, createPlannerDto);
   }
 
@@ -44,7 +45,7 @@ export class PlannerController {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
   findAll(@Req() request: Request, @Param('date') date: Date) {
-    const userId = request['currentUserId'];
+    const userId = request.user['userId'];
     return this.plannerService.findAllByDate(userId, date);
   }
 
