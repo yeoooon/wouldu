@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreatePlannerDto } from './dto/create-planner.dto';
+import { PlannerIdDto } from './dto/planner-param.dto';
 import { UpdatePlannerDto } from './dto/update-planner.dto';
 import { Planner } from './entities/planner.entity';
 
@@ -40,21 +41,24 @@ export class PlannerService {
   //   await this.plannerRepository.save(planner);
   // }
 
-  async changeCompletionStatus(id: number) {
-    const planner = await this.findOne(id);
-    planner.isCompleted = planner.isCompleted ? 0 : 1;
-    await this.plannerRepository.save(planner);
+  async changeCompletionStatus(plannerIdDto: PlannerIdDto) {
+    const { id } = plannerIdDto;
+    const planner = await this.findOne({ id });
+    const isCompleted = planner.isCompleted ? 0 : 1;
+    await this.plannerRepository.save({ id, isCompleted });
   }
 
-  async changePriority(id: number, priority: number) {
-    const planner = await this.findOne(id);
-    planner.priority = priority;
-
-    await this.plannerRepository.save(planner);
+  async changePriority(plannerIdDto: PlannerIdDto, priority: number) {
+    const { id } = plannerIdDto;
+    await this.plannerRepository.save({ id, priority });
   }
 
-  async updatePlan(id: number, updateplannerDto: UpdatePlannerDto) {
-    const planner = await this.findOne(id);
+  async updatePlan(
+    plannerIdDto: PlannerIdDto,
+    updateplannerDto: UpdatePlannerDto,
+  ) {
+    const { id } = plannerIdDto;
+    const planner = await this.findOne({ id });
     const { description, date, imgUrl } = updateplannerDto;
     planner.description = description;
     planner.date = date;
@@ -62,18 +66,19 @@ export class PlannerService {
     await this.plannerRepository.save(planner);
   }
 
-  async deletePlan(id: number): Promise<void> {
-    await this.plannerRepository.delete(id);
+  async deletePlan(plannerIdDto: PlannerIdDto): Promise<void> {
+    const { id } = plannerIdDto;
+    await this.plannerRepository.delete({ id });
   }
 
   findAllByDate(user: User, date: Date): Promise<Planner[]> {
-    console.log(date);
     return this.plannerRepository.find({
       where: { user, date },
     });
   }
 
-  findOne(id: number): Promise<Planner> {
+  findOne(plannerIdDto: PlannerIdDto): Promise<Planner> {
+    const { id } = plannerIdDto;
     return this.plannerRepository.findOne({
       where: { id },
     });

@@ -17,7 +17,7 @@ import { CreatePlannerDto } from './dto/create-planner.dto';
 import { UpdatePlannerDto } from './dto/update-planner.dto';
 import { PlannerService } from './planner.service';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtService } from '@nestjs/jwt';
+import { PlannerIdDto } from './dto/planner-param.dto';
 
 @Controller('planner')
 @ApiTags('플래너 API')
@@ -56,8 +56,8 @@ export class PlannerController {
   })
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  findOne(@Param('id') id: number) {
-    return this.plannerService.findOne(id);
+  findOne(@Param() plannerIdDto: PlannerIdDto) {
+    return this.plannerService.findOne(plannerIdDto);
   }
 
   @Get('check')
@@ -80,8 +80,11 @@ export class PlannerController {
   })
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  update(@Param('id') id: number, @Body() updateUserDto: UpdatePlannerDto) {
-    return this.plannerService.updatePlan(id, updateUserDto);
+  update(
+    @Param() plannerIdDto: PlannerIdDto,
+    @Body() updateUserDto: UpdatePlannerDto,
+  ) {
+    return this.plannerService.updatePlan(plannerIdDto, updateUserDto);
   }
 
   @Delete(':id')
@@ -91,8 +94,8 @@ export class PlannerController {
   })
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  remove(@Param('id') id: number) {
-    return this.plannerService.deletePlan(id);
+  remove(@Param() plannerIdDto: PlannerIdDto) {
+    return this.plannerService.deletePlan(plannerIdDto);
   }
 
   @Patch(':id')
@@ -102,8 +105,8 @@ export class PlannerController {
   })
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  changCompletionStatus(@Param('id') id: number) {
-    return this.plannerService.changeCompletionStatus(id);
+  changCompletionStatus(@Param() plannerIdDto: PlannerIdDto) {
+    return this.plannerService.changeCompletionStatus(plannerIdDto);
   }
 
   @Patch(':id/priority')
@@ -113,7 +116,10 @@ export class PlannerController {
   })
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  changPriority(@Param('id') id: number, @Body('priority') priority: number) {
-    return this.plannerService.changePriority(id, priority);
+  changPriority(
+    @Param() plannerIdDto: PlannerIdDto,
+    @Body('priority') priority: number,
+  ) {
+    return this.plannerService.changePriority(plannerIdDto, priority);
   }
 }
