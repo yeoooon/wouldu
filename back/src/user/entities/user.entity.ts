@@ -31,11 +31,7 @@ export class User {
   @Column()
   registerProgress: number;
 
-  @Column({
-    type: 'timestamp',
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
+  @CreateDateColumn({ type: 'datetime' })
   registeredAt: Date;
 
   @Column()

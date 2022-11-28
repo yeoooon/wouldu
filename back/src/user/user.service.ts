@@ -35,12 +35,12 @@ export class UserService {
     if (nicknameExist) {
       throw new UnprocessableEntityException('닉네임 중복');
     }
-    const signupVerifyToken = uuid.v1();
+    const signupVerifyToken = uuid.v4();
     user.email = email;
     user.nickname = nickname;
     user.hashedPassword = await bcrypt.hash(password, 10);
-    user.socialId = socialId === undefined ? null : socialId;
-    user.profileImgUrl = profileImgUrl === undefined ? null : profileImgUrl;
+    user.socialId = socialId ?? null;
+    user.profileImgUrl = profileImgUrl ?? null;
     user.signupVerifyToken = signupVerifyToken;
     user.registerProgress = 0;
     user.friendCode = this.makeFriendCode();
