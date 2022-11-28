@@ -18,7 +18,7 @@ export const getPlans = async (userId: string) => {
 export const getDayPlan = async (date: string) => {
   console.log(date);
   try {
-    const { data } = await axiosInstance.get(`planner/${date}`);
+    const { data } = await axiosInstance.get(`planner?date=${date}`);
     return data;
   } catch (err) {
     console.log(err);

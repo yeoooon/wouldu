@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { loginStateSelector } from "../recoil/user";
+import { loginStateSelector, userAtom } from "../recoil/user";
 import { Container } from "../styles/layout";
 import AfterNavbar from "./AfterNavbar";
 import BeforeNavBar from "./BeforeNavbar";
@@ -13,6 +13,7 @@ export interface LayoutProps {
 }
 export default function Layout({ children }: LayoutProps) {
   const isLoginStateAtom = useRecoilValue(loginStateSelector);
+  const user = useRecoilValue(userAtom);
   const [isLoginState, setIsLoginState] = useState<boolean>(false);
   const router = useRouter();
 
@@ -21,8 +22,7 @@ export default function Layout({ children }: LayoutProps) {
   }, [isLoginStateAtom]);
 
   useEffect(() => {
-    console.log("isLoginState", isLoginState);
-    if (!isLoginState && router.pathname !== "/" && router.pathname !== "/join") {
+    if (!user && router.pathname !== "/" && router.pathname !== "/join") {
       console.log(router.pathname);
       router.push("/login");
     }
