@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreatePlannerDto } from './dto/create-planner.dto';
 import { UpdatePlannerDto } from './dto/update-planner.dto';
@@ -12,14 +13,14 @@ export class PlannerService {
     private plannerRepository: Repository<Planner>,
   ) {}
 
-  async createPlan(userId: string, createPlannerDto: CreatePlannerDto) {
+  async createPlan(userId: User, createPlannerDto: CreatePlannerDto) {
     const planner = new Planner();
     const { description, date, imgUrl, priority } = createPlannerDto;
 
     planner.description = description;
     planner.date = date;
     planner.imgUrl = imgUrl === undefined ? null : imgUrl;
-    planner.userId = userId;
+    planner.user = userId;
     planner.priority = priority;
     await this.plannerRepository.save(planner);
   }
@@ -65,10 +66,10 @@ export class PlannerService {
     await this.plannerRepository.delete(id);
   }
 
-  findAllByDate(userId: string, date: Date): Promise<Planner[]> {
+  findAllByDate(user: User, date: Date): Promise<Planner[]> {
     console.log(date);
     return this.plannerRepository.find({
-      where: { userId, date },
+      where: { user, date },
     });
   }
 

@@ -1,7 +1,9 @@
+import { User } from 'src/user/entities/user.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  ManyToOne,
   CreateDateColumn,
 } from 'typeorm';
 
@@ -25,8 +27,8 @@ export class Planner {
   @Column({ length: 100, default: null })
   imgUrl: string;
 
-  @Column({ length: 50 })
-  userId: string;
+  @ManyToOne(() => User, (user) => user.planners)
+  user: User;
 
   @CreateDateColumn({ type: 'datetime' })
   createdAt?: Date;
