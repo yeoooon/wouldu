@@ -1,30 +1,42 @@
-import { Box } from '@styles/layout';
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-import styled, { css } from 'styled-components';
-import LeftArrow from '/public/icon/leftarrow.svg'
-import RightArrow from '/public/icon/rightarrow.svg'
+import { dayAtom } from "@recoil/planner";
+import { Box } from "@styles/layout";
+import * as React from "react";
+import { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
+import styled, { css } from "styled-components";
+import LeftArrow from "/public/icon/leftarrow.svg";
+import RightArrow from "/public/icon/rightarrow.svg";
 
 const Calendar = () => {
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  const DAYS_OF_THE_WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-  const MONTHS = ['1 월', '2 월', '3 월', '4 월', '5 월', '6 월', '7 월', '8 월', '9 월', '10 월', '11 월', '12 월'];
+  const DAYS_OF_THE_WEEK = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+  const MONTHS = ["1 월", "2 월", "3 월", "4 월", "5 월", "6 월", "7 월", "8 월", "9 월", "10 월", "11 월", "12 월"];
 
   const today = new Date();
-  const [date, setDate] = useState(today);
-  const [day, setDay] = useState(date.getDate());
-  const [month, setMonth] = useState(date.getMonth());
-  const [year, setYear] = useState(date.getFullYear());
-  const [startDay, setStartDay] = useState(getStartDayOfMonth(date));
+  const [pickDay, setPickDay] = useRecoilState<Date>(dayAtom);
+
+  const [date, setDate] = useState<Date>(pickDay);
+  const [day, setDay] = useState(date?.getDate());
+  const [month, setMonth] = useState(date?.getMonth());
+  const [year, setYear] = useState(date?.getFullYear());
+  const [startDay, setStartDay] = useState(getStartDayOfMonth(date!));
 
   useEffect(() => {
-    setDay(date.getDate());
-    setMonth(date.getMonth());
-    setYear(date.getFullYear());
-    setStartDay(getStartDayOfMonth(date));
-    console.log(date);
+    setDate(pickDay);
+  }, []);
+
+  useEffect(() => {
+    setDay(date?.getDate());
+    setMonth(date?.getMonth());
+    setYear(date?.getFullYear());
+    setStartDay(getStartDayOfMonth(date!));
+    setPickDay(date);
   }, [date]);
+
+  useEffect(() => {
+    console.log(pickDay);
+  }, [pickDay]);
 
   function getStartDayOfMonth(date: Date) {
     const startDate = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
@@ -45,9 +57,7 @@ const Calendar = () => {
           {/* <Year>
             {year}년
           </Year> */}
-          <Month>
-            {MONTHS[month]}
-          </Month>
+          <Month>{MONTHS[month]}</Month>
         </MonthBox>
         <ButtonBox>
           <Button onClick={() => setDate(new Date(year, month - 1, day))}>
@@ -60,11 +70,9 @@ const Calendar = () => {
       </Header>
       <Body>
         <WeekBox>
-          {DAYS_OF_THE_WEEK.map((w) => (
+          {DAYS_OF_THE_WEEK.map(w => (
             <WeekTile key={w}>
-              <WeekText>
-                {w}
-              </WeekText>
+              <WeekText>{w}</WeekText>
             </WeekTile>
           ))}
         </WeekBox>
@@ -82,7 +90,7 @@ const Calendar = () => {
                   isToday={year === today.getFullYear() && month === today.getMonth() && d === today.getDate()}
                   isSelected={d === day}
                 >
-                  {d > 0 ? <DayText>{d}</DayText> : ''}
+                  {d > 0 ? <DayText>{d}</DayText> : ""}
                 </DayTile>
               );
             })}
@@ -90,7 +98,7 @@ const Calendar = () => {
       </Body>
     </Frame>
   );
-}
+};
 
 const Frame = styled.div`
   position: relative;
@@ -165,7 +173,7 @@ const WeekTile = styled.div`
   border-radius: ${props => props.theme.borderSize.borderSm};
   cursor: pointer;
 `;
-const DayTile = styled.div<{isToday : boolean, isSelected: boolean}>`
+const DayTile = styled.div<{ isToday: boolean; isSelected: boolean }>`
   width: 14.28%;
   height: 13vh;
   display: flex;
@@ -180,24 +188,25 @@ const DayTile = styled.div<{isToday : boolean, isSelected: boolean}>`
   &.shortHeight {
     height: 11vh;
   }
-  ${(props) =>
+  ${props =>
     props.isToday &&
     css`
       background: ${props => props.theme.color.grayBox};
       font-weight: bold;
       color: ${props => props.theme.color.fontPoint};
-        :hover, :focus {
-          background: #6f48eb33;
-          font-weight: bold;
-          color: ${props => props.theme.color.fontPoint};
-        }
+      :hover,
+      :focus {
+        background: #6f48eb33;
+        font-weight: bold;
+        color: ${props => props.theme.color.fontPoint};
+      }
     `}
 
-  ${(props) =>
+  ${props =>
     props.isSelected &&
     css`
-        background: rgba(219, 202, 244, 0.5);
-        color: ${props => props.theme.color.fontPoint};
+      background: rgba(219, 202, 244, 0.5);
+      color: ${props => props.theme.color.fontPoint};
     `}
 `;
 const WeekText = styled.p`
