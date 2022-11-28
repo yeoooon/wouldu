@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DiaryService } from './diary.service';
@@ -20,5 +20,15 @@ export class DiaryController {
   @UseGuards(AuthGuard('jwt'))
   create(@Req() request: Request, @Body() createDiaryDto: CreateDiaryDto) {
     return this.diaryService.create(request.user['userId'], createDiaryDto);
+  }
+
+  @Get()
+  @ApiOperation({
+    summary: '교환일기 조회 API',
+    description: '작성된 교환일기를 조회한다.',
+  })
+  @UseGuards(AuthGuard('jwt'))
+  findDiary(@Req() request: Request) {
+    return this.diaryService.findDiary(request.user['userId']);
   }
 }
