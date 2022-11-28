@@ -25,7 +25,7 @@ const TodoList = () => {
     <ListContainer>
       <TitleBox>
         <Check />
-        <p>오늘의 추천 활동</p>
+        <p>오늘의 할일</p>
       </TitleBox>
       {todos?.map(todo => (
         <TodoItem key={todo.id} id={todo.id} description={todo.description} isCompleted={todo.isCompleted} />

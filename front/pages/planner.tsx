@@ -6,7 +6,7 @@ import styled from "styled-components";
 import withGetServerSideProps from "../hocs/withGetServersideProps";
 import { Container, Wrapper, Box } from "../styles/layout";
 
-export default function Planner() {
+const Planner = () => {
   return (
     <PlannerWrapper>
       <CalendarContainer>
@@ -42,3 +42,5 @@ const TodoContainer = styled(CalendarContainer)`
   justify-content: flex-start;
   position: relative;
 `;
+
+export default Planner;
