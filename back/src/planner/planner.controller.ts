@@ -36,15 +36,15 @@ export class PlannerController {
     return this.plannerService.createPlan(userId, createPlannerDto);
   }
 
-  @Get(':date')
+  @Get()
   @ApiOperation({
     summary: '날짜별 일정 API',
     description:
-      'param에 yyyy-yy-dd 형식으로 날짜를 넣으면 해당하는 계획을 모두 불러옴',
+      'query에 yyyy-yy-dd 형식으로 날짜를 넣으면 해당하는 계획을 모두 불러옴',
   })
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  findAll(@Req() request: Request, @Param('date') date: Date) {
+  findAll(@Req() request: Request, @Query('date') date: Date) {
     const userId = request.user['userId'];
     return this.plannerService.findAllByDate(userId, date);
   }
@@ -60,7 +60,7 @@ export class PlannerController {
     return this.plannerService.findOne(id);
   }
 
-  @Get('check/:date')
+  @Get('check')
   @ApiOperation({
     summary: '일정 유무 확인 API',
     description:
@@ -68,7 +68,7 @@ export class PlannerController {
   })
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  checkIfThereIsPlanOrNot(@Param('date') date: Date) {
+  checkIfThereIsPlanOrNot(@Query('date') date: Date) {
     return this.plannerService.checkIfThereIsPlanOrNot(date);
   }
 
@@ -106,14 +106,14 @@ export class PlannerController {
     return this.plannerService.changeCompletionStatus(id);
   }
 
-  @Patch('priority/:id')
+  @Patch(':id/priority')
   @ApiOperation({
     summary: '우선순위 수정 API',
-    description: 'plan id를 param으로 우선순위를 query로 받아 우선순위 수정',
+    description: 'plan id를 param으로 우선순위를 Body에 받아 우선순위 수정',
   })
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  changPriority(@Param('id') id: number, @Query('priority') priority: number) {
+  changPriority(@Param('id') id: number, @Body('priority') priority: number) {
     return this.plannerService.changePriority(id, priority);
   }
 }
