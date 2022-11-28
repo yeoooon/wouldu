@@ -4,15 +4,22 @@ import Logo from "/public/icon/logoblack.svg";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { userAtom } from "../recoil/user";
+import { useEffect, useState } from "react";
+import { User } from "@type/user";
 
 export default function AfterNavBar() {
   const router = useRouter();
   const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
 
-  const [user, setUser] = useRecoilState(userAtom);
+  const userAtomData = useRecoilValue(userAtom);
+  const [user, setUser] = useState<User | null>();
+
+  useEffect(() => {
+    setUser(userAtomData);
+  }, []);
 
   const onClickLogout = () => {
     const result = confirm("로그아웃 하시겠어요?");
@@ -28,8 +35,7 @@ export default function AfterNavBar() {
       </LogoBox>
       <UserBox>
         <Image src="/icon/user.svg" alt="user" width={60} height={60} />
-        <TextBox1>닉네임</TextBox1>
-        <TextBox2>edit</TextBox2>
+        <TextBox1>{`${user?.nickname} 님`}</TextBox1>
       </UserBox>
       {/* navigation 구현 */}
       <NavLink>
@@ -100,7 +106,7 @@ const UserBox = styled(Container)`
 `;
 
 const TextBox1 = styled(Box)`
-  padding-top: 0.4em;
+  margin-top: 20px;
   font-size: ${props => props.theme.fontSize.textMain};
 `;
 const TextBox2 = styled(TextBox1)`
