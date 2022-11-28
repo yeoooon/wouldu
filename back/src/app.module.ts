@@ -1,11 +1,10 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { DiaryModule } from './diary/diary.module';
 import { PlannerModule } from './planner/planner.module';
-import { LoginRequiredMiddleware } from './middleware/login_required.middleware';
 import { JwtModule } from '@nestjs/jwt';
 import { FriendModule } from './friend/friend.module';
 
@@ -39,8 +38,4 @@ import { FriendModule } from './friend/friend.module';
     FriendModule,
   ],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoginRequiredMiddleware).forRoutes('planner');
-  }
-}
+export class AppModule {}
