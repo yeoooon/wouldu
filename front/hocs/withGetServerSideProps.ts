@@ -6,8 +6,8 @@ const PATH = {
   JOIN: "/join",
   STAMP: "/stamp",
   DIARY: "/diary",
-  PLANNER: "planner",
-  MYPAGE: "mypage",
+  PLANNER: "/planner",
+  MYPAGE: "/mypage",
 };
 
 const mapPathToTitle: { [key: string]: string } = {
