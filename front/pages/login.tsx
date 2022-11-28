@@ -26,11 +26,11 @@ const login = () => {
 
   const onLoginSubmit = async (data: UserLoginForm) => {
     try {
-      const { accessToken } = await requestLogin(data);
+      const { accessToken, email, nickname } = await requestLogin(data);
       if (accessToken) {
         //현재 백엔드에서 accessToken만 줘서 임으로 데이터 넣어줌.
         console.log("로그인!");
-        setUser({ email: "hjinnny@naver.com", accessToken, nickname: "hyejin" });
+        setUser({ email, accessToken, nickname });
 
         router.push("/");
       }
@@ -59,6 +59,7 @@ const login = () => {
           </InputBox>
           <InputBox>
             <LoginInput
+              type="password"
               placeholder="비밀번호를 입력하세요."
               {...register("password", { required: true, minLength: { value: 4, message: "4자 이상 입력해주세요." } })}
             />

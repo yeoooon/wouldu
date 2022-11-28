@@ -4,21 +4,29 @@ import Logo from "/public/icon/logoblack.svg";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { userAtom } from "../recoil/user";
+import { useEffect, useState } from "react";
+import { User } from "@type/user";
 
 export default function AfterNavBar() {
   const router = useRouter();
   const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
 
-  const [user, setUser] = useRecoilState(userAtom);
+  const [userAtomData, setUserAtomData] = useRecoilState(userAtom);
+  const [user, setUser] = useState<User | null>();
 
-  const onClickLogout = () => {
+  useEffect(() => {
+    setUser(userAtomData);
+  }, []);
+
+  const onClickLogout = async () => {
     const result = confirm("로그아웃 하시겠어요?");
     if (result) {
+      await router.push("/");
       setUser(null);
-      router.push("/");
+      setUserAtomData(null);
     }
   };
   return (
@@ -27,9 +35,11 @@ export default function AfterNavBar() {
         <Logo width={180} height={60} />
       </LogoBox>
       <UserBox>
+        <AlarmButton>
+          <Image src="/icon/alarm.svg" alt="alarm" width={15} height={15} />
+        </AlarmButton>
         <Image src="/icon/user.svg" alt="user" width={60} height={60} />
-        <TextBox1>닉네임</TextBox1>
-        <TextBox2>edit</TextBox2>
+        <TextBox1>{`${user?.nickname} 님`}</TextBox1>
       </UserBox>
       {/* navigation 구현 */}
       <NavLink>
@@ -47,11 +57,10 @@ export default function AfterNavBar() {
 }
 
 const Nav = styled(Container)`
-  display: flex;
   flex-direction: column;
   width: 240px;
   height: 100vh;
-  justify-content: flex-start;
+  justify-content: space-around;
   padding: 2em 0;
   margin: 0;
   border-radius: 0;
@@ -61,13 +70,11 @@ const LogoBox = styled(Logo)`
   width: 100%;
   overflow: visible;
 `;
-
 const NavLink = styled(Container)`
   flex-direction: column;
   margin: 1.5em 1em 5em 1em;
   width: 100%;
 `;
-
 const LinkButton = styled.div`
   width: 100%;
   height: 10vh;
@@ -93,14 +100,18 @@ const LinkButton = styled.div`
     /* font-size: ${props => props.theme.fontSize.textLg}; */
   }
 `;
-
 const UserBox = styled(Container)`
   flex-direction: column;
-  padding: 2em;
+  width: 35%;
+  margin: 3em 0;
 `;
-
+const AlarmButton = styled(Box)`
+  width: 100%;
+  justify-content: flex-end;
+  margin: 0.5em;
+`;
 const TextBox1 = styled(Box)`
-  padding-top: 0.4em;
+  margin-top: 20px;
   font-size: ${props => props.theme.fontSize.textMain};
 `;
 const TextBox2 = styled(TextBox1)`
