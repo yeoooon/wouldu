@@ -4,7 +4,7 @@ import { SeoPageProps } from "@components/Seo";
 import styled from "styled-components";
 import { Container, Wrapper, Box } from "../styles/layout";
 
-export default function Planner() {
+const Planner = () => {
   return (
     <PlannerWrapper>
       <CalendarContainer>
@@ -43,3 +43,5 @@ const TodoContainer = styled(CalendarContainer)`
   justify-content: flex-start;
   position: relative;
 `;
+
+export default Planner;

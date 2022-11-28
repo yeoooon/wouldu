@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import { Container, Wrapper, Box } from "../styles/layout";
 
-export default function Diary() {
+const Diary = () => {
   return (
     <DiaryWrapper>
       <SidebarContainer>
@@ -42,3 +42,5 @@ const SidebarContainer = styled(Container)`
 
 const DiaryContainer = styled(SidebarContainer)`
 `;
+
+export default Diary;

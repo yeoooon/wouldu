@@ -13,7 +13,7 @@ const TodoList = () => {
   const [todos, setTodos] = useState<Planner[] | null>(null);
 
   //day는 나중에 프롭스로 달력 일정에 따라 바뀌도록 설정해야함.
-  const day = "2022-11-25";
+  const day = "2022-11-28";
 
   const { data: planData } = useQuery(["plan", day], () => getDayPlan(day));
 
@@ -25,7 +25,7 @@ const TodoList = () => {
     <ListContainer>
       <TitleBox>
         <Check />
-        <p>오늘의 추천 활동</p>
+        <p>오늘의 할일</p>
       </TitleBox>
       {todos?.map(todo => (
         <TodoItem key={todo.id} id={todo.id} description={todo.description} isCompleted={todo.isCompleted} />

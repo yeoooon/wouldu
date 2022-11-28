@@ -27,9 +27,11 @@ export default function AfterNavBar() {
         <Logo width={180} height={60} />
       </LogoBox>
       <UserBox>
+        <AlarmButton>
+          <Image src="/icon/alarm.svg" alt="alarm" width={15} height={15} />
+        </AlarmButton>
         <Image src="/icon/user.svg" alt="user" width={60} height={60} />
         <TextBox1>닉네임</TextBox1>
-        <TextBox2>edit</TextBox2>
       </UserBox>
       {/* navigation 구현 */}
       <NavLink>
@@ -47,11 +49,10 @@ export default function AfterNavBar() {
 }
 
 const Nav = styled(Container)`
-  display: flex;
   flex-direction: column;
   width: 240px;
   height: 100vh;
-  justify-content: flex-start;
+  justify-content: space-around;
   padding: 2em 0;
   margin: 0;
   border-radius: 0;
@@ -61,13 +62,11 @@ const LogoBox = styled(Logo)`
   width: 100%;
   overflow: visible;
 `;
-
 const NavLink = styled(Container)`
   flex-direction: column;
   margin: 1.5em 1em 5em 1em;
   width: 100%;
 `;
-
 const LinkButton = styled.div`
   width: 100%;
   height: 10vh;
@@ -93,12 +92,16 @@ const LinkButton = styled.div`
     /* font-size: ${props => props.theme.fontSize.textLg}; */
   }
 `;
-
 const UserBox = styled(Container)`
   flex-direction: column;
-  padding: 2em;
+  width: 35%;
+  margin: 3em 0;
 `;
-
+const AlarmButton = styled(Box)`
+  width: 100%;
+  justify-content: flex-end;
+  margin: 0.5em;
+`;
 const TextBox1 = styled(Box)`
   padding-top: 0.4em;
   font-size: ${props => props.theme.fontSize.textMain};
