@@ -1,3 +1,4 @@
+import { dayAtom } from "@recoil/planner";
 import { Container } from "@styles/layout";
 import { useQuery } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
@@ -12,9 +13,8 @@ import Check from "/public/icon/check.svg";
 const TodoList = () => {
   const [todos, setTodos] = useState<Planner[] | null>(null);
 
-  //day는 나중에 프롭스로 달력 일정에 따라 바뀌도록 설정해야함.
-  const day = "2022-11-25";
-
+  const recoilDay = useRecoilValue<Date>(dayAtom);
+  const day = formatDate(recoilDay);
   const { data: planData } = useQuery(["plan", day], () => getDayPlan(day));
 
   useEffect(() => {
