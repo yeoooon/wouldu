@@ -21,7 +21,7 @@ export const userJoin = async (joinInfo: UserJoinForm) => {
 export const requestLogin = async (loginInfo: UserLoginForm) => {
   try {
     const { data } = await axiosInstance.post("auth/login", loginInfo);
-    sessionStorage.setItem("userToken", data.access_token);
+    sessionStorage.setItem("userToken", data.accessToken);
     return data;
   } catch (err) {
     console.log("requestLgoin error!!!!!", err);
