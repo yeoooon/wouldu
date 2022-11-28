@@ -21,8 +21,8 @@ const DiaryListItem = () => {
   return (
     <>
       {diaryList?.map(diary => (
-        <ListItemBox>
-          <DiaryListDay />
+        <ListItemBox key={diary.id}>
+          <DiaryListDay content={diary.content} />
           <Text>{diary.content.length < 30 ? diary.content : diary.content.substring(0, 30) + "..."}</Text>
         </ListItemBox>
       ))}

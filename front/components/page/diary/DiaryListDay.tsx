@@ -1,12 +1,16 @@
 import { Box } from '@styles/layout';
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import { Diary } from '@type/diary';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import getDayString from '../../../services/utils/getDayString';
 
-const DiaryListDay = () => {
+const DiaryListDay = (diary: Diary) => {
+  const dayStr = getDayString(diary.date);
+
   return (
     <DateBox>
-      <Date1>MON</Date1>
-      <Date2>01</Date2>
+      <Date1>{dayStr}</Date1>
+      <Date2>{diary.date}[8:10]</Date2>
     </DateBox>
   );
 };
