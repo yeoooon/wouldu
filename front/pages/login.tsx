@@ -12,7 +12,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginStateSelector, userAtom } from "../recoil/user";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import withGetServerSideProps from "../hocs/withGetServersideProps";
+import withGetServerSideProps from "@hocs/withGetServerSideProps";
 
 const Login = () => {
   const router = useRouter();
@@ -26,11 +26,13 @@ const Login = () => {
 
   const onLoginSubmit = async (data: UserLoginForm) => {
     try {
-      const { accessToken, email, nickname } = await requestLogin(data);
+      const { accessToken, email, nickname, friendCode } = await requestLogin(data);
       if (accessToken) {
         //현재 백엔드에서 accessToken만 줘서 임으로 데이터 넣어줌.
         console.log("로그인!");
-        setUser({ email, accessToken, nickname });
+        const { accessToken, email, nickname, friendCode } = await requestLogin(data);
+        console.log(email, friendCode);
+        setUser({ email, accessToken, nickname, friendCode });
 
         router.push("/");
       }

@@ -18,6 +18,7 @@ import { UpdatePlannerDto } from './dto/update-planner.dto';
 import { PlannerService } from './planner.service';
 import { AuthGuard } from '@nestjs/passport';
 import { PlannerIdDto } from './dto/planner-param.dto';
+import { PlannerDateDto } from './dto/planner-date.dto';
 
 @Controller('planner')
 @ApiTags('플래너 API')
@@ -60,16 +61,20 @@ export class PlannerController {
     return this.plannerService.findOne(plannerIdDto);
   }
 
-  @Get('check')
+  @Get('check/month')
   @ApiOperation({
     summary: '일정 유무 확인 API',
     description:
-      'param으로 date를 넣으면 해당 날짜에 일정이 있었는지(1) 없었는지(0) 알려줌',
+      'query로 date를 넣으면 해당 날짜에 일정이 있었는지(1) 없었는지(0) 알려줌',
   })
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  checkIfThereIsPlanOrNot(@Query('date') date: Date) {
-    return this.plannerService.checkIfThereIsPlanOrNot(date);
+  checkIfThereIsPlanOrNot(
+    @Req() request: Request,
+    @Query() plannerDateDto: PlannerDateDto,
+  ) {
+    const userId = request.user['userId'];
+    return this.plannerService.checkIfThereIsPlanOrNot(userId, plannerDateDto);
   }
 
   @Put(':id')
@@ -94,7 +99,7 @@ export class PlannerController {
   })
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  remove(@Param() plannerIdDto: PlannerIdDto) {
+  delete(@Param() plannerIdDto: PlannerIdDto) {
     return this.plannerService.deletePlan(plannerIdDto);
   }
 
@@ -118,7 +123,7 @@ export class PlannerController {
   @ApiBearerAuth('access-token')
   changPriority(
     @Param() plannerIdDto: PlannerIdDto,
-    @Body('priority') priority: number,
+    @Query('priority') priority: number,
   ) {
     return this.plannerService.changePriority(plannerIdDto, priority);
   }

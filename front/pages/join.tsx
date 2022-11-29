@@ -9,7 +9,7 @@ import Image from "next/image";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { userJoin } from "../services/api/user";
 import Router from "next/router";
-import withGetServerSideProps from "../hocs/withGetServersideProps";
+import withGetServerSideProps from "@hocs/withGetServerSideProps";
 
 const Join = () => {
   const {

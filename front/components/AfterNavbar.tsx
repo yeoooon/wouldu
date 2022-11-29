@@ -27,6 +27,7 @@ export default function AfterNavBar() {
       await router.push("/");
       setUser(null);
       setUserAtomData(null);
+      sessionStorage.removeItem("userToken");
     }
   };
   return (

@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   CreateDateColumn,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -26,6 +27,9 @@ export class Planner {
 
   @Column({ length: 100, default: null })
   imgUrl: string;
+
+  @Column()
+  userId: string;
 
   @ManyToOne(() => User, (user) => user.planners)
   user: User;

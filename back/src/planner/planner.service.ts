@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { CreatePlannerDto } from './dto/create-planner.dto';
+import { PlannerDateDto } from './dto/planner-date.dto';
 import { PlannerIdDto } from './dto/planner-param.dto';
 import { UpdatePlannerDto } from './dto/update-planner.dto';
 import { Planner } from './entities/planner.entity';
@@ -14,14 +15,14 @@ export class PlannerService {
     private plannerRepository: Repository<Planner>,
   ) {}
 
-  async createPlan(userId: User, createPlannerDto: CreatePlannerDto) {
+  async createPlan(userId: string, createPlannerDto: CreatePlannerDto) {
     const planner = new Planner();
     const { description, date, imgUrl, priority } = createPlannerDto;
 
     planner.description = description;
     planner.date = date;
     planner.imgUrl = imgUrl === undefined ? null : imgUrl;
-    planner.user = userId;
+    planner.userId = userId;
     planner.priority = priority;
     await this.plannerRepository.save(planner);
   }
@@ -71,9 +72,29 @@ export class PlannerService {
     await this.plannerRepository.delete({ id });
   }
 
-  findAllByDate(user: User, date: Date): Promise<Planner[]> {
+  async checkIfThereIsPlanOrNot(
+    userId: string,
+    plannerDateDto: PlannerDateDto,
+  ) {
+    const { year, month } = plannerDateDto;
+    const plans = await this.plannerRepository.find({
+      where: {
+        userId,
+        date: Between(new Date(year, month - 1, 1), new Date(year, month, 1)),
+        isRecommended: 0,
+      },
+    });
+    console.log(plans[0].date);
+    if (plans.length === 0) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
+  findAllByDate(userId: string, date: Date): Promise<Planner[]> {
     return this.plannerRepository.find({
-      where: { user, date },
+      where: { userId, date },
     });
   }
 
@@ -82,16 +103,5 @@ export class PlannerService {
     return this.plannerRepository.findOne({
       where: { id },
     });
-  }
-
-  async checkIfThereIsPlanOrNot(date: Date) {
-    const plans = await this.plannerRepository.find({
-      where: { date, isRecommended: 0 },
-    });
-    if (plans.length === 0) {
-      return 0;
-    } else {
-      return 1;
-    }
   }
 }
