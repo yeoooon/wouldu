@@ -21,7 +21,7 @@ export class Diary {
   content: string;
 
   @Column()
-  date: Date;
+  date: string;
 
   @CreateDateColumn({ type: 'datetime' })
   createdAt?: Date;
