@@ -1,17 +1,35 @@
 import { Box, Container } from '@styles/layout'
-import React from 'react'
+import React, { useState } from 'react'
 import { useRecoilState } from 'recoil';
+import { SubmitHandler, useForm } from "react-hook-form";
 import styled from 'styled-components'
 import { diarywriteState } from '../../../recoil/diary';
+import { postDiary } from '../../../services/api/diary';
+import { Diary } from '@type/diary';
 
 const DiaryTextarea = () => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
 
   const handleBackClick = () => setIsTextareaOpen(!isTextareaOpen);
 
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<{ content: string }>();
+
+  const handlePostSubmit: SubmitHandler<{ content: string }> = (data) => {
+    postDiary(data);
+  }
+
   return (
     <TextContainer>
+      <form onSubmit={handleSubmit(handlePostSubmit)}>
         <Textarea
+          {...register("content", {
+            required: true
+          })}
           autoFocus
           placeholder="오늘의 일기를 작성해주세요.
           수정, 삭제가 불가하니 신중하게 적어주세요 *^^*"
@@ -20,10 +38,11 @@ const DiaryTextarea = () => {
           <BackButton onClick={handleBackClick}>
             뒤로 가기
           </BackButton>
-          <SaveButton>
+          <SaveButton type="submit">
             나의 일기 저장하기
           </SaveButton>
         </ButtonBox>
+      </form>
     </TextContainer>
   )
 }
