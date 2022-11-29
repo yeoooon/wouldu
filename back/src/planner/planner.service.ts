@@ -80,10 +80,11 @@ export class PlannerService {
     const plans = await this.plannerRepository.find({
       where: {
         userId,
-        date: Between(new Date(year, month, 1), new Date(year, month + 1, 1)),
+        date: Between(new Date(year, month - 1, 1), new Date(year, month, 1)),
         isRecommended: 0,
       },
     });
+    console.log(plans[0].date);
     if (plans.length === 0) {
       return 0;
     } else {
