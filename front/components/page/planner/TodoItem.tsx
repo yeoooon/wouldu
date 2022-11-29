@@ -2,7 +2,8 @@ import { checkPlan, deletePlan, updatePlan } from "@services/api/planner";
 import { Box } from "@styles/layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled, { css } from "styled-components";
 import CircleCheck from "/public/icon/circlecheck.svg";
@@ -11,46 +12,80 @@ import Trash from "/public/icon/trash.svg";
 
 const TodoItem = (plan: Planner) => {
   const queryClient = useQueryClient();
+  const [editMode, setIsEditMode] = useState<boolean>(false);
 
-  const deleteMutation = useMutation(() => deletePlan(plan?.id!), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["plan", plan?.date]);
+  const {
+    register,
+    handleSubmit,
+    resetField,
+    formState: { errors },
+  } = useForm<{ description: string }>();
+
+  const deleteMutation = useMutation((data: Planner) => deletePlan(data?.id!), {
+    onSuccess: (status, value) => {
+      queryClient.invalidateQueries(["plan", value.date]);
     },
   });
 
-  const checkMutation = useMutation(() => checkPlan(plan?.id!), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["plan", plan?.date]);
+  const checkMutation = useMutation((data: Planner) => checkPlan(data?.id!), {
+    onSuccess: (status, value) => {
+      queryClient.invalidateQueries(["plan", value.date]);
     },
   });
 
   const updateMutation = useMutation((data: Planner) => updatePlan(data), {
-    onSuccess: (dat1, data2) => {
-      console.log(dat1, data2);
-      queryClient.invalidateQueries(["plan", plan.date]);
+    onSuccess: (status, value) => {
+      queryClient.invalidateQueries(["plan", value.date]);
     },
   });
 
   const handleToggle = () => {
-    // isCompleted 상태 바꾸며, patch 요청
-    // 계속 누를때마다 요청을 하는거면...? nest patch는 일부분만 가긴하지만 부하걸릴것이 걱정이다.
-    checkMutation.mutate();
+    checkMutation.mutate(plan);
   };
   const handleRemoveTodo = async () => {
-    deleteMutation.mutate();
+    deleteMutation.mutate(plan);
   };
   const handleUpdateTodo = () => {
-    updateMutation.mutate({ ...plan, description: "제발되라!" });
+    //description에 수정에 반영될 데이터 넣어주면됨.
+
+    setIsEditMode(true);
+    // updateMutation.mutate({ ...plan, description: "일정!" });
+  };
+
+  const onUpdateSubmit = async ({ description }: { description: string }) => {
+    updateMutation.mutate({ ...plan, description });
+    setIsEditMode(false);
+    resetField("description");
   };
 
   return (
-    <TodoBox className={plan.isCompleted ? "finish" : ""}>
-      <CheckBox onClick={handleToggle}>{plan.isCompleted === 1 ? <CircleCheckSvg /> : <CircleCheckBackSvg />}</CheckBox>
-      <Text>{plan.description}</Text>
-      <ButtonBox>
-        <button onClick={handleUpdateTodo}>수정</button>
-        <button onClick={handleRemoveTodo}>삭제</button>
-      </ButtonBox>
+    <TodoBox className={plan.isCompleted === 1 ? "finish" : ""}>
+      {editMode ? (
+        <form onSubmit={handleSubmit(onUpdateSubmit)}>
+          <input
+            autoFocus
+            defaultValue={plan.description}
+            {...register("description", {
+              required: true,
+              minLength: { value: 2, message: "2자 이상 입력해주세요." },
+            })}
+          />
+          <p>{errors?.description?.message}</p>
+          <ButtonBox>
+            <Button type="submit">수정</Button>
+            <Button onClick={() => setIsEditMode(false)}>취소</Button>
+          </ButtonBox>
+        </form>
+      ) : (
+        <>
+          <CheckBox onClick={handleToggle}>{plan.isCompleted ? <CircleCheckSvg /> : <CircleCheckBackSvg />}</CheckBox>
+          <Text>{plan.description}</Text>
+          <ButtonBox>
+            <Button onClick={() => setIsEditMode(true)}>수정</Button>
+            <Button onClick={handleRemoveTodo}>삭제</Button>
+          </ButtonBox>
+        </>
+      )}
     </TodoBox>
   );
 };
@@ -60,34 +95,40 @@ const ButtonBox = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  display: none;
+  /* display: none; */
 `;
-
-const Remove = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  display: none;
+const Button = styled.button`
+  background-color: inherit;
+  color: ${props => props.theme.color.fontSub};
+  border-radius: 0;
+  padding: 0 0.8em;
+  font-size: 10px;
+  &:first-child {
+    border-right: 1px solid ${props => props.theme.color.fontSub};
+  }
+  &:hover {
+    background-color: inherit;
+    color: ${props => props.theme.color.fontMain};
+    font-weight: 600;
+  }
 `;
-
 const Text = styled.p``;
 
 const TodoBox = styled(Box)`
   position: relative;
   justify-content: space-between;
-  padding: 1em 2em;
+  padding: 1em 0.5em 1em 2em;
   width: 100%;
   height: 4em;
   margin-bottom: 1em;
   background-color: ${props => props.theme.color.purpleBox};
   border: 1px solid ${props => props.theme.color.borderPoint};
 
-  &:hover {
-    ${Remove} {
+  /* &:hover {
+    ${ButtonBox} {
       display: initial;
     }
-  }
+  } */
   &.finish {
     border: 1px solid ${props => props.theme.color.border};
     background-color: ${props => props.theme.color.grayBox};
@@ -100,21 +141,6 @@ const TodoBox = styled(Box)`
 `;
 const CheckBox = styled(Box)`
   margin: 0;
-  padding: 0;
-  position: absolute;
-  left: -15px;
-  cursor: pointer;
-`;
-
-const CheckCircle = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 35px;
-  height: 35px;
-  background-color: ${props => props.theme.color.purpleBox};
-  border: 3px solid ${props => props.theme.color.point};
-  border-radius: 50%;
   padding: 0;
   position: absolute;
   left: -15px;
