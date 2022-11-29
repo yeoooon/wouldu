@@ -1,5 +1,5 @@
 export interface Planner {
-  id?: string;
+  id?: number;
   description: string;
   date?: string;
   priority?: number;

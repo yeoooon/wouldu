@@ -1,4 +1,6 @@
+import { deletePlan } from "@services/api/planner";
 import { Box } from "@styles/layout";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
 import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -8,12 +10,21 @@ import CircleCheckBack from "/public/icon/circlecheckback.svg";
 import Trash from "/public/icon/trash.svg";
 
 const TodoItem = (plan: Planner) => {
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation(() => deletePlan(plan?.id!), {
+    onSuccess: () => {
+      console.log("update onSuccess");
+      queryClient.invalidateQueries(["plan", plan?.date]);
+    },
+  });
+
   const handleToggle = () => {
     // isCompleted 상태 바꾸며, patch 요청
     // 계속 누를때마다 요청을 하는거면...? nest patch는 일부분만 가긴하지만 부하걸릴것이 걱정이다.
   };
-  const handleRemoveTodo = () => {
-    //delete 요청
+  const handleRemoveTodo = async () => {
+    deleteMutation.mutate();
   };
 
   return (
