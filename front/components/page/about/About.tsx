@@ -12,5 +12,5 @@ export default About;
 
 const AboutWrapper = styled(Wrapper)`
   width: 100%;
-  background-color: yellow;
+  background-color: beige;
 `;
