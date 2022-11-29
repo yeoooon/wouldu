@@ -10,7 +10,7 @@ import { Calendar } from "react-calendar";
 import styled from "styled-components";
 import withGetServerSideProps from "../hocs/withGetServersideProps";
 
-const stamp = () => {
+const Stamp = () => {
   const [openStamp, setOpenStamp] = useState(false);
 
   const handleToggle = () => setOpenStamp(!openStamp);
@@ -27,14 +27,12 @@ const stamp = () => {
       </LeftContainer>
       <RightContainer>
         <ButtonBox>
-          <Button 
-            onClick={handleToggle}
-            className={openStamp ? "" : "active"}
-          >나</Button>
-          <Button 
-            onClick={handleToggle}
-            className={openStamp ? "active" : ""}
-          >상대방</Button>
+          <Button onClick={handleToggle} className={openStamp ? "" : "active"}>
+            나
+          </Button>
+          <Button onClick={handleToggle} className={openStamp ? "active" : ""}>
+            상대방
+          </Button>
         </ButtonBox>
         <CalendarBox>
           <EmotionCalendar />
@@ -48,7 +46,7 @@ const stamp = () => {
   );
 };
 
-export default stamp;
+export default Stamp;
 
 export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
@@ -94,7 +92,7 @@ const Button = styled.button`
     border-bottom: 2px solid ${props => props.theme.color.fontPoint};
     color: ${props => props.theme.color.fontPoint};
     font-weight: 700;
-  } 
+  }
   :hover {
     background-color: inherit;
     font-weight: 700;

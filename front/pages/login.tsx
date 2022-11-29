@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import withGetServerSideProps from "../hocs/withGetServersideProps";
 
-const login = () => {
+const Login = () => {
   const router = useRouter();
   const [user, setUser] = useRecoilState(userAtom);
   const {
@@ -106,7 +106,7 @@ export const getServerSideProps = withGetServerSideProps(async (context: GetServ
   };
 });
 
-export default login;
+export default Login;
 
 const LoginWrap = styled(Wrapper)`
   width: 100%;

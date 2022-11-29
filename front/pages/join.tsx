@@ -11,7 +11,7 @@ import { userJoin } from "../services/api/user";
 import Router from "next/router";
 import withGetServerSideProps from "../hocs/withGetServersideProps";
 
-const join = () => {
+const Join = () => {
   const {
     register,
     handleSubmit,
@@ -119,7 +119,7 @@ export const getServerSideProps = withGetServerSideProps(async (context: GetServ
   };
 });
 
-export default join;
+export default Join;
 
 const JoinWrap = styled(Wrapper)`
   width: 100%;
