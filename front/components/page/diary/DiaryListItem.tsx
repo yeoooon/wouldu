@@ -9,9 +9,9 @@ import { Diary } from '../../../type/diary';
 const DiaryListItem = () => {
   const [diaryList, setDiaryList] = useState<Diary[] | undefined>(undefined);
 
-  const dateToGetDiaries = '2022-11';
+  const month = '2022-11';
 
-  const { data } = useQuery(['diaries'], getDiaries);
+  const { data } = useQuery(["diaries", month], () => getDiaries(month));
   console.log(data);
 
   useEffect(() => {

@@ -9,9 +9,6 @@ import { useEffect } from "react";
 import { Container, Wrapper, Box } from "../styles/layout";
 import { getDiaries } from "../services/api/diary";
 
-import withGetServerSideProps from "../hocs/withGetServersideProps";
-import { GetServerSidePropsContext } from "next";
-
 const Diary = () => {
   return (
     <DiaryWrapper>
