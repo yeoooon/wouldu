@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { CreatePlannerDto } from './dto/create-planner.dto';
+import { PlannerDateDto } from './dto/planner-date.dto';
 import { PlannerIdDto } from './dto/planner-param.dto';
 import { UpdatePlannerDto } from './dto/update-planner.dto';
 import { Planner } from './entities/planner.entity';
@@ -71,9 +72,17 @@ export class PlannerService {
     await this.plannerRepository.delete({ id });
   }
 
-  async checkIfThereIsPlanOrNot(userId: string, date: Date) {
+  async checkIfThereIsPlanOrNot(
+    userId: string,
+    plannerDateDto: PlannerDateDto,
+  ) {
+    const { year, month } = plannerDateDto;
     const plans = await this.plannerRepository.find({
-      where: { userId, date, isRecommended: 0 },
+      where: {
+        userId,
+        date: Between(new Date(year, month, 1), new Date(year, month + 1, 1)),
+        isRecommended: 0,
+      },
     });
     if (plans.length === 0) {
       return 0;

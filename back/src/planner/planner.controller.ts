@@ -18,6 +18,7 @@ import { UpdatePlannerDto } from './dto/update-planner.dto';
 import { PlannerService } from './planner.service';
 import { AuthGuard } from '@nestjs/passport';
 import { PlannerIdDto } from './dto/planner-param.dto';
+import { PlannerDateDto } from './dto/planner-date.dto';
 
 @Controller('planner')
 @ApiTags('플래너 API')
@@ -60,7 +61,7 @@ export class PlannerController {
     return this.plannerService.findOne(plannerIdDto);
   }
 
-  @Get('check')
+  @Get('check/month')
   @ApiOperation({
     summary: '일정 유무 확인 API',
     description:
@@ -68,10 +69,12 @@ export class PlannerController {
   })
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  checkIfThereIsPlanOrNot(@Req() request: Request, @Query('date') date: Date) {
+  checkIfThereIsPlanOrNot(
+    @Req() request: Request,
+    @Query() plannerDateDto: PlannerDateDto,
+  ) {
     const userId = request.user['userId'];
-
-    return this.plannerService.checkIfThereIsPlanOrNot(userId, date);
+    return this.plannerService.checkIfThereIsPlanOrNot(userId, plannerDateDto);
   }
 
   @Put(':id')
