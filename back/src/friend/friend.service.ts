@@ -22,17 +22,11 @@ export class FriendService {
   ) {}
 
   async sendFriendRequest(currentUserId: string, code: string) {
-    const fromUser = await this.userService.findOneByCode(code);
-    const toUser = await this.userService.findOneById(currentUserId);
+    const fromUser = await this.userService.findOneById(currentUserId);
+    const toUser = await this.userService.findOneByCode(code);
 
-    if (!toUser) {
-      throw new NotFoundException('유저가 존재하지 않습니다.');
-    }
-
-    if (fromUser.id === toUser.id) {
-      throw new UnprocessableEntityException(
-        '본인 계정에 친구 신청을 할 수 없습니다.',
-      );
+    if (!toUser || fromUser.id === toUser.id) {
+      throw new NotFoundException('유효하지 않은 코드입니다.');
     }
 
     const friendRequest = new FriendRequest();
@@ -45,7 +39,7 @@ export class FriendService {
 
   async findFriendRequest(currentUserId: string) {
     const friendRequestList = await this.friendRequestRepository.find({
-      where: { toUserId: currentUserId },
+      where: { toUserId: currentUserId, requestProgress: 0 },
     });
     return friendRequestList;
   }
