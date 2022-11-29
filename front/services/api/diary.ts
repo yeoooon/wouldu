@@ -17,7 +17,6 @@ export const postDiary = async (diaryData: Object) => {
 export const getDiaries = async (month: string) => {
   try {
     const { data } = await axiosInstance.get(`diary/monthly/${month}`);
-    console.log("getDiaries 결과 --- ", data);
     return data;
   } catch (err) {
     console.log(err);

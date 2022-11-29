@@ -12,7 +12,6 @@ const DiaryListItem = () => {
   const month = '2022-11';
 
   const { data } = useQuery(["diaries", month], () => getDiaries(month));
-  console.log(data);
 
   useEffect(() => {
     setDiaryList(data);
