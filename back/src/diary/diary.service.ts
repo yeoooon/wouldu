@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FriendService } from 'src/friend/friend.service';
 import { Repository } from 'typeorm';
@@ -20,11 +20,40 @@ export class DiaryService {
     diary.authorId = currentUserId;
     diary.content = content;
     diary.date = new Date();
+
+    const isDiaryExist = await this.checkDiary(currentUserId, diary.date);
+    if (isDiaryExist) {
+      throw new BadRequestException('오늘 일기를 이미 작성했습니다.');
+    }
+
     return this.diaryDAO.createOne(diary);
   }
 
-  async findDiary(currentUserId: string) {
+  async checkDiary(currentUserId: string, date: Date) {
+    const diary = await this.diaryDAO.getMany({
+      where: {
+        authorId: currentUserId,
+        date: new Date(
+          date.getFullYear() +
+            '-' +
+            (date.getMonth() + 1) +
+            '-' +
+            date.getDate(),
+        ),
+      },
+    });
+    return diary.length !== 0;
+  }
+
+  async findDiaryList(currentUserId: string) {
     const friendId = await this.friendService.findFriendId(currentUserId);
     return this.diaryDAO.getMany({ where: { friendId: friendId } });
+  }
+
+  async findDiaryByDate(currentUserId: string, date: string) {
+    const friendId = await this.friendService.findFriendId(currentUserId);
+    return this.diaryDAO.getMany({
+      where: { friendId: friendId, date: new Date(date) },
+    });
   }
 }
