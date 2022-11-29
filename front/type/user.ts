@@ -8,6 +8,7 @@ export interface User {
   email: string;
   accessToken: string;
   nickname: string;
+  friendCode: string;
   password?: string;
   confirmPassword?: string;
 }

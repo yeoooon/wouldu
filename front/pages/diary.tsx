@@ -2,6 +2,10 @@ import styled from "styled-components";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import DiaryMain from "@components/page/diary/DiaryMain";
 import DiarySidebar from "@components/page/diary/DiarySidebar";
+import { SeoPageProps } from "@components/Seo";
+import withGetServerSideProps from "@hocs/withGetServerSideProps";
+import { GetServerSidePropsContext } from "next";
+import { useEffect } from "react";
 import { Container, Wrapper, Box } from "../styles/layout";
 import { getDiaries } from "../services/api/diary";
 
@@ -16,13 +20,13 @@ const Diary = () => {
       </DiaryContainer>
     </DiaryWrapper>
   );
-}
+};
 
 // export async function getStaticProps() {
 //   const queryClient = new QueryClient();
 
 //   await queryClient.prefetchQuery('diary', () => getDiaries());
-  
+
 //   return {
 //     props: {
 //       dehydratedState: dehydrate(queryClient),
