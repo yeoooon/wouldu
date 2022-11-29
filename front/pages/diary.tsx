@@ -1,10 +1,10 @@
 import DiaryMain from "@components/page/diary/DiaryMain";
 import DiarySidebar from "@components/page/diary/DiarySidebar";
 import { SeoPageProps } from "@components/Seo";
+import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";
 import { useEffect } from "react";
 import styled from "styled-components";
-import withGetServerSideProps from "../hocs/withGetServersideProps";
 import { Container, Wrapper, Box } from "../styles/layout";
 
 const Diary = () => {
@@ -18,7 +18,7 @@ const Diary = () => {
       </DiaryContainer>
     </DiaryWrapper>
   );
-}
+};
 
 export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
