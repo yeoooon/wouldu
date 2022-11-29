@@ -1,20 +1,32 @@
-import { IsBoolean, IsDate, IsDateString, IsNumber, IsOptional, IsString, IsUrl } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 
 export class CreatePlannerDto {
   @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
   description: string;
 
   @IsDateString()
+  @IsNotEmpty()
+  @ApiProperty()
   date: Date;
 
   @IsString()
   @IsUrl()
   @IsOptional()
-  imgUrl: string;
-
-  @IsString()
-  userId: string;
+  @ApiPropertyOptional()
+  imgUrl?: string;
 
   @IsNumber()
-  priority: number;
+  @IsOptional()
+  @ApiPropertyOptional()
+  priority?: number;
 }

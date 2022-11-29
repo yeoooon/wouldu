@@ -6,7 +6,7 @@ export const LOGIN = {
 
 export interface User {
   email: string;
-  access_token: string;
+  accessToken: string;
   nickname: string;
   password?: string;
   confirmPassword?: string;

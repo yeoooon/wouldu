@@ -7,12 +7,17 @@ import { darkTheme, lightTheme } from "../styles/theme";
 import { Wrapper, Container, Box } from "../styles/layout";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { loginStateSelector, userAtom } from "../recoil/user";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import About from "@components/page/about/About";
 
 const Home: NextPage = () => {
-  const isLoginState = useRecoilValue(loginStateSelector);
+  const isLoginStateAtom = useRecoilValue(loginStateSelector);
+  const [isLoginState, setIsLoginState] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLoginState(isLoginStateAtom);
+  }, [isLoginStateAtom]);
 
   return (
     <>

@@ -1,7 +1,9 @@
+import { Planner } from 'src/planner/entities/planner.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  OneToMany,
   CreateDateColumn,
 } from 'typeorm';
 
@@ -31,10 +33,12 @@ export class User {
   @Column()
   registerProgress: number;
 
-  @Column({
-    type: 'timestamp',
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
+  @CreateDateColumn({ type: 'datetime' })
   registeredAt: Date;
+
+  @Column()
+  friendCode: string;
+
+  @OneToMany(() => Planner, (planner) => planner.user)
+  planners: Planner[];
 }

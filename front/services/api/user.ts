@@ -21,13 +21,13 @@ export const userJoin = async (joinInfo: UserJoinForm) => {
 export const requestLogin = async (loginInfo: UserLoginForm) => {
   try {
     const { data } = await axiosInstance.post("auth/login", loginInfo);
-    sessionStorage.setItem("userToken", data.access_token);
+    sessionStorage.setItem("userToken", data.accessToken);
     return data;
   } catch (err) {
-    console.log(err);
-    if (axios.isAxiosError(err) && err.response?.status === 401) {
-      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
-    }
+    console.log("requestLgoin error!!!!!", err);
+    // if (axios.isAxiosError(err) && err.response?.status === 401) {
+    //   alert("이메일 또는 비밀번호가 일치하지 않습니다.");
+    // }
   }
 };
 

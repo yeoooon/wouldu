@@ -5,7 +5,7 @@ import DiarySidebar from "@components/page/diary/DiarySidebar";
 import { Container, Wrapper, Box } from "../styles/layout";
 import { getDiaries } from "../services/api/diary";
 
-export default function Diary() {
+const Diary = () => {
   return (
     <DiaryWrapper>
       <SidebarContainer>
@@ -43,5 +43,6 @@ const SidebarContainer = styled(Container)`
   border: 1px solid ${props => props.theme.color.border};
 `;
 
-const DiaryContainer = styled(SidebarContainer)`
-`;
+const DiaryContainer = styled(SidebarContainer)``;
+
+export default Diary;

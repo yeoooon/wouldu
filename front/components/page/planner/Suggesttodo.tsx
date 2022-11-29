@@ -1,8 +1,8 @@
-import { Container } from '@styles/layout';
-import React from 'react';
-import styled from 'styled-components';
-import TodoItem from './TodoItem';
-import Check from '/public/icon/check.svg';
+import { Container } from "@styles/layout";
+import React from "react";
+import styled from "styled-components";
+import TodoItem from "./TodoItem";
+import Check from "/public/icon/check.svg";
 
 const Suggesttodo = () => {
   return (
@@ -11,10 +11,10 @@ const Suggesttodo = () => {
         <Check />
         <p>오늘의 추천 활동</p>
       </TitleBox>
-      <TodoItem text="감정분석을 통한 해야할일" done={false}/>
+      <TodoItem description="감정분석을 통한 해야할일" isCompleted={false} />
     </SuggestContainer>
-  )
-}
+  );
+};
 
 const SuggestContainer = styled(Container)`
   flex-direction: column;

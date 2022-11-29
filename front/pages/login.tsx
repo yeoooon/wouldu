@@ -12,8 +12,9 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginStateSelector, userAtom } from "../recoil/user";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import withGetServerSideProps from "../hocs/withGetServersideProps";
 
-const login = () => {
+const Login = () => {
   const router = useRouter();
   const [user, setUser] = useRecoilState(userAtom);
   const {
@@ -25,17 +26,15 @@ const login = () => {
 
   const onLoginSubmit = async (data: UserLoginForm) => {
     try {
-      const { access_token } = await requestLogin(data);
-      if (access_token) {
-        //현재 백엔드에서 access_token만 줘서 임으로 데이터 넣어줌.
+      const { accessToken, email, nickname } = await requestLogin(data);
+      if (accessToken) {
+        //현재 백엔드에서 accessToken만 줘서 임으로 데이터 넣어줌.
         console.log("로그인!");
-        setUser({ email: "hjinnny@naver.com", access_token, nickname: "hyejin" });
+        setUser({ email, accessToken, nickname });
 
         router.push("/");
       }
     } catch (err) {}
-
-    // setUser({ email: "hjinnny@naver.com", access_token, nickname: "hyejin" });
   };
 
   return (
@@ -60,6 +59,7 @@ const login = () => {
           </InputBox>
           <InputBox>
             <LoginInput
+              type="password"
               placeholder="비밀번호를 입력하세요."
               {...register("password", { required: true, minLength: { value: 4, message: "4자 이상 입력해주세요." } })}
             />
@@ -99,19 +99,14 @@ const login = () => {
     </LoginWrap>
   );
 };
-export const getServerSideProps = (context: GetServerSidePropsContext) => {
-  console.log(context.resolvedUrl);
-  console.log(context);
 
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
-    props: {
-      pageTitle: "로그인",
-      pageDesc: "우쥬 로그인 페이지 입니다.",
-    },
+    props: {},
   };
-};
+});
 
-export default login;
+export default Login;
 
 const LoginWrap = styled(Wrapper)`
   width: 100%;
