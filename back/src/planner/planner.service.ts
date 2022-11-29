@@ -15,14 +15,14 @@ export class PlannerService {
     private plannerRepository: Repository<Planner>,
   ) {}
 
-  async createPlan(userId: User, createPlannerDto: CreatePlannerDto) {
+  async createPlan(userId: string, createPlannerDto: CreatePlannerDto) {
     const planner = new Planner();
     const { description, date, imgUrl, priority } = createPlannerDto;
 
     planner.description = description;
     planner.date = date;
     planner.imgUrl = imgUrl === undefined ? null : imgUrl;
-    planner.user = userId;
+    planner.userId = userId;
     planner.priority = priority;
     await this.plannerRepository.save(planner);
   }
