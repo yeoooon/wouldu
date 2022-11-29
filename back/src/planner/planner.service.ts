@@ -71,9 +71,20 @@ export class PlannerService {
     await this.plannerRepository.delete({ id });
   }
 
-  findAllByDate(user: User, date: Date): Promise<Planner[]> {
+  async checkIfThereIsPlanOrNot(userId: string, date: Date) {
+    const plans = await this.plannerRepository.find({
+      where: { userId, date, isRecommended: 0 },
+    });
+    if (plans.length === 0) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
+  findAllByDate(userId: string, date: Date): Promise<Planner[]> {
     return this.plannerRepository.find({
-      where: { user, date },
+      where: { userId, date },
     });
   }
 
@@ -82,16 +93,5 @@ export class PlannerService {
     return this.plannerRepository.findOne({
       where: { id },
     });
-  }
-
-  async checkIfThereIsPlanOrNot(date: Date) {
-    const plans = await this.plannerRepository.find({
-      where: { date, isRecommended: 0 },
-    });
-    if (plans.length === 0) {
-      return 0;
-    } else {
-      return 1;
-    }
   }
 }
