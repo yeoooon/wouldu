@@ -45,6 +45,21 @@ export const deletePlan = async (id: number) => {
   }
 };
 
+//플랜수정
+export const updatePlan = async (planInfo: Planner) => {
+  const { id, description } = planInfo;
+  console.log("updatePlan api호출! ", planInfo);
+  try {
+    const { status } = await axiosInstance.put(`planner/${id}`, { description });
+    return status;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err?.response?.status) {
+      console.log("err");
+      return err.response.status;
+    }
+  }
+};
+
 //플랜 완료상태 수정
 export const checkPlan = async (id: number) => {
   try {
