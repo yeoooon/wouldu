@@ -2,7 +2,6 @@ import { Box } from '@styles/layout';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DiaryListDay from './DiaryListDay';
-import { testContent } from './UserDiary';
 import { useQuery } from '@tanstack/react-query';
 import { getDiaries } from '../../../services/api/diary';
 import { Diary } from '../../../type/diary';
