@@ -2,11 +2,12 @@ import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 import { Diary } from "@type/diary";
 
-export const postDiary = async (diaryData: Diary) => {
+export const postDiary = async (diaryData: Object) => {
   const bodyData = JSON.stringify(diaryData);
 
   try {
-    await axiosInstance.post("diary", bodyData);
+    const { status } = await axiosInstance.post("diary", bodyData);
+    return status;
   } catch (err) {
     console.log(err);
   }

@@ -19,18 +19,17 @@ const DiaryTextarea = () => {
     formState: { errors },
   } = useForm<{ content: string }>();
 
-  const handlePostSubmit: SubmitHandler<Diary> = (data) => {
+  const handlePostSubmit: SubmitHandler<{ content: string }> = (data) => {
     postDiary(data);
   }
 
   return (
-    <form onSubmit={handleSubmit(handlePostSubmit)}>
-      <TextContainer>
+    <TextContainer>
+      <form onSubmit={handleSubmit(handlePostSubmit)}>
         <Textarea
           {...register("content", {
             required: true
           })}
-          type="textarea"
           autoFocus
           placeholder="오늘의 일기를 작성해주세요.
           수정, 삭제가 불가하니 신중하게 적어주세요 *^^*"
@@ -43,8 +42,8 @@ const DiaryTextarea = () => {
             나의 일기 저장하기
           </SaveButton>
         </ButtonBox>
-      </TextContainer>      
-    </form>
+      </form>
+    </TextContainer>
   )
 }
 
@@ -55,7 +54,7 @@ const TextContainer = styled(Container)`
   height: 100%;
 `;
 
-const Textarea = styled.input`
+const Textarea = styled.textarea`
   width: 100%;
   height: 100%;
   border: none;

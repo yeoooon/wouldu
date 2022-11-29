@@ -19,12 +19,12 @@ const DiaryListItem = () => {
 
   return (
     <>
-      {diaryList?.map(diary => (
+      {diaryList? diaryList.map(diary => (
         <ListItemBox key={diary.id}>
           <DiaryListDay content={diary.content} />
           <Text>{diary.content.length < 30 ? diary.content : diary.content.substring(0, 30) + "..."}</Text>
         </ListItemBox>
-      ))}
+      )) : <div>작성된 일기가 없습니다.</div>}
     </>
   )
 }
