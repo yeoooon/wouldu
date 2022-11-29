@@ -19,7 +19,7 @@ const DiaryListItem = () => {
 
   return (
     <>
-      {diaryList? diaryList.map(diary => (
+      {diaryList && diaryList.length > 0? diaryList.map(diary => (
         <ListItemBox key={diary.id}>
           <DiaryListDay content={diary.content} />
           <Text>{diary.content.length < 30 ? diary.content : diary.content.substring(0, 30) + "..."}</Text>
