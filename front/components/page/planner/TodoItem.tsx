@@ -1,4 +1,4 @@
-import { deletePlan } from "@services/api/planner";
+import { checkPlan, deletePlan } from "@services/api/planner";
 import { Box } from "@styles/layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
@@ -14,7 +14,14 @@ const TodoItem = (plan: Planner) => {
 
   const deleteMutation = useMutation(() => deletePlan(plan?.id!), {
     onSuccess: () => {
-      console.log("update onSuccess");
+      console.log("delete onSuccess");
+      queryClient.invalidateQueries(["plan", plan?.date]);
+    },
+  });
+
+  const checkMutation = useMutation(() => checkPlan(plan?.id!), {
+    onSuccess: () => {
+      console.log("list check onSuccess");
       queryClient.invalidateQueries(["plan", plan?.date]);
     },
   });
@@ -22,6 +29,7 @@ const TodoItem = (plan: Planner) => {
   const handleToggle = () => {
     // isCompleted 상태 바꾸며, patch 요청
     // 계속 누를때마다 요청을 하는거면...? nest patch는 일부분만 가긴하지만 부하걸릴것이 걱정이다.
+    checkMutation.mutate();
   };
   const handleRemoveTodo = async () => {
     deleteMutation.mutate();
@@ -29,7 +37,7 @@ const TodoItem = (plan: Planner) => {
 
   return (
     <TodoBox className={plan.isCompleted ? "finish" : ""}>
-      <CheckBox onClick={handleToggle}>{plan.isCompleted ? <CircleCheckSvg /> : <CircleCheckBackSvg />}</CheckBox>
+      <CheckBox onClick={handleToggle}>{plan.isCompleted === 1 ? <CircleCheckSvg /> : <CircleCheckBackSvg />}</CheckBox>
       <Text>{plan.description}</Text>
       <Remove onClick={handleRemoveTodo}>
         <Trash />
