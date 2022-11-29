@@ -36,3 +36,13 @@ export const createPlan = async (planInfo: Planner) => {
     }
   }
 };
+
+//플랜 삭제
+export const deletePlan = async (id: number) => {
+  try {
+    const { status } = await axiosInstance.delete(`planner/${id}`);
+    return status;
+  } catch (err) {
+    console.log(err);
+  }
+};

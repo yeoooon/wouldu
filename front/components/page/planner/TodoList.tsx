@@ -28,7 +28,13 @@ const TodoList = () => {
         <p>오늘의 할일</p>
       </TitleBox>
       {todos?.map(todo => (
-        <TodoItem key={todo.id} id={todo.id} description={todo.description} isCompleted={todo.isCompleted} />
+        <TodoItem
+          key={todo.id}
+          id={todo.id}
+          description={todo.description}
+          isCompleted={todo.isCompleted}
+          date={todo.date}
+        />
       ))}
     </ListContainer>
   );
