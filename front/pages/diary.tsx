@@ -5,6 +5,9 @@ import DiarySidebar from "@components/page/diary/DiarySidebar";
 import { Container, Wrapper, Box } from "../styles/layout";
 import { getDiaries } from "../services/api/diary";
 
+import withGetServerSideProps from "../hocs/withGetServersideProps";
+import { GetServerSidePropsContext } from "next";
+
 const Diary = () => {
   return (
     <DiaryWrapper>
@@ -18,15 +21,27 @@ const Diary = () => {
   );
 }
 
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['diaries'], getDiaries);
+  
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+});
+
 // export async function getStaticProps() {
 //   const queryClient = new QueryClient();
 
-//   await queryClient.prefetchQuery('diary', () => getDiaries());
+//   await queryClient.prefetchQuery(['diaries'], getDiaries);
   
 //   return {
 //     props: {
 //       dehydratedState: dehydrate(queryClient),
-//     }
+//     },
 //   }
 // }
 
