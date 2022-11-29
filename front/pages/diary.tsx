@@ -21,15 +21,9 @@ const Diary = () => {
   );
 }
 
-export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery(['diaries'], getDiaries);
-  
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {  
   return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
+    props: {},
   };
 });
 
