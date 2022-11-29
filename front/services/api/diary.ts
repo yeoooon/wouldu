@@ -14,9 +14,10 @@ export const postDiary = async (diaryData: Object) => {
 }
 
 // 월 별 다이어리 데이터 가져오기
-export const getDiaries = async (date: string) => {
+export const getDiaries = async (month: string) => {
   try {
-    // const { data } = await axiosInstance.get(url);
+    const { data } = await axiosInstance.get(`diary/monthly/${month}`);
+    return data;
   } catch (err) {
     console.log(err);
   }
@@ -25,7 +26,8 @@ export const getDiaries = async (date: string) => {
 // 특정 날짜 하루의 다이어리 가져오기
 export const getDiary = async (date: string) => {
   try {
-    // const { data } = await axiosInstance.get(url);
+    const { data } = await axiosInstance.get(`diary/daily/${date}`);
+    return data;
   } catch (err) {
     console.log(err);
   }

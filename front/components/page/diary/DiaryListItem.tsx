@@ -7,15 +7,15 @@ import { getDiaries } from '../../../services/api/diary';
 import { Diary } from '../../../type/diary';
 
 const DiaryListItem = () => {
-  const [diaryList, setDiaryList] = useState<void | undefined>(undefined);
+  const [diaryList, setDiaryList] = useState<Diary[] | undefined>(undefined);
 
-  const dateToGetDiaries = '2022-11';
+  const month = '2022-11';
 
-  const { data: diaryData } = useQuery(['diary', dateToGetDiaries], () => getDiaries(dateToGetDiaries));
+  const { data } = useQuery(["diaries", month], () => getDiaries(month));
 
   useEffect(() => {
-    setDiaryList(diaryData);
-  }, [diaryData]);
+    setDiaryList(data);
+  }, [data]);
 
   return (
     <>
