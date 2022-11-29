@@ -23,8 +23,15 @@ export class DiaryService {
     return this.diaryDAO.createOne(diary);
   }
 
-  async findDiary(currentUserId: string) {
+  async findDiaryList(currentUserId: string) {
     const friendId = await this.friendService.findFriendId(currentUserId);
     return this.diaryDAO.getMany({ where: { friendId: friendId } });
+  }
+
+  async findDiaryByDate(currentUserId: string, date: string) {
+    const friendId = await this.friendService.findFriendId(currentUserId);
+    return this.diaryDAO.getMany({
+      where: { friendId: friendId, date: new Date(date) },
+    });
   }
 }
