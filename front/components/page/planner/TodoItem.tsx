@@ -1,4 +1,4 @@
-import { checkPlan, deletePlan } from "@services/api/planner";
+import { checkPlan, deletePlan, updatePlan } from "@services/api/planner";
 import { Box } from "@styles/layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
@@ -14,15 +14,20 @@ const TodoItem = (plan: Planner) => {
 
   const deleteMutation = useMutation(() => deletePlan(plan?.id!), {
     onSuccess: () => {
-      console.log("delete onSuccess");
       queryClient.invalidateQueries(["plan", plan?.date]);
     },
   });
 
   const checkMutation = useMutation(() => checkPlan(plan?.id!), {
     onSuccess: () => {
-      console.log("list check onSuccess");
       queryClient.invalidateQueries(["plan", plan?.date]);
+    },
+  });
+
+  const updateMutation = useMutation((data: Planner) => updatePlan(data), {
+    onSuccess: (dat1, data2) => {
+      console.log(dat1, data2);
+      queryClient.invalidateQueries(["plan", plan.date]);
     },
   });
 
@@ -34,17 +39,29 @@ const TodoItem = (plan: Planner) => {
   const handleRemoveTodo = async () => {
     deleteMutation.mutate();
   };
+  const handleUpdateTodo = () => {
+    updateMutation.mutate({ ...plan, description: "제발되라!" });
+  };
 
   return (
     <TodoBox className={plan.isCompleted ? "finish" : ""}>
       <CheckBox onClick={handleToggle}>{plan.isCompleted === 1 ? <CircleCheckSvg /> : <CircleCheckBackSvg />}</CheckBox>
       <Text>{plan.description}</Text>
-      <Remove onClick={handleRemoveTodo}>
-        <Trash />
-      </Remove>
+      <ButtonBox>
+        <button onClick={handleUpdateTodo}>수정</button>
+        <button onClick={handleRemoveTodo}>삭제</button>
+      </ButtonBox>
     </TodoBox>
   );
 };
+
+const ButtonBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  display: none;
+`;
 
 const Remove = styled.div`
   display: flex;
