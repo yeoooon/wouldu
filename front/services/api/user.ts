@@ -22,6 +22,7 @@ export const requestLogin = async (loginInfo: UserLoginForm) => {
   try {
     const { data } = await axiosInstance.post("auth/login", loginInfo);
     sessionStorage.setItem("userToken", data.accessToken);
+    sessionStorage.setItem("userId", data.id);
     return data;
   } catch (err) {
     console.log("requestLgoin error!!!!!", err);
