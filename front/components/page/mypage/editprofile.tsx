@@ -97,6 +97,10 @@ const InputArea = styled.div`
   align-items: center;
 
   gap: 10px;
+
+  label {
+    margin: 0.5em;
+  }
 `
 
 const Email = styled.div`

@@ -67,6 +67,7 @@ const ButtonArea = styled.div`
 
   button {
     font-size: ${props => props.theme.fontSize.textMain};
+    padding: 0.6em;
   }
 `;
 

@@ -19,7 +19,7 @@ const DiarySidebar = () => {
       <MonthBox>
         2022년 11월
       </MonthBox>
-      <button onClick={getTodayMain}>오늘 일기 쓰기</button>
+      {/* <button onClick={getTodayMain}>오늘 일기 쓰기</button> */}
       <DiaryListItem />
     </SidebarContainer>
   );

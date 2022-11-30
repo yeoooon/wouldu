@@ -28,7 +28,7 @@ const DiaryListItem = () => {
           <DiaryListDay diary={diary} />
           <Text>{diary.content.length < 30 ? diary.content : diary.content.substring(0, 30) + "..."}</Text>
         </ListItemBox>
-      )) : <div>작성된 일기가 없습니다.</div>}
+      )) : <TextBox>작성된 일기가 없습니다.</TextBox>}
     </>
   )
 }
@@ -51,6 +51,9 @@ const ListItemBox = styled(Box)`
 const Text = styled.p`
   font-size: ${props => props.theme.fontSize.textSm};
   padding: 0.5em;
+`;
+const TextBox = styled(Box)`
+  padding: 1.5em;
 `;
 
 export default DiaryListItem;
