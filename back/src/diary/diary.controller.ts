@@ -8,10 +8,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DiaryService } from './diary.service';
 import { CreateDiaryDto } from './dto/create-diary.dto';
 import { Request } from 'express';
+import { ReadDiaryDto } from './dto/read-diary.dto';
 
 @Controller('diary')
 @ApiTags('교환일기 API')
@@ -32,20 +33,18 @@ export class DiaryController {
   @Get()
   @ApiOperation({
     summary: '교환일기 목록 조회 API',
-    description: '교환일기 목록을 조회한다.',
+    description:
+      '교환일기 목록을 조회한다. period에 아무 것도 입력하지 않으면 전체 조회, daily를 입력하면 일별 조회, monthly를 입력하면 월별 조회',
   })
   @UseGuards(AuthGuard('jwt'))
-  findDiaryList(@Req() request: Request) {
+  findDiaryList(@Req() request: Request, @Query() readDiaryDTO: ReadDiaryDto) {
+    const { period, date, month } = readDiaryDTO;
+    if (period === 'daily') {
+      return this.diaryService.findDiaryByDate(request.user['userId'], date);
+    }
+    if (period === 'monthly') {
+      return this.diaryService.findDiaryByMonth(request.user['userId'], month);
+    }
     return this.diaryService.findDiaryList(request.user['userId']);
-  }
-
-  @Get('/:date')
-  @ApiOperation({
-    summary: '날짜로 교환일기 조회 API',
-    description: '날짜를 입력하여 그 날 작성된 교환일기를 조회한다.',
-  })
-  @UseGuards(AuthGuard('jwt'))
-  findDiaryByDate(@Req() request: Request, @Query('date') date: string) {
-    return this.diaryService.findDiaryByDate(request.user['userId'], date);
   }
 }

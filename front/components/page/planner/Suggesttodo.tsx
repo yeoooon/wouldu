@@ -11,7 +11,7 @@ const Suggesttodo = () => {
         <Check />
         <p>오늘의 추천 활동</p>
       </TitleBox>
-      <TodoItem description="감정분석을 통한 해야할일" isCompleted={false} />
+      <TodoItem description="감정분석을 통한 해야할일" isCompleted={0} />
     </SuggestContainer>
   );
 };

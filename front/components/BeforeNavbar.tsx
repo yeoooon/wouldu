@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
+import { colors } from "@styles/common_style";
 
 export default function BeforeNavBar() {
   return (
@@ -24,7 +25,7 @@ const Header = styled.div`
   max-width: 100vw;
   z-index: 999;
   height: 64px;
-  background-color: ${props => props.theme.color.background};
+  background-color: ${colors.white};
   font-size: ${props => props.theme.fontSize.textLg};
 
   nav {

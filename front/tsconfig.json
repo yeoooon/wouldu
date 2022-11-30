@@ -21,7 +21,8 @@
       "@styles/*": ["./styles/*"],
       "@recoil/*": ["./recoil/*"],
       "@services/*": ["./services/*"],
-      "@hocs/*": ["./hocs/*"]
+      "@hocs/*": ["./hocs/*"],
+      "@hooks/*": ["./hooks/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

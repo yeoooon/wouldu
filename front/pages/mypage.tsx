@@ -1,15 +1,14 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
 import styled from "styled-components";
 import { Wrapper, Container, Box } from "../styles/layout";
 
-import MypageTab from "../components/page/mypage/MypageTab";
-import MyInfo from "../components/page/mypage/MyInfo";
-import EditProfile from "../components/page/mypage/EditProfile";
-import EditConnection from "../components/page/mypage/EditConnection";
-import ChangePassword from "../components/page/mypage/ChangePassword";
-
-import ModalBase from "../components/page/mypage/modal/ModalBase";
-import withGetServerSideProps from "../hocs/withGetServersideProps";
+import MypageTab from "@components/page/mypage/mypagetab";
+import MyInfo from "@components/page/mypage/myinfo";
+import EditConnection from "@components/page/mypage/EditConnection";
+import EditProfile from "@components/page/mypage/editprofile";
+import ChangePassword from "@components/page/mypage/changepassword";
+import ModalBase from "@components/page/mypage/modal/ModalBase";
+import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";
 
 export type pageSelect = "mypage" | "profile" | "connect";

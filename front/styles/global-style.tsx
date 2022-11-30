@@ -32,10 +32,11 @@ export const GlobalStyle = createGlobalStyle`
   textarea, input {
     border: 1px solid ${props => props.theme.color.border};
     color: ${props => props.theme.color.fontMain};
+    background-color: ${props => props.theme.color.nav};
+    padding: 0.3em 0.5em;
     ::placeholder {
       color: ${props => props.theme.color.fontSub};
     }
-    padding: 0.3em 0.5em;
   }
 
   a {

@@ -10,8 +10,10 @@ import About from "./page/about/About";
 
 export interface LayoutProps {
   children: React.ReactNode;
+  darkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export default function Layout({ children }: LayoutProps) {
+export default function Layout({ children, darkMode, setDarkMode }: LayoutProps) {
   const isLoginStateAtom = useRecoilValue(loginStateSelector);
   const user = useRecoilValue(userAtom);
   const [isLoginState, setIsLoginState] = useState<boolean>(false);
@@ -32,7 +34,7 @@ export default function Layout({ children }: LayoutProps) {
     <>
       {isLoginState && (
         <LayoutWrapper>
-          <AfterNavbar />
+          <AfterNavbar darkMode={darkMode} setDarkMode={setDarkMode} />
           {/* <div>로그인된상태</div> */}
           <div>{children}</div>
         </LayoutWrapper>

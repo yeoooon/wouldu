@@ -2,8 +2,6 @@ import { Planner } from "@type/planner";
 import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 
-//백엔드랑 맞춰봐야야함,,
-
 //전체 날짜의 일정
 export const getPlans = async (userId: string) => {
   try {
@@ -34,5 +32,41 @@ export const createPlan = async (planInfo: Planner) => {
     if (axios.isAxiosError(err) && err?.response?.status === 422) {
       return err.response.status;
     }
+  }
+};
+
+//플랜 삭제
+export const deletePlan = async (id: number) => {
+  try {
+    const { status } = await axiosInstance.delete(`planner/${id}`);
+    return status;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//플랜수정
+export const updatePlan = async (planInfo: Planner) => {
+  const { id, description } = planInfo;
+  console.log("updatePlan api호출! ", planInfo);
+  try {
+    const { status } = await axiosInstance.put(`planner/${id}`, { description });
+    return status;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err?.response?.status) {
+      console.log("err");
+      return err.response.status;
+    }
+  }
+};
+
+//플랜 완료상태 수정
+export const checkPlan = async (id: number) => {
+  try {
+    // console.log("checkPlan");
+    const { status } = await axiosInstance.patch(`planner/${id}`);
+    return status;
+  } catch (err) {
+    console.log(err);
   }
 };

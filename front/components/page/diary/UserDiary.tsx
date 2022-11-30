@@ -4,28 +4,28 @@ import React, { useState } from 'react'
 import { useRecoilState } from 'recoil';
 import { diarywriteState } from '../../../recoil/diary';
 import styled from 'styled-components';
+import { Diary } from '@type/diary';
 
-export const testContent = {
-  user: "딩딩",
-  content: "일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, perferendis at iste facilis non, rerum recusandae, repudiandae accusantium ratione molestiae provident autem a inventore porro! Nesciunt ipsa consequatur temporibus debitis.일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, perferendis at iste facilis non, rerum recusandae, repudiandae accusantium ratione molestiae provident autem a inventore porro! Nesciunt ipsa consequatur temporibus debitis.일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit."
-}
-
-const UserDiary = () => {
+const UserDiary = ({ diaryList }: any) => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
-  const [isUserWritten, setIsUserWritten] = useState(false);
 
+  const isUserDiary = (element: Diary) => {
+    if (element.authorId === sessionStorage.getItem("userId")) {
+      return true;
+    }
+  }
   const handleToggle = () => setIsTextareaOpen(!isTextareaOpen);
 
   return (
     <>
-    {isUserWritten ? 
+    {diaryList && diaryList.find(isUserDiary)? 
       <DiaryBox>
         <ProfileBox>
           <Image src="/icon/user.svg" alt="user" width={30} height={30} />
-          <UserName>{testContent.user}</UserName>
+          <UserName>작성자 닉네임</UserName>
         </ProfileBox>
         <DiaryContent>
-          {testContent.content}
+          {diaryList.find(isUserDiary).content}
         </DiaryContent>
       </DiaryBox>
       :

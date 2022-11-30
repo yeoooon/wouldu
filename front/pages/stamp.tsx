@@ -3,12 +3,12 @@ import EmotionCalendar from "@components/page/stamp/EmotionCalendar";
 import EmotionGraph from "@components/page/stamp/EmotionGraph";
 import StampDiary from "@components/page/stamp/StampDiary";
 import StampTodoList from "@components/page/stamp/StampTodoList";
+import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { GetServerSidePropsContext } from "next";
 import { useState } from "react";
 import { Calendar } from "react-calendar";
 import styled from "styled-components";
-import withGetServerSideProps from "../hocs/withGetServersideProps";
 
 const Stamp = () => {
   const [openStamp, setOpenStamp] = useState(false);

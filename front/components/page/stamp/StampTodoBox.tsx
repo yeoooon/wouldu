@@ -1,13 +1,10 @@
-import { Box } from '@styles/layout';
-import React from 'react'
-import styled from 'styled-components'
+import { Box } from "@styles/layout";
+import { Planner } from "@type/planner";
+import React from "react";
+import styled from "styled-components";
 
-const StampTodoBox = () => {
-  return (
-    <TodoBox>
-      테스트테스트
-    </TodoBox>
-  )
+const StampTodoBox = (plan: Planner) => {
+  return <TodoBox>{plan.description}</TodoBox>;
 };
 
 const TodoBox = styled(Box)`

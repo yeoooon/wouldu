@@ -6,22 +6,26 @@ import { useQuery } from '@tanstack/react-query';
 import { getDiaries } from '../../../services/api/diary';
 import { Diary } from '../../../type/diary';
 
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { clickedDiaryDateState, clickedDiaryMonthState } from '@recoil/diary';
+
 const DiaryListItem = () => {
-  const [diaryList, setDiaryList] = useState<void | undefined>(undefined);
+  const [diaryList, setDiaryList] = useState<Diary[] | undefined>(undefined);
+  const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
 
-  const dateToGetDiaries = '2022-11';
+  const clickedMonth = useRecoilValue(clickedDiaryMonthState);
 
-  const { data: diaryData } = useQuery(['diary', dateToGetDiaries], () => getDiaries(dateToGetDiaries));
+  const { data } = useQuery(["diaries", clickedMonth], () => getDiaries(clickedMonth));
 
   useEffect(() => {
-    setDiaryList(diaryData);
-  }, [diaryData]);
+    setDiaryList(data);
+  }, [data]);
 
   return (
     <>
-      {diaryList? diaryList.map(diary => (
-        <ListItemBox key={diary.id}>
-          <DiaryListDay content={diary.content} />
+      {diaryList && diaryList.length > 0? diaryList.map(diary => (
+        <ListItemBox key={diary.id} onClick={() => setClickedDiaryDate(diary.date)}>
+          <DiaryListDay diary={diary} />
           <Text>{diary.content.length < 30 ? diary.content : diary.content.substring(0, 30) + "..."}</Text>
         </ListItemBox>
       )) : <div>작성된 일기가 없습니다.</div>}

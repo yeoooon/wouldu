@@ -39,7 +39,6 @@ const withGetServerSideProps = (getServerSideProps: GetServerSideProps) => {
     console.log({ pagePath });
     return await getServerSideProps(context).then((res: { [key: string]: any }) => {
       console.log(res.props);
-      // context.res.statusCode = 500;
       return {
         ...res,
         props: {

@@ -34,7 +34,6 @@ const TodoCreate = () => {
 
   const updateMutation = useMutation((data: Planner) => createPlan(data), {
     onSuccess: () => {
-      console.log("update onSuccess");
       queryClient.invalidateQueries(["plan", day]);
     },
   });
