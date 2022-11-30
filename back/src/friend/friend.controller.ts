@@ -13,6 +13,7 @@ import { FriendService } from './friend.service';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { SendFriendRequestDTO } from './dto/send-friend-request.dto';
+import { UpdateFriendRequestDTO } from './dto/update-friend-request.dto';
 
 @Controller('friend')
 @ApiTags('친구 API')
@@ -34,17 +35,32 @@ export class FriendController {
     return this.friendService.sendFriendRequest(request.user['userId'], code);
   }
 
+  @Get()
+  @ApiOperation({
+    summary: '친구 확인 API',
+    description: '현재 친구를 확인한다.',
+  })
+  @UseGuards(AuthGuard('jwt'))
+  findFriend(@Req() request: Request) {
+    return this.friendService.findFriend(request.user['userId']);
+  }
+
   @Get('/request')
   @ApiOperation({
     summary: '친구 요청 확인 API',
     description: '친구 요청 받은 목록을 확인한다.',
   })
   @UseGuards(AuthGuard('jwt'))
-  findFriendRequest(@Req() request: Request) {
-    return this.friendService.findFriendRequest(request.user['userId']);
+  findFriendRequest(@Req() request: Request, @Query('side') side: string) {
+    if (side === 'receive')
+      return this.friendService.findReceivedFriendRequest(
+        request.user['userId'],
+      );
+    if (side === 'send')
+      return this.friendService.findSendedFriendRequest(request.user['userId']);
   }
 
-  @Put('/request/:id')
+  @Put('/request/accept')
   @ApiOperation({
     summary: '친구 수락 API',
     description: '친구 요청을 수락한다.',
@@ -52,9 +68,27 @@ export class FriendController {
   @UseGuards(AuthGuard('jwt'))
   acceptFriendRequest(
     @Req() request: Request,
-    @Query('requestId') requestId: number,
+    @Body() updateFriendRequestDTO: UpdateFriendRequestDTO,
   ) {
+    const { requestId } = updateFriendRequestDTO;
     return this.friendService.acceptFriendRequest(
+      request.user['userId'],
+      requestId,
+    );
+  }
+
+  @Put('/request/reject')
+  @ApiOperation({
+    summary: '친구 거절 API',
+    description: '친구 요청을 거절한다.',
+  })
+  @UseGuards(AuthGuard('jwt'))
+  rejectFriendRequest(
+    @Req() request: Request,
+    @Body() updateFriendRequestDTO: UpdateFriendRequestDTO,
+  ) {
+    const { requestId } = updateFriendRequestDTO;
+    return this.friendService.rejectFriendRequest(
       request.user['userId'],
       requestId,
     );
