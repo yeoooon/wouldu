@@ -6,11 +6,6 @@ import { diarywriteState } from '../../../recoil/diary';
 import styled from 'styled-components';
 import { Diary } from '@type/diary';
 
-export const testContent = {
-  user: "딩딩",
-  content: "일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, perferendis at iste facilis non, rerum recusandae, repudiandae accusantium ratione molestiae provident autem a inventore porro! Nesciunt ipsa consequatur temporibus debitis.일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, perferendis at iste facilis non, rerum recusandae, repudiandae accusantium ratione molestiae provident autem a inventore porro! Nesciunt ipsa consequatur temporibus debitis.일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit."
-}
-
 const UserDiary = ({ diaryList }: any) => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
 
@@ -21,18 +16,16 @@ const UserDiary = ({ diaryList }: any) => {
   }
   const handleToggle = () => setIsTextareaOpen(!isTextareaOpen);
 
-  const userDiary = diaryList.find(isUserDiary);
-
   return (
     <>
-    {diaryList && userDiary? 
+    {diaryList && diaryList.find(isUserDiary)? 
       <DiaryBox>
         <ProfileBox>
           <Image src="/icon/user.svg" alt="user" width={30} height={30} />
           <UserName>작성자 닉네임</UserName>
         </ProfileBox>
         <DiaryContent>
-          {userDiary.content}
+          {diaryList.find(isUserDiary).content}
         </DiaryContent>
       </DiaryBox>
       :

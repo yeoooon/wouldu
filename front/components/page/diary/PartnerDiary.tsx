@@ -18,18 +18,16 @@ const PartnerDiary = ({ diaryList }: any) => {
     }
   }
 
-  const partnerDiary = diaryList.find(isPartnerDiary);
-
   return (
     <>
-    {diaryList && partnerDiary? 
+    {diaryList && diaryList.find(isPartnerDiary)? 
       <DiaryBox>
         <ProfileBox>
           <Image src="/icon/user.svg" alt="user" width={30} height={30} />
           <UserName>파트너 닉네임</UserName>
         </ProfileBox>
         <DiaryContent>
-          {partnerDiary.content}
+          {diaryList.find(isPartnerDiary).content}
         </DiaryContent>
       </DiaryBox>
       :
