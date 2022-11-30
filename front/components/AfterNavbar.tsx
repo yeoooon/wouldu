@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "/public/icon/logoblack.svg";
+import LogoLight from "/public/icon/logoblack.svg";
+import LogoDark from "/public/icon/logowhite.svg";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
@@ -14,7 +15,7 @@ interface LayoutProps {
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function AfterNavBar({ darkMode, setDarkMode }: LayoutProps) {
+const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const router = useRouter();
   const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
@@ -48,7 +49,7 @@ export default function AfterNavBar({ darkMode, setDarkMode }: LayoutProps) {
   return (
     <Nav>
       <LogoBox>
-        <Logo width={180} height={60} />
+        {darkMode ? <LogoDark /> : <LogoLight />}
       </LogoBox>
       <UserBox>
         <AlarmButton>
@@ -57,9 +58,11 @@ export default function AfterNavBar({ darkMode, setDarkMode }: LayoutProps) {
         <Image src="/icon/user.svg" alt="user" width={60} height={60} />
         <TextBox1>{`${user?.nickname} 님`}</TextBox1>
       </UserBox>
-      <button id="themeBtn" onClick={toggleTheme}>
-        Change theme
-      </button>
+      <SwitchBox>
+        <input type="checkbox" onChange={toggleTheme} />
+        <RoundSlider className="slider"></RoundSlider>
+      </SwitchBox>
+
       {/* navigation 구현 */}
       <NavLink>
         {navMenus.map((menu, index) => (
@@ -85,7 +88,7 @@ const Nav = styled(Container)`
   border-radius: 0;
   box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
 `;
-const LogoBox = styled(Logo)`
+const LogoBox = styled(Box)`
   width: 100%;
   overflow: visible;
 `;
@@ -122,7 +125,7 @@ const LinkButton = styled.div`
 const UserBox = styled(Container)`
   flex-direction: column;
   width: 35%;
-  margin: 3em 0;
+  margin: 1em 0;
 `;
 const AlarmButton = styled(Box)`
   width: 100%;
@@ -133,6 +136,62 @@ const TextBox1 = styled(Box)`
   margin-top: 20px;
   font-size: ${props => props.theme.fontSize.textMain};
 `;
-const TextBox2 = styled(TextBox1)`
-  font-size: ${props => props.theme.fontSize.textSm};
+
+const SwitchBox = styled.label`
+  position: relative;
+  align-items: center;
+  display: inline-block;
+  cursor: pointer;
+  width: 45px;
+  height: 22px;
+
+  input {
+    content: "";
+    position: absolute;
+    left: 0;
+    border-radius: 50%;
+    transform: scale(0.8);
+    background-color: gray;
+    transition: left 250ms linear;
+  }
+  input:checked + .slider {
+    background-color: ${props => props.theme.color.button};
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(22px);
+    -ms-transform: translateX(22px);
+    transform: translateX(22px);
+  }
 `;
+const RoundSlider = styled.span`
+  border-radius: 30px;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+
+  &:before {
+  border-radius: 50%;
+  position: absolute;
+  content: "";
+  height: 17px;
+  width: 17px;
+  left: 3px;
+  bottom: 2.5px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  }
+`;
+
+export default AfterNavBar;
