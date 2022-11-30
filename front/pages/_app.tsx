@@ -28,10 +28,10 @@ export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
       localStorage.theme === "dark" ||
       (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
     ) {
-      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
       setDarkMode(true);
     } else {
-      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
       setDarkMode(false);
     }
   };
