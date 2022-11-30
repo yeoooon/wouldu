@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
 import styled from "styled-components";
 import { Wrapper, Container, Box } from "../styles/layout";
 

@@ -5,19 +5,21 @@ import { Planner } from "@type/planner";
 import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { getDayPlan } from "../../../services/api/planner";
-import { formatDate } from "../../../services/utils/formatDate";
+import { getDayPlan } from "@services/api/planner";
+import { formatDate } from "@services/utils/formatDate";
 import TodoItem from "./TodoItem";
 import Check from "/public/icon/check.svg";
+import usePlanQuery from "@hooks/usePlanQuery";
 
 const TodoList = () => {
   const [todos, setTodos] = useState<Planner[] | null>(null);
 
   const recoilDay = useRecoilValue<Date>(dayAtom);
   const day = formatDate(recoilDay);
-  const { data: planData } = useQuery(["plan", day], () => getDayPlan(day));
+  const { data: planData } = usePlanQuery(day);
 
   useEffect(() => {
+    console.log(planData);
     setTodos(planData);
   }, [planData]);
 
