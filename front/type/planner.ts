@@ -4,4 +4,5 @@ export interface Planner {
   date?: string;
   priority?: number;
   isCompleted?: number;
+  isRecommended?: number;
 }

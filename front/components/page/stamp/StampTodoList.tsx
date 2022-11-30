@@ -1,11 +1,24 @@
-import { Box } from '@styles/layout';
-import React from 'react';
-import styled from 'styled-components';
-import StampTodoBox from './StampTodoBox';
-import Check from '/public/icon/check.svg';
+import { Box } from "@styles/layout";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import StampTodoBox from "./StampTodoBox";
+import Check from "/public/icon/check.svg";
 import Link from "next/link";
+import { Planner } from "@type/planner";
+import { formatDate } from "@services/utils/formatDate";
+import usePlanQuery from "@hooks/usePlanQuery";
+import StampTodoNone from "./StampTodoNone";
 
 const StampTodoList = () => {
+  const [todos, setTodos] = useState<Planner[] | null>(null);
+  const today = formatDate(new Date());
+  const { data: planData } = usePlanQuery(today);
+
+  useEffect(() => {
+    console.log(planData);
+    setTodos(planData);
+  }, [planData]);
+
   return (
     <StampTodoContainer>
       <HeaderBox>
@@ -13,20 +26,28 @@ const StampTodoList = () => {
           <CheckSvg />
           <Title>오늘의 할일</Title>
         </TitleBox>
-        <Link href="/planner">
-          <PlannerLink>
-            + 더보기
-          </PlannerLink>
-        </Link>
+        {todos?.length === 0 || (
+          <Link href="/planner">
+            <PlannerLink>+ 더보기</PlannerLink>
+          </Link>
+        )}
       </HeaderBox>
       <ContentBox>
-        <StampTodoBox />
-        <StampTodoBox />
-        <StampTodoBox />
-        <StampTodoBox />
+        {todos?.length === 0 ? (
+          <StampTodoNone />
+        ) : (
+          todos?.map(todo => (
+            <StampTodoBox
+              key={todo.id}
+              description={todo.description}
+              isCompleted={todo.isCompleted}
+              isRecommended={todo.isRecommended}
+            />
+          ))
+        )}
       </ContentBox>
     </StampTodoContainer>
-  )
+  );
 };
 
 const StampTodoContainer = styled.div`
@@ -53,7 +74,7 @@ const Title = styled.p``;
 const PlannerLink = styled.button`
   border-radius: ${props => props.theme.borderSize.borderMd};
   font-size: ${props => props.theme.fontSize.textXs};
-  background-color: ${props =>props.theme.color.purpleBox};
+  background-color: ${props => props.theme.color.purpleBox};
   color: ${props => props.theme.color.fontMain};
   align-self: center;
 `;
