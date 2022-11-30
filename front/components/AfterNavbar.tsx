@@ -58,10 +58,12 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
         <Image src="/icon/user.svg" alt="user" width={60} height={60} />
         <TextBox1>{`${user?.nickname} 님`}</TextBox1>
       </UserBox>
-      <SwitchBox>
-        <input type="checkbox" onChange={toggleTheme} />
-        <RoundSlider className="slider"></RoundSlider>
-      </SwitchBox>
+      <DarkModeBox>
+        <SwitchBox>
+          <input type="checkbox" onChange={toggleTheme} />
+          <RoundSlider className="slider"></RoundSlider>
+        </SwitchBox>
+      </DarkModeBox>
 
       {/* navigation 구현 */}
       <NavLink>
@@ -79,6 +81,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
 }
 
 const Nav = styled(Container)`
+  position: relative;
   flex-direction: column;
   width: 240px;
   height: 100vh;
@@ -137,13 +140,17 @@ const TextBox1 = styled(Box)`
   font-size: ${props => props.theme.fontSize.textMain};
 `;
 
+const DarkModeBox = styled(Box)`
+  overflow: visible;
+`;
+
 const SwitchBox = styled.label`
   position: relative;
   align-items: center;
   display: inline-block;
   cursor: pointer;
-  width: 45px;
-  height: 22px;
+  width: 2.8em;
+  height: 1.4em;
 
   input {
     content: "";
@@ -159,13 +166,13 @@ const SwitchBox = styled.label`
   }
 
   input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px ${props => props.theme.color.button};
   }
 
   input:checked + .slider:before {
-    -webkit-transform: translateX(22px);
-    -ms-transform: translateX(22px);
-    transform: translateX(22px);
+    -webkit-transform: translateX(1.4em);
+    -ms-transform: translateX(1.4em);
+    transform: translateX(1.4em);
   }
 `;
 const RoundSlider = styled.span`
@@ -184,8 +191,8 @@ const RoundSlider = styled.span`
   border-radius: 50%;
   position: absolute;
   content: "";
-  height: 17px;
-  width: 17px;
+  height: 1.1em;
+  width: 1.1em;
   left: 3px;
   bottom: 2.5px;
   background-color: white;
