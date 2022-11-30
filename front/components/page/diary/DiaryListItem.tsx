@@ -7,15 +7,15 @@ import { getDiaries } from '../../../services/api/diary';
 import { Diary } from '../../../type/diary';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { clickedDiaryDateState } from '@recoil/diary';
+import { clickedDiaryDateState, clickedDiaryMonthState } from '@recoil/diary';
 
 const DiaryListItem = () => {
   const [diaryList, setDiaryList] = useState<Diary[] | undefined>(undefined);
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
 
-  const month = '2022-11';
+  const clickedMonth = useRecoilValue(clickedDiaryMonthState);
 
-  const { data } = useQuery(["diaries", month], () => getDiaries(month));
+  const { data } = useQuery(["diaries", clickedMonth], () => getDiaries(clickedMonth));
 
   useEffect(() => {
     setDiaryList(data);

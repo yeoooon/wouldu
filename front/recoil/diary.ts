@@ -10,3 +10,13 @@ export const clickedDiaryDateState = atom({
   key: "clickedDiaryDate",
   default: String(formatDate(new Date())),
 })
+
+export const clickedDiaryMonthState = atom({
+  key: "clickedDiaryMonth",
+  default: String(formatDate(new Date())).substring(0, 7),
+})
+
+export const today = atom({
+  key: "today",
+  default: String(formatDate(new Date())),
+})
