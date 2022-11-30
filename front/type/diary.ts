@@ -1,7 +1,12 @@
 export interface Diary {
   id?: string;
   friendId?: string;
-  writerId?: string;
+  authorId?: string;
+  nickname?: string;
   content: string;
-  date?: string;
+  date?: any;
+}
+
+export interface DiaryProps {
+  diary: Diary;
 }
