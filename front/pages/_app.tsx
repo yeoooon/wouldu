@@ -5,7 +5,7 @@ import Seo, { SeoPageProps } from "../components/Seo";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "../styles/global-style";
 import { darkTheme, lightTheme } from "../styles/theme";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Error from "@components/Error";
 import { RecoilRoot, useRecoilValue } from "recoil";
@@ -13,20 +13,38 @@ import { loginStateSelector } from "../recoil/user";
 import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
-  const [isLightTheme, setIsLightTheme] = useState(true);
+  const [isLightTheme, setIsLightTheme] = useState(false);
   const { pageTitle, pageDesc } = pageProps;
 
   const [queryClient] = useState(() => new QueryClient());
 
+  const [darkMode, setDarkMode] = useState<boolean>(false);
+  useEffect(() => {
+    themeCheck();
+  }, [darkMode]);
+
+  const themeCheck = () => {
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+      setDarkMode(true);
+    } else {
+      document.documentElement.classList.remove("dark");
+      setDarkMode(false);
+    }
+  };
+
   return (
-    <ThemeProvider theme={isLightTheme ? lightTheme : darkTheme}>
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
             <GlobalStyle />
             <ErrorBoundary FallbackComponent={Error}>
               <Suspense fallback={<div>loading...</div>}>
-                <Layout>
+                <Layout darkMode={darkMode} setDarkMode={setDarkMode}>
                   <Seo pageTitle={pageTitle} pageDesc={pageDesc}></Seo>
                   <Component {...pageProps} />
                 </Layout>

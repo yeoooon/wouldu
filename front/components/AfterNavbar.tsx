@@ -9,7 +9,12 @@ import { userAtom } from "../recoil/user";
 import { useEffect, useState } from "react";
 import { User } from "@type/user";
 
-export default function AfterNavBar() {
+interface LayoutProps {
+  darkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function AfterNavBar({ darkMode, setDarkMode }: LayoutProps) {
   const router = useRouter();
   const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
@@ -20,6 +25,16 @@ export default function AfterNavBar() {
   useEffect(() => {
     setUser(userAtomData);
   }, []);
+
+  const toggleTheme = () => {
+    const theme = localStorage.getItem("theme");
+    if (theme) {
+      localStorage.setItem("theme", theme === "dark" ? "light" : "dark");
+    } else {
+      localStorage.setItem("theme", "dark");
+    }
+    setDarkMode(!darkMode);
+  };
 
   const onClickLogout = async () => {
     const result = confirm("로그아웃 하시겠어요?");
@@ -42,6 +57,9 @@ export default function AfterNavBar() {
         <Image src="/icon/user.svg" alt="user" width={60} height={60} />
         <TextBox1>{`${user?.nickname} 님`}</TextBox1>
       </UserBox>
+      <button id="themeBtn" onClick={toggleTheme}>
+        Change theme
+      </button>
       {/* navigation 구현 */}
       <NavLink>
         {navMenus.map((menu, index) => (
