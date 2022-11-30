@@ -3,5 +3,9 @@ export interface Diary {
   friendId?: string;
   writerId?: string;
   content: string;
-  date?: string;
+  date?: any;
+}
+
+export interface DiaryProps {
+  diary: Diary;
 }
