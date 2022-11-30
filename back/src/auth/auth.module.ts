@@ -11,6 +11,9 @@ import { LocalStrategy } from './local.strategy';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.development.env',
+    }),
     TypeOrmModule.forFeature([User]),
     PassportModule,
     JwtModule.register({
