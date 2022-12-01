@@ -1,8 +1,34 @@
 import { Box } from '@styles/layout';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
+import { today } from '@recoil/diary';
+import { getDiaries } from '@services/api/diary';
+import { useRecoilValue } from 'recoil';
+import { Diary } from '@type/diary';
 
 const StampDiaryContent = () => {
+  const [todayDiary, setTodayDiary] = useState<Diary[]>();
+
+  const todayDate = useRecoilValue(today);
+  const { data } = useQuery(["diaries", todayDate], () => getDiaries(todayDate));
+
+  const isUserDiary = (element: Diary) => {
+    if (element.authorId === sessionStorage.getItem("userId")) {
+      return true;
+    }
+  }
+
+  const isPartnerDiary = (element: Diary) => {
+    if (element.authorId !== sessionStorage.getItem("userId")) {
+      return true;
+    }
+  }
+
+  useEffect(() => {
+    setTodayDiary(data);
+  }, [data]);
+
   return (
     <ContentBox>
         <DiarySummary>
@@ -10,7 +36,7 @@ const StampDiaryContent = () => {
             나
           </Name>
           <Content>
-            content
+            {todayDiary && todayDiary.find(isUserDiary)? todayDiary.find(isUserDiary).content : <p>no content</p>}
           </Content>
         </DiarySummary>
         <PartnerDiarySummary>
@@ -18,7 +44,7 @@ const StampDiaryContent = () => {
             상대
           </PartnerName>
           <Content>
-            content
+            {todayDiary && todayDiary.find(isPartnerDiary)? todayDiary.find(isPartnerDiary).content : <p>아직 안 썼어요!</p>}
           </Content>
         </PartnerDiarySummary>
     </ContentBox>
