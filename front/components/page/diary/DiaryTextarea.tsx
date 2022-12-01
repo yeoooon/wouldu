@@ -50,19 +50,20 @@ const DiaryTextarea = () => {
 const TextContainer = styled(Container)`
   position: relative;
   flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
 `;
-const FormBox = styled(Box)`
+const FormBox = styled.form`
   width: 100%;
-  height: 100%;
+  height: 90%;
   flex-direction: column;
 `;
 const Textarea = styled.textarea`
   width: 100%;
   height: 100%;
   border: none;
-  padding: 1.5em;
+  padding: 15px;
   border-radius: 10px;
   outline: none;
   background-color: ${props => props.theme.color.purpleBox};
