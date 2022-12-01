@@ -8,6 +8,6 @@ export interface Planner {
 }
 
 export interface MonthPlan {
-  nowYear: string;
-  nowMonth: string;
+  nowYear: number;
+  nowMonth: number;
 }
