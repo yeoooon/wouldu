@@ -25,7 +25,7 @@ const DiaryTextarea = () => {
 
   return (
     <TextContainer>
-      <form onSubmit={handleSubmit(handlePostSubmit)}>
+      <FormBox onSubmit={handleSubmit(handlePostSubmit)}>
         <Textarea
           {...register("content", {
             required: true
@@ -42,7 +42,7 @@ const DiaryTextarea = () => {
             나의 일기 저장하기
           </SaveButton>
         </ButtonBox>
-      </form>
+      </FormBox>
     </TextContainer>
   )
 }
@@ -53,7 +53,11 @@ const TextContainer = styled(Container)`
   width: 100%;
   height: 100%;
 `;
-
+const FormBox = styled(Box)`
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+`;
 const Textarea = styled.textarea`
   width: 100%;
   height: 100%;

@@ -22,7 +22,7 @@ const MyInfo = () => {
       </InfoArea>
       <ButtonArea className="button">
         <button>비밀번호 수정</button>
-        <button>회원 탈퇴</button>
+        <p>회원 탈퇴</p>
       </ButtonArea>
     </ContentArea>
   );
@@ -67,6 +67,15 @@ const ButtonArea = styled.div`
 
   button {
     font-size: ${props => props.theme.fontSize.textMain};
+    padding: 0.6em;
+  }
+  p {
+    font-size: ${props => props.theme.fontSize.textXs};
+    color: ${props => props.theme.color.fontSub};
+    text-decoration: underline;
+    text-align: center;
+    margin-top: 7em;
+    cursor: pointer;
   }
 `;
 

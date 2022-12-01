@@ -1,3 +1,4 @@
+import { getCookie, removeCookie, setCookie } from "@services/utils/cookies";
 import { PasswordForm, UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
@@ -21,7 +22,7 @@ export const userJoin = async (joinInfo: UserJoinForm) => {
 export const requestLogin = async (loginInfo: UserLoginForm) => {
   try {
     const { data } = await axiosInstance.post("auth/login", loginInfo);
-    sessionStorage.setItem("userToken", data.accessToken);
+    setCookie("userToken", data?.accessToken);
     return data;
   } catch (err) {
     console.log("requestLgoin error!!!!!", err);
@@ -35,7 +36,7 @@ export const requestLogin = async (loginInfo: UserLoginForm) => {
 export const deleteUser = async () => {
   try {
     const { data } = await axiosInstance.put("user/delete");
-    sessionStorage.removeItem("userToken");
+    removeCookie("userToken");
     return data;
   } catch (err) {
     console.log(err);

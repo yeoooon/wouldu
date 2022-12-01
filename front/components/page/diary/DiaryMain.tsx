@@ -1,20 +1,39 @@
 import { Box, Container } from '@styles/layout';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { diarywriteState } from '../../../recoil/diary';
+import { diarywriteState, clickedDiaryDateState } from '../../../recoil/diary';
 import DiaryTextarea from './DiaryTextarea';
 import PartnerDiary from './PartnerDiary';
 import UserDiary from './UserDiary';
+import getDayString from '../../../services/utils/getDayString';
+import { getDiary } from '@services/api/diary';
+import { useQuery } from '@tanstack/react-query';
+import DiaryListDay from './DiaryListDay';
+import { Diary } from '@type/diary';
 
 const DiaryMain = () => {
   const isTextAreaOpen = useRecoilValue(diarywriteState);
+  const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
+  const [diaryList, setDiaryList] = useState([]);
+
+  const yyyymmdd = clickedDiaryDate.substring(0, 10);
+  const year = yyyymmdd.split('-')[0];
+  const month = yyyymmdd.split('-')[1];
+  const day = yyyymmdd.split('-')[2];
+  const dayStr = getDayString(clickedDiaryDate);
+
+  const { data } = useQuery(["diaries", yyyymmdd], () => getDiary(yyyymmdd));
+  
+  useEffect(() => {
+    setDiaryList(data);
+  }, [data])
 
   return (
     <MainContainer>
       <TextBox>
         <Title>딩딩이와 댕댕이의 일기장💘📖🖋</Title>
-        <Date>2022년 11월 1일 월요일</Date>
+        <Date>{year}년 {month}월 {day}일 {dayStr}요일</Date>
       </TextBox>
       {isTextAreaOpen ?
       <InsideContainer>
@@ -22,8 +41,8 @@ const DiaryMain = () => {
       </InsideContainer>
        : 
       <InsideContainer2>
-        <UserDiary />
-        <PartnerDiary />
+        <UserDiary diaryList={diaryList} />
+        <PartnerDiary diaryList={diaryList} />
       </InsideContainer2>
       }
     </MainContainer>

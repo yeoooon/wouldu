@@ -26,14 +26,9 @@ const Login = () => {
 
   const onLoginSubmit = async (data: UserLoginForm) => {
     try {
-      const { accessToken, email, nickname, friendCode } = await requestLogin(data);
+      const { id, accessToken, email, nickname, friendCode } = await requestLogin(data);
       if (accessToken) {
-        //현재 백엔드에서 accessToken만 줘서 임으로 데이터 넣어줌.
-        console.log("로그인!");
-        const { accessToken, email, nickname, friendCode } = await requestLogin(data);
-        console.log(email, friendCode);
-        setUser({ email, accessToken, nickname, friendCode });
-
+        setUser({ id, email, accessToken, nickname, friendCode });
         router.push("/");
       }
     } catch (err) {}

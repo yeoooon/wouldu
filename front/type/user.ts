@@ -5,6 +5,7 @@ export const LOGIN = {
 };
 
 export interface User {
+  id?: string;
   email: string;
   accessToken: string;
   nickname: string;

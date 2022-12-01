@@ -1,6 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
-const PATH = {
+export const PATH = {
   HOME: "/",
   LOGIN: "/login",
   JOIN: "/join",
@@ -31,15 +31,12 @@ const mapPathToDesc: { [key: string]: string } = {
 };
 
 const withGetServerSideProps = (getServerSideProps: GetServerSideProps) => {
-  console.log("withGetServerSideProps");
   return async (context: GetServerSidePropsContext) => {
-    console.log(context.resolvedUrl);
-    console.log(context);
+    // console.log(context.resolvedUrl);
     const pagePath = context.resolvedUrl;
-    console.log({ pagePath });
+    // console.log({ pagePath });
     return await getServerSideProps(context).then((res: { [key: string]: any }) => {
-      console.log(res.props);
-      // context.res.statusCode = 500;
+      // console.log(res.props);
       return {
         ...res,
         props: {

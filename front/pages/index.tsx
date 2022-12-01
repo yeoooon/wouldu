@@ -1,30 +1,30 @@
-import Link from "next/link";
-
-import styled from "styled-components";
-import { GlobalStyle } from "../styles/global-style";
-import { colors, fontSize, borderSize } from "../styles/common_style";
-import { darkTheme, lightTheme } from "../styles/theme";
-import { Wrapper, Container, Box } from "../styles/layout";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { Wrapper } from "../styles/layout";
+import { useRecoilValue } from "recoil";
 import { loginStateSelector, userAtom } from "../recoil/user";
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import About from "@components/page/about/About";
+import { useRouter } from "next/router";
+import { getCookie } from "@services/utils/cookies";
 
 const Home: NextPage = () => {
   const isLoginStateAtom = useRecoilValue(loginStateSelector);
   const [isLoginState, setIsLoginState] = useState<boolean>(false);
-
+  const router = useRouter();
   useEffect(() => {
     setIsLoginState(isLoginStateAtom);
   }, [isLoginStateAtom]);
 
+  useEffect(() => {
+    if (isLoginState && getCookie("userToken")) {
+      console.log(isLoginState);
+      router.push("/stamp");
+    }
+  }, [isLoginState]);
+
   return (
     <>
-      <Wrapper>
-        {isLoginState && <div>로그인된상태</div>}
-        {isLoginState || <About />}
-      </Wrapper>
+      <Wrapper>{isLoginState || <About />}</Wrapper>
     </>
   );
 };

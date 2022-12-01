@@ -61,7 +61,7 @@ const TodoItem = (plan: Planner) => {
   return (
     <TodoBox className={plan.isCompleted === 1 ? "finish" : ""}>
       {editMode ? (
-        <form onSubmit={handleSubmit(onUpdateSubmit)}>
+        <Form onSubmit={handleSubmit(onUpdateSubmit)}>
           <input
             autoFocus
             defaultValue={plan.description}
@@ -75,7 +75,7 @@ const TodoItem = (plan: Planner) => {
             <Button type="submit">수정</Button>
             <Button onClick={() => setIsEditMode(false)}>취소</Button>
           </ButtonBox>
-        </form>
+        </Form>
       ) : (
         <>
           <CheckBox onClick={handleToggle}>{plan.isCompleted ? <CircleCheckSvg /> : <CircleCheckBackSvg />}</CheckBox>
@@ -95,7 +95,7 @@ const ButtonBox = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  /* display: none; */
+  display: none;
 `;
 const Button = styled.button`
   background-color: inherit;
@@ -124,11 +124,11 @@ const TodoBox = styled(Box)`
   background-color: ${props => props.theme.color.purpleBox};
   border: 1px solid ${props => props.theme.color.borderPoint};
 
-  /* &:hover {
+  &:hover {
     ${ButtonBox} {
       display: initial;
     }
-  } */
+  }
   &.finish {
     border: 1px solid ${props => props.theme.color.border};
     background-color: ${props => props.theme.color.grayBox};
@@ -138,6 +138,12 @@ const TodoBox = styled(Box)`
       color: ${props => props.theme.color.fontSub};
     }
   }
+`;
+const Form = styled.form`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
 `;
 const CheckBox = styled(Box)`
   margin: 0;
