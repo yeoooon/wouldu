@@ -1,44 +1,43 @@
-import { Box } from '@styles/layout';
-import Image from 'next/image';
-import React, { useState } from 'react'
-import { useRecoilState } from 'recoil';
-import { diarywriteState } from '../../../recoil/diary';
-import styled from 'styled-components';
-import { Diary } from '@type/diary';
+import { Box } from "@styles/layout";
+import Image from "next/image";
+import React, { useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { diarywriteState } from "../../../recoil/diary";
+import styled from "styled-components";
+import { Diary } from "@type/diary";
+import { userAtom } from "@recoil/user";
 
 const UserDiary = ({ diaryList }: any) => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
+  const user = useRecoilValue(userAtom);
 
   const isUserDiary = (element: Diary) => {
-    if (element.authorId === sessionStorage.getItem("userId")) {
+    if (element.authorId === user?.id) {
       return true;
     }
-  }
+  };
   const handleToggle = () => setIsTextareaOpen(!isTextareaOpen);
 
   return (
     <>
-    {diaryList && diaryList.find(isUserDiary)? 
-      <DiaryBox>
-        <ProfileBox>
-          <Image src="/icon/user.svg" alt="user" width={30} height={30} />
-          <UserName>작성자 닉네임</UserName>
-        </ProfileBox>
-        <DiaryContent>
-          {diaryList.find(isUserDiary).content}
-        </DiaryContent>
-      </DiaryBox>
-      :
-      <UnwrittenDiaryBox>
-        <Text>
-        아직 일기가 작성되지 않았습니다.<br/>
-        오늘의 일기를 작성하여 친구와 공유해 보세요.
-        </Text>
-        <Button onClick={handleToggle}>
-          나의 일기 작성하러 가기
-        </Button>
-      </UnwrittenDiaryBox>
-    }
+      {diaryList && diaryList.find(isUserDiary) ? (
+        <DiaryBox>
+          <ProfileBox>
+            <Image src="/icon/user.svg" alt="user" width={30} height={30} />
+            <UserName>작성자 닉네임</UserName>
+          </ProfileBox>
+          <DiaryContent>{diaryList.find(isUserDiary).content}</DiaryContent>
+        </DiaryBox>
+      ) : (
+        <UnwrittenDiaryBox>
+          <Text>
+            아직 일기가 작성되지 않았습니다.
+            <br />
+            오늘의 일기를 작성하여 친구와 공유해 보세요.
+          </Text>
+          <Button onClick={handleToggle}>나의 일기 작성하러 가기</Button>
+        </UnwrittenDiaryBox>
+      )}
     </>
   );
 };

@@ -41,11 +41,10 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const onClickLogout = async () => {
     const result = confirm("로그아웃 하시겠어요?");
     if (result) {
-      await router.push("/");
       setUser(null);
       setUserAtomData(null);
-      sessionStorage.removeItem("userToken");
       removeCookie("userToken");
+      await router.push("/");
     }
   };
   return (
