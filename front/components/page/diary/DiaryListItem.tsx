@@ -5,6 +5,7 @@ import DiaryListDay from './DiaryListDay';
 import { useQuery } from '@tanstack/react-query';
 import { getDiaries } from '../../../services/api/diary';
 import { Diary } from '../../../type/diary';
+import { formatDate } from '@services/utils/formatDate';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { clickedDiaryDateState, clickedDiaryMonthState } from '@recoil/diary';
@@ -12,6 +13,10 @@ import { clickedDiaryDateState, clickedDiaryMonthState } from '@recoil/diary';
 const DiaryListItem = () => {
   const [diaryList, setDiaryList] = useState<Diary[] | undefined>(undefined);
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
+
+  const getTodayMain = () => {
+    setClickedDiaryDate(String(formatDate(new Date())));
+  }
 
   const clickedMonth = useRecoilValue(clickedDiaryMonthState);
 
@@ -23,6 +28,7 @@ const DiaryListItem = () => {
 
   return (
     <>
+      <button onClick={getTodayMain}>오늘 일기 쓰기</button>
       {diaryList && diaryList.length > 0? diaryList.map(diary => (
         <ListItemBox key={diary.id} onClick={() => setClickedDiaryDate(diary.date)}>
           <DiaryListDay diary={diary} />

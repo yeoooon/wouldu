@@ -8,18 +8,12 @@ import { formatDate } from '@services/utils/formatDate';
 
 const DiarySidebar = () => {
   const [clickedMonth, setClickedMonth] = useRecoilState(clickedDiaryMonthState);
-  const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
-  
-  const getTodayMain = () => {
-    setClickedDiaryDate(String(formatDate(new Date())));
-  }
 
   return (
     <SidebarContainer>
       <MonthBox>
         2022년 11월
       </MonthBox>
-      {/* <button onClick={getTodayMain}>오늘 일기 쓰기</button> */}
       <DiaryListItem />
     </SidebarContainer>
   );
