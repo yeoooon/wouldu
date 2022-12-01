@@ -6,3 +6,8 @@ export interface Planner {
   isCompleted?: number;
   isRecommended?: number;
 }
+
+export interface MonthPlan {
+  nowYear: string;
+  nowMonth: string;
+}

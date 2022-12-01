@@ -1,5 +1,7 @@
 import { dayAtom } from "@recoil/planner";
+import { getMonthplan } from "@services/api/planner";
 import { Box } from "@styles/layout";
+import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
@@ -21,6 +23,9 @@ const Calendar = () => {
   const [month, setMonth] = useState(date?.getMonth());
   const [year, setYear] = useState(date?.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date!));
+
+  const { data } = useQuery(["plan"], () => getMonthplan({ nowYear, nowMonth }));
+  console.log("monthplandata:", data);
 
   useEffect(() => {
     setDate(pickDay);
