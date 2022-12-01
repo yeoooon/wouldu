@@ -9,6 +9,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { userAtom } from "../recoil/user";
 import { useEffect, useState } from "react";
 import { User } from "@type/user";
+import { removeCookie } from "@services/utils/cookies";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -44,13 +45,12 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
       setUser(null);
       setUserAtomData(null);
       sessionStorage.removeItem("userToken");
+      removeCookie("userToken");
     }
   };
   return (
     <Nav>
-      <LogoBox>
-        {darkMode ? <LogoDark /> : <LogoLight />}
-      </LogoBox>
+      <LogoBox>{darkMode ? <LogoDark /> : <LogoLight />}</LogoBox>
       <UserBox>
         <AlarmButton>
           <Image src="/icon/alarm.svg" alt="alarm" width={15} height={15} />
@@ -78,7 +78,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
       <a onClick={onClickLogout}>로그아웃</a>
     </Nav>
   );
-}
+};
 
 const Nav = styled(Container)`
   position: relative;
@@ -184,20 +184,20 @@ const RoundSlider = styled.span`
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 
   &:before {
-  border-radius: 50%;
-  position: absolute;
-  content: "";
-  height: 1.1em;
-  width: 1.1em;
-  left: 3px;
-  bottom: 2.5px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+    border-radius: 50%;
+    position: absolute;
+    content: "";
+    height: 1.1em;
+    width: 1.1em;
+    left: 3px;
+    bottom: 2.5px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
   }
 `;
 

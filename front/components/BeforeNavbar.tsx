@@ -3,7 +3,7 @@ import Image from "next/image";
 import styled from "styled-components";
 import { colors } from "@styles/common_style";
 
-export default function BeforeNavBar() {
+const BeforeNavBar = () => {
   return (
     <Header>
       <nav>
@@ -15,7 +15,7 @@ export default function BeforeNavBar() {
       </nav>
     </Header>
   );
-}
+};
 
 const Header = styled.div`
   position: fixed;
@@ -34,3 +34,5 @@ const Header = styled.div`
     padding: 0.5rem 1.5rem;
   }
 `;
+
+export default BeforeNavBar;

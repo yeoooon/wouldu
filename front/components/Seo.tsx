@@ -6,8 +6,7 @@ export type SeoPageProps = {
   pageDesc: string;
   dehydratedState?: DehydratedState;
 };
-
-export default function Seo({ pageTitle, pageDesc }: SeoPageProps) {
+const Seo = ({ pageTitle, pageDesc }: SeoPageProps) => {
   return (
     <Head>
       <title>{pageTitle} | Hi Five</title>
@@ -16,4 +15,6 @@ export default function Seo({ pageTitle, pageDesc }: SeoPageProps) {
       <meta name="keywords" content="키워드1, 키워드2, 키워드3, 키워드10" />
     </Head>
   );
-}
+};
+
+export default Seo;

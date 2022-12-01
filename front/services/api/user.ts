@@ -1,3 +1,4 @@
+import { getCookie, setCookie } from "@services/utils/cookies";
 import { PasswordForm, UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
@@ -22,7 +23,8 @@ export const requestLogin = async (loginInfo: UserLoginForm) => {
   try {
     const { data } = await axiosInstance.post("auth/login", loginInfo);
     sessionStorage.setItem("userToken", data.accessToken);
-    sessionStorage.setItem("userId", data.id);
+    // sessionStorage.setItem("userId", data.id);
+    setCookie("userToken", data?.accessToken);
     return data;
   } catch (err) {
     console.log("requestLgoin error!!!!!", err);
