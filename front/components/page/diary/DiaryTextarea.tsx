@@ -21,6 +21,7 @@ const DiaryTextarea = () => {
 
   const handlePostSubmit: SubmitHandler<{ content: string }> = (data) => {
     postDiary(data);
+    setIsTextareaOpen(!isTextareaOpen);
   }
 
   return (
