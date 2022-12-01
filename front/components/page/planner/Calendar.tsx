@@ -1,3 +1,4 @@
+import usePlanQuery from "@hooks/usePlanQuery";
 import { dayAtom } from "@recoil/planner";
 import { getMonthplan } from "@services/api/planner";
 import { Box } from "@styles/layout";
@@ -24,13 +25,10 @@ const Calendar = () => {
   const [year, setYear] = useState<number>(date?.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date!));
 
-  const { data: monthData, refetch } = useQuery(
-    ["plan", { year, month, day }],
-    () => getMonthplan({ nowYear: year, nowMonth: month + 1 }),
-    {
-      staleTime: 60 * 1000,
-    },
-  );
+  //전체적으로 쿼리키 조정예정
+  const { data: monthData, refetch } = useQuery(["plan"], () => getMonthplan({ nowYear: year, nowMonth: month + 1 }), {
+    staleTime: 60 * 1000,
+  });
 
   useEffect(() => {
     setDate(pickDay);

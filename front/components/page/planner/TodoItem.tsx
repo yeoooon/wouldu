@@ -23,7 +23,7 @@ const TodoItem = (plan: Planner) => {
 
   const deleteMutation = useMutation((data: Planner) => deletePlan(data?.id!), {
     onSuccess: (status, value) => {
-      queryClient.invalidateQueries(["plan", value.date]);
+      queryClient.invalidateQueries(["plan"]);
     },
   });
 

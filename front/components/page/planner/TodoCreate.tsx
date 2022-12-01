@@ -36,7 +36,7 @@ const TodoCreate = () => {
     onSuccess: () => {
       // const [year, month, day1] = day.split("-");
       // console.log(Number(year), month);
-      queryClient.invalidateQueries(["plan", day]);
+      queryClient.invalidateQueries(["plan"]);
     },
   });
 
