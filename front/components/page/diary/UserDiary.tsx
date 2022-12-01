@@ -1,13 +1,15 @@
 import { Box } from '@styles/layout';
 import Image from 'next/image';
 import React, { useState } from 'react'
-import { useRecoilState } from 'recoil';
-import { diarywriteState } from '../../../recoil/diary';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { diarywriteState, today, clickedDiaryDateState } from '@recoil/diary';
 import styled from 'styled-components';
 import { Diary } from '@type/diary';
 
 const UserDiary = ({ diaryList }: any) => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
+  const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
+  const todayDate = useRecoilValue(today);
 
   const isUserDiary = (element: Diary) => {
     if (element.authorId === sessionStorage.getItem("userId")) {
@@ -30,13 +32,23 @@ const UserDiary = ({ diaryList }: any) => {
       </DiaryBox>
       :
       <UnwrittenDiaryBox>
-        <Text>
-        아직 일기가 작성되지 않았습니다.<br/>
-        오늘의 일기를 작성하여 친구와 공유해 보세요.
-        </Text>
-        <Button onClick={handleToggle}>
-          나의 일기 작성하러 가기
-        </Button>
+        {clickedDiaryDate === todayDate?
+          <>
+            <Text>
+              아직 일기가 작성되지 않았습니다.<br/>
+              오늘의 일기를 작성하여 친구와 공유해 보세요.
+            </Text>
+            <Button onClick={handleToggle}>
+              나의 일기 작성하러 가기
+            </Button>
+          </>
+          :
+          <>
+            <Text>
+              작성된 일기가 없습니다.
+            </Text>
+          </>    
+        }
       </UnwrittenDiaryBox>
     }
     </>
