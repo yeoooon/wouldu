@@ -84,12 +84,11 @@ export class PlannerService {
         isRecommended: 0,
       },
     });
-    console.log(plans[0].date);
-    if (plans.length === 0) {
-      return 0;
-    } else {
-      return 1;
-    }
+    const days = [];
+    plans.forEach((element) =>
+      days.push(parseInt(element.date.toString().split('-')[2])),
+    );
+    return days;
   }
 
   findAllByDate(userId: string, date: Date): Promise<Planner[]> {
