@@ -44,7 +44,6 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
       await router.push("/");
       setUser(null);
       setUserAtomData(null);
-      sessionStorage.removeItem("userToken");
       removeCookie("userToken");
     }
   };

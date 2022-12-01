@@ -1,3 +1,4 @@
+import { getCookie } from "@services/utils/cookies";
 import axios from "axios";
 import { config } from "process";
 export const BASE_URL = "http://localhost:8080";
@@ -17,7 +18,7 @@ axiosInstance.interceptors.request.use(
     } else {
       config.headers["Content-Type"] = "application/json";
     }
-    config.headers.Authorization = `Bearer ${sessionStorage.getItem("userToken")}`;
+    config.headers.Authorization = `Bearer ${getCookie("userToken")}`;
     return config;
   },
   error => {
