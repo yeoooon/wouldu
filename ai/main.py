@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request
 import tensorflow as tf
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 app = Flask(__name__)
 import mecab
 import sentencepiece as spm
@@ -21,7 +23,11 @@ def predict():
     if sentence != None:                     # imgurl을 제대로 받은 경우
         sentence  = " ".join(mecab.morphs(sentence))
         sentence = sp.EncodeAsPieces(sentence)
-        emo = work(sentence, model)   # 모델을 work 함수를 통해 사용합니다.    
+        tokenizer=Tokenizer()
+        tokenizer.fit_on_texts(sentence)
+        sentence=tokenizer.texts_to_sequences(sentence)
+        sentence_pad=pad_sequences(sentence,maxlen=38,padding='post')
+        emo = work(sentence_pad, model)   # 모델을 work 함수를 통해 사용합니다.    
         result_string = "you are %d"%(emo)   #사용자에게 보여줄 문자열
     return jsonify(result_string)
 
