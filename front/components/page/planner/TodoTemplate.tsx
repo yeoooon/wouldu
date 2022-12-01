@@ -1,4 +1,4 @@
-import { Container } from '@styles/layout'
+import { Box, Container } from '@styles/layout'
 import React from 'react'
 import styled from 'styled-components'
 import Suggesttodo from './Suggesttodo'
@@ -16,10 +16,12 @@ const TodoTemplate = () => {
 }
 
 const TemplateContainer = styled(Container)`
-  flex-direction: column;
+  position: relative;
   width: 100%;
-  padding: 8%;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 2vh 5vh;
+  height: 100%;
   overflow-y: auto;
 `;
-
-export default TodoTemplate
+export default TodoTemplate;
