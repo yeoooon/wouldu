@@ -29,7 +29,7 @@ def predict():
         sentence_pad=pad_sequences(sentence,maxlen=38,padding='post')
         emo = work(sentence_pad, model)   # 모델을 work 함수를 통해 사용합니다.    
         emotion = {0:"기쁨",1:"당황",2:"분노",3:"불안",4:"상처",5:"슬픔"}
-        result_string = "you are %d"%(emotion[emo])   #사용자에게 보여줄 문자열
+        result_string = "you are "+emotion[emo]   #사용자에게 보여줄 문자열
     return jsonify(result_string)
 
 
