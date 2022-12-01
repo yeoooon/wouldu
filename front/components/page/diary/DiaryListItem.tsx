@@ -5,13 +5,25 @@ import DiaryListDay from './DiaryListDay';
 import { useQuery } from '@tanstack/react-query';
 import { getDiaries } from '../../../services/api/diary';
 import { Diary } from '../../../type/diary';
+import { formatDate } from '@services/utils/formatDate';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { clickedDiaryDateState, clickedDiaryMonthState } from '@recoil/diary';
+import { clickedDiaryDateState, clickedDiaryMonthState, today } from '@recoil/diary';
 
 const DiaryListItem = () => {
   const [diaryList, setDiaryList] = useState<Diary[] | undefined>(undefined);
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
+  const todayDate = useRecoilValue(today);
+
+  const getTodayMain = () => {
+    setClickedDiaryDate(String(formatDate(new Date())));
+  }
+
+  const isTodayWritten = (element: Diary) => {
+    if (element.date.substring(0, 10) === todayDate) {
+      return true;
+    };
+  }
 
   const clickedMonth = useRecoilValue(clickedDiaryMonthState);
 
@@ -23,6 +35,12 @@ const DiaryListItem = () => {
 
   return (
     <>
+      {diaryList && diaryList.find(isTodayWritten)?
+        <></>
+        : 
+        <WriteTodayDiaryBtn onClick={getTodayMain}>오늘 일기 쓰기</WriteTodayDiaryBtn>
+      }
+      
       {diaryList && diaryList.length > 0? diaryList.map(diary => (
         <ListItemBox key={diary.id} onClick={() => setClickedDiaryDate(diary.date)}>
           <DiaryListDay diary={diary} />
@@ -32,6 +50,15 @@ const DiaryListItem = () => {
     </>
   )
 }
+
+const WriteTodayDiaryBtn = styled.p`
+  font-size: ${props => props.theme.fontSize.textSm};
+  color: ${props => props.theme.color.fontSub};
+  text-decoration: underline;
+  text-align: center;
+  margin-top: 10px;
+  cursor: pointer;
+`
 
 const ListItemBox = styled(Box)`
   width: 100%;

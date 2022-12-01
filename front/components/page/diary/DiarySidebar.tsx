@@ -8,22 +8,55 @@ import { formatDate } from '@services/utils/formatDate';
 
 const DiarySidebar = () => {
   const [clickedMonth, setClickedMonth] = useRecoilState(clickedDiaryMonthState);
-  const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
-  
-  const getTodayMain = () => {
-    setClickedDiaryDate(String(formatDate(new Date())));
+
+  var nowYearStr = clickedMonth.substring(0, 4);
+  var nowMonth = Number(clickedMonth.substring(5, 7));
+
+  const handleChangeLastMonth = () => {
+    if (nowMonth === 1) {
+      var returnMonth = 12;
+      var yearStr = String(Number(nowYearStr) - 1);
+    } else {
+      var returnMonth = nowMonth - 1;
+      var yearStr = nowYearStr;
+    }
+    
+    const returnMonthStr = yearStr + '-' + String(returnMonth);
+    setClickedMonth(returnMonthStr);
   }
 
+  const handleChangeNextMonth = () => {
+    if (nowMonth === 12) {
+      var returnMonth = 1;
+      var yearStr = String(Number(nowYearStr) + 1);
+    } else {
+      var returnMonth = nowMonth+1;
+      var yearStr = nowYearStr;
+    }
+    
+    const returnMonthStr = yearStr + '-' + String(returnMonth);
+    setClickedMonth(returnMonthStr);
+  }
+  
   return (
     <SidebarContainer>
       <MonthBox>
-        2022년 11월
+        <ChangeLastMonth onClick={handleChangeLastMonth}>지난 달</ChangeLastMonth>
+        {clickedMonth.substring(0, 4)}년 {clickedMonth.substring(5, 7)}월
+        <ChangeNextMonth onClick={handleChangeNextMonth}>다음 달</ChangeNextMonth>
       </MonthBox>
-      {/* <button onClick={getTodayMain}>오늘 일기 쓰기</button> */}
       <DiaryListItem />
     </SidebarContainer>
   );
 };
+
+const ChangeLastMonth = styled.button`
+  font-size: ${props => props.theme.fontSize.textXs}
+`
+
+const ChangeNextMonth = styled.button`
+  font-size: ${props => props.theme.fontSize.textXs}
+`
 
 const SidebarContainer = styled(Container)`
   display: flex;
@@ -42,6 +75,8 @@ const MonthBox = styled(Box)`
   font-size: ${props => props.theme.fontSize.textMd};
   font-weight: 500;
   line-height: 26px;
+  
+  gap: 10px;
 `;
 
 export default DiarySidebar;
