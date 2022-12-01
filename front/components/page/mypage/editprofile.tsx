@@ -26,10 +26,10 @@ const EditProfile = () => {
             <p>허용 확장자 *.jpg, *.png | 최대 nKB</p>          
           </ProfileArea>    
           <InputArea>
-            <Email>
+            {/* <Email>
               <label>이메일</label>
               <input disabled placeholder="123456@naver.com"></input>
-            </Email>
+            </Email> */}
             <Nickname>
               <label>닉네임</label>
               <input {...register("nickname", {
@@ -42,11 +42,17 @@ const EditProfile = () => {
           <button type="submit">수정</button>
         </div>
       </form>
+      <ButtonArea className="button">
+        <button>비밀번호 수정</button>
+        <p>회원 탈퇴</p>
+      </ButtonArea>
     </ContentArea>
   )
 }
 
 const ContentArea = styled(Container)`
+  flex-direction: column;
+  align-items: center;
   form {
     height: 100%;
     
@@ -114,5 +120,23 @@ const Nickname = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
 `
+const ButtonArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+
+  button {
+    font-size: ${props => props.theme.fontSize.textMain};
+    padding: 0.6em;
+  }
+  p {
+    font-size: ${props => props.theme.fontSize.textXs};
+    color: ${props => props.theme.color.fontSub};
+    text-decoration: underline;
+    text-align: center;
+    margin-top: 1em;
+    cursor: pointer;
+  }
+`;
 
 export default EditProfile;

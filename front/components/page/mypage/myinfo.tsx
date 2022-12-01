@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { Container } from "../../../styles/layout";
+import { Box, Container } from "../../../styles/layout";
 
 const MyInfo = () => {
   const userAtomData = useRecoilValue(userAtom);
@@ -20,63 +20,46 @@ const MyInfo = () => {
         <p className="nickname">{`${user?.nickname} 님`}</p>
         <p className="email">{user?.email}</p>
       </InfoArea>
-      <ButtonArea className="button">
-        <button>비밀번호 수정</button>
-        <p>회원 탈퇴</p>
-      </ButtonArea>
+      <CategoryArea>
+        <Category>운동</Category>
+        <Category>운동</Category>
+      </CategoryArea>
+      {/* <Button>카테고리 변경하기</Button> */}
     </ContentArea>
   );
 };
 
 const ContentArea = styled(Container)`
-  display: grid;
-  grid-template-rows: 60% 40%;
-
-  grid-template-areas:
-    "info"
-    "button";
-
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
   height: 70vh;
-
-  padding: 1.5rem 0;
+  padding: 3rem;
 `;
 
 const InfoArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  width: 100%;
+  margin: 3em 0 1em 0;
   gap: 15px;
-
   .nickname {
     font-size: ${props => props.theme.fontSize.textMain};
   }
-
   .email {
     font-size: ${props => props.theme.fontSize.textXs};
   }
 `;
-
-const ButtonArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-self: start;
-
-  gap: 15px;
-
-  button {
-    font-size: ${props => props.theme.fontSize.textMain};
-    padding: 0.6em;
-  }
-  p {
-    font-size: ${props => props.theme.fontSize.textXs};
-    color: ${props => props.theme.color.fontSub};
-    text-decoration: underline;
-    text-align: center;
-    margin-top: 7em;
-    cursor: pointer;
-  }
+const CategoryArea = styled(Box)`
+`;
+const Category = styled(Box)`
+  padding: 0.5em 0.8em;
+  background-color: ${props => props.theme.color.purpleBox};
+  font-size: ${props => props.theme.fontSize.textSm};
+  border-radius: 30px;
+`;
+const Button = styled.button`
 `;
 
 export default MyInfo;
