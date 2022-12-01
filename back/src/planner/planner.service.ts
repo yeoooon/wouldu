@@ -88,7 +88,7 @@ export class PlannerService {
     plans.forEach((element) =>
       days.push(parseInt(element.date.toString().split('-')[2])),
     );
-    return days;
+    return [...new Set(days)];
   }
 
   findAllByDate(userId: string, date: Date): Promise<Planner[]> {
