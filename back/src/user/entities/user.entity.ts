@@ -1,3 +1,4 @@
+import { Diary } from 'src/diary/entities/diary.entity';
 import { Planner } from 'src/planner/entities/planner.entity';
 import {
   Entity,
@@ -41,4 +42,7 @@ export class User {
 
   @OneToMany(() => Planner, (planner) => planner.user)
   planners: Planner[];
+
+  @OneToMany(() => Diary, (diary) => diary.authorId)
+  diaries: Diary[];
 }

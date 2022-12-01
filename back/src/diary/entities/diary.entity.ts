@@ -1,7 +1,9 @@
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -28,4 +30,7 @@ export class Diary {
 
   @UpdateDateColumn({ type: 'datetime' })
   updatedAt?: Date;
+
+  @ManyToOne(() => User, (user) => user.diaries)
+  user: User;
 }
