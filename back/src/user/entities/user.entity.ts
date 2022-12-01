@@ -1,3 +1,4 @@
+import { Friend } from 'src/friend/entities/friend.entity';
 import { Planner } from 'src/planner/entities/planner.entity';
 import {
   Entity,
@@ -5,6 +6,8 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   CreateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
