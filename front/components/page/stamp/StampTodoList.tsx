@@ -5,7 +5,7 @@ import StampTodoBox from "./StampTodoBox";
 import Link from "next/link";
 import { Planner } from "@type/planner";
 import { formatDate } from "@services/utils/formatDate";
-import usePlanQuery from "@hooks/usePlanQuery";
+import usePlanQuery from "@services/utils/usePlanQuery";
 import StampTodoNone from "./StampTodoNone";
 import { CheckIcon } from "@components/icons/CheckIcon";
 

@@ -1,5 +1,5 @@
 import { LeftarrowIcon, RightarrowIcon } from "@components/icons/ArrowIcons";
-import usePlanQuery from "@hooks/usePlanQuery";
+import usePlanQuery from "@services/utils/usePlanQuery";
 import { dayAtom } from "@recoil/planner";
 import { getMonthplan } from "@services/api/planner";
 import { Box } from "@styles/layout";

@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { getDayPlan } from "@services/api/planner";
 import { formatDate } from "@services/utils/formatDate";
 import TodoItem from "./TodoItem";
-import usePlanQuery from "@hooks/usePlanQuery";
+import usePlanQuery from "@services/utils/usePlanQuery";
 import { CheckIcon } from "@components/icons/CheckIcon";
 
 const TodoList = () => {
