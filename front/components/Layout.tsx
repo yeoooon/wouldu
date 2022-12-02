@@ -1,9 +1,11 @@
+import { isAlarmModalAtom } from "@recoil/modal";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { loginStateSelector, userAtom } from "../recoil/user";
 import AfterNavbar from "./AfterNavbar";
+import AlarmModal from "./AlarmModal";
 import BeforeNavBar from "./BeforeNavbar";
 
 export interface LayoutProps {
@@ -14,6 +16,7 @@ export interface LayoutProps {
 const Layout = ({ children, darkMode, setDarkMode }: LayoutProps) => {
   const isLoginStateAtom = useRecoilValue(loginStateSelector);
   const [isLoginState, setIsLoginState] = useState<boolean>(false);
+  const isAlarmOpen = useRecoilValue(isAlarmModalAtom);
 
   useEffect(() => {
     setIsLoginState(isLoginStateAtom);
@@ -26,6 +29,7 @@ const Layout = ({ children, darkMode, setDarkMode }: LayoutProps) => {
           <AfterNavbar darkMode={darkMode} setDarkMode={setDarkMode} />
           {/* <div>로그인된상태</div> */}
           <div>{children}</div>
+          {isAlarmOpen && <AlarmModal/>}
         </LayoutWrapper>
       )}
       {isLoginState || (
