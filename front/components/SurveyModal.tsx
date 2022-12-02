@@ -1,7 +1,7 @@
 import { isSurveyModalAtom } from '@recoil/modal';
 import { surveyCategories } from '@services/utils/surveyCategory';
 import { Box, Container } from '@styles/layout';
-import { ModalWrapper } from '@styles/modal_layout';
+import { ModalWrapper, Overlay } from '@styles/modal_layout';
 import React, { useState } from 'react'
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -46,6 +46,7 @@ const SurveyModal = () => {
         </CheckList>
         <Button onClick={() => setIsSurveyModalOpen(false)}>선택 완료</Button>
       </SurveyContainer>
+      <Overlay />
     </ModalWrapper>
   );
 };
@@ -81,7 +82,6 @@ const Description = styled.p`
 const CheckList = styled(Box)`
   width: 80%;
   height: 55%;
-  /* background-color: orange; */
   flex-wrap: wrap;
 `;
 const CategoryButton = styled.button`

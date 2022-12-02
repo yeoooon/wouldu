@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/user";
 import { useEffect, useState } from "react";
 import { User } from "@type/user";
@@ -12,6 +12,8 @@ import { AlarmIcon } from "./icons/AlarmIcon";
 import { UserIcon } from "./icons/UserIcon";
 import { checkRequestFriend } from "@services/api/friend";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { colors } from "@styles/common_style";
+import { isAlarmModalAtom } from "@recoil/modal";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -25,6 +27,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
 
   const queryClient = useQueryClient();
 
+  const setIsAlarmOpen = useSetRecoilState(isAlarmModalAtom);
   const [userAtomData, setUserAtomData] = useRecoilState(userAtom);
   const [user, setUser] = useState<User | null>();
   const { data: receiveFriends } = useQuery(["friend"], () => checkRequestFriend("receive"));
@@ -61,9 +64,12 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
     <Nav>
       <LogoBox>{darkMode ?  <LogoWhiteIcon />:<LogoBlackIcon /> }</LogoBox>
       <UserBox>
-        <AlarmButton>
-          <AlarmIcon width={15} height={15}/>
-          {receiveFriends?.length >= 1 && <p>{receiveFriends.length}</p>}
+        <AlarmButton onClick={() => (setIsAlarmOpen(true))}>
+          <AlarmIcon width={18} height={18}/>
+            {receiveFriends?.length >= 1 && 
+              <AlarmNumber>
+                <p>{receiveFriends.length}</p>
+              </AlarmNumber>}
         </AlarmButton>
         <UserIcon width={60} height={60}/>
         <TextBox1>{`${user?.nickname} 님`}</TextBox1>
@@ -144,6 +150,17 @@ const AlarmButton = styled(Box)`
   width: 100%;
   justify-content: flex-end;
   margin: 0.5em;
+  cursor: pointer;
+`;
+const AlarmNumber = styled(Box)`
+  background-color: ${props => colors.red};
+  width: 1.5em;
+  height: 1.5em;
+  font-size: 10px;
+  margin-left: -7px;
+  margin-top: -12px;
+  color: ${props => props.theme.color.white};
+  cursor: pointer;
 `;
 const TextBox1 = styled(Box)`
   margin-top: 20px;
