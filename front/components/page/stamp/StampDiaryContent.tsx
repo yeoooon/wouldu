@@ -1,11 +1,11 @@
-import { Box } from '@styles/layout';
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components';
-import { useQuery } from '@tanstack/react-query';
-import { today } from '@recoil/diary';
-import { getDiaries } from '@services/api/diary';
-import { useRecoilValue } from 'recoil';
-import { Diary } from '@type/diary';
+import { Box } from "@styles/layout";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { useQuery } from "@tanstack/react-query";
+import { today } from "@recoil/diary";
+import { getDiaries } from "@services/api/diary";
+import { useRecoilValue } from "recoil";
+import { Diary } from "@type/diary";
 
 const StampDiaryContent = () => {
   const [todayDiary, setTodayDiary] = useState<Diary[]>();
@@ -17,13 +17,13 @@ const StampDiaryContent = () => {
     if (element.authorId === sessionStorage.getItem("userId")) {
       return true;
     }
-  }
+  };
 
   const isPartnerDiary = (element: Diary) => {
     if (element.authorId !== sessionStorage.getItem("userId")) {
       return true;
     }
-  }
+  };
 
   useEffect(() => {
     setTodayDiary(data);
@@ -31,24 +31,24 @@ const StampDiaryContent = () => {
 
   return (
     <ContentBox>
-        <DiarySummary>
-          <Name>
-            나
-          </Name>
-          <Content>
-            {todayDiary && todayDiary.find(isUserDiary)? todayDiary.find(isUserDiary).content : <p>no content</p>}
-          </Content>
-        </DiarySummary>
-        <PartnerDiarySummary>
-          <PartnerName>
-            상대
-          </PartnerName>
-          <Content>
-            {todayDiary && todayDiary.find(isPartnerDiary)? todayDiary.find(isPartnerDiary).content : <p>아직 안 썼어요!</p>}
-          </Content>
-        </PartnerDiarySummary>
+      {/* <DiarySummary>
+        <Name>나</Name>
+        <Content>
+          {todayDiary && todayDiary?.find(isUserDiary) ? todayDiary?.find(isUserDiary).content : <p>no content</p>}
+        </Content>
+      </DiarySummary>
+      <PartnerDiarySummary>
+        <PartnerName>상대</PartnerName>
+        <Content>
+          {todayDiary && todayDiary.find(isPartnerDiary) ? (
+            todayDiary.find(isPartnerDiary).content
+          ) : (
+            <p>아직 안 썼어요!</p>
+          )}
+        </Content>
+      </PartnerDiarySummary> */}
     </ContentBox>
-  )
+  );
 };
 const ContentBox = styled(Box)`
   flex-direction: column;
