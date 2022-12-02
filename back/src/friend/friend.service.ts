@@ -140,7 +140,7 @@ export class FriendService {
         'friend.friendId',
         'friend.userId',
         'friend.createdAt',
-        'friend.diaryTitle',
+        'friend.title',
         'user.id',
         'user.email',
         'user.nickname',
