@@ -1,3 +1,4 @@
+import { UserIcon } from "@components/icons/UserIcon";
 import { isCodeModalAtom } from "@recoil/friend";
 import { userAtom } from "@recoil/user";
 import Image from "next/image";
@@ -18,11 +19,11 @@ const BeforeConnect = () => {
         <p>일상을 공유하고 싶은 사람과 일기를 연결하세요!</p>
         <Profile>
           <User>
-            <Image src="/icon/user.svg" alt="user" width={80} height={80} />
+            <UserIcon width={80} height={80} />
             <p className="userName">{user?.nickname}</p>
           </User>
           <Mate>
-            <Image src="/icon/user.svg" alt="user" width={80} height={80} />
+            <UserIcon width={80} height={80} />
             <p className="mateName">?</p>
           </Mate>
         </Profile>
