@@ -5,14 +5,12 @@ import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
+import MatchCodeSubmit from "./modal/MatchCodeSubmit";
 
 const BeforeConnect = () => {
   const user = useRecoilValue(userAtom);
   const [isCodeShow, setIsCodeShow] = useRecoilState(isCodeModalAtom);
 
-  useEffect(() => {
-    console.log(isCodeShow, "iscode");
-  }, [isCodeShow]);
   return (
     <ContentArea>
       <div className="info">
@@ -35,6 +33,7 @@ const BeforeConnect = () => {
       <div className="button">
         <button onClick={() => setIsCodeShow(true)}>상대방 연결 코드 입력</button>
       </div>
+      <MatchCodeSubmit />
     </ContentArea>
   );
 };
