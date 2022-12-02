@@ -1,4 +1,5 @@
 import { Friend } from 'src/friend/entities/friend.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -17,7 +18,7 @@ export class Diary {
   friendId: number;
 
   @Column()
-  authorId: string;
+  userId: string;
 
   @Column()
   content: string;
@@ -30,4 +31,10 @@ export class Diary {
 
   @UpdateDateColumn({ type: 'datetime' })
   updatedAt?: Date;
+
+  @ManyToOne(() => User, (user) => user.diaries)
+  user: User;
+
+  @ManyToOne(() => Friend, (friend) => friend.diaries)
+  friend: Friend;
 }

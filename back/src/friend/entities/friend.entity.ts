@@ -28,4 +28,7 @@ export class Friend {
   @OneToOne(() => User)
   @JoinColumn()
   user: User;
+
+  @OneToMany(() => Diary, (diary) => diary.friend)
+  diaries: Diary[];
 }

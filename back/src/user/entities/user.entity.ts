@@ -46,6 +46,6 @@ export class User {
   @OneToMany(() => Planner, (planner) => planner.user)
   planners: Planner[];
 
-  @OneToMany(() => Diary, (diary) => diary.authorId)
+  @OneToMany(() => Diary, (diary) => diary.user)
   diaries: Diary[];
 }
