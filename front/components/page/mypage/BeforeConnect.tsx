@@ -1,8 +1,18 @@
+import { isCodeModalAtom } from "@recoil/friend";
+import { userAtom } from "@recoil/user";
 import Image from "next/image";
+import { useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
 
 const BeforeConnect = () => {
+  const user = useRecoilValue(userAtom);
+  const [isCodeShow, setIsCodeShow] = useRecoilState(isCodeModalAtom);
+
+  useEffect(() => {
+    console.log(isCodeShow, "iscode");
+  }, [isCodeShow]);
   return (
     <ContentArea>
       <div className="info">
@@ -19,33 +29,34 @@ const BeforeConnect = () => {
         </Profile>
         <MatchCode>
           <p>나의 연결 코드</p>
-          <p className="code">123456</p>          
+          <p className="code">{user?.friendCode}</p>
         </MatchCode>
       </div>
       <div className="button">
-        <button>상대방 연결 코드 입력</button>
-      </div> 
+        <button onClick={() => setIsCodeShow(true)}>상대방 연결 코드 입력</button>
+      </div>
     </ContentArea>
-  )
-}
+  );
+};
 
 const ContentArea = styled(Container)`
   display: grid;
   grid-template-rows: 70% 30%;
 
   grid-template-areas:
-  "info"
-  "button";
+    "info"
+    "button";
 
   width: 100%;
   height: 70vh;
-  
+
   padding: 1.5rem 0;
 
-  .info, .button {
+  .info,
+  .button {
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
   }
 
   .info {
@@ -56,29 +67,29 @@ const ContentArea = styled(Container)`
   .button {
     align-self: start;
   }
-`
+`;
 
 const User = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
 
   gap: 15px;
-`
+`;
 const Mate = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 
   gap: 15px;
-`
+`;
 
 const Profile = styled.div`
   display: flex;
   flex-direction: row;
 
   gap: 20px;
-`
+`;
 
 const MatchCode = styled.div`
   display: flex;
@@ -90,6 +101,6 @@ const MatchCode = styled.div`
   .code {
     font-weight: bold;
   }
-`
+`;
 
 export default BeforeConnect;
