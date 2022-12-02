@@ -41,7 +41,7 @@ const DiaryListItem = () => {
         <WriteTodayDiaryBtn onClick={getTodayMain}>오늘 일기 쓰기</WriteTodayDiaryBtn>
       }
       
-      {diaryList && diaryList.length > 0? diaryList.map(diary => (
+      {diaryList && diaryList.length > 0? diaryList.slice(0).reverse().map(diary => (
         <ListItemBox key={diary.id} onClick={() => setClickedDiaryDate(diary.date)}>
           <DiaryListDay diary={diary} />
           <Text>{diary.content.length < 30 ? diary.content : diary.content.substring(0, 30) + "..."}</Text>
