@@ -10,6 +10,7 @@ import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { Friend } from './entities/friend.entity';
 import { FriendRequest } from './entities/friendRequest.entity';
+import * as uuid from 'uuid';
 
 @Injectable()
 export class FriendService {
@@ -92,17 +93,25 @@ export class FriendService {
       this.friendRequestRepository.save(request);
     });
 
-    const friend = new Friend();
-    friend.userId = friendRequest.fromUserId;
+    const fromFriend = new Friend();
+    fromFriend.friendId = uuid.v4();
+    fromFriend.fromUserId = friendRequest.fromUserId;
+    fromFriend.toUserId = friendRequest.toUserId;
     const fromUser = await this.userService.findOneById(
       friendRequest.fromUserId,
     );
     const toUser = await this.userService.findOneById(friendRequest.toUserId);
-    friend.title = `${fromUser.nickname} & ${toUser.nickname} 's diary`;
-    await this.friendRepository.save(friend);
-    friend.friendId = await this.findFriendId(friendRequest.fromUserId);
-    friend.userId = friendRequest.toUserId;
-    await this.friendRepository.save(friend);
+    fromFriend.title = `${fromUser.nickname} & ${toUser.nickname} 's diary`;
+    fromFriend.status = 1;
+    await this.friendRepository.save(fromFriend);
+
+    const toFriend = new Friend();
+    toFriend.friendId = fromFriend.friendId;
+    toFriend.fromUserId = friendRequest.toUserId;
+    toFriend.toUserId = friendRequest.fromUserId;
+    toFriend.title = fromFriend.title;
+    toFriend.status = 1;
+    await this.friendRepository.save(toFriend);
     return '수락 완료';
   }
 
@@ -120,14 +129,14 @@ export class FriendService {
 
   async findFriendId(userId: string) {
     const friend = await this.friendRepository.findOne({
-      where: { userId: userId },
+      where: { fromUserId: userId },
     });
     return friend === null ? null : friend.friendId;
   }
 
   async findFriend(userId: string) {
     const me = await this.friendRepository.findOne({
-      where: { userId: userId },
+      where: { fromUserId: userId },
     });
 
     if (me === null) {
@@ -136,21 +145,23 @@ export class FriendService {
 
     return await this.friendRepository
       .createQueryBuilder('friend')
-      .select([
-        'friend.friendId',
-        'friend.userId',
-        'friend.createdAt',
-        'friend.title',
-        'user.id',
-        'user.email',
-        'user.nickname',
-      ])
-      .innerJoin('friend.user', 'user')
+      .select('friend.id')
+      .addSelect('friend.friendId')
+      .addSelect('friend.fromUserId')
+      .addSelect('friend.toUserId')
+      .addSelect('friend.title')
+      .addSelect('friend.createdAt')
+      .addSelect('fromUser.nickname')
+      .leftJoin(
+        'friend.fromUser',
+        'fromUser',
+        'friend.fromUserId = fromUser.id',
+      )
       .where(`friend.friendId = :friendId`, { friendId: me.friendId })
       .getMany();
   }
 
-  async findTitle(friendId: number) {
+  async findTitle(friendId: string) {
     const friend = await this.friendRepository.findOne({ where: { friendId } });
     return friend.title;
   }

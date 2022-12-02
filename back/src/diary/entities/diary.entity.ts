@@ -18,7 +18,7 @@ export class Diary {
   friendId: string;
 
   @Column()
-  authorId: string;
+  userId: string;
 
   @Column()
   content: string;
@@ -32,6 +32,6 @@ export class Diary {
   @UpdateDateColumn({ type: 'datetime' })
   updatedAt?: Date;
 
-  @ManyToOne(() => User, (author) => author.diaries)
-  author: User;
+  @ManyToOne(() => User, (user) => user.diaries)
+  user: User;
 }

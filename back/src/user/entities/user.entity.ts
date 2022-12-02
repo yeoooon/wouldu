@@ -48,4 +48,10 @@ export class User {
 
   @OneToMany(() => Diary, (diary) => diary.user)
   diaries: Diary[];
+
+  @OneToMany(() => Friend, (friendFrom) => friendFrom.fromUser)
+  friendFrom: Friend;
+
+  @OneToMany(() => Friend, (friendTo) => friendTo.toUser)
+  friendTo: Friend;
 }
