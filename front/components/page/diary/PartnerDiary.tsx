@@ -1,19 +1,9 @@
 import { DiaryBox, ProfileBox, UserName, DiaryContent, UnwrittenDiaryBox, Text } from "./UserDiary";
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Diary } from "@type/diary";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "@recoil/user";
-import { UserIcon } from "@components/icons/UserIcon";
+import Image from "next/image";
+import React from "react";
+import { isPartnerDiary } from "@services/utils/diaryAuthor";
 
 const PartnerDiary = ({ diaryList }: any) => {
-  const user = useRecoilValue(userAtom);
-
-  const isPartnerDiary = (element: Diary) => {
-    if (element.authorId !== user?.id) {
-      return true;
-    }
-  };
 
   return (
     <>

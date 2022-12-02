@@ -16,6 +16,7 @@ const DiaryMain = ({ connectState, setConnectState }) => {
   const isTextAreaOpen = useRecoilValue(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
   const [diaryList, setDiaryList] = useState([]);
+  const [diaryName, setDiaryName] = useState('');
 
   const yyyymmdd = clickedDiaryDate.substring(0, 10);
   const year = yyyymmdd.split('-')[0];
@@ -26,13 +27,14 @@ const DiaryMain = ({ connectState, setConnectState }) => {
   const { data } = useQuery(["diaries", yyyymmdd], () => getDiary(yyyymmdd));
   
   useEffect(() => {
-    setDiaryList(data);
+    setDiaryList(data.diaries);
+    setDiaryName(data.title);
   }, [data])
 
   return (
     <MainContainer>
       <TextBox>
-        <Title>딩딩이와 댕댕이의 일기장💘📖🖋</Title>
+        <Title>{diaryName}</Title>
         <button onClick={() => setConnectState(!connectState)}>연결 상태 바꾸기 (임시 버튼)</button>
         <Date>{year}년 {month}월 {day}일 {dayStr}요일</Date>
       </TextBox>
