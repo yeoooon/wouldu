@@ -26,23 +26,18 @@ const TodoCreate = () => {
 
   //달력날짜에 프롭스로 받아서 변경될 예정
   const recoilDay = useRecoilValue<Date>(dayAtom);
-  const day: string = formatDate(recoilDay);
-
-  // useEffect(() => {
-  //   setDay(formatDate(recoilDay));
-  // }, [recoilDay]);
+  const pickDay: string = formatDate(recoilDay);
 
   const updateMutation = useMutation((data: Planner) => createPlan(data), {
     onSuccess: () => {
-      // const [year, month, day1] = day.split("-");
-      // console.log(Number(year), month);
-      queryClient.invalidateQueries(["plan"]);
+      const [year, month, day] = pickDay.split("-");
+      console.log(year, month);
+      queryClient.invalidateQueries(["plan", year]);
     },
   });
-
   const onCreateSubmit = async (data: Planner) => {
     // priority는 옵션임으로, 우선 1로 셋팅해놓음.
-    updateMutation.mutate({ date: day, ...data, priority: 1 });
+    updateMutation.mutate({ date: pickDay, ...data, priority: 1 });
     setOpen(false);
     resetField("description");
   };
@@ -54,7 +49,7 @@ const TodoCreate = () => {
           <InsertForm onSubmit={handleSubmit(onCreateSubmit)}>
             <BtnBox onClick={handleToggle}>
               <CircleCloseBox>
-                <CirclePlusIcon/>
+                <CirclePlusIcon />
               </CircleCloseBox>
             </BtnBox>
             <Input

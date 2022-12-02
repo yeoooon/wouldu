@@ -73,6 +73,7 @@ export const checkPlan = async (id: number) => {
 
 //전체 날짜의 일정
 export const getMonthplan = async ({ nowYear, nowMonth }: MonthPlan) => {
+  console.log("getMonthPlan", nowYear.toString(), nowMonth);
   try {
     const { data } = await axiosInstance.get(`planner/check/month?year=${nowYear}&month=${nowMonth}`);
     return data;

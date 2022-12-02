@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getDayPlan } from "../services/api/planner";
 
-const usePlanQuery = (day: string) => {
-  return useQuery(["plan", day], () => getDayPlan(day), { staleTime: 60 * 1000 });
+const usePlanQuery = (date: string) => {
+  const [year, month, day] = date.split("-");
+  return useQuery(["plan", year, month, day], () => getDayPlan(date), { staleTime: 60 * 1000 });
 };
 
 export default usePlanQuery;

@@ -24,10 +24,13 @@ const Calendar = () => {
   const [year, setYear] = useState<number>(date?.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date!));
 
-  //전체적으로 쿼리키 조정예정
-  const { data: monthData, refetch } = useQuery(["plan"], () => getMonthplan({ nowYear: year, nowMonth: month + 1 }), {
-    staleTime: 60 * 1000,
-  });
+  const { data: monthData } = useQuery(
+    ["plan", year.toString(), month.toString()],
+    () => getMonthplan({ nowYear: year, nowMonth: month + 1 }),
+    {
+      staleTime: 60 * 1000,
+    },
+  );
 
   useEffect(() => {
     setDate(pickDay);
