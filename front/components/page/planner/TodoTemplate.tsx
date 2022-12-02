@@ -20,7 +20,7 @@ const TemplateContainer = styled(Container)`
   width: 100%;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 2vh 5vh;
+  padding: 3vh 5vh;
   height: 100%;
   overflow-y: auto;
 `;

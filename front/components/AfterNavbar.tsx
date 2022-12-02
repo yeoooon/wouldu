@@ -1,15 +1,15 @@
 import Link from "next/link";
-import Image from "next/image";
-import LogoLight from "/public/icon/logoblack.svg";
-import LogoDark from "/public/icon/logowhite.svg";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userAtom } from "../recoil/user";
 import { useEffect, useState } from "react";
 import { User } from "@type/user";
 import { removeCookie } from "@services/utils/cookies";
+import { LogoBlackIcon, LogoWhiteIcon } from "./icons/LogoIcon";
+import { AlarmIcon } from "./icons/AlarmIcon";
+import { UserIcon } from "./icons/UserIcon";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -49,12 +49,12 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   };
   return (
     <Nav>
-      <LogoBox>{darkMode ? <LogoDark /> : <LogoLight />}</LogoBox>
+      <LogoBox>{darkMode ?  <LogoWhiteIcon />:<LogoBlackIcon /> }</LogoBox>
       <UserBox>
         <AlarmButton>
-          <Image src="/icon/alarm.svg" alt="alarm" width={15} height={15} />
+          <AlarmIcon width={15} height={15}/>
         </AlarmButton>
-        <Image src="/icon/user.svg" alt="user" width={60} height={60} />
+        <UserIcon width={60} height={60}/>
         <TextBox1>{`${user?.nickname} 님`}</TextBox1>
       </UserBox>
       <DarkModeBox>

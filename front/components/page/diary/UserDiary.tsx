@@ -1,11 +1,11 @@
 import { Box } from '@styles/layout';
-import Image from 'next/image';
 import React, { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { diarywriteState, today, clickedDiaryDateState } from '@recoil/diary';
 import styled from 'styled-components';
 import { Diary } from '@type/diary';
 import { userAtom } from '@recoil/user';
+import { UserIcon } from '@components/icons/UserIcon';
 
 const UserDiary = ({ diaryList }: any) => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
@@ -26,7 +26,7 @@ const UserDiary = ({ diaryList }: any) => {
     {diaryList && diaryList.find(isUserDiary)? 
       <DiaryBox>
         <ProfileBox>
-          <Image src="/icon/user.svg" alt="user" width={30} height={30} />
+          <UserIcon width={30} height={30} />
           <UserName>작성자 닉네임</UserName>
         </ProfileBox>
         <DiaryContent>

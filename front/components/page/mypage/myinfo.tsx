@@ -1,8 +1,8 @@
+import { UserIcon } from "@components/icons/UserIcon";
 import SurveyModal from "@components/SurveyModal";
 import { isSurveyModalAtom } from "@recoil/modal";
 import { userAtom } from "@recoil/user";
 import { User } from "@type/user";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -22,7 +22,7 @@ const MyInfo = () => {
   return (
     <ContentArea>
       <InfoArea className="info">
-        <Image src="/icon/user.svg" alt="user" width={100} height={100} />
+        <UserIcon width={100} height={100} />
         <p className="nickname">{`${user?.nickname} 님`}</p>
         <p className="email">{user?.email}</p>
       </InfoArea>
