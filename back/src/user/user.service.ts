@@ -115,14 +115,14 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: { id },
     });
-    if (nickname !== null) {
+    if (nickname !== undefined) {
       const nicknameExist = await this.checkUserExistsByNickname(nickname);
       if (nicknameExist) {
         throw new UnprocessableEntityException('닉네임 중복');
       }
       user.nickname = nickname;
     }
-    if (password !== null) {
+    if (password !== undefined) {
       user.hashedPassword = await bcrypt.hash(password, 10);
     }
     await this.userRepository.save(user);
