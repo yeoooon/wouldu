@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryColumn,
@@ -14,18 +15,29 @@ import {
 @Entity()
 export class Friend {
   @PrimaryGeneratedColumn('increment')
-  friendId: number;
+  id: number;
 
-  @PrimaryColumn()
-  userId: string;
+  @Column()
+  friendId: string;
 
-  @CreateDateColumn({ type: 'datetime' })
-  createdAt?: Date;
+  @Column()
+  fromUserId: string;
+
+  @Column()
+  toUserId: string;
 
   @Column()
   title: string;
 
-  @OneToOne(() => User)
-  @JoinColumn()
-  user: User;
+  @Column()
+  status: number;
+
+  @CreateDateColumn({ type: 'datetime' })
+  createdAt?: Date;
+
+  @ManyToOne(() => User, (fromUser) => fromUser.friendFrom)
+  fromUser: User;
+
+  @ManyToOne(() => User, (toUser) => toUser.friendTo)
+  toUser: User;
 }
