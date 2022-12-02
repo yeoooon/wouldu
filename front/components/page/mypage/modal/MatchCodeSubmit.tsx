@@ -3,8 +3,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { isCodeModalAtom } from "@recoil/friend";
 import { MatchCodeFormValue } from "@type/friend";
-import { useEffect } from "react";
 import { ModalBox, ModalWrap, Overlay } from "@styles/modal-style";
+import { requestFriend } from "@services/api/friend";
 
 const MatchCodeSubmit = () => {
   const {
@@ -14,14 +14,26 @@ const MatchCodeSubmit = () => {
     formState: { errors },
   } = useForm<MatchCodeFormValue>();
   const [isCodeShow, setIsCodeShow] = useRecoilState(isCodeModalAtom);
-  const onSubmitHandler: SubmitHandler<MatchCodeFormValue> = data => {
-    console.log(data);
-    resetInput();
+  const onSubmitHandler: SubmitHandler<MatchCodeFormValue> = async data => {
+    const status = await requestFriend(data);
+    switch (status) {
+      case 201:
+        alert("요청이 완료되었습니다.");
+        resetInput();
+        break;
+      case 400:
+        alert("이미 친구 요청했습니다.");
+        resetInput();
+        break;
+      case 404:
+        alert("친구의 코드를 다시 확인해주세요.");
+        break;
+    }
   };
 
   const resetInput = () => {
     setIsCodeShow(false);
-    resetField("friendCode");
+    resetField("code");
   };
 
   const handleClickCancel = () => {
@@ -38,12 +50,12 @@ const MatchCodeSubmit = () => {
               <Title>상대방의 연결 코드를 입력하세요.</Title>
               <Form onSubmit={handleSubmit(onSubmitHandler)}>
                 <input
-                  {...register("friendCode", {
+                  {...register("code", {
                     required: "연결 코드를 입력해 주세요.",
                     //validation 필요
                   })}
                 ></input>
-                <ErrorMessage>{errors?.friendCode?.message}</ErrorMessage>
+                <ErrorMessage>{errors?.code?.message}</ErrorMessage>
                 <ConnectButton>연결하기</ConnectButton>
               </Form>
             </DescArea>
