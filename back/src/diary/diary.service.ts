@@ -15,7 +15,7 @@ export class DiaryService {
     const diary = new Diary();
     const { content } = createDiaryDto;
     diary.friendId = await this.friendService.findFriendId(currentUserId);
-    diary.userId = currentUserId;
+    diary.authorId = currentUserId;
     diary.content = content;
     const dt = new Date();
     diary.date =

@@ -19,13 +19,13 @@ export class DiaryDAO {
       .select([
         'diary.id',
         'diary.friendId',
-        'diary.userId',
+        'diary.authorId',
         'diary.content',
         'diary.date',
         'user.nickname',
       ])
       .where(options, data)
-      .innerJoin('diary.user', 'user')
+      .innerJoin('diary.author', 'user')
       .getMany();
   }
 
