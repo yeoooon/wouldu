@@ -11,7 +11,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { clickedDiaryDateState, clickedDiaryMonthState, today } from '@recoil/diary';
 
 const DiaryListItem = () => {
-  const [diaryList, setDiaryList] = useState<Diary[] | undefined>(undefined);
+  const [diaryList, setDiaryList] = useState<Array<Diary> | undefined>(undefined);
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
 
@@ -30,12 +30,12 @@ const DiaryListItem = () => {
   const { data } = useQuery(["diaries", clickedMonth], () => getDiaries(clickedMonth));
 
   useEffect(() => {
-    setDiaryList(data);
+    setDiaryList(data.diaries);
   }, [data]);
 
   return (
     <>
-      {diaryList && diaryList.find(isTodayWritten)?
+      {diaryList && diaryList.length > 0 && diaryList.find(isTodayWritten)?
         <></>
         : 
         <WriteTodayDiaryBtn onClick={getTodayMain}>오늘 일기 쓰기</WriteTodayDiaryBtn>

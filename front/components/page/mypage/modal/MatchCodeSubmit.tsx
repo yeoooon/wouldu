@@ -3,11 +3,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { isCodeModalAtom } from "@recoil/friend";
 import { MatchCodeFormValue } from "@type/friend";
-import { ModalBox, ModalWrap, Overlay } from "@styles/modal-style";
 import { requestFriend } from "@services/api/friend";
 import { useCallback, useEffect, useRef } from "react";
 
 type inputType = "code1" | "code2" | "code3"; //|"code4"|"code5"|"code6"
+import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
+import { CloseIcon } from "@components/icons/CloseIcon";
 
 const MatchCodeSubmit = () => {
   const {
@@ -72,9 +73,11 @@ const MatchCodeSubmit = () => {
 
   return (
     <>
-      <ModalWrap>
-        <ModalBox width="400px" height="200px">
-          <CancelButton onClick={handleClickCancel}>x</CancelButton>
+      <ModalWrapper>
+        <ModalContainer width="400px" height="200px">
+          <Cancel onClick={handleClickCancel}>
+            <CloseIcon />
+          </Cancel>
           <DescArea>
             <Title>상대방의 연결 코드를 입력하세요.</Title>
             <Form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -106,22 +109,15 @@ const MatchCodeSubmit = () => {
               <ConnectButton>연결하기</ConnectButton>
             </Form>
           </DescArea>
-        </ModalBox>
+        </ModalContainer>
         <Overlay />
-      </ModalWrap>
+      </ModalWrapper>
     </>
   );
 };
 
-const BodyBox = styled.div`
-  width: 300px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const DescArea = styled.div`
+  margin: 1em;
   width: 80%;
   display: flex;
   flex-direction: column;
@@ -151,15 +147,7 @@ const ErrorMessage = styled.p`
   align-self: flex-end;
   font-size: ${props => props.theme.fontSize.textXs};
 `;
-const CancelButton = styled.button`
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: flex-end;
-  margin: 10px;
-`;
+
 const ConnectButton = styled.button`
   width: 110px;
   height: 30px;

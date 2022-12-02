@@ -31,7 +31,7 @@ const MyInfo = () => {
           <Category key={item}>{item}</Category>
         ))}
       </CategoryArea>
-      <Button onClick={() => setIsSurveyOpen(cur => !cur)}>나의 카테고리 변경하러 가기 →</Button>
+      <Button onClick={() => setIsSurveyOpen(true)}>나의 카테고리 변경하러 가기 →</Button>
       {isSurveyOpen? <SurveyModal/> : ""}
     </ContentArea>
   );
