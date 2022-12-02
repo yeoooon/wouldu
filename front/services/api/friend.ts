@@ -3,7 +3,7 @@ import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 
 //친구요청 api
-export const requestFriend = async (friendCode: MatchCodeFormValue) => {
+export const requestFriend = async (friendCode: string) => {
   console.log(friendCode);
   try {
     const { status } = await axiosInstance.post("friend/request", friendCode);

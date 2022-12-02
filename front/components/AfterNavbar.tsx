@@ -59,13 +59,13 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   };
   return (
     <Nav>
-      <LogoBox>{darkMode ?  <LogoWhiteIcon />:<LogoBlackIcon /> }</LogoBox>
+      <LogoBox>{darkMode ? <LogoWhiteIcon /> : <LogoBlackIcon />}</LogoBox>
       <UserBox>
         <AlarmButton>
-          <AlarmIcon width={15} height={15}/>
+          <AlarmIcon width={15} height={15} />
           {receiveFriends?.length >= 1 && <p>{receiveFriends.length}</p>}
         </AlarmButton>
-        <UserIcon width={60} height={60}/>
+        <UserIcon width={60} height={60} />
         <TextBox1>{`${user?.nickname} 님`}</TextBox1>
       </UserBox>
       <DarkModeBox>

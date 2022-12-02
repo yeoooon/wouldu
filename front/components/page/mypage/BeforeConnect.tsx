@@ -35,7 +35,7 @@ const BeforeConnect = () => {
       <div className="button">
         <button onClick={() => setIsCodeShow(true)}>상대방 연결 코드 입력</button>
       </div>
-      <MatchCodeSubmit />
+      {isCodeShow && <MatchCodeSubmit />}
     </ContentArea>
   );
 };
