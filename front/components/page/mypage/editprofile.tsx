@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styled from "styled-components";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Box, Container } from "../../../styles/layout";
@@ -6,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { User } from "@type/user";
 import { userAtom } from "@recoil/user";
+import { UserIcon } from "@components/icons/UserIcon";
 
 interface EditProfileFormValue {
   profileImage: File
@@ -29,7 +29,7 @@ const EditProfile = () => {
     <ContentArea>
       <Form onSubmit={handleSubmit(onSubmitHandler)}>
         <ProfileArea>
-          <Image src="/icon/user.svg" alt="user" width={80} height={80} />
+          <UserIcon width={80} height={80} />
           <label>프로필 사진 업로드</label>
           <input {...register("profileImage")} type="file"></input>
           <p>허용 확장자 *.jpg, *.png | 최대 nKB</p>

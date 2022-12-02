@@ -1,9 +1,11 @@
 import { isSurveyModalAtom } from '@recoil/modal';
 import { surveyCategories } from '@services/utils/surveyCategory';
 import { Box, Container } from '@styles/layout';
+import { ModalWrapper } from '@styles/modal_layout';
 import React, { useState } from 'react'
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { CloseIcon } from './icons/CloseIcon';
 
 const SurveyModal = () => {
   const setIsSurveyModalOpen = useSetRecoilState(isSurveyModalAtom);
@@ -18,7 +20,9 @@ const SurveyModal = () => {
   return (
     <ModalWrapper>
       <SurveyContainer>
-        <Cancel onClick={() => setIsSurveyModalOpen(false)}>X</Cancel>
+        <Cancel onClick={() => setIsSurveyModalOpen(false)}>
+          <CloseIcon />
+        </Cancel>
         <Head>
           <Title>선호하는 카테고리를 선택하세요.</Title>
           <Description>선택한 카테고리에 맞춰서 활동을 추천해드려요.</Description>
@@ -45,17 +49,7 @@ const SurveyModal = () => {
     </ModalWrapper>
   );
 };
-const ModalWrapper = styled.div`
-  position: fixed;
-  top: 0px;
-  left: 120px;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-`;
+
 const SurveyContainer = styled(Container)`
   z-index: 10000;
   width: 800px;
@@ -65,9 +59,9 @@ const SurveyContainer = styled(Container)`
   border: 1px solid ${props => props.theme.color.border};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
-const Cancel = styled.p`
+const Cancel = styled.div`
   align-self: flex-end;
-  margin: 0.5em;
+  margin: 0.8em;
   cursor: pointer;
 `;
 const Head = styled(Box)`

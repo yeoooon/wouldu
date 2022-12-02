@@ -2,13 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
 import { colors } from "@styles/common_style";
+import { LogoBlackIcon } from "./icons/LogoIcon";
 
 const BeforeNavBar = () => {
   return (
     <Header>
       <nav>
-        <Image src="/icon/logoblack.svg" alt="logo" width={180} height={60} />
-
+        <LogoBlackIcon />
         <Link href="/login">
           <button>서비스 이용하러 가기</button>
         </Link>

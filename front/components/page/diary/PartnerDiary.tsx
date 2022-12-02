@@ -1,10 +1,10 @@
 import { DiaryBox, ProfileBox, UserName, DiaryContent, UnwrittenDiaryBox, Text } from "./UserDiary";
-import Image from "next/image";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Diary } from "@type/diary";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "@recoil/user";
+import { UserIcon } from "@components/icons/UserIcon";
 
 const PartnerDiary = ({ diaryList }: any) => {
   const user = useRecoilValue(userAtom);
@@ -20,7 +20,7 @@ const PartnerDiary = ({ diaryList }: any) => {
       {diaryList && diaryList.find(isPartnerDiary) ? (
         <DiaryBox>
           <ProfileBox>
-            <Image src="/icon/user.svg" alt="user" width={30} height={30} />
+            <UserIcon width={30} height={30} />
             <UserName>파트너 닉네임</UserName>
           </ProfileBox>
           <DiaryContent>{diaryList.find(isPartnerDiary).content}</DiaryContent>

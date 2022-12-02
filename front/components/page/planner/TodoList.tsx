@@ -8,8 +8,8 @@ import styled from "styled-components";
 import { getDayPlan } from "@services/api/planner";
 import { formatDate } from "@services/utils/formatDate";
 import TodoItem from "./TodoItem";
-import Check from "/public/icon/check.svg";
 import usePlanQuery from "@hooks/usePlanQuery";
+import { CheckIcon } from "@components/icons/CheckIcon";
 
 const TodoList = () => {
   const [todos, setTodos] = useState<Planner[] | null>(null);
@@ -26,7 +26,7 @@ const TodoList = () => {
   return (
     <ListContainer>
       <TitleBox>
-        <Check />
+        <CheckIcon />
         <p>오늘의 할일</p>
       </TitleBox>
       {todos?.map(todo => (

@@ -1,14 +1,11 @@
+import { CircleCheckBackIcon, CircleCheckIcon } from "@components/icons/CircleIcon";
 import { checkPlan, deletePlan, updatePlan } from "@services/api/planner";
 import { Box } from "@styles/layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useSetRecoilState } from "recoil";
 import styled, { css } from "styled-components";
-import CircleCheck from "/public/icon/circlecheck.svg";
-import CircleCheckBack from "/public/icon/circlecheckback.svg";
-import Trash from "/public/icon/trash.svg";
 
 const TodoItem = (plan: Planner) => {
   const queryClient = useQueryClient();
@@ -78,7 +75,7 @@ const TodoItem = (plan: Planner) => {
         </Form>
       ) : (
         <>
-          <CheckBox onClick={handleToggle}>{plan.isCompleted ? <CircleCheckSvg /> : <CircleCheckBackSvg />}</CheckBox>
+          <CheckBox onClick={handleToggle}>{plan.isCompleted ? <CircleCheckIcon /> : <CircleCheckBackIcon />}</CheckBox>
           <Text>{plan.description}</Text>
           <ButtonBox>
             <Button onClick={() => setIsEditMode(true)}>수정</Button>
@@ -159,9 +156,5 @@ const CheckBox = styled(Box)`
   left: -15px;
   cursor: pointer;
 `;
-
-const CircleCheckSvg = styled(CircleCheck)``;
-
-const CircleCheckBackSvg = styled(CircleCheckBack)``;
 
 export default TodoItem;
