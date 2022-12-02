@@ -150,6 +150,11 @@ export class FriendService {
       .getMany();
   }
 
+  async findTitle(friendId: number) {
+    const friend = await this.friendRepository.findOne({ where: { friendId } });
+    return friend.title;
+  }
+
   async disconnectFriend(currentUserId: string) {
     const friendId = await this.findFriendId(currentUserId);
     await this.friendRepository

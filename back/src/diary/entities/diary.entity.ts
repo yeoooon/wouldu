@@ -1,3 +1,4 @@
+import { Friend } from 'src/friend/entities/friend.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
@@ -17,7 +18,7 @@ export class Diary {
   friendId: number;
 
   @Column()
-  authorId: string;
+  userId: string;
 
   @Column()
   content: string;
@@ -33,4 +34,7 @@ export class Diary {
 
   @ManyToOne(() => User, (user) => user.diaries)
   user: User;
+
+  @ManyToOne(() => Friend, (friend) => friend.diaries)
+  friend: Friend;
 }
