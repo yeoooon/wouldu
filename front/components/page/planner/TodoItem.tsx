@@ -62,7 +62,7 @@ const TodoItem = (plan: Planner) => {
     <TodoBox className={plan.isCompleted === 1 ? "finish" : ""}>
       {editMode ? (
         <Form onSubmit={handleSubmit(onUpdateSubmit)}>
-          <input
+          <Input
             autoFocus
             defaultValue={plan.description}
             {...register("description", {
@@ -144,6 +144,13 @@ const Form = styled.form`
   height: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+`;
+const Input = styled.input`
+  border: none;
+  outline: none;
+  width: 70%;
+  padding: 0.3em 0.5em;
 `;
 const CheckBox = styled(Box)`
   margin: 0;
