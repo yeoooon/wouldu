@@ -10,6 +10,8 @@ import { userAtom } from "../recoil/user";
 import { useEffect, useState } from "react";
 import { User } from "@type/user";
 import { removeCookie } from "@services/utils/cookies";
+import { checkRequestFriend } from "@services/api/friend";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -21,12 +23,19 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
 
+  const queryClient = useQueryClient();
+
   const [userAtomData, setUserAtomData] = useRecoilState(userAtom);
   const [user, setUser] = useState<User | null>();
+  const { data: receiveFriends } = useQuery(["friend"], () => checkRequestFriend("receive"));
 
   useEffect(() => {
     setUser(userAtomData);
   }, []);
+
+  useEffect(() => {
+    console.log("friend receive", receiveFriends);
+  }, [receiveFriends]);
 
   const toggleTheme = () => {
     const theme = localStorage.getItem("theme");
@@ -44,6 +53,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
       setUser(null);
       setUserAtomData(null);
       removeCookie("userToken");
+      queryClient.removeQueries({ queryKey: ["user"] });
       await router.push("/");
     }
   };
@@ -53,6 +63,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
       <UserBox>
         <AlarmButton>
           <Image src="/icon/alarm.svg" alt="alarm" width={15} height={15} />
+          {receiveFriends?.length >= 1 && <p>{receiveFriends.length}</p>}
         </AlarmButton>
         <Image src="/icon/user.svg" alt="user" width={60} height={60} />
         <TextBox1>{`${user?.nickname} 님`}</TextBox1>
