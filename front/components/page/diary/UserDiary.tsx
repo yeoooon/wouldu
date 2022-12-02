@@ -1,24 +1,17 @@
 import { Box } from '@styles/layout';
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { diarywriteState, today, clickedDiaryDateState } from '@recoil/diary';
 import styled from 'styled-components';
+import { isUserDiary } from '@services/utils/diaryAuthor';
 import { Diary } from '@type/diary';
-import { userAtom } from '@recoil/user';
 
-const UserDiary = ({ diaryList }: any) => {
+const UserDiary = ({ diaryList }) => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
 
-  const user = useRecoilValue(userAtom);
-
-  const isUserDiary = (element: Diary) => {
-    if (element.authorId === user?.id) {
-      return true;
-    }
-  };
   const handleToggle = () => setIsTextareaOpen(!isTextareaOpen);
 
   return (
@@ -27,7 +20,7 @@ const UserDiary = ({ diaryList }: any) => {
       <DiaryBox>
         <ProfileBox>
           <Image src="/icon/user.svg" alt="user" width={30} height={30} />
-          <UserName>작성자 닉네임</UserName>
+          <UserName>사용자 닉네임</UserName>
         </ProfileBox>
         <DiaryContent>
           {diaryList.find(isUserDiary).content}

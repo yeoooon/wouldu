@@ -6,27 +6,18 @@ import { today } from '@recoil/diary';
 import { getDiaries } from '@services/api/diary';
 import { useRecoilValue } from 'recoil';
 import { Diary } from '@type/diary';
+import { isUserDiary, isPartnerDiary } from '@services/utils/diaryAuthor';
+import UserDiary from '../diary/UserDiary';
+import PartnerDiary from '../diary/PartnerDiary';
 
 const StampDiaryContent = () => {
-  const [todayDiary, setTodayDiary] = useState<Diary[]>();
+  const [todayDiary, setTodayDiary] = useState<Array<Diary> | undefined>([]);
 
   const todayDate = useRecoilValue(today);
   const { data } = useQuery(["diaries", todayDate], () => getDiaries(todayDate));
-
-  const isUserDiary = (element: Diary) => {
-    if (element.authorId === sessionStorage.getItem("userId")) {
-      return true;
-    }
-  }
-
-  const isPartnerDiary = (element: Diary) => {
-    if (element.authorId !== sessionStorage.getItem("userId")) {
-      return true;
-    }
-  }
-
+  
   useEffect(() => {
-    setTodayDiary(data);
+    setTodayDiary(data.diaries);
   }, [data]);
 
   return (
@@ -36,7 +27,7 @@ const StampDiaryContent = () => {
             나
           </Name>
           <Content>
-            {todayDiary && todayDiary.find(isUserDiary)? todayDiary.find(isUserDiary).content : <p>no content</p>}
+            {todayDiary && todayDiary.length > 0? todayDiary.find(isUserDiary)!.content : <p>작성된 일기가 없어요.</p>}
           </Content>
         </DiarySummary>
         <PartnerDiarySummary>
@@ -44,7 +35,7 @@ const StampDiaryContent = () => {
             상대
           </PartnerName>
           <Content>
-            {todayDiary && todayDiary.find(isPartnerDiary)? todayDiary.find(isPartnerDiary).content : <p>아직 안 썼어요!</p>}
+            {todayDiary && todayDiary.length > 0? todayDiary.find(isPartnerDiary)!.content : <p>작성된 일기가 없어요.</p>}
           </Content>
         </PartnerDiarySummary>
     </ContentBox>

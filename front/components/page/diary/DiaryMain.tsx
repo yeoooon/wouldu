@@ -26,7 +26,7 @@ const DiaryMain = ({ connectState, setConnectState }) => {
   const { data } = useQuery(["diaries", yyyymmdd], () => getDiary(yyyymmdd));
   
   useEffect(() => {
-    setDiaryList(data);
+    setDiaryList(data.diaries);
   }, [data])
 
   return (
