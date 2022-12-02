@@ -6,7 +6,7 @@ import MypageTab from "@components/page/mypage/mypagetab";
 import MyInfo from "@components/page/mypage/myinfo";
 import EditConnection from "@components/page/mypage/EditConnection";
 import EditProfile from "@components/page/mypage/editprofile";
-import ChangePassword from "@components/page/mypage/ChangePassword";
+import ChangePassword from "@components/page/mypage/Changepassword";
 import ModalBase from "@components/page/mypage/modal/ModalBase";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";
