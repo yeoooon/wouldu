@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 import DiaryListDay from './DiaryListDay';
 import { Diary } from '@type/diary';
 
-const DiaryMain = () => {
+const DiaryMain = ({ connectState, setConnectState }) => {
   const isTextAreaOpen = useRecoilValue(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
   const [diaryList, setDiaryList] = useState([]);
@@ -33,6 +33,7 @@ const DiaryMain = () => {
     <MainContainer>
       <TextBox>
         <Title>딩딩이와 댕댕이의 일기장💘📖🖋</Title>
+        <button onClick={() => setConnectState(!connectState)}>연결 상태 바꾸기 (임시 버튼)</button>
         <Date>{year}년 {month}월 {day}일 {dayStr}요일</Date>
       </TextBox>
       {isTextAreaOpen ?

@@ -6,14 +6,7 @@ import { Diary } from "@type/diary";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "@recoil/user";
 
-const testContent = {
-  user: "댕댕",
-  content:
-    "일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, perferendis at iste facilis non, rerum recusandae, repudiandae accusantium ratione molestiae provident autem a inventore porro! Nesciunt ipsa consequatur temporibus debitis.일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, perferendis at iste facilis non, rerum recusandae, repudiandae accusantium ratione molestiae provident autem a inventore porro! Nesciunt ipsa consequatur temporibus debitis.일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-};
-
 const PartnerDiary = ({ diaryList }: any) => {
-  const [isPartnerWritten, setIsPartnerWritten] = useState(false);
   const user = useRecoilValue(userAtom);
 
   const isPartnerDiary = (element: Diary) => {
