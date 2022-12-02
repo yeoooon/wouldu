@@ -20,19 +20,22 @@ const TodoItem = (plan: Planner) => {
 
   const deleteMutation = useMutation((data: Planner) => deletePlan(data?.id!), {
     onSuccess: (status, value) => {
-      queryClient.invalidateQueries(["plan"]);
+      const [year, month, day] = value && value.date!.split("-");
+      queryClient.invalidateQueries(["plan", year]); // month로 하면 왜 달력 쿼리는 무효화 안되지 ?
     },
   });
 
   const checkMutation = useMutation((data: Planner) => checkPlan(data?.id!), {
     onSuccess: (status, value) => {
-      queryClient.invalidateQueries(["plan", value.date]);
+      const [year, month, day] = value && value.date!.split("-");
+      queryClient.invalidateQueries(["plan", year, month, day]);
     },
   });
 
   const updateMutation = useMutation((data: Planner) => updatePlan(data), {
     onSuccess: (status, value) => {
-      queryClient.invalidateQueries(["plan", value.date]);
+      const [year, month, day] = value && value.date!.split("-");
+      queryClient.invalidateQueries(["plan", year, month, day]);
     },
   });
 
