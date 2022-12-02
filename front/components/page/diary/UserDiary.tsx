@@ -5,11 +5,14 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { diarywriteState, today, clickedDiaryDateState } from '@recoil/diary';
 import styled from 'styled-components';
 import { Diary } from '@type/diary';
+import { userAtom } from '@recoil/user';
 
 const UserDiary = ({ diaryList }: any) => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
+
+  const user = useRecoilValue(userAtom);
 
   const isUserDiary = (element: Diary) => {
     if (element.authorId === user?.id) {
