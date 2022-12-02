@@ -5,22 +5,21 @@ import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
+import MatchCodeSubmit from "./modal/MatchCodeSubmit";
 
 const BeforeConnect = () => {
   const user = useRecoilValue(userAtom);
   const [isCodeShow, setIsCodeShow] = useRecoilState(isCodeModalAtom);
 
-  useEffect(() => {
-    console.log(isCodeShow, "iscode");
-  }, [isCodeShow]);
   return (
     <ContentArea>
       <div className="info">
+        <p>아직 연결된 사람이 없어요!</p>
         <p>일상을 공유하고 싶은 사람과 일기를 연결하세요!</p>
         <Profile>
           <User>
             <Image src="/icon/user.svg" alt="user" width={80} height={80} />
-            <p className="userName">로그인한 유저 닉네임</p>
+            <p className="userName">{user?.nickname}</p>
           </User>
           <Mate>
             <Image src="/icon/user.svg" alt="user" width={80} height={80} />
@@ -35,6 +34,7 @@ const BeforeConnect = () => {
       <div className="button">
         <button onClick={() => setIsCodeShow(true)}>상대방 연결 코드 입력</button>
       </div>
+      <MatchCodeSubmit />
     </ContentArea>
   );
 };
