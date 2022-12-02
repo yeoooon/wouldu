@@ -1,14 +1,14 @@
+import { CheckIcon } from "@components/icons/CheckIcon";
 import { Box, Container } from "@styles/layout";
 import React from "react";
 import styled from "styled-components";
 import TodoItem from "./TodoItem";
-import Check from "/public/icon/check.svg";
 
 const Suggesttodo = () => {
   return (
     <SuggestContainer>
       <TitleBox>
-        <Check />
+        <CheckIcon />
         <Text>오늘의 추천 활동</Text>
       </TitleBox>
       <TodoItem description="감정분석을 통한 해야할일" isCompleted={0} />

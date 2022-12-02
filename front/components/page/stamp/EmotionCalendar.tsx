@@ -1,9 +1,8 @@
+import { LeftarrowIcon, RightarrowIcon } from '@components/icons/ArrowIcons';
 import { Box } from '@styles/layout';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import LeftArrow from '/public/icon/leftarrow.svg';
-import RightArrow from '/public/icon/rightarrow.svg';
 
 const EmotionCalendar = () => {
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -42,7 +41,7 @@ const EmotionCalendar = () => {
     <Frame>
       <Header>
         <Button onClick={() => setDate(new Date(year, month - 1, day))}>
-          <LeftArrow />
+          <LeftarrowIcon />
         </Button>
         <MonthBox>
           {/* <Year>
@@ -53,7 +52,7 @@ const EmotionCalendar = () => {
           </Month>
         </MonthBox>
         <Button onClick={() => setDate(new Date(year, month + 1, day))}>
-          <RightArrow />
+          <RightarrowIcon />
         </Button>
       </Header>
       <Body>

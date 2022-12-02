@@ -1,3 +1,4 @@
+import { LeftarrowIcon, RightarrowIcon } from "@components/icons/ArrowIcons";
 import usePlanQuery from "@hooks/usePlanQuery";
 import { dayAtom } from "@recoil/planner";
 import { getMonthplan } from "@services/api/planner";
@@ -7,8 +8,6 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import styled, { css } from "styled-components";
-import LeftArrow from "/public/icon/leftarrow.svg";
-import RightArrow from "/public/icon/rightarrow.svg";
 
 const Calendar = () => {
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -63,10 +62,10 @@ const Calendar = () => {
         </MonthBox>
         <ButtonBox>
           <Button onClick={() => setDate(new Date(year, month - 1, day))}>
-            <LeftArrow />
+            <LeftarrowIcon />
           </Button>
           <Button onClick={() => setDate(new Date(year, month + 1, day))}>
-            <RightArrow />
+            <RightarrowIcon />
           </Button>
         </ButtonBox>
       </Header>
