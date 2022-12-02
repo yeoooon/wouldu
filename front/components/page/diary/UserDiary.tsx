@@ -20,7 +20,7 @@ const UserDiary = ({ diaryList }) => {
       <DiaryBox>
         <ProfileBox>
           <Image src="/icon/user.svg" alt="user" width={30} height={30} />
-          <UserName>사용자 닉네임</UserName>
+          <UserName>{diaryList.find(isUserDiary).user.nickname}</UserName>
         </ProfileBox>
         <DiaryContent>
           {diaryList.find(isUserDiary).content}

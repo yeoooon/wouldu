@@ -2,6 +2,7 @@ import { DiaryBox, ProfileBox, UserName, DiaryContent, UnwrittenDiaryBox, Text }
 import Image from "next/image";
 import React from "react";
 import { isPartnerDiary } from "@services/utils/diaryAuthor";
+import { UserIcon } from "@components/icons/UserIcon";
 
 const PartnerDiary = ({ diaryList }: any) => {
 
@@ -11,7 +12,7 @@ const PartnerDiary = ({ diaryList }: any) => {
         <DiaryBox>
           <ProfileBox>
             <UserIcon width={30} height={30} />
-            <UserName>파트너 닉네임</UserName>
+            <UserName>{diaryList.find(isPartnerDiary).user.nickname}</UserName>
           </ProfileBox>
           <DiaryContent>{diaryList.find(isPartnerDiary).content}</DiaryContent>
         </DiaryBox>
