@@ -15,8 +15,8 @@ export class EmailService {
     this.transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: 'chaemins193@gmail.com',
-        pass: 'awyuivrmmvhyhhny',
+        user: process.env.EMAIL_ADDRESS,
+        pass: process.env.EMAIL_PASSWORD,
       },
     });
   }
@@ -24,7 +24,7 @@ export class EmailService {
     emailAddress: string,
     signupVerifyToken: string,
   ) {
-    const baseUrl = 'http://localhost:8080';
+    const baseUrl = `${process.env.BACKEND_HOST}:${process.env.BACKEND_PORT}`;
 
     const url = `${baseUrl}/user/email-verify?signupVerifyToken=${signupVerifyToken}`;
 

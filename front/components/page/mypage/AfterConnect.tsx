@@ -1,3 +1,4 @@
+import { UserIcon } from "@components/icons/UserIcon";
 import Image from "next/image";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
@@ -12,11 +13,11 @@ const AfterConnect = () => {
         </DiaryName>
         <Profile>
           <User>
-            <Image src="/icon/user.svg" alt="user" width={80} height={80} />
+            <UserIcon width={80} height={80} />
             <p className="userName">나</p>
           </User>
           <Mate>
-            <Image src="/icon/user.svg" alt="user" width={80} height={80} />
+            <UserIcon width={80} height={80} />
             <p className="mateName">상대방</p>
           </Mate>
         </Profile>

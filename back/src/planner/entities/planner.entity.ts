@@ -1,40 +1,42 @@
+import { User } from 'src/user/entities/user.entity';
 import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn
-  } from 'typeorm';
-  
-  @Entity()
-  export class Planner {
-    @PrimaryGeneratedColumn('increment')
-    id: number;
-  
-    @Column({ length: 100 })
-    description: string;
-  
-    @Column({ type: 'date' })
-    date: Date;
-  
-    @Column({ default: 0 })
-    isRecommended: number;
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  JoinColumn,
+} from 'typeorm';
 
-    @Column({ default: 0 })
-    isCompleted: number;
-  
-    @Column({ length: 100, default: null })
-    imgUrl: string;
-  
-    @Column({ length: 50 })
-    userId: string;
-  
-    @Column({
-      type: 'timestamp',
-      nullable: false,
-      default: () => 'CURRENT_TIMESTAMP',
-    })
-    createdAt: Date;
-  
-    @Column()
-    priority: number;
-  }
-  
+@Entity()
+export class Planner {
+  @PrimaryGeneratedColumn('increment')
+  id: number;
+
+  @Column({ length: 100 })
+  description: string;
+
+  @Column({ type: 'date' })
+  date: Date;
+
+  @Column({ default: 0 })
+  isRecommended: number;
+
+  @Column({ default: 0 })
+  isCompleted: number;
+
+  @Column({ length: 100, default: null })
+  imgUrl: string;
+
+  @Column()
+  userId: string;
+
+  @ManyToOne(() => User, (user) => user.planners)
+  user: User;
+
+  @CreateDateColumn({ type: 'datetime' })
+  createdAt?: Date;
+
+  @Column()
+  priority: number;
+}

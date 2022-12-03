@@ -1,42 +1,50 @@
 import { Box } from '@styles/layout';
+import React from 'react'
 import Image from 'next/image';
-import React, { useState } from 'react'
-import { useRecoilState } from 'recoil';
-import { diarywriteState } from '../../../recoil/diary';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { diarywriteState, today, clickedDiaryDateState } from '@recoil/diary';
 import styled from 'styled-components';
+import { isUserDiary } from '@services/utils/diaryAuthor';
+import { Diary } from '@type/diary';
 
-export const testContent = {
-  user: "딩딩",
-  content: "일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, perferendis at iste facilis non, rerum recusandae, repudiandae accusantium ratione molestiae provident autem a inventore porro! Nesciunt ipsa consequatur temporibus debitis.일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, perferendis at iste facilis non, rerum recusandae, repudiandae accusantium ratione molestiae provident autem a inventore porro! Nesciunt ipsa consequatur temporibus debitis.일기내용 Lorem ipsum dolor sit amet consectetur adipisicing elit."
-}
-
-const UserDiary = () => {
+const UserDiary = ({ diaryList }) => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
-  const [isUserWritten, setIsUserWritten] = useState(false);
+  const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
+  const todayDate = useRecoilValue(today);
 
   const handleToggle = () => setIsTextareaOpen(!isTextareaOpen);
 
   return (
     <>
-    {isUserWritten ? 
+    {diaryList && diaryList.find(isUserDiary)? 
       <DiaryBox>
         <ProfileBox>
           <Image src="/icon/user.svg" alt="user" width={30} height={30} />
-          <UserName>{testContent.user}</UserName>
+          <UserName>{diaryList.find(isUserDiary).user.nickname}</UserName>
         </ProfileBox>
         <DiaryContent>
-          {testContent.content}
+          {diaryList.find(isUserDiary).content}
         </DiaryContent>
       </DiaryBox>
       :
       <UnwrittenDiaryBox>
-        <Text>
-        아직 일기가 작성되지 않았습니다.<br/>
-        오늘의 일기를 작성하여 친구와 공유해 보세요.
-        </Text>
-        <Button onClick={handleToggle}>
-          나의 일기 작성하러 가기
-        </Button>
+        {clickedDiaryDate === todayDate?
+          <>
+            <Text>
+              아직 일기가 작성되지 않았습니다.<br/>
+              오늘의 일기를 작성하여 친구와 공유해 보세요.
+            </Text>
+            <Button onClick={handleToggle}>
+              나의 일기 작성하러 가기
+            </Button>
+          </>
+          :
+          <>
+            <Text>
+              작성된 일기가 없습니다.
+            </Text>
+          </>    
+        }
       </UnwrittenDiaryBox>
     }
     </>

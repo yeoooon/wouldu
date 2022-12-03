@@ -1,26 +1,35 @@
-import { useEffect } from "react";
+import { isAlarmModalAtom } from "@recoil/modal";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { loginStateSelector } from "../recoil/user";
-import { Container } from "../styles/layout";
+import { loginStateSelector, userAtom } from "../recoil/user";
 import AfterNavbar from "./AfterNavbar";
+import AlarmModal from "./AlarmModal";
 import BeforeNavBar from "./BeforeNavbar";
-import About from "./page/about/About";
 
 export interface LayoutProps {
   children: React.ReactNode;
+  darkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
+const Layout = ({ children, darkMode, setDarkMode }: LayoutProps) => {
+  const isLoginStateAtom = useRecoilValue(loginStateSelector);
+  const [isLoginState, setIsLoginState] = useState<boolean>(false);
+  const isAlarmOpen = useRecoilValue(isAlarmModalAtom);
 
-export default function Layout({ children }: LayoutProps) {
-  const isLoginState = useRecoilValue(loginStateSelector);
+  useEffect(() => {
+    setIsLoginState(isLoginStateAtom);
+  }, [isLoginStateAtom]);
 
   return (
     <>
       {isLoginState && (
         <LayoutWrapper>
-          <AfterNavbar />
+          <AfterNavbar darkMode={darkMode} setDarkMode={setDarkMode} />
           {/* <div>로그인된상태</div> */}
           <div>{children}</div>
+          {isAlarmOpen && <AlarmModal/>}
         </LayoutWrapper>
       )}
       {isLoginState || (
@@ -32,10 +41,12 @@ export default function Layout({ children }: LayoutProps) {
       )}
     </>
   );
-}
+};
 
 const LayoutWrapper = styled.div`
   display: grid;
   grid-template-columns: 240px 1fr;
   height: 720px;
 `;
+
+export default Layout;

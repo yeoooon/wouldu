@@ -1,6 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@Entity({ name: 'friendRequest' })
+@Entity({ name: 'friend_request' })
 export class FriendRequest {
   @PrimaryGeneratedColumn('increment')
   id: number;
@@ -13,4 +19,10 @@ export class FriendRequest {
 
   @Column()
   requestProgress: number;
+
+  @CreateDateColumn({ type: 'datetime' })
+  createdAt?: Date;
+
+  @UpdateDateColumn({ type: 'datetime' })
+  updatedAt?: Date;
 }

@@ -17,17 +17,18 @@ export class AuthService {
   async login(user: User) {
     const payload = { userId: user.id };
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
       ...user,
     };
   }
 
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { email: email } });
-    if (
-      !(await bcrypt.compare(password, user?.hashedPassword ?? '')) ||
-      user.registerProgress === 0
-    ) {
+    const isPasswordMatched = await bcrypt.compare(
+      password,
+      user?.hashedPassword ?? '',
+    );
+    if (!isPasswordMatched || user.registerProgress === 0) {
       return null;
     }
     return user;

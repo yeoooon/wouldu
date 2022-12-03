@@ -20,6 +20,8 @@ const CloseAccountConfirm = () => {
 
 const BodyBox = styled.div`
   width: 300px;
+  /* border-radius: ${props => props.theme.borderSize.borderSm};
+  border: 1px solid ${props => props.theme.color.border}; */
 
   display: flex;
   flex-direction: column;

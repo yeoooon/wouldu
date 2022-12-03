@@ -1,28 +1,25 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
 import styled from "styled-components";
 import { Wrapper, Container, Box } from "../styles/layout";
 
-import MypageTab from "../components/page/mypage/MypageTab";
-import MyInfo from "../components/page/mypage/MyInfo";
-import EditProfile from "../components/page/mypage/EditProfile";
-import EditConnection from "../components/page/mypage/EditConnection";
-import ChangePassword from "../components/page/mypage/ChangePassword";
-
-import ModalBase from "../components/page/mypage/modal/ModalBase";
-
-export type pageSelect = "mypage" | "profile" | "connect";
-export interface pageProps {
-  pageState: pageSelect;
-  setPageState: Dispatch<SetStateAction<pageSelect>>;
-}
+import MypageTab from "@components/page/mypage/mypagetab";
+import MyInfo from "@components/page/mypage/myinfo";
+import EditConnection from "@components/page/mypage/EditConnection";
+import EditProfile from "@components/page/mypage/editprofile";
+import ChangePassword from "@components/page/mypage/Changepassword";
+import ModalBase from "@components/page/mypage/modal/ModalBase";
+import withGetServerSideProps from "@hocs/withGetServerSideProps";
+import { GetServerSidePropsContext } from "next";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { mypageState } from "@recoil/mypage";
 
 const Mypage = () => {
-  const [pageState, setPageState] = useState<pageSelect>("mypage");
+  const pageState = useRecoilValue(mypageState);
 
   return (
     <MypageArea>
       <div className="tab">
-        <MypageTab pageState={pageState} setPageState={setPageState}></MypageTab>
+        <MypageTab />
       </div>
       <div className="main">
         {pageState === "mypage" && <MyInfo></MyInfo>}
@@ -33,14 +30,11 @@ const Mypage = () => {
   );
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
-    props: {
-      pageTitle: "마이페이지",
-      pageDesc: "우쥬 마이페이지 입니다.",
-    },
+    props: {},
   };
-};
+});
 
 const MypageArea = styled(Wrapper)`
   display: grid;
@@ -66,6 +60,6 @@ const MypageArea = styled(Wrapper)`
     width: 100%;
     height: 100%;
   }
-`
+`;
 
 export default Mypage;

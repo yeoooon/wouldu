@@ -5,9 +5,11 @@ export const LOGIN = {
 };
 
 export interface User {
+  id?: string;
   email: string;
-  access_token: string;
+  accessToken: string;
   nickname: string;
+  friendCode: string;
   password?: string;
   confirmPassword?: string;
 }

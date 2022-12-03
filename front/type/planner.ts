@@ -1,7 +1,13 @@
 export interface Planner {
-  id?: string;
+  id?: number;
   description: string;
   date?: string;
   priority?: number;
-  isCompleted?: boolean;
+  isCompleted?: number;
+  isRecommended?: number;
+}
+
+export interface MonthPlan {
+  nowYear: number;
+  nowMonth: number;
 }

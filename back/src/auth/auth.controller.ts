@@ -1,13 +1,7 @@
-import {
-  Body,
-  Controller,
-  NotFoundException,
-  Post,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import { LoginDTO } from './dto/login.dto';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 
 @Controller('auth')
@@ -21,13 +15,7 @@ export class AuthController {
     summary: '로그인 API',
     description: 'email, password를 입력하여 로그인하고 유저 반환',
   })
-  @ApiBody({
-    description: `{
-    "email":"your email",
-    "password":"your password"
-    }`,
-  })
-  async login(@Request() req) {
+  async login(@Request() req, @Body() loginDTO: LoginDTO) {
     return this.authService.login(req.user);
   }
 }

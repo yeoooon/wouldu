@@ -1,20 +1,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
+import { colors } from "@styles/common_style";
+import { LogoBlackIcon } from "./icons/LogoIcon";
 
-export default function BeforeNavBar() {
+const BeforeNavBar = () => {
   return (
     <Header>
       <nav>
-        <Image src="/icon/logoblack.svg" alt="logo" width={180} height={60} />
-
+        <LogoBlackIcon />
         <Link href="/login">
           <button>서비스 이용하러 가기</button>
         </Link>
       </nav>
     </Header>
   );
-}
+};
 
 const Header = styled.div`
   position: fixed;
@@ -24,7 +25,7 @@ const Header = styled.div`
   max-width: 100vw;
   z-index: 999;
   height: 64px;
-  background-color: ${props => props.theme.color.background};
+  background-color: ${colors.white};
   font-size: ${props => props.theme.fontSize.textLg};
 
   nav {
@@ -33,3 +34,5 @@ const Header = styled.div`
     padding: 0.5rem 1.5rem;
   }
 `;
+
+export default BeforeNavBar;

@@ -1,9 +1,8 @@
+import { LeftarrowIcon, RightarrowIcon } from '@components/icons/ArrowIcons';
 import { Box } from '@styles/layout';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import LeftArrow from '/public/icon/leftarrow.svg'
-import RightArrow from '/public/icon/rightarrow.svg'
 
 const EmotionCalendar = () => {
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -41,6 +40,9 @@ const EmotionCalendar = () => {
   return (
     <Frame>
       <Header>
+        <Button onClick={() => setDate(new Date(year, month - 1, day))}>
+          <LeftarrowIcon />
+        </Button>
         <MonthBox>
           {/* <Year>
             {year}년
@@ -49,14 +51,9 @@ const EmotionCalendar = () => {
             {MONTHS[month]}
           </Month>
         </MonthBox>
-        <ButtonBox>
-          <Button onClick={() => setDate(new Date(year, month - 1, day))}>
-            <LeftArrow />
-          </Button>
-          <Button onClick={() => setDate(new Date(year, month + 1, day))}>
-            <RightArrow />
-          </Button>
-        </ButtonBox>
+        <Button onClick={() => setDate(new Date(year, month + 1, day))}>
+          <RightarrowIcon />
+        </Button>
       </Header>
       <Body>
         <WeekBox>
@@ -82,7 +79,7 @@ const EmotionCalendar = () => {
                   isToday={year === today.getFullYear() && month === today.getMonth() && d === today.getDate()}
                   isSelected={d === day}
                 >
-                  {d > 0 ? <DayText>{d}</DayText> : ''}
+                  {d > 0 ? <DayText>{d}</DayText> : null}
                 </DayTile>
               );
             })}
@@ -98,22 +95,21 @@ const Frame = styled.div`
   height: 100%;
   border: none;
   display: flex;
-  padding: 2em 2em 2em 2em;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 1em;
 `;
 
 const Header = styled.div`
-  height: 10vh;
+  height: 5vh;
   font-size: 18px;
-  padding: 1em;
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.5em;
 `;
 const MonthBox = styled(Box)`
   flex-direction: column;
-  align-items: flex-start;
+  margin: 0 0.5em;
 `;
 const Year = styled(Box)`
   font-size: ${props => props.theme.fontSize.textMd};
@@ -131,7 +127,8 @@ const ButtonBox = styled(Box)`
 `;
 const Button = styled.div`
   cursor: pointer;
-  padding: 0.1em 0.5em;
+  padding: 0 1em;
+  align-self: center;
 `;
 
 const Body = styled.div`
@@ -150,7 +147,7 @@ const WeekBox = styled(Box)`
 const DayBox = styled(WeekBox)`
   flex-wrap: wrap;
   padding-top: 1em;
-  height: 45vh;
+  height: 40vh;
   justify-content: flex-start;
   align-items: flex-start;
   border: none;
@@ -167,7 +164,7 @@ const WeekTile = styled.div`
 `;
 const DayTile = styled.div<{isToday : boolean, isSelected: boolean}>`
   width: 14.28%;
-  height: 8.5vh;
+  height: 8.3vh;
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
@@ -178,7 +175,7 @@ const DayTile = styled.div<{isToday : boolean, isSelected: boolean}>`
     color: ${props => props.theme.color.fontPoint};
   }
   &.shortHeight {
-    height: 7.2vh;
+    height: 7vh;
   }
   ${(props) =>
     props.isToday &&

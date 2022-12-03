@@ -11,10 +11,10 @@ import { LocalStrategy } from './local.strategy';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
     ConfigModule.forRoot({
       envFilePath: '.development.env',
     }),
+    TypeOrmModule.forFeature([User]),
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,

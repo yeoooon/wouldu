@@ -1,8 +1,14 @@
+import { Friend } from 'src/friend/entities/friend.entity';
+import { Diary } from 'src/diary/entities/diary.entity';
+import { Planner } from 'src/planner/entities/planner.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  OneToMany,
   CreateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -31,13 +37,21 @@ export class User {
   @Column()
   registerProgress: number;
 
-  @Column({
-    type: 'timestamp',
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
+  @CreateDateColumn({ type: 'datetime' })
   registeredAt: Date;
 
   @Column()
   friendCode: string;
+
+  @OneToMany(() => Planner, (planner) => planner.user)
+  planners: Planner[];
+
+  @OneToMany(() => Diary, (diary) => diary.user)
+  diaries: Diary[];
+
+  @OneToMany(() => Friend, (friendFrom) => friendFrom.fromUser)
+  friendFrom: Friend;
+
+  @OneToMany(() => Friend, (friendTo) => friendTo.toUser)
+  friendTo: Friend;
 }

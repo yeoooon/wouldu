@@ -1,36 +1,87 @@
 import Link from "next/link";
-import Image from "next/image";
-import Logo from "/public/icon/logoblack.svg";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/user";
+import { useEffect, useState } from "react";
+import { User } from "@type/user";
+import { removeCookie } from "@services/utils/cookies";
+import { LogoBlackIcon, LogoWhiteIcon } from "./icons/LogoIcon";
+import { AlarmIcon } from "./icons/AlarmIcon";
+import { UserIcon } from "./icons/UserIcon";
+import { checkRequestFriend } from "@services/api/friend";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { colors } from "@styles/common_style";
+import { isAlarmModalAtom } from "@recoil/modal";
 
-export default function AfterNavBar() {
+interface LayoutProps {
+  darkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const router = useRouter();
   const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
 
-  const [user, setUser] = useRecoilState(userAtom);
+  const queryClient = useQueryClient();
 
-  const onClickLogout = () => {
+  const setIsAlarmOpen = useSetRecoilState(isAlarmModalAtom);
+  const [userAtomData, setUserAtomData] = useRecoilState(userAtom);
+  const [user, setUser] = useState<User | null>();
+  const { data: receiveFriends } = useQuery(["friend"], () => checkRequestFriend("receive"));
+
+  useEffect(() => {
+    setUser(userAtomData);
+  }, []);
+
+  useEffect(() => {
+    console.log("friend receive", receiveFriends);
+  }, [receiveFriends]);
+
+  const toggleTheme = () => {
+    const theme = localStorage.getItem("theme");
+    if (theme) {
+      localStorage.setItem("theme", theme === "dark" ? "light" : "dark");
+    } else {
+      localStorage.setItem("theme", "dark");
+    }
+    setDarkMode(!darkMode);
+  };
+
+  const onClickLogout = async () => {
     const result = confirm("로그아웃 하시겠어요?");
     if (result) {
       setUser(null);
-      router.push("/");
+      setUserAtomData(null);
+      removeCookie("userToken");
+      queryClient.removeQueries({ queryKey: ["user"] });
+      await router.push("/");
     }
   };
   return (
     <Nav>
-      <LogoBox>
-        <Logo width={180} height={60} />
-      </LogoBox>
+      <LogoBox>{darkMode ? <LogoWhiteIcon /> : <LogoBlackIcon />}</LogoBox>
       <UserBox>
-        <Image src="/icon/user.svg" alt="user" width={60} height={60} />
-        <TextBox1>닉네임</TextBox1>
-        <TextBox2>edit</TextBox2>
+        <AlarmButton onClick={() => setIsAlarmOpen(true)}>
+          <AlarmIcon width={18} height={18} />
+          {receiveFriends?.length >= 1 && (
+            <AlarmNumber>
+              <p>{receiveFriends.length}</p>
+            </AlarmNumber>
+          )}
+        </AlarmButton>
+        <UserIcon width={60} height={60} />
+        <TextBox1>{`${user?.nickname} 님`}</TextBox1>
       </UserBox>
+      <DarkModeBox>
+        <SwitchBox>
+          <input type="checkbox" onChange={toggleTheme} />
+          <RoundSlider className="slider"></RoundSlider>
+        </SwitchBox>
+      </DarkModeBox>
+
       {/* navigation 구현 */}
       <NavLink>
         {navMenus.map((menu, index) => (
@@ -44,30 +95,28 @@ export default function AfterNavBar() {
       <a onClick={onClickLogout}>로그아웃</a>
     </Nav>
   );
-}
+};
 
 const Nav = styled(Container)`
-  display: flex;
+  position: relative;
   flex-direction: column;
   width: 240px;
   height: 100vh;
-  justify-content: flex-start;
+  justify-content: space-around;
   padding: 2em 0;
   margin: 0;
   border-radius: 0;
   box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
 `;
-const LogoBox = styled(Logo)`
+const LogoBox = styled(Box)`
   width: 100%;
   overflow: visible;
 `;
-
 const NavLink = styled(Container)`
   flex-direction: column;
   margin: 1.5em 1em 5em 1em;
   width: 100%;
 `;
-
 const LinkButton = styled.div`
   width: 100%;
   height: 10vh;
@@ -93,16 +142,91 @@ const LinkButton = styled.div`
     /* font-size: ${props => props.theme.fontSize.textLg}; */
   }
 `;
-
 const UserBox = styled(Container)`
   flex-direction: column;
-  padding: 2em;
+  width: 35%;
+  margin: 1em 0;
 `;
-
+const AlarmButton = styled(Box)`
+  width: 100%;
+  justify-content: flex-end;
+  margin: 0.5em;
+  cursor: pointer;
+`;
+const AlarmNumber = styled(Box)`
+  background-color: ${props => colors.red};
+  width: 1.5em;
+  height: 1.5em;
+  font-size: 10px;
+  margin-left: -7px;
+  margin-top: -12px;
+  color: ${props => props.theme.color.white};
+  cursor: pointer;
+`;
 const TextBox1 = styled(Box)`
-  padding-top: 0.4em;
+  margin-top: 20px;
   font-size: ${props => props.theme.fontSize.textMain};
 `;
-const TextBox2 = styled(TextBox1)`
-  font-size: ${props => props.theme.fontSize.textSm};
+
+const DarkModeBox = styled(Box)`
+  overflow: visible;
 `;
+
+const SwitchBox = styled.label`
+  position: relative;
+  align-items: center;
+  display: inline-block;
+  cursor: pointer;
+  width: 2.8em;
+  height: 1.4em;
+
+  input {
+    content: "";
+    position: absolute;
+    left: 0;
+    border-radius: 50%;
+    transform: scale(0.8);
+    background-color: gray;
+    transition: left 250ms linear;
+  }
+  input:checked + .slider {
+    background-color: ${props => props.theme.color.button};
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px ${props => props.theme.color.button};
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(1.4em);
+    -ms-transform: translateX(1.4em);
+    transform: translateX(1.4em);
+  }
+`;
+const RoundSlider = styled.span`
+  border-radius: 30px;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+
+  &:before {
+    border-radius: 50%;
+    position: absolute;
+    content: "";
+    height: 1.1em;
+    width: 1.1em;
+    left: 3px;
+    bottom: 2.5px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+`;
+
+export default AfterNavBar;

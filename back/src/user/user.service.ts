@@ -35,21 +35,27 @@ export class UserService {
     if (nicknameExist) {
       throw new UnprocessableEntityException('닉네임 중복');
     }
-    const signupVerifyToken = uuid.v1();
+    const signupVerifyToken = uuid.v4();
     user.email = email;
     user.nickname = nickname;
     user.hashedPassword = await bcrypt.hash(password, 10);
-    user.socialId = socialId === undefined ? null : socialId;
-    user.profileImgUrl = profileImgUrl === undefined ? null : profileImgUrl;
+    user.socialId = socialId ?? null;
+    user.profileImgUrl = profileImgUrl ?? null;
     user.signupVerifyToken = signupVerifyToken;
     user.registerProgress = 0;
-    user.friendCode = this.makeFriendCode();
+    user.friendCode = await this.makeFriendCode();
     await this.userRepository.save(user);
     await this.sendMemberJoinEmail(email, signupVerifyToken);
   }
 
-  makeFriendCode(): string {
-    return Math.random().toString(36).substring(2, 8);
+  async makeFriendCode(): Promise<string> {
+    var code = Math.random().toString(36).substring(2, 8);
+    while (true) {
+      const isCodeExist = await this.findOneByCode(code);
+      if (isCodeExist !== undefined) break;
+      code = Math.random().toString(36).substring(2, 8);
+    }
+    return code;
   }
 
   async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
@@ -104,11 +110,26 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const { nickname, password } = updateUserDto;
+    const user = await this.userRepository.findOne({
+      where: { id },
+    });
+    if (nickname !== undefined) {
+      const nicknameExist = await this.checkUserExistsByNickname(nickname);
+      if (nicknameExist) {
+        throw new UnprocessableEntityException('닉네임 중복');
+      }
+      user.nickname = nickname;
+    }
+    if (password !== undefined) {
+      user.hashedPassword = await bcrypt.hash(password, 10);
+    }
+    await this.userRepository.save(user);
+    return `회원 정보 수정 완료`;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.userRepository.delete(id);
   }
 }

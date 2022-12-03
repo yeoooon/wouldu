@@ -1,31 +1,64 @@
+import styled from "styled-components";
+import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import DiaryMain from "@components/page/diary/DiaryMain";
 import DiarySidebar from "@components/page/diary/DiarySidebar";
-import { SeoPageProps } from "@components/Seo";
-import { useEffect } from "react";
-import styled from "styled-components";
+import NoDiaryConnect from "@components/page/diary/NoDiaryConnect";
+
+import withGetServerSideProps from "@hocs/withGetServerSideProps";
+import { GetServerSidePropsContext } from "next";
+import { useEffect, useState } from "react";
 import { Container, Wrapper, Box } from "../styles/layout";
+import { getDiaries } from "../services/api/diary";
 
-export default function Diary() {
-  return (
-    <DiaryWrapper>
-      <SidebarContainer>
-        <DiarySidebar />
-      </SidebarContainer>
-      <DiaryContainer>
-        <DiaryMain />
-      </DiaryContainer>
-    </DiaryWrapper>
-  );
-}
+const Diary = () => {
+  const [connectState, setConnectState] = useState(false);
 
-export async function getServerSideProps() {
+  if (connectState) {
+    return (
+      <DiaryWrapper>
+        <SidebarContainer>
+          <DiarySidebar />
+        </SidebarContainer>
+        <DiaryContainer>
+          <DiaryMain connectState={connectState} setConnectState={setConnectState} />
+        </DiaryContainer>
+      </DiaryWrapper>      
+    );
+  } else {
+    return (
+      <Wrapper>
+        <BeforeConnectContainer>
+          <NoDiaryConnect connectState={connectState} setConnectState={setConnectState} />
+        </BeforeConnectContainer>
+      </Wrapper>
+    );
+  }
+};
+
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {  
   return {
-    props: {
-      pageTitle: "교환일기",
-      pageDesc: "우쥬 교환일기 페이지 입니다.",
-    },
+    props: {},
   };
-}
+});
+
+// export async function getStaticProps() {
+//   const queryClient = new QueryClient();
+
+//   await queryClient.prefetchQuery(['diaries'], getDiaries);
+  
+//   return {
+//     props: {
+//       dehydratedState: dehydrate(queryClient),
+//     },
+//   }
+// }
+
+const BeforeConnectContainer = styled(Container)`
+  width: 95%;
+  height: 95vh;
+  position: relative;
+  border: 1px solid ${props => props.theme.color.border};
+`
 
 const DiaryWrapper = styled(Wrapper)`
   display: grid;
@@ -40,5 +73,6 @@ const SidebarContainer = styled(Container)`
   border: 1px solid ${props => props.theme.color.border};
 `;
 
-const DiaryContainer = styled(SidebarContainer)`
-`;
+const DiaryContainer = styled(SidebarContainer)``;
+
+export default Diary;
