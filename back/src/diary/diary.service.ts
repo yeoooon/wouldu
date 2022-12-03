@@ -39,6 +39,9 @@ export class DiaryService {
 
   async findDiaryList(currentUserId: string) {
     const friendId = await this.friendService.findFriendId(currentUserId);
+    if (friendId === null) {
+      throw new BadRequestException('맺은 친구가 없습니다.');
+    }
     const diaries = await this.diaryDAO.getMany('diary.friendId=:friendId', {
       friendId,
     });
@@ -51,6 +54,9 @@ export class DiaryService {
 
   async findDiaryByDate(currentUserId: string, date: string) {
     const friendId = await this.friendService.findFriendId(currentUserId);
+    if (friendId === null) {
+      throw new BadRequestException('맺은 친구가 없습니다.');
+    }
     const diaries = await this.diaryDAO.getMany(
       'diary.friendId=:friendId and date=:date',
       {
@@ -67,6 +73,9 @@ export class DiaryService {
 
   async findDiaryByMonth(currentUserId: string, monthString: string) {
     const friendId = await this.friendService.findFriendId(currentUserId);
+    if (friendId === null) {
+      throw new BadRequestException('맺은 친구가 없습니다.');
+    }
     const diaries = await this.diaryDAO.getMany(
       'diary.friendId=:friendId and date like :date',
       {
