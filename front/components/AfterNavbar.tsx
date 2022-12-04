@@ -30,7 +30,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const setIsAlarmOpen = useSetRecoilState(isAlarmModalAtom);
   const [userAtomData, setUserAtomData] = useRecoilState(userAtom);
   const [user, setUser] = useState<User | null>();
-  const { data: receiveFriends } = useQuery(["friend"], () => checkRequestFriend("receive"));
+  const { data: receiveFriends } = useQuery(["friend", "list"], () => checkRequestFriend("receive"));
 
   useEffect(() => {
     setUser(userAtomData);

@@ -4,9 +4,9 @@ import { axiosInstance } from "./axiosInstance";
 
 //친구요청 api
 export const requestFriend = async (friendCode: string) => {
-  console.log(friendCode);
+  console.log({ code: friendCode });
   try {
-    const { status } = await axiosInstance.post("friend/request", friendCode);
+    const { status } = await axiosInstance.post("friend/request", { code: friendCode });
     return status; //201 성공
   } catch (err) {
     console.log(err);

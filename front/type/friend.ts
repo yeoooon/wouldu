@@ -8,3 +8,12 @@ export interface MatchCodeFormValue {
   // code5: string;
   // code6: string;
 }
+
+export interface ReceiveFriend {
+  id: string;
+  fromUserId: string;
+  toUserId: string;
+  requestProgress: number;
+  createdAt?: Date;
+  // updateAt?: Date;
+}
