@@ -42,10 +42,10 @@ export const getFriend = async () => {
 };
 
 // 친구수락
-export const confirmFriend = async (requestId: string) => {
+export const confirmFriend = async (requestId: number) => {
   try {
     const { status } = await axiosInstance.put("friend/request/accept", { requestId });
-    return status; //201 성공
+    return status;
   } catch (err) {
     if (axios.isAxiosError(err) && err?.response?.status) {
       return err.response.status;
@@ -54,7 +54,7 @@ export const confirmFriend = async (requestId: string) => {
 };
 //친구거절
 
-export const rejectFriend = async (requestId: string) => {
+export const rejectFriend = async (requestId: number) => {
   try {
     const { status } = await axiosInstance.put("friend/request/reject", { requestId });
     return status; //201 성공

@@ -12,7 +12,7 @@ export type MatchCodeFormValue = { [K in FCodeType]: string };
 // }
 
 export interface ReceiveFriend {
-  id: string;
+  id: number;
   fromUserId: string;
   toUserId: string;
   requestProgress: number;

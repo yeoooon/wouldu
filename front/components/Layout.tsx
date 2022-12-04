@@ -29,7 +29,7 @@ const Layout = ({ children, darkMode, setDarkMode }: LayoutProps) => {
           <AfterNavbar darkMode={darkMode} setDarkMode={setDarkMode} />
           {/* <div>로그인된상태</div> */}
           <div>{children}</div>
-          {isAlarmOpen && <AlarmModal/>}
+          {isAlarmOpen && <AlarmModal />}
         </LayoutWrapper>
       )}
       {isLoginState || (

@@ -1,9 +1,9 @@
 import { isAlarmModalAtom } from "@recoil/modal";
-import { checkRequestFriend } from "@services/api/friend";
+import { checkRequestFriend, confirmFriend, rejectFriend } from "@services/api/friend";
 import { colors } from "@styles/common_style";
 import { Box } from "@styles/layout";
 import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ReceiveFriend } from "@type/friend";
 import React from "react";
 import { useRecoilState } from "recoil";
@@ -11,14 +11,43 @@ import styled from "styled-components";
 import { CloseIcon } from "./icons/CloseIcon";
 
 const AlarmModal = () => {
+  const queryClient = useQueryClient();
   const [isAlarmOpen, setIsAlarmOpen] = useRecoilState(isAlarmModalAtom);
   const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
 
-  const handleAgreeClick = () => {
-    setIsAlarmOpen(false);
+  const acceptMutation = useMutation((data: ReceiveFriend) => confirmFriend(data?.id!), {
+    onSuccess: (status, value) => {
+      queryClient.invalidateQueries(["friend", "list"]);
+      setIsAlarmOpen(false);
+      alert("친구수락이 완료되었습니다.");
+    },
+    onError: () => {
+      alert("잠시후에 다시 시도해주세요.");
+    },
+  });
+
+  const deleteMutation = useMutation((data: ReceiveFriend) => rejectFriend(data?.id!), {
+    onSuccess: (status, value) => {
+      queryClient.invalidateQueries(["friend", "list"]);
+      alert("친구거절이 완료되었습니다.");
+    },
+    onError: () => {
+      alert("잠시후에 다시 시도해주세요.");
+    },
+  });
+
+  const handleAgreeClick = async (friendInfo: ReceiveFriend) => {
+    //confirmFriend
+    const result = window.confirm("친구요청을 수락하시겠어요?");
+    if (result) {
+      acceptMutation.mutate(friendInfo);
+    }
   };
-  const handleDenyClick = () => {
-    setIsAlarmOpen(false);
+  const handleDenyClick = async (friendInfo: ReceiveFriend) => {
+    const result = window.confirm("친구요청을 거절하시겠어요?");
+    if (result) {
+      deleteMutation.mutate(friendInfo);
+    }
   };
   return (
     <>
@@ -37,8 +66,8 @@ const AlarmModal = () => {
                     <Content key={friend.id}>
                       <Text>{`${friend.toUserId}님에게 친구요청이 왔습니다.`}</Text>
                       <Box>
-                        <AgreeButton onClick={() => handleAgreeClick()}>수락</AgreeButton>
-                        <DenyButton onClick={handleDenyClick}>거절</DenyButton>
+                        <AgreeButton onClick={() => handleAgreeClick(friend)}>수락</AgreeButton>
+                        <DenyButton onClick={() => handleDenyClick(friend)}>거절</DenyButton>
                       </Box>
                     </Content>
                   ))
