@@ -1,15 +1,20 @@
 import { UserIcon } from "@components/icons/UserIcon";
+import { isDisconnectModalAtom } from "@recoil/modal";
 import Image from "next/image";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
+import DisconnectConfirm from "./modal/DisconnectConfirm";
 
 const AfterConnect = () => {
+  const [isDisconnectOpen, setIsDisconnectOpen] = useRecoilState(isDisconnectModalAtom);
+
   return (
     <ContentArea>
       <div className="info">
         <DiaryName>
           <p>나와 상대방의 일기장</p>
-          <button>수정</button>
+          <EditButton>수정</EditButton>
         </DiaryName>
         <Profile>
           <User>
@@ -27,11 +32,12 @@ const AfterConnect = () => {
         </Dday>        
       </div>
       <div className="button">
-        <button>연결 끊기</button>          
+        <button onClick={() => setIsDisconnectOpen(true)}>연결 끊기</button>          
       </div>
+      {isDisconnectOpen && <DisconnectConfirm />}
     </ContentArea>
   )
-}
+};
 
 const ContentArea = styled(Container)`
   display: grid;
@@ -62,6 +68,11 @@ const ContentArea = styled(Container)`
     align-self: start;
   }
 `
+const EditButton = styled.button`
+  padding: 0.5em;
+  border-radius: 6px;
+  font-size: ${props => props.theme.fontSize.textSm};
+`;
 
 const DiaryName = styled.div`
   display: flex;

@@ -1,23 +1,26 @@
 import styled from "styled-components";
 import { Box } from "../../../../styles/layout";
-
-import CloseAccountConfirm from "./CloseAccountConfirm";
 import MatchCodeSubmit from "./MatchCodeSubmit";
 import DisconnectConfirm from "./DisconnectConfirm";
+import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
+import Layout from "@components/Layout";
+import { CloseIcon } from "@components/icons/CloseIcon";
 
 const ModalBase = () => {
   return (
     <>
-      <ModalBox>
-        <QuitArea>
-          <p>X</p>
-        </QuitArea>
-        <MainArea>
-          {/* <CloseAccountConfirm></CloseAccountConfirm> */}
-          {/* <MatchCodeSubmit></MatchCodeSubmit> */}
-          <DisconnectConfirm></DisconnectConfirm>
-        </MainArea>
-      </ModalBox>
+      <ModalWrapper>
+        <ModalContainer>
+          <Cancel>
+            <CloseIcon />
+          </Cancel>
+          <MainArea>
+            {/* <MatchCodeSubmit></MatchCodeSubmit> */}
+            <DisconnectConfirm></DisconnectConfirm>
+          </MainArea>
+        </ModalContainer>
+        <Overlay />
+      </ModalWrapper>
     </>
   )
 }
