@@ -65,7 +65,18 @@ export class FriendService {
     const friendRequestList = await this.friendRequestRepository.find({
       where: { toUserId: currentUserId, requestProgress: 0 },
     });
-    return friendRequestList;
+    const resFriendRequestList = [];
+    for (const request of friendRequestList) {
+      const user = await this.userService.findOneById(request.fromUserId);
+      const nickname = user.nickname;
+      resFriendRequestList.push({
+        id: request.id,
+        fromUserId: request.fromUserId,
+        fromUserNickname: nickname,
+        createdAt: request.createdAt,
+      });
+    }
+    return resFriendRequestList;
   }
 
   async findSendedFriendRequest(currentUserId: string) {
