@@ -1,42 +1,42 @@
 import { CloseIcon } from "@components/icons/CloseIcon";
-import { isDisconnectModalAtom } from "@recoil/modal";
+import { isDeleteUserModalAtom } from "@recoil/modal";
 import { Box } from "@styles/layout";
-import { AgreeButton, Cancel, DenyButton, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { ModalWrapper, ModalContainer, Overlay, Cancel, AgreeButton, DenyButton } from "@styles/modal_layout";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-const DisconnectConfirm = () => {
-  const setIsDisconnectOpen = useSetRecoilState(isDisconnectModalAtom);
+const DeleteUserConfirm = () => {
+  const setIsDeletUserOpen = useSetRecoilState(isDeleteUserModalAtom);
 
   return (
     <>
       <ModalWrapper>
         <ModalContainer>
-          <Cancel onClick={() => setIsDisconnectOpen(false)}>
+          <Cancel onClick={() => setIsDeletUserOpen(false)}>
             <CloseIcon />
           </Cancel>
           <DescArea>
-            <Title>정말 연결을 끊으시겠습니까?</Title>
-            <Desc>연결을 끊으면 모든 일기 데이터가 삭제됩니다.</Desc>
+            <Title>정말 탈퇴하시겠습니까?</Title>
+            <Desc>서비스 탈퇴 시 일정 및 일기 데이터가<br></br>모두 삭제되오니 신중하게 결정해 주세요.</Desc>
             <Box>
               <input type="checkbox"/>
               <label>확인하였습니다.</label>
             </Box>
           </DescArea>
           <ButtonArea>
-            <AgreeButton onClick={() => setIsDisconnectOpen(false)}>연결 끊기</AgreeButton>
-            <DenyButton onClick={() => setIsDisconnectOpen(false)}>취소</DenyButton>
-          </ButtonArea> 
-        </ModalContainer> 
-        <Overlay />    
+            <AgreeButton onClick={() => setIsDeletUserOpen(false)}>탈퇴</AgreeButton>
+            <DenyButton onClick={() => setIsDeletUserOpen(false)}>취소</DenyButton>
+          </ButtonArea>
+        </ModalContainer>
+        <Overlay />   
       </ModalWrapper>
     </>
-  );
-};
+  )
+}
 
 const Title = styled.p`
   font-size: ${props => props.theme.fontSize.textLg};
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
 `
 
 const Desc = styled.p`
@@ -51,8 +51,7 @@ const DescArea = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 1em;
-  margin-bottom: 1.5em;
+  margin: 1rem;
   color: ${props => props.theme.color.fontMain};
   input {
     margin: 0.1em 0.5em 0 0;
@@ -65,4 +64,4 @@ const DescArea = styled.div`
 
 const ButtonArea = styled.div``;
 
-export default DisconnectConfirm;
+export default DeleteUserConfirm;

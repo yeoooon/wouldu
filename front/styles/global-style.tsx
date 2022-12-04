@@ -23,7 +23,7 @@ export const GlobalStyle = createGlobalStyle`
     border-radius: ${props => props.theme.borderSize.borderSm};
     border: none;
     cursor: pointer;
-    padding: 0.4em 1.2em;
+    padding: 0.6em 1.2em;
     &:hover {
       background-color: ${props => props.theme.color.buttonHover};
     }
