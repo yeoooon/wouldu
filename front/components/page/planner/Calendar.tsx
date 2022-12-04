@@ -8,6 +8,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import styled, { css } from "styled-components";
+import { DiaryCircleIcon } from "@components/icons/DiaryIcon";
 
 const Calendar = () => {
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -95,7 +96,11 @@ const Calendar = () => {
                   isSelected={d === day}
                 >
                   {d > 0 ? <DayText>{d}</DayText> : ""}
-                  {monthData?.includes(d) ? <Circle>o</Circle> : null}
+                  {monthData?.includes(d) ? (
+                    <CircleBox>
+                      <DiaryCircleIcon />
+                    </CircleBox>
+                  ) : null}
                 </DayTile>
               );
             })}
@@ -223,8 +228,11 @@ const DayText = styled.p`
   margin: 0.5em;
 `;
 
-const Circle = styled.div`
-  margin-right: 0.5em;
+const CircleBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-right: 0.2em;
 `;
 
 export default Calendar;
