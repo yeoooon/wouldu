@@ -2,14 +2,14 @@ import styled from "styled-components";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { isCodeModalAtom } from "@recoil/friend";
-import { MatchCodeFormValue } from "@type/friend";
+import { FCodeType, MatchCodeFormValue } from "@type/friend";
 import { requestFriend } from "@services/api/friend";
 import { useCallback, useEffect, useRef } from "react";
 
-type inputType = "code1" | "code2" | "code3"; //|"code4"|"code5"|"code6"
 import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
 import { CloseIcon } from "@components/icons/CloseIcon";
 
+const codeNum = [1, 2, 3, 4, 5, 6];
 const MatchCodeSubmit = () => {
   const {
     register,
@@ -25,22 +25,26 @@ const MatchCodeSubmit = () => {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(e.target.name);
-    // console.log("code1:", watch("code1"));
-    // if (watch(e.target.name as inputType)) {
-    // }
-    // const targetName = e.target.name;
-    // const num = targetName[targetName.length - 1];
-    // if (Number(num) <= 5) {
-    //   console.log(num);
-    //   const text = `code${num + 1}` as inputType;
-    //   setFocus(text);
-    // }
+    if (e.currentTarget.value) {
+      const targetName = e.target.name;
+      const num = Number(targetName[targetName.length - 1]);
+
+      if (num <= 5) {
+        console.log(num);
+        const text = `code${num + 1}` as FCodeType;
+        setFocus(text);
+      }
+    }
   };
 
   const onSubmitHandler: SubmitHandler<MatchCodeFormValue> = async data => {
     console.log(data);
-    const status = await requestFriend(data);
+    const code = codeNum.reduce((accu, cur) => {
+      const text = `code${cur}` as FCodeType;
+      return accu + data[text];
+    }, "");
+    console.log(code);
+    const status = await requestFriend(code);
     switch (status) {
       case 201:
         alert("요청이 완료되었습니다.");
@@ -58,13 +62,10 @@ const MatchCodeSubmit = () => {
 
   const resetInput = () => {
     setIsCodeShow(false);
-    resetField("code1");
-    resetField("code2");
-    resetField("code3");
-    // resetField("code4");
-    // resetField("code5");
-    // resetField("code6");
-    // [1, 2, 3, 4, 5, 6].forEach(num => resetField(`code${num}`));
+    codeNum.forEach(num => {
+      const test = `code${num + 1}` as FCodeType;
+      resetField(test);
+    });
   };
 
   const handleClickCancel = () => {
@@ -96,6 +97,7 @@ const MatchCodeSubmit = () => {
                     required: " 코드를 입력해 주세요.",
                     minLength: 1,
                   })}
+                  onChange={handleChange}
                 />
                 <Input
                   maxLength={1}
@@ -103,6 +105,31 @@ const MatchCodeSubmit = () => {
                     required: " 코드를 입력해 주세요.",
                     minLength: 1,
                   })}
+                  onChange={handleChange}
+                />
+                <Input
+                  maxLength={1}
+                  {...register("code4", {
+                    required: " 코드를 입력해 주세요.",
+                    minLength: 1,
+                  })}
+                  onChange={handleChange}
+                />
+                <Input
+                  maxLength={1}
+                  {...register("code5", {
+                    required: " 코드를 입력해 주세요.",
+                    minLength: 1,
+                  })}
+                  onChange={handleChange}
+                />
+                <Input
+                  maxLength={1}
+                  {...register("code6", {
+                    required: " 코드를 입력해 주세요.",
+                    minLength: 1,
+                  })}
+                  onChange={handleChange}
                 />
               </InputArea>
 

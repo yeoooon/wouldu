@@ -37,7 +37,7 @@ const AlarmModal = () => {
                     <Content key={friend.id}>
                       <Text>{`${friend.toUserId}님에게 친구요청이 왔습니다.`}</Text>
                       <Box>
-                        <AgreeButton onClick={() => handleAgreeClick(fr)}>수락</AgreeButton>
+                        <AgreeButton onClick={() => handleAgreeClick()}>수락</AgreeButton>
                         <DenyButton onClick={handleDenyClick}>거절</DenyButton>
                       </Box>
                     </Content>
