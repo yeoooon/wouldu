@@ -17,7 +17,7 @@ const AlarmModal = () => {
 
   const acceptMutation = useMutation((data: ReceiveFriend) => confirmFriend(data?.id!), {
     onSuccess: (status, value) => {
-      queryClient.invalidateQueries(["friend", "list"]);
+      queryClient.invalidateQueries(["friend"]);
       setIsAlarmOpen(false);
       alert("친구수락이 완료되었습니다.");
     },
