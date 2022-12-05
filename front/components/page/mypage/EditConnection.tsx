@@ -10,13 +10,7 @@ import { isConnectedFriendAtom } from "@recoil/friend";
 const EditConnection = () => {
   const isConnected = useRecoilValue<boolean>(isConnectedFriendAtom);
 
-  return (
-    <>
-      {/* <button onClick={() => setIsConnectState(false)}>연결 전</button>
-      <button onClick={() => setIsConnectState(true)}>연결 후</button> */}
-      {isConnected ? <AfterConnect></AfterConnect> : <BeforeConnect></BeforeConnect>}
-    </>
-  );
+  return <>{isConnected ? <AfterConnect></AfterConnect> : <BeforeConnect></BeforeConnect>}</>;
 };
 
 export default EditConnection;

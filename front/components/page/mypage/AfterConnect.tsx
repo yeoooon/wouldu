@@ -1,8 +1,9 @@
 import { UserIcon } from "@components/icons/UserIcon";
+import { today } from "@recoil/diary";
 import { friendAtom } from "@recoil/friend";
 import { isDisconnectModalAtom } from "@recoil/modal";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
@@ -12,9 +13,15 @@ const AfterConnect = () => {
   const [isDisconnectOpen, setIsDisconnectOpen] = useRecoilState(isDisconnectModalAtom);
   const friend = useRecoilValue(friendAtom);
 
-  useEffect(() => {
-    console.log("mypage, friend!!", friend);
+  const day = useMemo(() => {
+    if (friend) {
+      const today = new Date();
+      const diffDate = today.getTime() - new Date(friend?.createdAt).getTime();
+
+      return Math.trunc(Math.abs(diffDate / (1000 * 60 * 60 * 24))) + 1;
+    }
   }, [friend]);
+
   return (
     <ContentArea>
       <div className="info">
@@ -34,7 +41,7 @@ const AfterConnect = () => {
         </Profile>
         <Dday>
           <p>연결한 지</p>
-          <p>1일</p>
+          <p>{day}일</p>
         </Dday>
       </div>
       <div className="button">
