@@ -36,7 +36,8 @@ model = JointBertModel.load(load_folder_path, sess)
 @app.route("/", methods=["GET"])
 def listen():
     data_text_arr = request.args.get("sentence")
-    data_tags_arr = ' '.join(['0' for _ in range(len(data_text_arr.split()))])
+    data_tags_arr = list(' '.join(['0' for _ in range(len(data_text_arr.split()))]))
+    data_text_arr = list(data_text_arr)
     data_input_ids, data_input_mask, data_segment_ids, _ = bert_vectorizer.transform(data_text_arr)
 
     tags_vectorizer = TagsVectorizer()
