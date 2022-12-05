@@ -2,15 +2,16 @@ from flask import Flask, request
 app = Flask(__name__)
 from vectorizers.bert_vectorizer import BERTVectorizer
 from models.joint_bert import JointBertModel
-from utils import flatten
 from vectorizers.tags_vectorizer import TagsVectorizer
 from vectorizers import albert_tokenization
 
 import os
 import pickle
 import tensorflow as tf
+from mecab import MeCab
 
 load_folder_path = 'saved_model/epoch30'
+mecab = MeCab()
 
 config = tf.ConfigProto(intra_op_parallelism_threads=8,
                         inter_op_parallelism_threads=0,
