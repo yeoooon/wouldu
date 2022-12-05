@@ -22,3 +22,7 @@ export interface PasswordForm {
   curPassword: string;
   newPassword: string;
 }
+export interface UserChangeForm {
+  nickname?: string;
+  password?: string;
+}
