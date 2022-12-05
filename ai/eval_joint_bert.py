@@ -84,5 +84,18 @@ def get_results(input_ids, input_mask, segment_ids,  sequence_lengths, tags_arr,
     intent_incorrect = ''
     intent_correct = ''
 
-    result = first_inferred_intent[i].strip()
-    print(result)
+    return first_inferred_intent[i].strip()
+
+print('==== Evaluation ====')
+result = get_results(
+                                                            data_input_ids, 
+                                                            data_input_mask, 
+                                                            data_segment_ids,
+                                                            data_sequence_lengths,
+                                                            data_tags_arr, 
+                                                            data_intents, 
+                                                            tags_vectorizer, 
+                                                            intents_label_encoder)
+
+print(result)
+print("======= Done =======")
