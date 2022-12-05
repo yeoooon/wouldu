@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { colors } from "../styles/common_style";
@@ -32,7 +33,9 @@ const FindPasswordForm = () => {
               <br></br>
               확인 후 로그인해 주세요.              
             </p>
-            <button>로그인</button>            
+            <Link href="/login">
+              <button>로그인</button> 
+            </Link>        
           </CheckDesc>
         </>
         :
