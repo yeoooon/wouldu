@@ -55,7 +55,9 @@ export class DiaryService {
   async findDiaryByDate(currentUserId: string, date: string) {
     const friendId = await this.friendService.findFriendId(currentUserId);
     if (friendId === null) {
-      throw new BadRequestException('맺은 친구가 없습니다.');
+      return {
+        message: '맺은 친구가 없습니다.',
+      };
     }
     const diaries = await this.diaryDAO.getMany(
       'diary.friendId=:friendId and date=:date',
