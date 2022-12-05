@@ -65,3 +65,15 @@ export const rejectFriend = async (requestId: number) => {
     }
   }
 };
+
+//다이어리 제목 수정 API
+export const changeDiaryTitle = async (title: string) => {
+  try {
+    const { status } = await axiosInstance.put("friend/title", { title });
+    return status;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err?.response?.status) {
+      return err.response.status;
+    }
+  }
+};
