@@ -27,8 +27,9 @@ const DiaryMain = ({ connectState, setConnectState }) => {
   const { data } = useQuery(["diaries", yyyymmdd], () => getDiary(yyyymmdd));
   
   useEffect(() => {
-    setDiaryList(data.diaries);
-    setDiaryName(data.title);
+    // setDiaryList(data.diaries);
+    // setDiaryName(data.title);
+    console.log(data);
   }, [data])
 
   return (
@@ -44,8 +45,8 @@ const DiaryMain = ({ connectState, setConnectState }) => {
       </InsideContainer>
        : 
       <InsideContainer2>
-        <UserDiary diaryList={diaryList} />
-        <PartnerDiary diaryList={diaryList} />
+        {/* <UserDiary diaryList={diaryList} />
+        <PartnerDiary diaryList={diaryList} /> */}
       </InsideContainer2>
       }
     </MainContainer>

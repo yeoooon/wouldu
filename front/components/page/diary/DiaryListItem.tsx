@@ -33,12 +33,9 @@ const DiaryListItem = () => {
   const { data } = useQuery(["diaries", clickedMonth], () => getDiaries(clickedMonth));
 
   useEffect(() => {
-    setDiaryList(data.diaries);
+    // setDiaryList(data.diaries);
+    console.log(data);
   }, [data]);
-
-  useEffect(() => {
-    const { data } = useQuery(["diaries", clickedMonth], () => getDiaries(clickedMonth));
-  }, [clickedDiaryDate])
 
   return (
     <>
