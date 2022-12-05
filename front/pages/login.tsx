@@ -87,7 +87,7 @@ const Login = () => {
             </Link>
           </EtcTextBox>
           <EtcTextBox>
-            <Link href="/">
+            <Link href="/findPassword">
               <a>비밀번호 찾기</a>
             </Link>
           </EtcTextBox>
@@ -127,6 +127,7 @@ const LoginContainer = styled(Container)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
 const InputBox = styled(Box)`
