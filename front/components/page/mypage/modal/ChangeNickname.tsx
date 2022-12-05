@@ -2,7 +2,7 @@ import { CloseIcon } from '@components/icons/CloseIcon';
 import { isChangeNicknameModalAtom } from '@recoil/modal';
 import { userAtom } from '@recoil/user';
 import { Box } from '@styles/layout';
-import { AgreeButton, Cancel, DenyButton, ModalContainer, ModalWrapper, Overlay } from '@styles/modal_layout';
+import { AgreeButton, Cancel, DenyButton, ModalContainer, ModalWrapper, Overlay, Title } from '@styles/modal_layout';
 import { User } from '@type/user';
 import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -30,10 +30,11 @@ const ChangeNickname = () => {
 
   return (
     <ModalWrapper>
-      <ModalContainer>
+      <ModalContainer height="300px">
         <Cancel onClick={() => setIsChangeNicknameOpen(false)}>
           <CloseIcon />
         </Cancel>
+        <Title>닉네임 변경</Title>
         <Form onSubmit={handleSubmit(onSubmitHandler)}>
         <InputArea>
           <Email>
@@ -68,7 +69,7 @@ const Form = styled.form`
 const InputArea = styled(Box)`
   flex-direction: column;
   gap: 10px;
-  margin: 1.5em;
+  margin: 0.5em 0 1.5em 0;
   width: 100%;
 `;
 const ButtonArea = styled(Box)``;
