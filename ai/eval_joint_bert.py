@@ -51,5 +51,4 @@ def get_results(input_ids, input_mask, segment_ids, tags_vectorizer, intents_lab
     return first_inferred_intent[0].strip()
 
 if __name__ == "__main__":
-    model = tf.keras.models.load_model("saved_model/saved_model")
     app.run(host="0.0.0.0", port=3000)
