@@ -1,5 +1,5 @@
 import { getCookie, removeCookie, setCookie } from "@services/utils/cookies";
-import { PasswordForm, UserJoinForm, UserLoginForm } from "@type/user";
+import { PasswordForm, UserChangeForm, UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 
@@ -56,10 +56,10 @@ export const changePassword = async (passwordInfo: PasswordForm) => {
   }
 };
 
-//닉네임 수정
-export const changeNickname = async (nickname: string) => {
+//회원정보 수정
+export const changeUserInfo = async (id: string, changeData: UserChangeForm) => {
   try {
-    const { data } = await axiosInstance.post("user/password", { nickname });
+    const { data } = await axiosInstance.put(`user/${id}`, { ...changeData });
     return data;
   } catch (err) {
     console.log(err);
