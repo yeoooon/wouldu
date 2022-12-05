@@ -35,7 +35,7 @@ model = JointBertModel.load(load_folder_path, sess)
 
 @app.route("/", methods=["GET"])
 def listen():
-    data_text = request.args.get("sentence")
+    data_text = " ".join(tokenizer.tokenize(' '.join(mecab.morphs(request.args.get("sentence")))))
     data_tags = ' '.join(['0' for _ in range(len(data_text.split()))])
     data_text_arr = [data_text]
     data_tags_arr = [data_tags]
