@@ -3,6 +3,7 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 export const PATH = {
   HOME: "/",
   LOGIN: "/login",
+  FINDPW: "/findPassword",
   JOIN: "/join",
   STAMP: "/stamp",
   DIARY: "/diary",
@@ -13,6 +14,7 @@ export const PATH = {
 const mapPathToTitle: { [key: string]: string } = {
   [PATH.HOME]: "홈",
   [PATH.LOGIN]: "로그인",
+  [PATH.FINDPW]: "비밀번호 찾기",
   [PATH.JOIN]: "회원가입",
   [PATH.STAMP]: "스탬프",
   [PATH.DIARY]: "다이어리",
@@ -23,6 +25,7 @@ const mapPathToTitle: { [key: string]: string } = {
 const mapPathToDesc: { [key: string]: string } = {
   [PATH.HOME]: "홈 화면 입니다. ",
   [PATH.LOGIN]: "우쥬, 로그인 페이지 입니다. ",
+  [PATH.FINDPW]: "비밀번호 찾기 페이지 입니다.",
   [PATH.JOIN]: "회원가입 페이지 입니다.",
   [PATH.STAMP]: "스탬프 페이지 입니다. ",
   [PATH.DIARY]: "다이어리 페이지 입니다.",

@@ -2,27 +2,17 @@ import { useEffect, useState } from "react";
 
 import BeforeConnect from "./BeforeConnect";
 import AfterConnect from "./AfterConnect";
-import { getFriend } from "@services/api/friend";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "@recoil/user";
 import { useQuery } from "@tanstack/react-query";
+import { Friend, FriendInfo } from "@type/friend";
+import { getFriend } from "@services/api/friend";
+import { useGetFriend } from "@services/utils/useGetFriend";
 
 const EditConnection = () => {
-  const [isConnectState, setIsConnectState] = useState<boolean>();
+  const { isConnected, friend } = useGetFriend();
 
-  // 연결 정보 받아오기 필요
-  const { data } = useQuery(["friend"], () => getFriend());
-
-  useEffect(() => {
-    data?.statusCode === 404 && setIsConnectState(false);
-    data?.status === 200 && setIsConnectState(true);
-  }, [data]);
-
-  return (
-    <>
-      {/* <button onClick={() => setIsConnectState(false)}>연결 전</button>
-      <button onClick={() => setIsConnectState(true)}>연결 후</button> */}
-      {isConnectState ? <AfterConnect></AfterConnect> : <BeforeConnect></BeforeConnect>}
-    </>
-  );
+  return <>{isConnected ? <AfterConnect friend={friend!}></AfterConnect> : <BeforeConnect></BeforeConnect>}</>;
 };
 
 export default EditConnection;
