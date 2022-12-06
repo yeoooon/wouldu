@@ -23,7 +23,10 @@ export class AuthService {
     }
     return {
       accessToken: this.jwtService.sign(payload),
-      ...user,
+      id: user.id,
+      email: user.email,
+      nickname: user.nickname,
+      friendCode: user.friendCode,
       isFirstLogin,
     };
   }
