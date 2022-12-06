@@ -132,4 +132,14 @@ export class UserService {
   async remove(id: string): Promise<void> {
     await this.userRepository.delete(id);
   }
+
+  async newPassword(currentUserId: string) {
+    const user = await this.findOneById(currentUserId);
+    const newPassword = Math.random().toString(36).substring(2, 10);
+    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+    user.hashedPassword = newHashedPassword;
+    await this.userRepository.save(user);
+    await this.emailService.sendNewPassword(user.email, newPassword);
+    return '비밀번호 찾기 완료';
+  }
 }
