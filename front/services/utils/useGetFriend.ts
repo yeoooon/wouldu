@@ -28,5 +28,5 @@ export const useGetFriend = () => {
     console.log("getFriend", friendInfo);
   }, [friendInfo]);
 
-  return { isConnected, data: friend };
+  return { isConnected, friend };
 };

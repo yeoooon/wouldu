@@ -10,7 +10,7 @@ import { getFriend } from "@services/api/friend";
 import { useGetFriend } from "@services/utils/useGetFriend";
 
 const EditConnection = () => {
-  const { isConnected, data: friend } = useGetFriend();
+  const { isConnected, friend } = useGetFriend();
 
   return <>{isConnected ? <AfterConnect friend={friend!}></AfterConnect> : <BeforeConnect></BeforeConnect>}</>;
 };
