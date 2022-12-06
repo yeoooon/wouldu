@@ -1,7 +1,10 @@
 import { UserIcon } from "@components/icons/UserIcon";
 import { today } from "@recoil/diary";
-import { friendAtom } from "@recoil/friend";
 import { isDisconnectModalAtom } from "@recoil/modal";
+import { userAtom } from "@recoil/user";
+import { getFriend } from "@services/api/friend";
+import { useQuery } from "@tanstack/react-query";
+import { Friend, FriendInfo, FriendProps } from "@type/friend";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -9,9 +12,8 @@ import styled from "styled-components";
 import { Container } from "../../../styles/layout";
 import DisconnectConfirm from "./modal/DisconnectConfirm";
 
-const AfterConnect = () => {
+const AfterConnect = ({ friend }: FriendProps) => {
   const [isDisconnectOpen, setIsDisconnectOpen] = useRecoilState(isDisconnectModalAtom);
-  const friend = useRecoilValue(friendAtom);
 
   const day = useMemo(() => {
     if (friend) {
