@@ -1,7 +1,9 @@
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -25,4 +27,10 @@ export class FriendRequest {
 
   @UpdateDateColumn({ type: 'datetime' })
   updatedAt?: Date;
+
+  @ManyToOne(() => User, (user) => user.sentFriendRequest)
+  fromUser: User;
+
+  @ManyToOne(() => User, (user) => user.receivedfriendRequest)
+  toUser: User;
 }

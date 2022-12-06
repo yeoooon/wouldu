@@ -35,9 +35,12 @@ export class Friend {
   @CreateDateColumn({ type: 'datetime' })
   createdAt?: Date;
 
-  @ManyToOne(() => User, (fromUser) => fromUser.friendFrom)
+  @ManyToOne(() => User, (user) => user.friend)
   fromUser: User;
 
-  @ManyToOne(() => User, (toUser) => toUser.friendTo)
+  @ManyToOne(() => User)
   toUser: User;
+
+  @OneToMany(() => Diary, (diary) => diary.friend)
+  diaries: Diary[];
 }

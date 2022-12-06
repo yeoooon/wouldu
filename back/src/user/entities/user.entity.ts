@@ -50,8 +50,5 @@ export class User {
   diaries: Diary[];
 
   @OneToMany(() => Friend, (friendFrom) => friendFrom.fromUser)
-  friendFrom: Friend;
-
-  @OneToMany(() => Friend, (friendTo) => friendTo.toUser)
-  friendTo: Friend;
+  friend: Friend;
 }
