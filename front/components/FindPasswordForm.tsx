@@ -10,7 +10,7 @@ import { useSetRecoilState } from "recoil";
 import { isFindPasswordModalAtom } from "@recoil/modal";
 import { FindUserPassword } from "@services/api/user";
 
-interface FindPasswordFormValue {
+export interface FindPasswordFormValue {
   email: string
 }
 
@@ -21,15 +21,17 @@ const FindPasswordForm = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<FindPasswordFormValue>();
 
   const findPwSubmit = async (data: FindPasswordFormValue) => {
-    // console.log(data);
-    FindUserPassword(watch("email")).then(() =>
-      alert("임시비밀번호가 발급되었습니다.")
-    )
+    FindUserPassword(data).then(status => {
+      if (status === 201) {
+        alert("임시비밀번호가 발급되었습니다.")
+      } else {
+        alert("올바른 이메일인지 확인해주세요.")
+      }
+    });
   };
 
   return (
