@@ -65,3 +65,14 @@ export const changeUserInfo = async (id: string, changeData: UserChangeForm) => 
     console.log(err);
   }
 };
+
+//회원비밀번호 찾기
+export const FindUserPassword = async (data: string) => {
+  console.log(data)
+  try {
+    const { status } = await axiosInstance.post(`/user/new-password`, data);
+    return status;
+  } catch (err) {
+    console.log(err);
+  }
+};

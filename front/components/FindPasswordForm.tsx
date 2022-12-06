@@ -8,6 +8,7 @@ import { AgreeButton, Cancel, ModalContainer, ModalWrapper, Overlay } from "@sty
 import { CloseIcon } from "./icons/CloseIcon";
 import { useSetRecoilState } from "recoil";
 import { isFindPasswordModalAtom } from "@recoil/modal";
+import { FindUserPassword } from "@services/api/user";
 
 interface FindPasswordFormValue {
   email: string
@@ -20,13 +21,16 @@ const FindPasswordForm = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FindPasswordFormValue>();
 
   const findPwSubmit = async (data: FindPasswordFormValue) => {
-    console.log(data);
-    setIsEmailSent((prev) => !prev);
-  }
+    // console.log(data);
+    FindUserPassword(watch("email")).then(() =>
+      alert("임시비밀번호가 발급되었습니다.")
+    )
+  };
 
   return (
     <ModalWrapper>
