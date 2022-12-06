@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Friend, FriendInfo, FriendProps } from "@type/friend";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
@@ -21,6 +22,17 @@ const timeReset = (date: Date) => {
 const AfterConnect = ({ friend }: FriendProps) => {
   const [isDisconnectOpen, setIsDisconnectOpen] = useRecoilState(isDisconnectModalAtom);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    resetField,
+    formState: { errors },
+  } = useForm<{ title: string }>();
+
+  const onChangeSubmit = async ({ title }: { title: string }) => {
+    setIsEdit(true);
+    resetField("title");
+  };
 
   const day = useMemo(() => {
     if (friend) {
@@ -38,13 +50,24 @@ const AfterConnect = ({ friend }: FriendProps) => {
         <div className="info">
           {isEdit ? (
             <div>
-              <input />
-              <EditButton onClick={() => setIsEdit(true)}>수정</EditButton>
+              <Form onSubmit={handleSubmit(onChangeSubmit)}>
+                <input
+                  autoFocus
+                  defaultValue={friend.title}
+                  placeholder="다이어리 이름을 입력해주세요."
+                  {...register("title", {
+                    required: true,
+                    minLength: { value: 2, message: "2자 이상 입력해주세요." },
+                  })}
+                />
+                <p>{errors?.title?.message}</p>
+                <EditButton type="button">수정</EditButton>
+              </Form>
             </div>
           ) : (
             <>
               <DiaryName>
-                <p>나와 상대방의 일기장</p>
+                <p>{friend.title}</p>
                 <EditButton onClick={() => setIsEdit(true)}>수정</EditButton>
               </DiaryName>
             </>
@@ -147,6 +170,10 @@ const DisconnectA = styled.a`
   background-color: ${props => props.theme.color.nav};
   border-bottom: 1px solid ${props => props.theme.color.fontMain};
   font-size: ${fontSize.textSm};
+`;
+
+const Form = styled.form`
+  display: flex;
 `;
 
 export default AfterConnect;
