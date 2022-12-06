@@ -38,7 +38,7 @@ model = JointBertModel.load(load_folder_path, sess)
 def listen():
     data_text = " ".join(tokenizer.tokenize(' '.join(mecab.morphs(request.args.get("sentence")))))
     data_text = data_text.replace('##', '')
-    data_tags = ' '.join(['0' for _ in range(len(data_text.split()))])
+    data_tags = ' '.join(['O' for _ in range(len(data_text.split()))])
     data_text_arr = [data_text]
     data_tags_arr = [data_tags]
     data_input_ids, data_input_mask, data_segment_ids, _ = bert_vectorizer.transform(data_text_arr)
