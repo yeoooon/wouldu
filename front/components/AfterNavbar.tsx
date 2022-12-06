@@ -14,8 +14,7 @@ import { checkRequestFriend, getFriend } from "@services/api/friend";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { colors } from "@styles/common_style";
 import { isAlarmModalAtom } from "@recoil/modal";
-import { friendAtom, isConnectedFriendAtom } from "@recoil/friend";
-import { Friend, FriendInfo, ReceiveFriend } from "@type/friend";
+import { ReceiveFriend } from "@type/friend";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -31,35 +30,14 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
 
   const [userAtomData, setUserAtomData] = useRecoilState(userAtom);
   const [user, setUser] = useState<User | null>();
-  const setFriend = useSetRecoilState(friendAtom);
 
   const setIsAlarmOpen = useSetRecoilState<boolean>(isAlarmModalAtom);
-  const setIsConnected = useSetRecoilState<boolean>(isConnectedFriendAtom);
 
   const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
-  const { data: friendInfo } = useQuery<Friend[]>(["friend", "info"], () => getFriend());
 
   useEffect(() => {
     setUser(userAtomData);
   }, []);
-
-  useEffect(() => {
-    if (friendInfo && friendInfo.length >= 1) {
-      console.log("친구있음확인");
-      const data = friendInfo.find(info => info?.toUserId === user?.id);
-      setFriend({
-        id: data?.fromUserId!,
-        title: data?.title!,
-        createdAt: data?.createdAt!,
-        nickname: data?.fromUser.nickname!,
-      });
-
-      setIsConnected(true);
-    } else {
-      setIsConnected(false);
-    }
-    console.log("getFriend", friendInfo);
-  }, [friendInfo]);
 
   useEffect(() => {
     console.log("friend receive", receiveFriends);

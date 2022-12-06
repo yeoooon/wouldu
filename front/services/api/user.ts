@@ -1,3 +1,4 @@
+import { FindPasswordFormValue } from "@components/FindPasswordForm";
 import { getCookie, removeCookie, setCookie } from "@services/utils/cookies";
 import { PasswordForm, UserChangeForm, UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";
@@ -61,6 +62,17 @@ export const changeUserInfo = async (id: string, changeData: UserChangeForm) => 
   try {
     const { data } = await axiosInstance.put(`user/${id}`, { ...changeData });
     return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//회원비밀번호 찾기
+export const FindUserPassword = async (data: FindPasswordFormValue) => {
+  console.log(data)
+  try {
+    const { status } = await axiosInstance.post(`/user/new-password`, data);
+    return status;
   } catch (err) {
     console.log(err);
   }

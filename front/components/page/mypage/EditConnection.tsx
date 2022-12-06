@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 
 import BeforeConnect from "./BeforeConnect";
 import AfterConnect from "./AfterConnect";
-import { getFriend } from "@services/api/friend";
-import { useQuery } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
-import { isConnectedFriendAtom } from "@recoil/friend";
+import { userAtom } from "@recoil/user";
+import { useQuery } from "@tanstack/react-query";
+import { Friend, FriendInfo } from "@type/friend";
+import { getFriend } from "@services/api/friend";
+import { useGetFriend } from "@services/utils/useGetFriend";
 
 const EditConnection = () => {
-  const isConnected = useRecoilValue<boolean>(isConnectedFriendAtom);
+  const { isConnected, friend } = useGetFriend();
 
-  return <>{isConnected ? <AfterConnect></AfterConnect> : <BeforeConnect></BeforeConnect>}</>;
+  return <>{isConnected ? <AfterConnect friend={friend!}></AfterConnect> : <BeforeConnect></BeforeConnect>}</>;
 };
 
 export default EditConnection;
