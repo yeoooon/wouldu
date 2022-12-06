@@ -9,12 +9,11 @@ export const useGetFriend = () => {
   const [isConnected, setIsConnected] = useState<boolean>();
 
   const user = useRecoilValue(userAtom);
-  const { data: friendInfo } = useQuery<Friend[]>(["friend", "info"], () => getFriend());
+  const { data: friendInfo } = useQuery<Friend[]>(["friend", "info"], () => getFriend(), { staleTime: 60 * 1000 });
   const [friend, setFriend] = useState<FriendInfo>();
 
   useEffect(() => {
     if (friendInfo && friendInfo.length >= 1) {
-      console.log("친구있음확인");
       const data = friendInfo.find(info => info?.toUserId === user?.id);
       setFriend({
         id: data?.fromUserId!,
