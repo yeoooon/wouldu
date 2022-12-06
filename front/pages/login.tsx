@@ -3,20 +3,21 @@ import styled from "styled-components";
 import { colors } from "../styles/common_style";
 import { useForm } from "react-hook-form";
 import { LOGIN, UserLoginForm } from "@type/user";
-import { SeoPageProps } from "@components/Seo";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { requestLogin } from "../services/api/user";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { loginStateSelector, userAtom } from "../recoil/user";
+import { useRecoilState } from "recoil";
+import { userAtom } from "../recoil/user";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
+import { isFindPasswordModalAtom } from "@recoil/modal";
+import FindPasswordForm from "@components/FindPasswordForm";
 
 const Login = () => {
   const router = useRouter();
   const [user, setUser] = useRecoilState(userAtom);
+  const [isFindPasswordOpen, setIsFindPasswordOpen] = useRecoilState(isFindPasswordModalAtom);
   const {
     register,
     handleSubmit,
@@ -86,12 +87,11 @@ const Login = () => {
               <a>회원가입</a>
             </Link>
           </EtcTextBox>
-          <EtcTextBox>
-            <Link href="/findPassword">
-              <a>비밀번호 찾기</a>
-            </Link>
+          <EtcTextBox onClick={() => setIsFindPasswordOpen(true)}>
+            비밀번호 찾기
           </EtcTextBox>
         </EtcBox>
+        {isFindPasswordOpen && <FindPasswordForm />}
       </LoginContainer>
     </LoginWrap>
   );
@@ -207,6 +207,7 @@ const EtcTextBox = styled(Box)`
   width: 50%;
   height: 35px;
   border-radius: 0;
+
   &:first-child {
     border-right: 1px solid ${props => props.theme.color.border};
   }

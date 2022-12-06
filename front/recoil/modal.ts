@@ -19,11 +19,18 @@ export const isDisconnectModalAtom = atom({
   key: "isDisconnectModal",
   default: false,
 });
+
 export const isChangePasswordModalAtom = atom({
   key: "isChangePasswordModal",
   default: false,
 });
+
 export const isChangeNicknameModalAtom = atom({
   key: "isChangeNicknameModal",
+  default: false,
+});
+
+export const isFindPasswordModalAtom = atom({
+  key: "isFindPasswordModal",
   default: false,
 });

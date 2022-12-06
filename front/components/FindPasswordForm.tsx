@@ -4,6 +4,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { colors } from "../styles/common_style";
 import { Box } from "@styles/layout";
+import { AgreeButton, Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
+import { CloseIcon } from "./icons/CloseIcon";
+import { useSetRecoilState } from "recoil";
+import { isFindPasswordModalAtom } from "@recoil/modal";
 
 interface FindPasswordFormValue {
   email: string
@@ -11,6 +15,7 @@ interface FindPasswordFormValue {
 
 const FindPasswordForm = () => {
   const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
+  const setIsFindPasswordOpen = useSetRecoilState(isFindPasswordModalAtom);
 
   const {
     register,
@@ -24,20 +29,24 @@ const FindPasswordForm = () => {
   }
 
   return (
-    <>
+    <ModalWrapper>
+      <ModalContainer height="300px">
+        <Cancel onClick={() => setIsFindPasswordOpen(false)}>
+          <CloseIcon />
+        </Cancel>
       {isEmailSent?
-        <>
-          <CheckDesc>
-            <p>
-              메일로 임시 비밀번호를 발송했습니다.
-              <br></br>
-              확인 후 로그인해 주세요.              
-            </p>
+        <CheckDesc>
+          <p>
+            메일로 임시 비밀번호를 발송했습니다.
+            <br></br>
+            확인 후 로그인해 주세요.              
+          </p>
+          <AgreeButton onClick={() => setIsFindPasswordOpen(false)}>
             <Link href="/login">
-              <button>로그인</button> 
-            </Link>        
-          </CheckDesc>
-        </>
+              <a>로그인</a> 
+            </Link>  
+          </AgreeButton>      
+        </CheckDesc>
         :
         <>
           <FindTitle>비밀번호 찾기</FindTitle>
@@ -60,26 +69,32 @@ const FindPasswordForm = () => {
           </EmailForm>
         </>
       }
-    </>
+      </ModalContainer>
+      <Overlay />
+    </ModalWrapper>
   );
-}
+};
 
 export default FindPasswordForm;
 
 const FindTitle = styled.h2`
   color: ${props => props.theme.color.fontMain};
-  font-size: ${props => props.theme.fontSize.textXl};
-  height: 50px;
+  font-size: ${props => props.theme.fontSize.textLg};
+  margin: 1em;
+  font-weight: 600;
 `;
 
 const FindDesc = styled.p`
-  color: ${props => props.theme.color.fontSub}
-  font-size: ${props => props.theme.fontSize.textMain}
-`
+  color: ${props => props.theme.color.fontSub};
+  font-size: ${props => props.theme.fontSize.textSm};
+  margin-bottom: 2em;
+  font-weight: 600;
+`;
 
 const ErrorMessage = styled.p`
   color: ${colors.red};
-  align-self: flex-end;
+  align-self: center;
+  margin: 0.3em;
   font-size: ${props => props.theme.fontSize.textXs};
 `;
 
@@ -87,43 +102,37 @@ const EmailForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
-
-  button {
-    height: 50px;
-    margin-top: 20px;
-  }
-`
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 0.5em;
+`;
 
 const EmailInput = styled.input`
-  width: 500px;
-  height: 50px;
-  font-size: ${props => props.theme.fontSize.textMain};
-  padding: 0 10px;
-
+  font-size: ${props => props.theme.fontSize.textSm};
+  padding: 0.5em;
+  width: 70%;
   border: none;
-  background-color: ${props => props.theme.color.background};
-  border-bottom: 1px solid ${colors.gray_300};
-
-  &:first-child {
-    margin-bottom: 10px;
-  }
+  border: 1px solid ${props => props.theme.color.border};
 `;
 
 const InputBox = styled(Box)`
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  margin-bottom: 1.5em;
+  width: 100%;
 `;
 
 const CheckDesc = styled.div`
+  height: 100%;
+  margin-top: 3.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
 
   p {
     text-align: center;
+    font-weight: 600;
     line-height: 1.5;
+    margin-bottom: 2em;
   }
-`
+`;
