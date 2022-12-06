@@ -12,14 +12,20 @@ import styled from "styled-components";
 import { Container } from "../../../styles/layout";
 import DisconnectConfirm from "./modal/DisconnectConfirm";
 
+const timeReset = (date: Date) => {
+  const targetResetTime: Date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  return targetResetTime.getTime();
+};
+
 const AfterConnect = ({ friend }: FriendProps) => {
   const [isDisconnectOpen, setIsDisconnectOpen] = useRecoilState(isDisconnectModalAtom);
 
   const day = useMemo(() => {
     if (friend) {
       const today = new Date();
-      const diffDate = today.getTime() - new Date(friend?.createdAt).getTime();
+      const targetDay = new Date(friend?.createdAt);
 
+      const diffDate = timeReset(today) - timeReset(targetDay);
       return Math.trunc(Math.abs(diffDate / (1000 * 60 * 60 * 24))) + 1;
     }
   }, [friend]);
