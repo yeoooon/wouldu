@@ -1,4 +1,5 @@
 import {
+  HttpException,
   Injectable,
   NotFoundException,
   UnprocessableEntityException,
@@ -133,8 +134,13 @@ export class UserService {
     await this.userRepository.delete(id);
   }
 
-  async newPassword(currentUserId: string) {
-    const user = await this.findOneById(currentUserId);
+  async newPassword(email: string) {
+    const user = await this.userRepository.findOne({
+      where: { email },
+    });
+    if (user === null) {
+      throw new HttpException('해당 이메일의 유저가 존재하지 않습니다.', 404);
+    }
     const newPassword = Math.random().toString(36).substring(2, 10);
     const newHashedPassword = await bcrypt.hash(newPassword, 10);
     user.hashedPassword = newHashedPassword;
