@@ -4,7 +4,7 @@ import { testEmotion } from '@services/utils/testEmotion';
 import { Box } from '@styles/layout';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import styled, { css, ThemeConsumer } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const EmotionCalendar = () => {
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -24,7 +24,6 @@ const EmotionCalendar = () => {
     setMonth(date.getMonth());
     setYear(date.getFullYear());
     setStartDay(getStartDayOfMonth(date));
-    console.log(date);
   }, [date]);
 
   function getStartDayOfMonth(date: Date) {

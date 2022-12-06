@@ -1,4 +1,4 @@
-interface TestEmotionProps {
+export interface TestEmotionProps {
   [key: number]: string;
 };
 

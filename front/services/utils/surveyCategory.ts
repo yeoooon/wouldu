@@ -1,7 +1,7 @@
 export interface Category {
   emoji: string;
   title: string;
-}
+};
 
 export const surveyCategories: Category[] = [
   {
