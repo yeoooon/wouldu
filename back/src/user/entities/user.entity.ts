@@ -43,6 +43,9 @@ export class User {
   @Column()
   friendCode: string;
 
+  @Column()
+  survey: string;
+
   @OneToMany(() => Planner, (planner) => planner.user)
   planners: Planner[];
 

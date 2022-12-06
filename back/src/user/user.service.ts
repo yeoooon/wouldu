@@ -7,13 +7,15 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateNicknameDto } from './dto/update-nickname.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import * as uuid from 'uuid';
 
 import { EmailService } from '../email/email.service';
 import { AuthService } from 'src/auth/auth.service';
+import { UpdatePasswordDTO } from './dto/update-password.dto';
+import { UpdateSurveyDTO } from './dto/update-survey.dto';
 
 @Injectable()
 export class UserService {
@@ -93,6 +95,12 @@ export class UserService {
     });
   }
 
+  async findOneByEmail(email: string): Promise<User | undefined> {
+    return this.userRepository.findOne({
+      where: { email },
+    });
+  }
+
   async checkUserExistsByEmail(emailAddress: string): Promise<boolean> {
     const user = await this.userRepository.findOne({
       where: { email: emailAddress },
@@ -107,12 +115,44 @@ export class UserService {
     return user !== null;
   }
 
-  findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  userData(user: User) {
+    return {
+      id: user.id,
+      email: user.email,
+      nickname: user.nickname,
+      socialId: user.socialId,
+      registerProgress: user.registerProgress,
+      registeredAt: user.registeredAt,
+      friendCode: user.friendCode,
+      survey: user.survey !== null ? this.stringToArray(user.survey) : null,
+    };
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const { nickname, password } = updateUserDto;
+  async findAll() {
+    const users = await this.userRepository.find();
+    const userList = [];
+    for (const user of users) {
+      const item = this.userData(user);
+      userList.push(item);
+    }
+    return userList;
+  }
+
+  async findUser(id: string) {
+    const user = await this.findOneById(id);
+    return this.userData(user);
+  }
+
+  arrayToString(array: String[]) {
+    return array.toString();
+  }
+
+  stringToArray(string: String) {
+    return string.split(',');
+  }
+
+  async updateNickname(id: string, updateNicknameDto: UpdateNicknameDto) {
+    const { nickname } = updateNicknameDto;
     const user = await this.userRepository.findOne({
       where: { id },
     });
@@ -123,11 +163,35 @@ export class UserService {
       }
       user.nickname = nickname;
     }
+
+    await this.userRepository.save(user);
+    return `닉네임 수정 완료`;
+  }
+
+  async updatePassword(id: string, updatePasswordDto: UpdatePasswordDTO) {
+    const { password } = updatePasswordDto;
+    const user = await this.userRepository.findOne({
+      where: { id },
+    });
     if (password !== undefined) {
       user.hashedPassword = await bcrypt.hash(password, 10);
     }
+
     await this.userRepository.save(user);
-    return `회원 정보 수정 완료`;
+    return `비밀번호 수정 완료`;
+  }
+
+  async updateSurvey(id: string, updateSurveyDTO: UpdateSurveyDTO) {
+    const { survey } = updateSurveyDTO;
+    const user = await this.userRepository.findOne({
+      where: { id },
+    });
+    if (survey !== undefined) {
+      user.survey = this.arrayToString(survey);
+    }
+
+    await this.userRepository.save(user);
+    return `설문조사 수정 완료`;
   }
 
   async remove(id: string): Promise<void> {
@@ -135,10 +199,8 @@ export class UserService {
   }
 
   async newPassword(email: string) {
-    const user = await this.userRepository.findOne({
-      where: { email },
-    });
-    if (user === null) {
+    const user = await this.findOneByEmail(email);
+    if (user === undefined) {
       throw new HttpException('해당 이메일의 유저가 존재하지 않습니다.', 404);
     }
     const newPassword = Math.random().toString(36).substring(2, 10);
