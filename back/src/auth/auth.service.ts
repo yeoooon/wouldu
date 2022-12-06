@@ -16,9 +16,15 @@ export class AuthService {
 
   async login(user: User) {
     const payload = { userId: user.id };
+    const isFirstLogin = user.registerProgress - 1;
+    if (user.registerProgress === 1) {
+      user.registerProgress = 2;
+      await this.userRepository.save(user);
+    }
     return {
       accessToken: this.jwtService.sign(payload),
       ...user,
+      isFirstLogin,
     };
   }
 
@@ -31,6 +37,7 @@ export class AuthService {
     if (!isPasswordMatched || user.registerProgress === 0) {
       return null;
     }
+
     return user;
   }
 }
