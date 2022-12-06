@@ -1,9 +1,9 @@
-interface TestEmotionProps {
+export interface TestEmotionProps {
   [key: number]: string;
 };
 
 export const testEmotion : TestEmotionProps= {
-  1: "기쁨",
+  1: "슬픔",
   2: "슬픔",
   4: "기쁨",
   5: "분노",

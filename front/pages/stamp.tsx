@@ -103,8 +103,11 @@ const CalendarBox = styled.div`
   height: 55vh;
 `;
 const EmotionBox = styled(CalendarBox)`
-  width: 100%;
-  height: 30vh;
+  margin-top: 2vh;
+  width: 90%;
+  height: 25vh;
   display: flex;
   align-items: center;
+  border-radius: ${props => props.theme.borderSize.borderSm};
+  background-color: ${props => props.theme.color.purpleBox};
 `;
