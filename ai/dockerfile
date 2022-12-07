@@ -4,5 +4,5 @@ COPY . .
 RUN apt-get install wget
 RUN pip install flask
 RUN pip install -r requirements.txt
-ENTRYPOINT ["python", "eval_joint_bert.py"]
+ENTRYPOINT ["python", "main.py"]
 EXPOSE 3000
