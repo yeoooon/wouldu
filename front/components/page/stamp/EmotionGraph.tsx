@@ -2,7 +2,7 @@ import { Box } from '@styles/layout';
 import React from 'react'
 import styled from 'styled-components';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 import { testEmotion, TestEmotionProps } from '@services/utils/testEmotion';
 import { getEmojiProps } from '@services/utils/getEmoji';
 import { sumMonthEmotion } from '@services/utils/sumMonthEmotion';
@@ -51,32 +51,42 @@ const options = {
 const EmotionGraph = () => {
   return (
     <EmotionGraphBox>
-      <Title>감정분석 그래프</Title>
       <PieBox>
-        <Pie data={data} options={options}/>
+        <DoughnutBox>
+          <Doughnut data={data} options={options} />
+        </DoughnutBox>
+        <TextBox>
+          <TestTitle>감정분석<br/>그래프</TestTitle>
+        </TextBox>
       </PieBox>
     </EmotionGraphBox>
   )
 };
 
 const EmotionGraphBox = styled(Box)`
-  width: 50%;
+  width: 45%;
   height: 100%;
   padding: 1em;
   flex-direction: column;
-  /* background-color: palegoldenrod; */
-`;
-
-const Title = styled.h1`
-  /* align-self: flex-start; */
-  margin-bottom: 1em;
-  font-size: ${props => props.theme.fontSize.textMd};
-  font-weight: 600;
 `;
 const PieBox = styled(Box)`
-  /* background-color: rebeccapurple; */
-  width: 100%;
-  height: 80%;
+  width: 13em;
+  height: 100%;
+  position: relative;
 `;
-
+const DoughnutBox = styled(Box)`
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+`;
+const TextBox = styled(Box)`
+  position: absolute;
+  top: 41%;
+  left: 37%;
+`;
+const TestTitle = styled.p`
+  text-align: center;
+  line-height: 20px;
+  font-weight: 600;
+`;
 export default EmotionGraph;
