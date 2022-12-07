@@ -2,11 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getDiary } from "@services/api/diary";
 import { Diary } from "@type/diary";
 import { useEffect, useState } from "react";
-import { isUserDiary, isPartnerDiary } from "./diaryAuthor";
+
+import { useRecoilValue } from "recoil";
+import { userAtom } from '@recoil/user';
 
 export const useGetDiary = (yyyymmdd: string) => {
   // 일기 데이터를 찾고 싶은 날짜 ('yyyy-mm-dd' 형태) 를 인자로 받습니다.
-
+  const user = useRecoilValue(userAtom);
   const [diaryName, setDiaryName] = useState<string>('');
   const [userDiary, setUserDiary] = useState<Diary>({
     title: '',
@@ -22,25 +24,26 @@ export const useGetDiary = (yyyymmdd: string) => {
   const { data } = useQuery(["diaries", yyyymmdd], () => getDiary(yyyymmdd));
 
   useEffect(() => {
-    console.log(data);
-
+    console.log('useGetDiary 실행');
     setDiaryName(data?.title!);
 
-    if (data?.diaries?.find(isUserDiary)) {
+    if (data?.diaries?.find((el) => el.userId === user?.id)) {
       setUserDiary({
         title: data?.title!,
-        id: data?.diaries.find(isUserDiary)!.id,
-        nickname: data?.diaries.find(isUserDiary)!.user.nickname,
-        content: data?.diaries.find(isUserDiary)!.content,
+        authorId: data?.diaries?.find((el) => el.userId === user?.id)!.authorId,
+        id: data?.diaries?.find((el) => el.userId === user?.id)!.id,
+        nickname: data?.diaries?.find((el) => el.userId === user?.id)!.user.nickname,
+        content: data?.diaries?.find((el) => el.userId === user?.id)!.content,
       });
     }
     
-    if (data?.diaries?.find(isPartnerDiary)) {
+    if (data?.diaries?.find((el) => el.userId !== user?.id)) {
       setPartnerDiary({
         title: data?.title!,
-        id: data?.diaries.find(isPartnerDiary)!.id,
-        nickname: data?.diaries.find(isPartnerDiary)!.user.nickname,
-        content: data?.diaries.find(isPartnerDiary)!.content,
+        authorId: data?.diaries?.find((el) => el.userId !== user?.id)!.authorId,
+        id: data?.diaries?.find((el) => el.userId !== user?.id)!.id,
+        nickname: data?.diaries?.find((el) => el.userId !== user?.id)!.user.nickname,
+        content: data?.diaries?.find((el) => el.userId !== user?.id)!.content,
       });
     }
   }, [data]);

@@ -31,8 +31,7 @@ const DiaryListItem = () => {
   const { data } = useQuery(["diaries", clickedMonth], () => getDiaries(clickedMonth));
 
   useEffect(() => {
-    // setDiaryList(data.diaries);
-    console.log(data);
+    setDiaryList(data?.diaries);
   }, [data]);
 
   return (
@@ -46,7 +45,7 @@ const DiaryListItem = () => {
       {diaryList && diaryList.length > 0? diaryList.slice(0).reverse().map(diary => (
         <ListItemBox key={diary.id} id={diary.date} onClick={handleClickDate}>
           <DiaryListDay diary={diary} />
-          <Text>{diary.content.length < 30 ? diary.content : diary.content.substring(0, 30) + "..."}</Text>
+          <Text>{diary.content.length < 15 ? diary.content : diary.content.substring(0, 15)}</Text>
         </ListItemBox>
       )) : <TextBox>작성된 일기가 없습니다.</TextBox>}
     </>
