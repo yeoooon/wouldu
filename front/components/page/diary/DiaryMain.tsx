@@ -34,7 +34,7 @@ const DiaryMain = () => {
       </TextBox>
       {isTextAreaOpen ?
       <InsideContainer>
-      <DiaryTextarea />
+        <DiaryTextarea />
       </InsideContainer>
        : 
       <InsideContainer2>
