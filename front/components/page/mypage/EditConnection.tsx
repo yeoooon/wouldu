@@ -12,7 +12,17 @@ import { useGetFriend } from "@services/utils/useGetFriend";
 const EditConnection = () => {
   const { isConnected, friend } = useGetFriend();
 
-  return <>{isConnected ? <AfterConnect friend={friend!}></AfterConnect> : <BeforeConnect></BeforeConnect>}</>;
+  return (
+    <>
+      {isConnected ? (
+        <AfterConnect friend={friend!}></AfterConnect>
+      ) : isConnected === undefined ? (
+        <div></div>
+      ) : (
+        <BeforeConnect></BeforeConnect>
+      )}
+    </>
+  );
 };
 
 export default EditConnection;

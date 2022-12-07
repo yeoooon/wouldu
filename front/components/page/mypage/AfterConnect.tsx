@@ -1,13 +1,14 @@
+import { CheckIcon, PencilIcon, SmallCheckIcon } from "@components/icons/CheckIcon";
 import { UserIcon } from "@components/icons/UserIcon";
 import { today } from "@recoil/diary";
 import { isDisconnectModalAtom } from "@recoil/modal";
 import { userAtom } from "@recoil/user";
-import { getFriend } from "@services/api/friend";
+import { changeDiaryTitle, getFriend } from "@services/api/friend";
 import { fontSize } from "@styles/common_style";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Friend, FriendInfo, FriendProps } from "@type/friend";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -20,6 +21,7 @@ const timeReset = (date: Date) => {
 };
 
 const AfterConnect = ({ friend }: FriendProps) => {
+  const queryClient = useQueryClient();
   const [isDisconnectOpen, setIsDisconnectOpen] = useRecoilState(isDisconnectModalAtom);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const {
@@ -29,10 +31,13 @@ const AfterConnect = ({ friend }: FriendProps) => {
     formState: { errors },
   } = useForm<{ title: string }>();
 
-  const onChangeSubmit = async ({ title }: { title: string }) => {
-    setIsEdit(true);
-    resetField("title");
-  };
+  const updateMutation = useMutation(({ title }: { title: string }) => changeDiaryTitle(title), {
+    onSuccess: (status, value) => {
+      queryClient.invalidateQueries(["friend", "info"]);
+      setIsEdit(false);
+      resetField("title");
+    },
+  });
 
   const day = useMemo(() => {
     if (friend) {
@@ -44,6 +49,10 @@ const AfterConnect = ({ friend }: FriendProps) => {
     }
   }, [friend]);
 
+  const onChangeSubmit = async ({ title }: { title: string }) => {
+    updateMutation.mutate({ title });
+  };
+
   return (
     <>
       <ContentArea>
@@ -51,7 +60,7 @@ const AfterConnect = ({ friend }: FriendProps) => {
           {isEdit ? (
             <div>
               <Form onSubmit={handleSubmit(onChangeSubmit)}>
-                <input
+                <Input
                   autoFocus
                   defaultValue={friend.title}
                   placeholder="다이어리 이름을 입력해주세요."
@@ -60,15 +69,20 @@ const AfterConnect = ({ friend }: FriendProps) => {
                     minLength: { value: 2, message: "2자 이상 입력해주세요." },
                   })}
                 />
-                <p>{errors?.title?.message}</p>
-                <EditButton type="button">수정</EditButton>
+                <EditButton type="submit">
+                  {" "}
+                  <SmallCheckIcon />
+                </EditButton>
               </Form>
+              <ErrorMessage>{errors?.title?.message}</ErrorMessage>
             </div>
           ) : (
             <>
               <DiaryName>
                 <p>{friend.title}</p>
-                <EditButton onClick={() => setIsEdit(true)}>수정</EditButton>
+                <EditIcon onClick={() => setIsEdit(true)}>
+                  <PencilIcon />
+                </EditIcon>
               </DiaryName>
             </>
           )}
@@ -119,9 +133,12 @@ const ContentArea = styled(Container)`
   }
 `;
 const EditButton = styled.button`
-  padding: 0.5em;
+  position: absolute;
+  padding: 0;
+  right: 0;
   border-radius: 6px;
-  font-size: ${props => props.theme.fontSize.textSm};
+  width: 30px;
+  height: 30px;
 `;
 
 const DiaryName = styled.div`
@@ -162,6 +179,11 @@ const Dday = styled.div`
   gap: 10px;
 `;
 
+const ErrorMessage = styled.p`
+  font-size: ${fontSize.textXs};
+  margin-top: 5px;
+`;
+
 const DisconnectA = styled.a`
   position: absolute;
   right: 0;
@@ -174,6 +196,17 @@ const DisconnectA = styled.a`
 
 const Form = styled.form`
   display: flex;
+  position: relative;
+`;
+const EditIcon = styled.div`
+  cursor: pointer;
+`;
+
+const Input = styled.input`
+  width: 200px;
+  height: 30px;
+  border-radius: 6px;
+  padding-right: 40px;
 `;
 
 export default AfterConnect;

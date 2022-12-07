@@ -26,7 +26,7 @@ const ChangePassword = () => {
 
   const onSubmitHandler: SubmitHandler<ChangePasswordFormValue> = data => {
     console.log(data);
-    changePassword({ id: user?.id!, curPassword: data.currentPassword, newPassword: data.toChangePassword });
+    changePassword({ id: user?.id!, oldPassword: data.currentPassword, newPassword: data.toChangePassword });
     setIsChangePasswordOpen(false);
   };
 
@@ -42,7 +42,10 @@ const ChangePassword = () => {
             <FormBox>
               <label>현재 비밀번호</label>
               <InputArea>
-                <input {...register("currentPassword", { required: "현재 비밀번호를 입력해 주세요." })}></input>
+                <input
+                  {...register("currentPassword", { required: "현재 비밀번호를 입력해 주세요." })}
+                  type="password"
+                ></input>
                 <ErrorMessage>{errors?.currentPassword?.message}</ErrorMessage>
               </InputArea>
               <label>변경할 비밀번호</label>
