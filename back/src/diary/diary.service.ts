@@ -1,16 +1,27 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { FriendService } from 'src/friend/friend.service';
+import { HttpService } from '@nestjs/axios';
 import { Like } from 'typeorm';
 import { DiaryDAO } from './dao/diary.dao';
 import { CreateDiaryDto } from './dto/create-diary.dto';
 import { Diary } from './entities/diary.entity';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class DiaryService {
   constructor(
     private readonly diaryDAO: DiaryDAO,
     private readonly friendService: FriendService,
+    private readonly httpService: HttpService,
   ) {}
+
+  async model(sentence: string) {
+    const emotion = await this.httpService.axiosRef.get(
+      'http://34.64.148.186:3000/?sentence=' + sentence,
+    );
+
+    return emotion.data;
+  }
 
   async create(currentUserId: string, createDiaryDto: CreateDiaryDto) {
     const diary = new Diary();
@@ -18,6 +29,11 @@ export class DiaryService {
     diary.friendId = await this.friendService.findFriendId(currentUserId);
     diary.authorId = currentUserId;
     diary.content = content;
+
+    const emotion = await this.httpService.axiosRef.get(
+      'http://34.64.148.186:3000/?sentence=' + content,
+    );
+
     const dt = new Date();
     diary.date =
       dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate();
@@ -27,7 +43,7 @@ export class DiaryService {
       throw new BadRequestException('오늘 일기를 이미 작성했습니다.');
     }
 
-    return this.diaryDAO.createOne(diary);
+    return this.diaryDAO.createOne(diary), emotion.data;
   }
 
   async checkDiary(currentUserId: string, date: string) {
