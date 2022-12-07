@@ -156,26 +156,30 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: { id },
     });
-    if (nickname !== undefined) {
-      const nicknameExist = await this.checkUserExistsByNickname(nickname);
-      if (nicknameExist) {
-        throw new UnprocessableEntityException('닉네임 중복');
-      }
-      user.nickname = nickname;
+    const nicknameExist = await this.checkUserExistsByNickname(nickname);
+    if (nicknameExist) {
+      throw new UnprocessableEntityException('닉네임 중복');
     }
+    user.nickname = nickname;
 
     await this.userRepository.save(user);
     return `닉네임 수정 완료`;
   }
 
   async updatePassword(id: string, updatePasswordDto: UpdatePasswordDTO) {
-    const { password } = updatePasswordDto;
+    const { oldPassword, newPassword } = updatePasswordDto;
     const user = await this.userRepository.findOne({
       where: { id },
     });
-    if (password !== undefined) {
-      user.hashedPassword = await bcrypt.hash(password, 10);
+
+    const isPasswordMatched = await bcrypt.compare(
+      oldPassword,
+      user?.hashedPassword ?? '',
+    );
+    if (!isPasswordMatched) {
+      throw new HttpException('기존 비밀번호가 틀립니다', 401);
     }
+    user.hashedPassword = await bcrypt.hash(newPassword, 10);
 
     await this.userRepository.save(user);
     return `비밀번호 수정 완료`;
