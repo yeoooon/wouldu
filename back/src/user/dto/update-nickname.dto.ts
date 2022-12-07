@@ -6,5 +6,5 @@ import { CreateUserDto } from './create-user.dto';
 export class UpdateNicknameDto extends PartialType(CreateUserDto) {
   @ApiProperty()
   @IsString()
-  nickname?: string;
+  nickname: string;
 }
