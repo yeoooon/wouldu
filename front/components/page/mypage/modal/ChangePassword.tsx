@@ -5,7 +5,7 @@ import { CloseIcon } from "@components/icons/CloseIcon";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isChangePasswordModalAtom } from "@recoil/modal";
 import { Box } from "@styles/layout";
-import { changeUserInfo } from "@services/api/user";
+import { changePassword } from "@services/api/user";
 import { userAtom } from "@recoil/user";
 
 interface ChangePasswordFormValue {
@@ -26,7 +26,7 @@ const ChangePassword = () => {
 
   const onSubmitHandler: SubmitHandler<ChangePasswordFormValue> = data => {
     console.log(data);
-    changeUserInfo(user?.id!, { password: data?.toChangePassword });
+    changePassword({ id: user?.id!, curPassword: data.currentPassword, newPassword: data.toChangePassword });
     setIsChangePasswordOpen(false);
   };
 

@@ -19,10 +19,12 @@ export interface UserJoinForm extends Pick<User, "email" | "nickname" | "passwor
 export interface UserLoginForm extends Pick<User, "email" | "password"> {}
 
 export interface PasswordForm {
+  id: string;
   curPassword: string;
   newPassword: string;
 }
-export interface UserChangeForm {
-  nickname?: string;
-  password?: string;
+
+export interface NicknameForm {
+  id: string;
+  nickname: string;
 }

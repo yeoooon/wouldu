@@ -1,7 +1,7 @@
 import { CloseIcon } from "@components/icons/CloseIcon";
 import { isChangeNicknameModalAtom } from "@recoil/modal";
 import { userAtom } from "@recoil/user";
-import { changeUserInfo } from "@services/api/user";
+import { changeUserNickname } from "@services/api/user";
 import { Box } from "@styles/layout";
 import { AgreeButton, Cancel, DenyButton, ModalContainer, ModalWrapper, Overlay, Title } from "@styles/modal_layout";
 import { User } from "@type/user";
@@ -32,7 +32,7 @@ const ChangeNickname = () => {
 
   const onSubmitHandler: SubmitHandler<EditProfileFormValue> = data => {
     setIsChangeNicknameOpen(false);
-    changeUserInfo(user?.id!, data);
+    changeUserNickname({ id: user?.id!, nickname: data.nickname });
   };
 
   return (
