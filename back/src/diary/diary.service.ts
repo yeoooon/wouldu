@@ -17,7 +17,7 @@ export class DiaryService {
 
   async model(sentence: string) {
     const emotion = await this.httpService.axiosRef.get(
-      'http://34.64.148.186:3000/?sentence=' + sentence,
+      'http://kdt-ai5-team05.elicecoding.com:3000/?sentence=' + sentence,
     );
 
     return emotion.data;
@@ -31,7 +31,7 @@ export class DiaryService {
     diary.content = content;
 
     const emotion = await this.httpService.axiosRef.get(
-      'http://34.64.148.186:3000/?sentence=' + content,
+      'http://kdt-ai5-team05.elicecoding.com:3000/?sentence=' + content,
     );
 
     const dt = new Date();
