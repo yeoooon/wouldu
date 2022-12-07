@@ -65,10 +65,10 @@ export const deleteUser = async () => {
 
 //비밀번호 수정
 export const changePassword = async (passwordInfo: PasswordForm) => {
-  const { id, curPassword, newPassword } = passwordInfo;
+  const { id, oldPassword, newPassword } = passwordInfo;
 
   try {
-    const { data } = await axiosInstance.put(`user/${id}/password`, { curPassword, newPassword });
+    const { data } = await axiosInstance.put(`user/${id}/password`, { oldPassword, newPassword });
     return data;
   } catch (err) {
     console.log(err);

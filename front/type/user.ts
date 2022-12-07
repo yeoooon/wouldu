@@ -22,7 +22,7 @@ export interface UserLoginForm extends Pick<User, "email" | "password"> {}
 
 export interface PasswordForm {
   id: string;
-  curPassword: string;
+  oldPassword: string;
   newPassword: string;
 }
 
