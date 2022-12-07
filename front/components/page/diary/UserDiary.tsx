@@ -1,13 +1,11 @@
 import { Box } from '@styles/layout';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Image from 'next/image';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { useQuery } from '@tanstack/react-query';
 import { diarywriteState, today, clickedDiaryDateState } from '@recoil/diary';
 import styled from 'styled-components';
-import { isUserDiary } from '@services/utils/diaryAuthor';
-import { Diary, DiaryProps } from '@type/diary';
-import { getDiary } from '@services/api/diary';
+import { DiaryProps } from '@type/diary';
+import { UserIcon } from "@components/icons/UserIcon";
 
 const UserDiary = ({ diary }: DiaryProps) => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
@@ -18,10 +16,10 @@ const UserDiary = ({ diary }: DiaryProps) => {
 
   return (
     <>
-    {diary?
+    {diary && diary.title !== '' ?
       <DiaryBox>
         <ProfileBox>
-          <Image src="/icon/user.svg" alt="user" width={30} height={30} />
+          <UserIcon width={30} height={30} />
           <UserName>{diary.nickname}</UserName>
         </ProfileBox>
         <DiaryContent>

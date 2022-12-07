@@ -1,7 +1,5 @@
 import { DiaryBox, ProfileBox, UserName, DiaryContent, UnwrittenDiaryBox, Text } from "./UserDiary";
-import Image from "next/image";
 import React from "react";
-import { isPartnerDiary } from "@services/utils/diaryAuthor";
 import { UserIcon } from "@components/icons/UserIcon";
 import { DiaryProps } from "@type/diary";
 
@@ -9,7 +7,7 @@ const PartnerDiary = ({ diary }: DiaryProps) => {
 
   return (
     <>
-      {diary? (
+      {diary && diary.title !== ''? (
         <DiaryBox>
           <ProfileBox>
             <UserIcon width={30} height={30} />

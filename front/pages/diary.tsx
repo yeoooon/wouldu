@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import DiaryMain from "@components/page/diary/DiaryMain";
 import DiarySidebar from "@components/page/diary/DiarySidebar";
-import NoDiaryConnect from "@components/page/diary/NoDiaryConnect";
+import NoDiaryConnect from "@components/page/diary/modal/NoDiaryConnect";
 
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";
@@ -27,11 +27,7 @@ const Diary = () => {
     );
   } else {
     return (
-      <Wrapper>
-        <BeforeConnectContainer>
-          <NoDiaryConnect />
-        </BeforeConnectContainer>
-      </Wrapper>
+      <NoDiaryConnect />
     );
   }
 };
@@ -53,13 +49,6 @@ export const getServerSideProps = withGetServerSideProps(async (context: GetServ
 //     },
 //   }
 // }
-
-const BeforeConnectContainer = styled(Container)`
-  width: 95%;
-  height: 95vh;
-  position: relative;
-  border: 1px solid ${props => props.theme.color.border};
-`
 
 const DiaryWrapper = styled(Wrapper)`
   display: grid;

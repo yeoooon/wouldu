@@ -1,39 +1,32 @@
 import { Box } from "@styles/layout";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useQuery } from "@tanstack/react-query";
 import { today } from "@recoil/diary";
-import { getDiary } from "@services/api/diary";
 import { useRecoilValue } from "recoil";
 import { Diary } from "@type/diary";
-import { isUserDiary, isPartnerDiary } from "@services/utils/diaryAuthor";
-import UserDiary from "../diary/UserDiary";
-import PartnerDiary from "../diary/PartnerDiary";
 import { useGetDiary } from "@services/utils/useGetDiary";
+import { useGetFriend } from "@services/utils/useGetFriend";
 
 const StampDiaryContent = () => {
-  const [todayDiary, setTodayDiary] = useState<Array<Diary> | undefined>([]);
+  const { isConnected } = useGetFriend();
 
   const todayDate = useRecoilValue(today);
-  console.log(useGetDiary(todayDate));
-
-  // 연결 x -> 먼저 일기를 친구와 연결해 보세요! ->
-  // 연결 o -> 다이어리 o -> content 보여 주기
-  // 연결 o -> 다이어리 x -> 작성된 일기가 없어요.
+  
+  const { userDiary, partnerDiary } = useGetDiary(todayDate);
 
   return (
     <ContentBox>
       <DiarySummary>
         <Name>나</Name>
         <Content>
-            {todayDiary && todayDiary.length > 0? todayDiary.find(isUserDiary)!.content : <p>작성된 일기가 없어요.</p>}
+            {!isConnected? <p>먼저 친구와 연결해 보세요!</p> : userDiary?.content.substring(0, 15)}
           </Content>
       </DiarySummary>
       <PartnerDiarySummary>
         <PartnerName>상대</PartnerName>
         <Content>
-            {todayDiary && todayDiary.length > 0? todayDiary.find(isPartnerDiary)!.content : <p>작성된 일기가 없어요.</p>}
-          </Content>
+          {!isConnected? <p>먼저 친구와 연결해 보세요!</p> : partnerDiary?.content.substring(0, 15)}
+        </Content>
       </PartnerDiarySummary>
     </ContentBox>
   );
