@@ -1,31 +1,34 @@
-import { userAtom } from "@recoil/user";
 import { getFriend } from "@services/api/friend";
 import { useQuery } from "@tanstack/react-query";
 import { Friend, FriendInfo } from "@type/friend";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
 
 export const useGetFriend = () => {
   const [isConnected, setIsConnected] = useState<boolean>();
 
-  const user = useRecoilValue(userAtom);
-  const { data: friendInfo } = useQuery<Friend[]>(["friend", "info"], () => getFriend(), { staleTime: 60 * 1000 });
+  const { data: friendInfo } = useQuery<Friend[]>(["friend", "info"], () => getFriend(), {
+    staleTime: 60 * 1000,
+  });
+
   const [friend, setFriend] = useState<FriendInfo>();
 
   useEffect(() => {
+    console.log("getfriend , isConnected?", isConnected);
+  }, [isConnected]);
+
+  useEffect(() => {
     if (friendInfo && friendInfo.length >= 1) {
-      const data = friendInfo.find(info => info?.toUserId === user?.id);
+      const data = friendInfo[0];
       setFriend({
-        id: data?.fromUserId!,
+        id: data?.toUserId!,
         title: data?.title!,
         createdAt: data?.createdAt!,
-        nickname: data?.fromUser.nickname!,
+        nickname: data?.toUser.nickname!,
       });
       setIsConnected(true);
     } else {
       setIsConnected(false);
     }
-    console.log("getFriend", friendInfo);
   }, [friendInfo]);
 
   return { isConnected, friend };

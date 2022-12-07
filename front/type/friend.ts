@@ -15,8 +15,7 @@ export interface ReceiveFriend {
 //백엔드에서 친구 데이터 받는 형식
 export interface Friend {
   toUserId: string;
-  fromUserId: string;
-  fromUser: {
+  toUser: {
     nickname: string;
   };
   title: string;
