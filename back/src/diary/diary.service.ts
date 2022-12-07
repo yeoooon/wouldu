@@ -48,7 +48,9 @@ export class DiaryService {
       friendId,
     });
     if (diaries.length === 0) {
-      return null;
+      return {
+        message: '다이어리 작성 내역이 없습니다.',
+      };
     }
     const title = await this.friendService.findTitle(friendId);
     return {

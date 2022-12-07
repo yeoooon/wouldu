@@ -52,9 +52,9 @@ export class DiaryController {
       const diaryList = await this.diaryService.findDiaryList(
         request.user['userId'],
       );
-      if (diaryList === null) {
-        return response.status(204).send();
-      }
+      // if (diaryList === null) {
+      //   return response.status(204).send();
+      // }
       return response.status(200).send(diaryList);
     }
   }
