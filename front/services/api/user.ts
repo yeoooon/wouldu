@@ -79,7 +79,7 @@ export const changePassword = async (passwordInfo: PasswordForm) => {
 export const changeUserNickname = async (nicknameInfo: NicknameForm) => {
   const { id, nickname } = nicknameInfo;
   try {
-    const { data } = await axiosInstance.put(`user/${id}`, { nickname });
+    const { data } = await axiosInstance.put(`user/${id}/nickname`, { nickname });
     return data;
   } catch (err) {
     console.log(err);

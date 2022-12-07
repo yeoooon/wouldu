@@ -12,25 +12,25 @@ import ChangePassword from "./modal/ChangePassword";
 import ChangeNickname from "./modal/ChangeNickname";
 
 interface EditProfileFormValue {
-  profileImage: File
-  nickname: string
+  profileImage: File;
+  nickname: string;
 }
 
 const EditProfile = () => {
-  const { register, handleSubmit, watch, formState: { errors }, } = useForm<EditProfileFormValue>();
-  const userAtomData = useRecoilValue(userAtom);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<EditProfileFormValue>();
   const [isDeleteUserOpen, setIsDeleteUserOpen] = useRecoilState(isDeleteUserModalAtom);
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useRecoilState(isChangePasswordModalAtom);
   const [isChangeNickNameOpen, setIsChangeNicknameOpen] = useRecoilState(isChangeNicknameModalAtom);
-  const [user, setUser] = useState<User | null>();
+  const user = useRecoilValue(userAtom);
 
-  useEffect(() => {
-    setUser(userAtomData);
-  }, []);
-
-  const onSubmitHandler: SubmitHandler<EditProfileFormValue> = (data) => {
+  const onSubmitHandler: SubmitHandler<EditProfileFormValue> = data => {
     console.log(data);
-  }
+  };
 
   return (
     <ContentArea>
@@ -66,7 +66,7 @@ const ContentArea = styled(Container)`
   width: 100%;
   height: 70vh;
   padding: 1.5rem 0;
-`
+`;
 const InfoArea = styled.div`
   display: flex;
   flex-direction: column;
