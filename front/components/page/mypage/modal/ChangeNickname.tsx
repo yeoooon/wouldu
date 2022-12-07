@@ -1,13 +1,14 @@
 import { CloseIcon } from "@components/icons/CloseIcon";
 import { isChangeNicknameModalAtom } from "@recoil/modal";
 import { userAtom } from "@recoil/user";
-import { changeUserInfo } from "@services/api/user";
+import { changeUserNickname } from "@services/api/user";
 import { Box } from "@styles/layout";
 import { AgreeButton, Cancel, DenyButton, ModalContainer, ModalWrapper, Overlay, Title } from "@styles/modal_layout";
-import { User } from "@type/user";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { NicknameForm, User } from "@type/user";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 interface EditProfileFormValue {
@@ -16,23 +17,38 @@ interface EditProfileFormValue {
 }
 
 const ChangeNickname = () => {
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<EditProfileFormValue>();
-  const userAtomData = useRecoilValue(userAtom);
+  // const userAtomData = useRecoilValue(userAtom);
   const setIsChangeNicknameOpen = useSetRecoilState(isChangeNicknameModalAtom);
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useRecoilState(userAtom);
 
-  useEffect(() => {
-    setUser(userAtomData);
-  }, []);
+  const changeMutation = useMutation(
+    (data: NicknameForm) => changeUserNickname({ id: data.id, nickname: data.nickname }),
+    {
+      onSuccess: (status, value) => {
+        queryClient.invalidateQueries(["user", "info"]);
+        setUser({ ...user!, nickname: value?.nickname });
+      },
+      onError: () => {},
+    },
+  );
+
+  // useEffect(() => {
+  //   setUser(userAtomData);
+  // }, []);
 
   const onSubmitHandler: SubmitHandler<EditProfileFormValue> = data => {
     setIsChangeNicknameOpen(false);
-    changeUserInfo(user?.id!, data);
+    changeMutation.mutate({ id: user?.id!, nickname: data.nickname });
+
+    //mutation ["user", "info"]
+    // changeUserNickname({ id: user?.id!, nickname: data.nickname });
   };
 
   return (
