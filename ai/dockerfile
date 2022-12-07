@@ -1,3 +1,8 @@
 FROM tensorflow/tensorflow:1.15.0-gpu-py3
-CMD ["/home/data","apt-get install wget","pip install -r requirements.txt"]
+WORKDIR /home/data
+COPY . .
+RUN apt-get install wget
+RUN pip install flask
+RUN pip install -r requirements.txt
+ENTRYPOINT ["python", "eval_joint_bert.py"]
 EXPOSE 3000
