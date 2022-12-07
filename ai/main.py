@@ -1,38 +1,60 @@
-from flask import Flask, jsonify, request
-import tensorflow as tf
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+from flask import Flask, request
 app = Flask(__name__)
-import mecab
-import sentencepiece as spm
+from vectorizers.bert_vectorizer import BERTVectorizer
+from models.joint_bert import JointBertModel
+from vectorizers.tags_vectorizer import TagsVectorizer
+from vectorizers import albert_tokenization
 
-mecab = mecab.MeCab()
-sp = spm.SentencePieceProcessor()
-sp.Load('spm-mediazen.model')
+import os
+import pickle
+import tensorflow as tf
+from mecab import MeCab
 
-def work(sentence, model): # 이미지를 입력하면 숫자를 출력하는 함수
-    pred = model.predict(sentence) # TODO: 모델에 이미지를 넣고 결과를 pred에 저장
-    print(pred)
-    pred = pred[0] # TODO: batch 단위로 나온 결과에서 이미지 하나의 결과를 추출
-    emo = tf.math.argmax(pred)  # TODO: 결과중 가장 확률이 높은 index 가져오기
-    return emo
+load_folder_path = 'saved_model'
+mecab = MeCab()
 
-@app.route("/", methods=["GET"]) # @app.route를 작성하고, GET Method만 사용합니다.
-def predict():    
-    sentence = request.args.get("sentence")       # img라는 이름으로 url을 받아옴
-    if sentence != None:                     # imgurl을 제대로 받은 경우
-        sentence  = " ".join(mecab.morphs(sentence))
-        sentence = sp.EncodeAsPieces(sentence)
-        tokenizer=Tokenizer()
-        tokenizer.fit_on_texts(sentence)
-        sentence=tokenizer.texts_to_sequences(sentence)
-        sentence_pad=pad_sequences(sentence,maxlen=38,padding='post')
-        emo = work(sentence_pad, model)   # 모델을 work 함수를 통해 사용합니다.    
-        emotion = {0:"기쁨",1:"당황",2:"분노",3:"불안",4:"상처",5:"슬픔"}
-    return emotion[int(emo)]
+config = tf.ConfigProto(intra_op_parallelism_threads=8,
+                        inter_op_parallelism_threads=0,
+                        allow_soft_placement=True,
+                        device_count = {'GPU': 1})
+sess = tf.Session(config=config)
 
+bert_model_hub_path = './albert-module'
+is_bert = False
+tokenizer = albert_tokenization.FullTokenizer('./albert-module/assets/v0.vocab')
 
-# Flask 서버를 실행하는 코드입니다.
+bert_vectorizer = BERTVectorizer(sess, is_bert, bert_model_hub_path)
+
+with open(os.path.join(load_folder_path, 'tags_vectorizer.pkl'), 'rb') as handle:
+    tags_vectorizer = pickle.load(handle)
+    slots_num = len(tags_vectorizer.label_encoder.classes_)
+with open(os.path.join(load_folder_path, 'intents_label_encoder.pkl'), 'rb') as handle:
+    intents_label_encoder = pickle.load(handle)
+    intents_num = len(intents_label_encoder.classes_)
+
+model = JointBertModel.load(load_folder_path, sess)
+
+@app.route("/", methods=["GET"])
+def listen():
+    data_text = " ".join(tokenizer.tokenize(' '.join(mecab.morphs(request.args.get("sentence")))))
+    data_text = data_text.replace('##', '')
+    data_tags = ' '.join(['0' for _ in range(len(data_text.split()))])
+    data_text_arr = [data_text]
+    data_tags_arr = [data_tags]
+    data_input_ids, data_input_mask, data_segment_ids, _ = bert_vectorizer.transform(data_text_arr)
+
+    tags_vectorizer = TagsVectorizer()
+    tags_vectorizer.fit(data_tags_arr)
+    data_tags_arr = tags_vectorizer.transform(data_tags_arr, data_input_ids)
+    
+    return get_results(data_input_ids, data_input_mask, data_segment_ids, tags_vectorizer, intents_label_encoder)
+
+def get_results(input_ids, input_mask, segment_ids, tags_vectorizer, intents_label_encoder):
+    with sess.as_default():
+        with sess.graph.as_default():
+            _, first_inferred_intent, _, _, _, _ = model.predict_slots_intent([input_ids, input_mask, segment_ids], tags_vectorizer, intents_label_encoder)
+
+    return first_inferred_intent[0].strip()
+
 if __name__ == "__main__":
-    model = tf.keras.models.load_model("saved_model/saved_model") # TODO: 학습된 모델 "mymodel"을 불러오세요.
-    app.run(host="0.0.0.0", port=3000) # flask 서비스 시작
+    app.run(host="0.0.0.0", port=3000)
