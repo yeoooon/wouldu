@@ -8,7 +8,7 @@ import styled, { css } from 'styled-components';
 
 const EmotionAnalysis = () => {
 const [selectedEmotion, setSelectedEmotion] = useState<string>('기쁨');
-  const [isEmoAnalysisOpen, setIsEmoAnalysisOpen] = useState<boolean>(true);
+  const [isEmoAnalysisOpen, setIsEmoAnalysisOpen] = useState<boolean>(false);
   const EmotionObj = sumMonthEmotion(testEmotion);
   const totalDays = Object.values(testEmotion).length;
 
