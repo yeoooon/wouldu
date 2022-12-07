@@ -45,6 +45,9 @@ export class DiaryService {
     const diaries = await this.diaryDAO.getMany('diary.friendId=:friendId', {
       friendId,
     });
+    if (diaries.length === 0) {
+      return null;
+    }
     const title = await this.friendService.findTitle(friendId);
     return {
       title: title,
