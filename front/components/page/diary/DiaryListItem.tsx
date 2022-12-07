@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import DiaryListDay from './DiaryListDay';
 import { useQuery } from '@tanstack/react-query';
 import { getDiaries } from '../../../services/api/diary';
-import { Diary } from '../../../type/diary';
+import { MonthDiaries } from '../../../type/diary';
 import { formatDate } from '@services/utils/formatDate';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { clickedDiaryDateState, clickedDiaryMonthState, today } from '@recoil/diary';
 
 const DiaryListItem = () => {
-  const [diaryList, setDiaryList] = useState<Array<Diary> | undefined>(undefined);
+  const [diaryList, setDiaryList] = useState<Array<MonthDiaries> | undefined>(undefined);
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
   const clickedMonth = useRecoilValue(clickedDiaryMonthState);
@@ -20,10 +20,8 @@ const DiaryListItem = () => {
     setClickedDiaryDate(String(formatDate(new Date())));
   }
 
-  const isTodayWritten = (element: Diary) => {
-    if (element.date.substring(0, 10) === todayDate) {
-      return true;
-    };
+  const isTodayWritten = (element: MonthDiaries) => {
+    return (element.date.substring(0, 10) === todayDate);
   }
 
   const handleClickDate = (e: React.MouseEvent<HTMLElement>) => {
