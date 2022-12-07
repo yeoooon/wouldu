@@ -34,4 +34,7 @@ export class Diary {
 
   @ManyToOne(() => User, (user) => user.diaries)
   user: User;
+
+  @ManyToOne(() => Friend, (friend) => friend.diaries)
+  friend: Friend;
 }
