@@ -65,6 +65,7 @@ const SidebarContainer = styled(Container)`
   position: relative;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
 `;
 const MonthBox = styled(Box)`
   background-color: ${props => props.theme.color.button};
