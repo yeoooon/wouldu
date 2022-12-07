@@ -9,16 +9,17 @@ import { Diary } from "@type/diary";
 import { isUserDiary, isPartnerDiary } from "@services/utils/diaryAuthor";
 import UserDiary from "../diary/UserDiary";
 import PartnerDiary from "../diary/PartnerDiary";
+import { useGetDiary } from "@services/utils/useGetDiary";
 
 const StampDiaryContent = () => {
   const [todayDiary, setTodayDiary] = useState<Array<Diary> | undefined>([]);
 
   const todayDate = useRecoilValue(today);
-  const { data } = useQuery<Object>(["diaries", todayDate], () => getDiary(todayDate));
+  console.log(useGetDiary(todayDate));
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  // 연결 x -> 먼저 일기를 친구와 연결해 보세요! ->
+  // 연결 o -> 다이어리 o -> content 보여 주기
+  // 연결 o -> 다이어리 x -> 작성된 일기가 없어요.
 
   return (
     <ContentBox>

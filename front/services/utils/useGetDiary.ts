@@ -14,27 +14,29 @@ export const useGetDiary = (yyyymmdd: string) => {
   const { data } = useQuery(["diaries", yyyymmdd], () => getDiary(yyyymmdd));
 
   useEffect(() => {
-    console.log(data);
-    setDiaryName(data?.title!);
+    console.log(data);})
 
-    if (data.diaries.find(isUserDiary)) {
-      setUserDiary({
-        title: data?.title!,
-        id: data?.diaries.find(isUserDiary)!.id,
-        nickname: data?.diaries.find(isUserDiary)!.user.nickname,
-        content: data?.diaries.find(isUserDiary)!.content,
-      });
-    }
+  //   setDiaryName(data?.title!);
+
+  //   if (data.diaries.find(isUserDiary)) {
+  //     setUserDiary({
+  //       title: data?.title!,
+  //       id: data?.diaries.find(isUserDiary)!.id,
+  //       nickname: data?.diaries.find(isUserDiary)!.user.nickname,
+  //       content: data?.diaries.find(isUserDiary)!.content,
+  //     });
+  //   }
     
-    if (data.diaries.find(isPartnerDiary)) {
-      setPartnerDiary({
-        title: data?.title!,
-        id: data?.diaries.find(isPartnerDiary)!.id,
-        nickname: data?.diaries.find(isPartnerDiary)!.user.nickname,
-        content: data?.diaries.find(isPartnerDiary)!.content,
-      });
-    }
-  }, [data]);
+  //   if (data.diaries.find(isPartnerDiary)) {
+  //     setPartnerDiary({
+  //       title: data?.title!,
+  //       id: data?.diaries.find(isPartnerDiary)!.id,
+  //       nickname: data?.diaries.find(isPartnerDiary)!.user.nickname,
+  //       content: data?.diaries.find(isPartnerDiary)!.content,
+  //     });
+  //   }
+  // }, [data]);
 
-  return { diaryName, userDiary, partnerDiary };
+  // return { diaryName, userDiary, partnerDiary };
+  return data;
 }
