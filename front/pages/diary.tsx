@@ -9,18 +9,19 @@ import { GetServerSidePropsContext } from "next";
 import { useEffect, useState } from "react";
 import { Container, Wrapper, Box } from "../styles/layout";
 import { getDiaries } from "../services/api/diary";
+import { useGetFriend } from "@services/utils/useGetFriend";
 
 const Diary = () => {
-  const [connectState, setConnectState] = useState(false);
+  const { isConnected } = useGetFriend();
 
-  if (connectState) {
+  if (isConnected) {
     return (
       <DiaryWrapper>
         <SidebarContainer>
           <DiarySidebar />
         </SidebarContainer>
         <DiaryContainer>
-          <DiaryMain connectState={connectState} setConnectState={setConnectState} />
+          <DiaryMain />
         </DiaryContainer>
       </DiaryWrapper>      
     );
@@ -28,7 +29,7 @@ const Diary = () => {
     return (
       <Wrapper>
         <BeforeConnectContainer>
-          <NoDiaryConnect connectState={connectState} setConnectState={setConnectState} />
+          <NoDiaryConnect />
         </BeforeConnectContainer>
       </Wrapper>
     );
