@@ -1,4 +1,4 @@
-import EmotionAnalsis from "@components/page/stamp/EmotionAnalsis";
+import EmotionAnalysis from "@components/page/stamp/EmotionAnalysis";
 import EmotionCalendar from "@components/page/stamp/EmotionCalendar";
 import EmotionGraph from "@components/page/stamp/EmotionGraph";
 import StampDiary from "@components/page/stamp/StampDiary";
@@ -7,7 +7,6 @@ import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { GetServerSidePropsContext } from "next";
 import { useState } from "react";
-import { Calendar } from "react-calendar";
 import styled from "styled-components";
 
 const Stamp = () => {
@@ -39,7 +38,7 @@ const Stamp = () => {
         </CalendarBox>
         <EmotionBox>
           <EmotionGraph />
-          <EmotionAnalsis />
+          <EmotionAnalysis />
         </EmotionBox>
       </RightContainer>
     </StampWrapper>
@@ -105,7 +104,7 @@ const CalendarBox = styled.div`
 const EmotionBox = styled(CalendarBox)`
   margin-top: 2vh;
   width: 90%;
-  height: 25vh;
+  height: 30vh;
   display: flex;
   align-items: center;
   border-radius: ${props => props.theme.borderSize.borderSm};

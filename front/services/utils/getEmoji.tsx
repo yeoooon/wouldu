@@ -7,17 +7,17 @@ export interface getEmojiProps {
 
 export const getEmoji = ({data ,day} : getEmojiProps) => {
   if (data[day] === "기쁨") {
-    return <GladIcon />
+    return <GladIcon height={25} />
   } else if (data[day] === "슬픔") {
-    return <SadIcon />
+    return <SadIcon height={25} />
   } else if (data[day] === "분노") {
-    return <UpsetIcon />
+    return <UpsetIcon height={25} />
   } else if (data[day] === "상처") {
-    return <HurtIcon />
+    return <HurtIcon height={25} />
   } else if (data[day] === "당황") {
-    return <EmbarassIcon />
+    return <EmbarassIcon height={25} />
   } else if (data[day] === "불안") {
-    return <AnxiosIcon />
+    return <AnxiosIcon height={25} />
   } else {
     return null
   }
