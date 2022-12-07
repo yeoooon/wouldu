@@ -27,9 +27,9 @@ const Login = () => {
 
   const onLoginSubmit = async (data: UserLoginForm) => {
     try {
-      const { id, accessToken, email, nickname, friendCode } = await requestLogin(data);
+      const { id, accessToken, email, nickname, friendCode, isFirstLogin } = await requestLogin(data);
       if (accessToken) {
-        setUser({ id, email, accessToken, nickname, friendCode });
+        setUser({ id, email, accessToken, nickname, friendCode, isFirstLogin });
         router.push("/");
       }
     } catch (err) {}
@@ -87,9 +87,7 @@ const Login = () => {
               <a>회원가입</a>
             </Link>
           </EtcTextBox>
-          <EtcTextBox onClick={() => setIsFindPasswordOpen(true)}>
-            비밀번호 찾기
-          </EtcTextBox>
+          <EtcTextBox onClick={() => setIsFindPasswordOpen(true)}>비밀번호 찾기</EtcTextBox>
         </EtcBox>
         {isFindPasswordOpen && <FindPasswordForm />}
       </LoginContainer>

@@ -19,6 +19,22 @@ export const userJoin = async (joinInfo: UserJoinForm) => {
   }
 };
 
+//회원정보
+export const getUserInfo = async (id: string) => {
+  console.log("getUserInfo", id);
+  try {
+    const { data } = await axiosInstance.get(`user/${id}`);
+    console.log(data);
+    return data;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err?.response?.status) {
+      console.log(err);
+
+      return err.response.status;
+    }
+  }
+};
+
 //로그인
 export const requestLogin = async (loginInfo: UserLoginForm) => {
   try {

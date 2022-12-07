@@ -1,5 +1,4 @@
-import { isAlarmModalAtom } from "@recoil/modal";
-import { useRouter } from "next/router";
+import { isAlarmModalAtom, isSurveyModalAtom } from "@recoil/modal";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -7,6 +6,7 @@ import { loginStateSelector, userAtom } from "../recoil/user";
 import AfterNavbar from "./AfterNavbar";
 import AlarmModal from "./AlarmModal";
 import BeforeNavBar from "./BeforeNavbar";
+import SurveyModal from "./SurveyModal";
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -17,25 +17,29 @@ const Layout = ({ children, darkMode, setDarkMode }: LayoutProps) => {
   const isLoginStateAtom = useRecoilValue(loginStateSelector);
   const [isLoginState, setIsLoginState] = useState<boolean>(false);
   const isAlarmOpen = useRecoilValue(isAlarmModalAtom);
+  const user = useRecoilValue(userAtom);
 
   useEffect(() => {
     setIsLoginState(isLoginStateAtom);
   }, [isLoginStateAtom]);
+
+  useEffect(() => {
+    console.log(user?.isFirstLogin);
+  }, [user]);
 
   return (
     <>
       {isLoginState && (
         <LayoutWrapper>
           <AfterNavbar darkMode={darkMode} setDarkMode={setDarkMode} />
-          {/* <div>로그인된상태</div> */}
           <div>{children}</div>
           {isAlarmOpen && <AlarmModal />}
+          {user?.isFirstLogin === 0 && <SurveyModal />}
         </LayoutWrapper>
       )}
       {isLoginState || (
         <>
           <BeforeNavBar />
-          {/* <About /> */}
           <div>{children}</div>
         </>
       )}

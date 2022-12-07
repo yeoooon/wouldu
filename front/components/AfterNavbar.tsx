@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/user";
-import { useEffect, useState } from "react";
-import { User } from "@type/user";
 import { removeCookie } from "@services/utils/cookies";
 import { LogoBlackIcon, LogoWhiteIcon } from "./icons/LogoIcon";
 import { AlarmIcon } from "./icons/AlarmIcon";
@@ -15,6 +13,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { colors } from "@styles/common_style";
 import { isAlarmModalAtom } from "@recoil/modal";
 import { ReceiveFriend } from "@type/friend";
+import { useEffect } from "react";
+import { User } from "@type/user";
+import { getUserInfo } from "@services/api/user";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -27,21 +28,20 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
 
   const queryClient = useQueryClient();
-
-  const [userAtomData, setUserAtomData] = useRecoilState(userAtom);
-  const [user, setUser] = useState<User | null>();
-
+  const [user, setUser] = useRecoilState(userAtom);
   const setIsAlarmOpen = useSetRecoilState<boolean>(isAlarmModalAtom);
 
   const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
+  const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
+
+  // useEffect(() => {
+  //   setUser(userAtomData);
+  // }, []);
 
   useEffect(() => {
-    setUser(userAtomData);
-  }, []);
-
-  useEffect(() => {
-    console.log("friend receive", receiveFriends);
-  }, [receiveFriends]);
+    console.log("afternavbar Test-----", userInfo);
+    setUser({ ...user!, ...userInfo! });
+  }, [userInfo]);
 
   const toggleTheme = () => {
     const theme = localStorage.getItem("theme");
@@ -57,7 +57,6 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
     const result = confirm("로그아웃 하시겠어요?");
     if (result) {
       setUser(null);
-      setUserAtomData(null);
       removeCookie("userToken");
       queryClient.removeQueries({ queryKey: ["user"] });
       await router.push("/");

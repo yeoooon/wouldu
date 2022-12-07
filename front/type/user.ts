@@ -5,13 +5,15 @@ export const LOGIN = {
 };
 
 export interface User {
-  id?: string;
-  email: string;
+  id: string;
+  email?: string;
   accessToken: string;
-  nickname: string;
-  friendCode: string;
+  nickname?: string;
+  friendCode?: string;
   password?: string;
   confirmPassword?: string;
+  survey?: string[];
+  isFirstLogin?: number;
 }
 
 export interface UserJoinForm extends Pick<User, "email" | "nickname" | "password" | "confirmPassword"> {}
