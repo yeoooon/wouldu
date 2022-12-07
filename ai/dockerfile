@@ -1,0 +1,3 @@
+FROM tensorflow/tensorflow:1.15.0-gpu-py3
+CMD ["/home/data","apt-get install wget","pip install -r requirements.txt"]
+EXPOSE 3000
