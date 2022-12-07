@@ -41,10 +41,8 @@ export class DiaryController {
     const { period, date, month } = readDiaryDTO;
     if (period === 'daily') {
       return this.diaryService.findDiaryByDate(request.user['userId'], date);
-    }
-    if (period === 'monthly') {
+    } else if (period === 'monthly') {
       return this.diaryService.findDiaryByMonth(request.user['userId'], month);
-    }
-    return this.diaryService.findDiaryList(request.user['userId']);
+    } else return this.diaryService.findDiaryList(request.user['userId']);
   }
 }

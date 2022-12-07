@@ -31,6 +31,6 @@ export class FriendRequest {
   @ManyToOne(() => User, (user) => user.sentFriendRequest)
   fromUser: User;
 
-  @ManyToOne(() => User, (user) => user.receivedfriendRequest)
+  @ManyToOne(() => User, (user) => user.receivedFriendRequest)
   toUser: User;
 }

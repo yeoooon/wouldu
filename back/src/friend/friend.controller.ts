@@ -58,8 +58,12 @@ export class FriendController {
       return this.friendService.findReceivedFriendRequest(
         request.user['userId'],
       );
-    if (side === 'send')
+    else if (side === 'send')
       return this.friendService.findSendedFriendRequest(request.user['userId']);
+    else
+      return {
+        message: 'side must be receive or send',
+      };
   }
 
   @Put('/request/accept')
