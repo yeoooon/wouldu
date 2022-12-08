@@ -5,7 +5,7 @@ import { Box } from "@styles/layout";
 import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ReceiveFriend } from "@type/friend";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { CloseIcon } from "./icons/CloseIcon";
@@ -14,6 +14,10 @@ const AlarmModal = () => {
   const queryClient = useQueryClient();
   const [isAlarmOpen, setIsAlarmOpen] = useRecoilState(isAlarmModalAtom);
   const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
+
+  useEffect(() => {
+    console.log(receiveFriends);
+  }, [receiveFriends]);
 
   const acceptMutation = useMutation((data: ReceiveFriend) => confirmFriend(data?.id!), {
     onSuccess: (status, value) => {
@@ -64,7 +68,7 @@ const AlarmModal = () => {
                 {receiveFriends && receiveFriends?.length >= 1 ? (
                   receiveFriends.map(friend => (
                     <Content key={friend.id}>
-                      <Text>{`${friend.toUserId}님에게 친구요청이 왔습니다.`}</Text>
+                      <Text>{`${friend.fromUserNickname}님에게 친구요청이 왔습니다.`}</Text>
                       <Box>
                         <AgreeButton onClick={() => handleAgreeClick(friend)}>수락</AgreeButton>
                         <DenyButton onClick={() => handleDenyClick(friend)}>거절</DenyButton>
