@@ -6,10 +6,9 @@ export type MatchCodeFormValue = { [K in FCodeType]: string };
 export interface ReceiveFriend {
   id: number;
   fromUserId: string;
-  toUserId?: string;
-  requestProgress?: number;
-  createdAt?: Date;
-  // updateAt?: Date;
+  fromUserNickname: string;
+  // requestProgress?: number;
+  createdAt: Date;
 }
 
 //백엔드에서 친구 데이터 받는 형식
