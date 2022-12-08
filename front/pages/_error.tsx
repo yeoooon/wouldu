@@ -1,28 +1,29 @@
 import { AnxiosIcon, HurtIcon, SadIcon } from "@components/icons/EmotionIcon";
 import { Container, Wrapper } from "@styles/layout";
 import Link from "next/link";
+import { FallbackProps } from "react-error-boundary";
 import styled from "styled-components";
 
-const Error = () => {
+const Error = ({ error }: FallbackProps) => {
   return (
     <Wrapper>
       <ErrorContainer>
         <ErrorImgBox>
           <AnxiosIcon height={90} />
-          <SadIcon height={100}/>
+          <SadIcon height={100} />
           <HurtIcon height={90} />
         </ErrorImgBox>
         <ErrorTextBox>
           <p>죄송합니다.</p>
           <p>현재 페이지에 문제가 발생하였습니다.</p>
           <p>다시 시도해 주세요.</p>
-          <Link href='/'>
+          <Link href="/">
             <Button>홈으로 가기</Button>
           </Link>
         </ErrorTextBox>
       </ErrorContainer>
     </Wrapper>
-  )
+  );
 };
 
 const ErrorContainer = styled(Container)`
