@@ -18,12 +18,13 @@ const SurveyModal = () => {
   const [selectedCategory, setSelectedCategory] = useState(user?.survey as unknown as string[]);
 
   const handleAddCategory = (newCategory: string) => {
-    if (selectedCategory === null) {
-      () => setSelectedCategory(['']);
-    }
-    setSelectedCategory([...selectedCategory, newCategory]);
-    if (selectedCategory.includes(newCategory)) {
-      setSelectedCategory(selectedCategory.filter(category => category !== newCategory));
+    if (selectedCategory) {
+      setSelectedCategory([...selectedCategory, newCategory]);
+      if (selectedCategory.includes(newCategory)) {
+        setSelectedCategory(selectedCategory.filter(category => category !== newCategory));
+      }
+    } else {
+      setSelectedCategory([newCategory]);
     }
   };
 
@@ -37,7 +38,7 @@ const SurveyModal = () => {
       onError: () => {},
     },
   );
-  
+
   const closeModal = () => {
     setIsSurveyModalOpen(false);
     if (user?.isFirstLogin === 0) {
