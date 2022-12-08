@@ -1,39 +1,55 @@
 import { isSurveyModalAtom } from "@recoil/modal";
 import { userAtom } from "@recoil/user";
+import { ChangeSurveyCategory } from "@services/api/user";
 import { surveyCategories } from "@services/utils/surveyCategory";
 import { Box, Container } from "@styles/layout";
 import { ModalWrapper, Overlay } from "@styles/modal_layout";
-import React, { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { SurveyForm } from "@type/user";
+import React, { useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { CloseIcon } from "./icons/CloseIcon";
 
 const SurveyModal = () => {
-  const setIsSurveyModalOpen = useSetRecoilState(isSurveyModalAtom);
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+  const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
+  const setIsSurveyModalOpen = useSetRecoilState(isSurveyModalAtom);
+  const [selectedCategory, setSelectedCategory] = useState(user?.survey as string[]);
+
   const handleAddCategory = (newCategory: string) => {
     setSelectedCategory([...selectedCategory, newCategory]);
     if (selectedCategory.includes(newCategory)) {
       setSelectedCategory(selectedCategory.filter(category => category !== newCategory));
     }
   };
+
+  const changeMutation = useMutation(
+    (data: SurveyForm) => ChangeSurveyCategory({ id: data.id, survey: selectedCategory }),
+    {
+      onSuccess: (status, value) => {
+        queryClient.invalidateQueries(["user", "info"]);
+        // setUser({ ...user!, survey: value?.survey });
+      },
+      onError: () => {},
+    },
+  );
+  
   const closeModal = () => {
     setIsSurveyModalOpen(false);
     if (user?.isFirstLogin === 0) {
       setUser({ ...user, isFirstLogin: 1 });
     }
   };
-
   const handleClickCancel = () => {
     closeModal();
   };
   const handleClickConfirm = () => {
-    //api호출 (설문지 추가)
-    console.log(selectedCategory);
-
+    //api호출
+    changeMutation.mutate({ id: user?.id!, survey: selectedCategory });
     closeModal();
   };
+
   return (
     <ModalWrapper>
       <SurveyContainer>

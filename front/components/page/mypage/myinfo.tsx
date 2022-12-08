@@ -8,8 +8,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { Box, Container } from "../../../styles/layout";
 
-const TestCategoryData = ["운동", "음악", "인테리어", "패션", "사진", "친구 만나기", "드라마"];
-
 const MyInfo = () => {
   const userAtomData = useRecoilValue(userAtom);
   const [user, setUser] = useState<User | null>();
@@ -17,7 +15,7 @@ const MyInfo = () => {
 
   useEffect(() => {
     setUser(userAtomData);
-  }, []);
+  }, [userAtomData]);
 
   return (
     <ContentArea>
@@ -27,8 +25,8 @@ const MyInfo = () => {
         <p className="email">{user?.email}</p>
       </InfoArea>
       <CategoryArea>
-        {TestCategoryData?.map((item) => (
-          <Category key={item}>{item}</Category>
+        {user?.survey?.map((item) => (
+          <Category key={item} className={item === '' ? "empty" : ""}>{item}</Category>
         ))}
       </CategoryArea>
       <Button onClick={() => setIsSurveyOpen(true)}>나의 카테고리 변경하러 가기 →</Button>
@@ -70,6 +68,9 @@ const Category = styled(Box)`
   font-size: ${props => props.theme.fontSize.textXs};
   border-radius: 30px;
   margin: 0.3em;
+  &.empty {
+    display: none;
+  }
 `;
 const Button = styled.button`
   margin: 2em;

@@ -16,7 +16,7 @@ const Error = () => {
           <p>죄송합니다.</p>
           <p>현재 페이지에 문제가 발생하였습니다.</p>
           <p>다시 시도해 주세요.</p>
-          <Link href={'/'}>
+          <Link href='/'>
             <Button>홈으로 가기</Button>
           </Link>
         </ErrorTextBox>

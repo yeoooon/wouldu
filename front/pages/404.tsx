@@ -16,7 +16,7 @@ const NotFound = () => {
           <MainText>죄송합니다.</MainText>
           <MainText>현재 찾을 수 없는 페이지를 요청하셨습니다.</MainText>
           <SmallText>존재하지 않는 주소를 입력하셨거나, <br/>요청하신 페이지의 주소가 변경, 삭제되어 찾을 수 없습니다.</SmallText>
-          <Link href={'/'}>
+          <Link href='/'>
             <Button>홈으로 가기</Button>
           </Link>
         </ErrorTextBox>
