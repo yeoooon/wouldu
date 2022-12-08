@@ -1,10 +1,9 @@
 import { Box } from '@styles/layout';
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { testEmotion, TestEmotionProps } from '@services/utils/testEmotion';
-import { getEmojiProps } from '@services/utils/getEmoji';
 import { sumMonthEmotion } from '@services/utils/sumMonthEmotion';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -75,7 +74,7 @@ const PieBox = styled(Box)`
   position: relative;
 `;
 const DoughnutBox = styled(Box)`
-  z-index: 5;
+  z-index: 0;
   width: 100%;
   height: 100%;
 `;
