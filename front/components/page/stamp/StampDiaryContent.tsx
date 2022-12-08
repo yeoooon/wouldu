@@ -19,13 +19,13 @@ const StampDiaryContent = () => {
       <DiarySummary>
         <Name>나</Name>
         <Content>
-            {!isConnected? <p>먼저 친구와 연결해 보세요!</p> : userDiary?.content.substring(0, 15)}
+            {!isConnected? <p>먼저 친구와 연결해 보세요!</p> : (userDiary !== undefined? userDiary?.content.substring(0, 15) : "작성된 일기가 없습니다.")}
           </Content>
       </DiarySummary>
       <PartnerDiarySummary>
         <PartnerName>상대</PartnerName>
         <Content>
-          {!isConnected? <p>먼저 친구와 연결해 보세요!</p> : partnerDiary?.content.substring(0, 15)}
+          {!isConnected? <p>먼저 친구와 연결해 보세요!</p> : (partnerDiary !== undefined? partnerDiary?.content.substring(0, 15) : "작성된 일기가 없습니다.")}
         </Content>
       </PartnerDiarySummary>
     </ContentBox>

@@ -17,10 +17,9 @@ import { useGetDiary } from '@services/utils/useGetDiary';
 const DiaryMain = () => {
   const isTextAreaOpen = useRecoilValue(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
+
   const yyyymmdd = clickedDiaryDate.substring(0, 10);
-  const year = yyyymmdd.split('-')[0];
-  const month = yyyymmdd.split('-')[1];
-  const day = yyyymmdd.split('-')[2];
+  const [year, month, day] = yyyymmdd.split('-');
   const dayStr = getDayString(clickedDiaryDate);
 
   const { userDiary, partnerDiary } = useGetDiary(yyyymmdd);

@@ -15,6 +15,7 @@ const DiaryListItem = () => {
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
   const clickedMonth = useRecoilValue(clickedDiaryMonthState);
+  const [year, month] = clickedMonth.split('-');
 
   const getTodayMain = () => {
     setClickedDiaryDate(String(formatDate(new Date())));  
@@ -28,7 +29,7 @@ const DiaryListItem = () => {
     if (e.target instanceof Element) setClickedDiaryDate(e.currentTarget.id);
   }
 
-  const { data } = useQuery(["diaries", clickedMonth], () => getDiaries(clickedMonth));
+  const { data } = useQuery(["diaries", year, month], () => getDiaries(clickedMonth));
 
   useEffect(() => {
     setDiaryList(data?.diaries);

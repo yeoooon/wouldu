@@ -6,13 +6,14 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userAtom } from '@recoil/user';
 
-export const useGetDiary = (yyyymmdd: string) => {
+export const useGetDiary = (date: string) => {
   // 일기 데이터를 찾고 싶은 날짜 ('yyyy-mm-dd' 형태) 를 인자로 받습니다.
   const user = useRecoilValue(userAtom);
   const [userDiary, setUserDiary] = useState<Diary>();
   const [partnerDiary, setPartnerDiary] = useState<Diary>();
+  const [year, month, day] = date.split('-');
 
-  const { data } = useQuery(["getDayDiary", yyyymmdd], () => getDiary(yyyymmdd));
+  const { data } = useQuery(["diaries", year, month, day], () => getDiary(date));
 
   useEffect(() => {
     if (!data) {
