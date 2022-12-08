@@ -10,18 +10,18 @@ import { getFriend } from "@services/api/friend";
 import { useGetFriend } from "@services/utils/useGetFriend";
 
 const EditConnection = () => {
-  const { isConnected, friend } = useGetFriend();
+  const { isConnected, friend, isLoading } = useGetFriend();
+  useEffect(() => {
+    console.log({ isLoading });
+  }, [isLoading]);
 
-  return (
+  return !isLoading ? (
     <>
-      {isConnected ? (
-        <AfterConnect friend={friend!}></AfterConnect>
-      ) : isConnected === undefined ? (
-        <div></div>
-      ) : (
-        <BeforeConnect></BeforeConnect>
-      )}
+      {isConnected && <AfterConnect friend={friend!}></AfterConnect>}
+      {isConnected === false && <BeforeConnect></BeforeConnect>}
     </>
+  ) : (
+    <div>Loading...</div>
   );
 };
 

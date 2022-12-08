@@ -5,16 +5,24 @@ import { useEffect, useState } from "react";
 
 export const useGetFriend = () => {
   const [isConnected, setIsConnected] = useState<boolean>();
-
-  const { data: friendInfo } = useQuery<Friend[]>(["friend", "info"], () => getFriend(), {
-    staleTime: 60 * 1000,
-  });
-
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const [friend, setFriend] = useState<FriendInfo>();
+
+  const { data: friendInfo, isLoading } = useQuery<Friend[]>(["friend", "info"], () => getFriend(), {
+    // staleTime: 60 * 1000,
+    onSettled: () => {
+      console.log("onSettled");
+      // setIsLoading(false);
+    },
+  });
 
   useEffect(() => {
     console.log("getfriend , isConnected?", isConnected);
   }, [isConnected]);
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+  // }, []);
 
   useEffect(() => {
     if (friendInfo && friendInfo.length >= 1) {
@@ -31,5 +39,5 @@ export const useGetFriend = () => {
     }
   }, [friendInfo]);
 
-  return { isConnected, friend };
+  return { isConnected, friend, isLoading };
 };
