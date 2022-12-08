@@ -7,7 +7,7 @@ const PartnerDiary = ({ diary }: DiaryProps) => {
 
   return (
     <>
-      {diary && diary.title !== ''? (
+      {diary? (
         <DiaryBox>
           <ProfileBox>
             <UserIcon width={30} height={30} />
