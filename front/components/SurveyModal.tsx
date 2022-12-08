@@ -15,9 +15,12 @@ const SurveyModal = () => {
   const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
   const setIsSurveyModalOpen = useSetRecoilState(isSurveyModalAtom);
-  const [selectedCategory, setSelectedCategory] = useState(user?.survey as string[]);
+  const [selectedCategory, setSelectedCategory] = useState(user?.survey as unknown as string[]);
 
   const handleAddCategory = (newCategory: string) => {
+    if (selectedCategory === null) {
+      () => setSelectedCategory(['']);
+    }
     setSelectedCategory([...selectedCategory, newCategory]);
     if (selectedCategory.includes(newCategory)) {
       setSelectedCategory(selectedCategory.filter(category => category !== newCategory));
@@ -66,7 +69,7 @@ const SurveyModal = () => {
             <CategoryButton
               key={category.title}
               onClick={() => handleAddCategory(category.title)}
-              className={selectedCategory.includes(category.title) ? "active" : ""}
+              className={selectedCategory !== null && selectedCategory.includes(category.title) ? "active" : ""}
             >
               <Emoji>{category.emoji}</Emoji>
               <Category>{category.title}</Category>
