@@ -35,6 +35,7 @@ const NoDiaryConnect = () => {
           </Link>   
         </ButtonArea> 
       </ModalContainer>
+      <Overlay />
     </ModalWrapper>
   )
 }

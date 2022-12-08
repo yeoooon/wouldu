@@ -1,6 +1,6 @@
 import { FindPasswordFormValue } from "@components/FindPasswordForm";
 import { getCookie, removeCookie, setCookie } from "@services/utils/cookies";
-import { NicknameForm, PasswordForm, UserJoinForm, UserLoginForm } from "@type/user";
+import { NicknameForm, PasswordForm, SurveyForm, UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 
@@ -92,6 +92,17 @@ export const FindUserPassword = async (data: FindPasswordFormValue) => {
   try {
     const { status } = await axiosInstance.post(`/user/new-password`, data);
     return status;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//카테고리 수정
+export const ChangeSurveyCategory = async (surveyInfo: SurveyForm) => {
+  const { id, survey } = surveyInfo;
+  try {
+    const { data } = await axiosInstance.put(`user/${id}/survey`, { survey });
+    return data;
   } catch (err) {
     console.log(err);
   }

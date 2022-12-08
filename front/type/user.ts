@@ -30,3 +30,8 @@ export interface NicknameForm {
   id: string;
   nickname: string;
 }
+
+export interface SurveyForm {
+  id: string;
+  survey: string[];
+};
