@@ -2,9 +2,13 @@ import { Box } from '@styles/layout';
 import React from 'react';
 import styled from 'styled-components';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 import { testEmotion, TestEmotionProps } from '@services/utils/testEmotion';
 import { sumMonthEmotion } from '@services/utils/sumMonthEmotion';
+import { CheckIcon } from '@components/icons/CheckIcon';
+import { GraphIcon } from '@components/icons/GraphIcon';
+import { useSetRecoilState } from 'recoil';
+import { isEmoAnalysisAtom } from '@recoil/stamp';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -48,44 +52,52 @@ const options = {
 };
 
 const EmotionGraph = () => {
+  const setIsEmoAnalysisOpen = useSetRecoilState(isEmoAnalysisAtom);
   return (
     <EmotionGraphBox>
       <PieBox>
-        <DoughnutBox>
-          <Doughnut data={data} options={options} />
-        </DoughnutBox>
         <TextBox>
-          <TestTitle>감정분석<br/>그래프</TestTitle>
+          <GraphIcon />
+          <Title>감정분석 그래프</Title>
         </TextBox>
+        <DoughnutBox onClick={() => setIsEmoAnalysisOpen(false)}>
+          <Pie data={data} options={options} />
+        </DoughnutBox>
       </PieBox>
     </EmotionGraphBox>
   )
 };
 
-const EmotionGraphBox = styled(Box)`
-  width: 45%;
+const EmotionGraphBox = styled.div`
+  width: 50%;
   height: 100%;
-  padding: 1em;
+  display: flex;
   flex-direction: column;
+  align-items: center;
+  /* background-color: saddlebrown; */
 `;
-const PieBox = styled(Box)`
-  width: 13em;
-  height: 100%;
-  position: relative;
+const PieBox = styled.div`
+  width: 70%;
+  height: 90%;
+  flex-direction: column;
+  /* background-color: rebeccapurple; */
 `;
-const DoughnutBox = styled(Box)`
-  z-index: 0;
+const DoughnutBox = styled.div`
+  height: 22vh;
+  /* background-color: aliceblue; */
+`;
+const TextBox = styled.div`
+  padding: 1em;
   width: 100%;
-  height: 100%;
+  /* background-color: red; */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 `;
-const TextBox = styled(Box)`
-  position: absolute;
-  top: 41%;
-  left: 37%;
-`;
-const TestTitle = styled.p`
+const Title = styled.p`
   text-align: center;
-  line-height: 20px;
   font-weight: 600;
+  margin-left: 0.5em;
 `;
+
 export default EmotionGraph;
