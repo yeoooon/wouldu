@@ -45,18 +45,30 @@ export class DiaryController {
   ) {
     const { period, date, month } = readDiaryDTO;
     if (period === 'daily') {
-      const diaryList = await this.diaryService.findDiaryByDate(request.user['userId'], date);
+      const diaryList = await this.diaryService.findDiaryByDate(
+        request.user['userId'],
+        date,
+      );
+      if (diaryList.diaries.length === 0) {
+        return response.status(204).send();
+      }
       return response.status(200).send(diaryList);
     } else if (period === 'monthly') {
-      const diaryList = await this.diaryService.findDiaryByMonth(request.user['userId'], month);
+      const diaryList = await this.diaryService.findDiaryByMonth(
+        request.user['userId'],
+        month,
+      );
+      if (diaryList.diaries.length === 0) {
+        return response.status(204).send();
+      }
       return response.status(200).send(diaryList);
     } else {
       const diaryList = await this.diaryService.findDiaryList(
         request.user['userId'],
       );
-      // if (diaryList === null) {
-      //   return response.status(204).send();
-      // }
+      if (diaryList === null) {
+        return response.status(204).send();
+      }
       return response.status(200).send(diaryList);
     }
   }
