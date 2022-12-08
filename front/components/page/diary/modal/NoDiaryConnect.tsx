@@ -31,7 +31,7 @@ const NoDiaryConnect = () => {
         </DescArea>
         <ButtonArea>
           <Link href={"/mypage"}>
-            <AgreeButton onClick={clickHandle}>연결하러 가기</AgreeButton>
+            <Button onClick={clickHandle}>연결하러 가기</Button>
           </Link>   
         </ButtonArea> 
       </ModalContainer>
@@ -56,5 +56,9 @@ const DescArea = styled.div`
   margin: 1em;
   color: ${props => props.theme.color.fontMain};
 `
+
+const Button = styled(AgreeButton)`
+  width: 9em;
+`;
 
 const ButtonArea = styled.div``;
