@@ -69,6 +69,7 @@ def process_line(line, tokenizer):
     예를 들어 "/인물;한지민/과 /인물;한예슬/ 나오는 드라마 있어?" 같은 input을 받게 되면,
         ('한 지민 과 한예 슬 나오 는 드라마 있 어 ?', '인물 인물 O 인물 인물 O O O O O O')와 같은 (토큰, slot)쌍으로 된 결과값을 반환한다.
     """
+    print(line)
     intention, sentence = line.split("\t")
     
     # 20201216

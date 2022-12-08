@@ -41,8 +41,6 @@ print('train_data_folder_path:', train_data_folder_path)
 #os.environ["CUDA_VISIBLE_DEVICES"]="-1"
 
 tf.compat.v1.random.set_random_seed(7)
-import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior()
 config = tf.ConfigProto(intra_op_parallelism_threads=0, 
                         inter_op_parallelism_threads=0,
                         allow_soft_placement=True,
