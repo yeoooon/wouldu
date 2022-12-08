@@ -28,7 +28,7 @@ const UserDiary = ({ diary }: DiaryProps) => {
       </DiaryBox>
       :
       <UnwrittenDiaryBox>
-        {clickedDiaryDate === todayDate?
+        {clickedDiaryDate.substring(0, 10) === todayDate?
           <>
             <Text>
               아직 일기가 작성되지 않았습니다.<br/>

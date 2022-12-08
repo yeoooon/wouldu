@@ -17,10 +17,6 @@ export const useGetDiary = (date: string) => {
   const { data } = useQuery(["diaries", year, month, day], () => getDiary(date));
 
   useEffect(() => {
-    console.log(date);
-    console.log("usegetDiary 실행");
-    console.log(data);
-
     if (!data) {
       setUserDiary(undefined);
       setPartnerDiary(undefined);
