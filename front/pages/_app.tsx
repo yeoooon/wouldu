@@ -11,6 +11,7 @@ import Error from "@components/Error";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import { loginStateSelector } from "../recoil/user";
 import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
   const [isLightTheme, setIsLightTheme] = useState(false);
@@ -40,6 +41,7 @@ export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
           <Hydrate state={pageProps.dehydratedState}>
             <GlobalStyle />
             <ErrorBoundary FallbackComponent={Error}>
