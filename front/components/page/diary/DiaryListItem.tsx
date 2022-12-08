@@ -17,7 +17,7 @@ const DiaryListItem = () => {
   const clickedMonth = useRecoilValue(clickedDiaryMonthState);
 
   const getTodayMain = () => {
-    setClickedDiaryDate(String(formatDate(new Date())));
+    setClickedDiaryDate(String(formatDate(new Date())));  
   }
 
   const isTodayWritten = (element: MonthDiaries) => {

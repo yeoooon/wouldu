@@ -17,19 +17,19 @@ import { useGetDiary } from '@services/utils/useGetDiary';
 const DiaryMain = () => {
   const isTextAreaOpen = useRecoilValue(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
-
   const yyyymmdd = clickedDiaryDate.substring(0, 10);
   const year = yyyymmdd.split('-')[0];
   const month = yyyymmdd.split('-')[1];
   const day = yyyymmdd.split('-')[2];
   const dayStr = getDayString(clickedDiaryDate);
 
-  const { diaryName, userDiary, partnerDiary } = useGetDiary(yyyymmdd);
+  const { userDiary, partnerDiary } = useGetDiary(yyyymmdd);
+  const { friend } = useGetFriend();
 
   return (
     <MainContainer>
       <TextBox>
-        <Title>{diaryName}</Title>
+        <Title>{friend?.title}</Title>
         <Date>{year}년 {month}월 {day}일 {dayStr}요일</Date>
       </TextBox>
       {isTextAreaOpen ?

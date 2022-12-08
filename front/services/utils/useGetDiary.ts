@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getDiary } from "@services/api/diary";
 import { Diary } from "@type/diary";
 import { useEffect, useState } from "react";
@@ -9,23 +9,16 @@ import { userAtom } from '@recoil/user';
 export const useGetDiary = (yyyymmdd: string) => {
   // 일기 데이터를 찾고 싶은 날짜 ('yyyy-mm-dd' 형태) 를 인자로 받습니다.
   const user = useRecoilValue(userAtom);
-  const [diaryName, setDiaryName] = useState<string>('');
-  const [userDiary, setUserDiary] = useState<Diary>({
-    title: '',
-    nickname: '',
-    content: '작성된 내용이 없습니다.',
-  });
-  const [partnerDiary, setPartnerDiary] = useState<Diary>({
-    title: '',
-    nickname: '',
-    content: '작성된 내용이 없습니다.',
-  });
+  const [userDiary, setUserDiary] = useState<Diary>();
+  const [partnerDiary, setPartnerDiary] = useState<Diary>();
 
-  const { data } = useQuery(["diaries", yyyymmdd], () => getDiary(yyyymmdd));
+  const { data } = useQuery(["getDayDiary", yyyymmdd], () => getDiary(yyyymmdd));
 
   useEffect(() => {
-    console.log('useGetDiary 실행');
-    setDiaryName(data?.title!);
+    if (!data) {
+      setUserDiary(undefined);
+      setPartnerDiary(undefined);
+    }
 
     if (data?.diaries?.find((el) => el.userId === user?.id)) {
       setUserDiary({
@@ -48,5 +41,5 @@ export const useGetDiary = (yyyymmdd: string) => {
     }
   }, [data]);
 
-  return { diaryName, userDiary, partnerDiary };
+  return { userDiary, partnerDiary };
 }
