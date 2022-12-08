@@ -1,31 +1,26 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getDiary } from "@services/api/diary";
 import { Diary } from "@type/diary";
 import { useEffect, useState } from "react";
 
 import { useRecoilValue } from "recoil";
 import { userAtom } from '@recoil/user';
+import { E } from "chart.js/dist/chunks/helpers.core";
 
-export const useGetDiary = (yyyymmdd: string) => {
+export const useGetDiary = (date: string) => {
   // 일기 데이터를 찾고 싶은 날짜 ('yyyy-mm-dd' 형태) 를 인자로 받습니다.
   const user = useRecoilValue(userAtom);
-  const [diaryName, setDiaryName] = useState<string>('');
-  const [userDiary, setUserDiary] = useState<Diary>({
-    title: '',
-    nickname: '',
-    content: '작성된 내용이 없습니다.',
-  });
-  const [partnerDiary, setPartnerDiary] = useState<Diary>({
-    title: '',
-    nickname: '',
-    content: '작성된 내용이 없습니다.',
-  });
+  const [userDiary, setUserDiary] = useState<Diary>();
+  const [partnerDiary, setPartnerDiary] = useState<Diary>();
+  const [year, month, day] = date.split('-');
 
-  const { data } = useQuery(["diaries", yyyymmdd], () => getDiary(yyyymmdd));
+  const { data } = useQuery(["diaries", year, month, day], () => getDiary(date));
 
   useEffect(() => {
-    console.log('useGetDiary 실행');
-    setDiaryName(data?.title!);
+    if (!data) {
+      setUserDiary(undefined);
+      setPartnerDiary(undefined);
+    }
 
     if (data?.diaries?.find((el) => el.userId === user?.id)) {
       setUserDiary({
@@ -35,6 +30,8 @@ export const useGetDiary = (yyyymmdd: string) => {
         nickname: data?.diaries?.find((el) => el.userId === user?.id)!.user.nickname,
         content: data?.diaries?.find((el) => el.userId === user?.id)!.content,
       });
+    } else {
+      setUserDiary(undefined);
     }
     
     if (data?.diaries?.find((el) => el.userId !== user?.id)) {
@@ -45,8 +42,10 @@ export const useGetDiary = (yyyymmdd: string) => {
         nickname: data?.diaries?.find((el) => el.userId !== user?.id)!.user.nickname,
         content: data?.diaries?.find((el) => el.userId !== user?.id)!.content,
       });
-    }
+    } else {
+      setPartnerDiary(undefined);
+    } 
   }, [data]);
 
-  return { diaryName, userDiary, partnerDiary };
+  return { userDiary, partnerDiary };
 }

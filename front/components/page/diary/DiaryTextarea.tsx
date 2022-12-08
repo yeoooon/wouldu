@@ -1,16 +1,18 @@
 import { Box, Container } from '@styles/layout'
 import React, { useState } from 'react'
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from 'styled-components'
-import { diarywriteState } from '../../../recoil/diary';
+import { diarywriteState, clickedDiaryDateState } from '../../../recoil/diary';
 import { postDiary } from '../../../services/api/diary';
 import { Diary } from '@type/diary';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 
 const DiaryTextarea = () => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
-
+  const queryClient = useQueryClient();
   const handleBackClick = () => setIsTextareaOpen(!isTextareaOpen);
+  const pickDay = useRecoilValue(clickedDiaryDateState);
 
   const {
     register,
@@ -19,8 +21,15 @@ const DiaryTextarea = () => {
     formState: { errors },
   } = useForm<{ content: string }>();
 
+  const updateMutation = useMutation((data : {content: string}) => postDiary(data), {
+    onSuccess: () => {
+      const [year, month, day] = pickDay.split("-");
+      queryClient.invalidateQueries(["diaries", year, month]);
+    }
+  })
+
   const handlePostSubmit: SubmitHandler<{ content: string }> = (data) => {
-    postDiary(data);
+    updateMutation.mutate(data);
     setIsTextareaOpen(!isTextareaOpen);
   }
 

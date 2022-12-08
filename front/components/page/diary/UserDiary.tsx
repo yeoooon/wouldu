@@ -16,7 +16,7 @@ const UserDiary = ({ diary }: DiaryProps) => {
 
   return (
     <>
-    {diary && diary.title !== '' ?
+    {diary?
       <DiaryBox>
         <ProfileBox>
           <UserIcon width={30} height={30} />
@@ -28,7 +28,7 @@ const UserDiary = ({ diary }: DiaryProps) => {
       </DiaryBox>
       :
       <UnwrittenDiaryBox>
-        {clickedDiaryDate === todayDate?
+        {clickedDiaryDate.substring(0, 10) === todayDate?
           <>
             <Text>
               아직 일기가 작성되지 않았습니다.<br/>
