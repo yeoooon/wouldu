@@ -48,7 +48,9 @@ export class DiaryService {
   }
 
   async findDiaryList(currentUserId: string) {
-    const friendId = await this.friendService.findFriendId(currentUserId);
+    const friend = await this.friendService.findFriend(currentUserId);
+    const friendId = friend.friendId;
+    const title = friend.title;
     if (friendId === null) {
       return {
         message: '맺은 친구가 없습니다.',
@@ -62,7 +64,6 @@ export class DiaryService {
         message: '다이어리 작성 내역이 없습니다.',
       };
     }
-    const title = await this.friendService.findTitle(friendId);
     return {
       title: title,
       diaries: diaries,
@@ -70,7 +71,9 @@ export class DiaryService {
   }
 
   async findDiaryByDate(currentUserId: string, date: string) {
-    const friendId = await this.friendService.findFriendId(currentUserId);
+    const friend = await this.friendService.findFriend(currentUserId);
+    const friendId = friend.friendId;
+    const title = friend.title;
     if (friendId === null) {
       return {
         message: '맺은 친구가 없습니다.',
@@ -83,7 +86,6 @@ export class DiaryService {
         date: date,
       },
     );
-    const title = await this.friendService.findTitle(friendId);
     return {
       title: title,
       diaries: diaries,
@@ -91,7 +93,9 @@ export class DiaryService {
   }
 
   async findDiaryByMonth(currentUserId: string, monthString: string) {
-    const friendId = await this.friendService.findFriendId(currentUserId);
+    const friend = await this.friendService.findFriend(currentUserId);
+    const friendId = friend.friendId;
+    const title = friend.title;
     if (friendId === null) {
       return {
         message: '맺은 친구가 없습니다.',
@@ -105,7 +109,6 @@ export class DiaryService {
       },
     );
 
-    const title = await this.friendService.findTitle(friendId);
     return {
       title: title,
       diaries: diaries,

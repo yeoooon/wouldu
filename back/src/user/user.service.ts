@@ -59,7 +59,7 @@ export class UserService {
   }
 
   async makeFriendCode(): Promise<string> {
-    var code = Math.random().toString(36).substring(2, 8);
+    let code = Math.random().toString(36).substring(2, 8);
     while (true) {
       const isCodeExist = await this.findOneByCode(code);
       if (isCodeExist !== undefined) break;

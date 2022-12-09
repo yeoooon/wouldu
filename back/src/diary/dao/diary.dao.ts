@@ -30,13 +30,12 @@ export class DiaryDAO {
       .getRawMany();
 
     return diaryList.map((diary) => {
-      const dt = diary.diary_date;
       return {
         id: diary.diary_id,
         friendId: diary.diary_friendId,
         userId: diary.diary_userId,
         content: diary.diary_content,
-        date: dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate(),
+        date: diary.diary_date,
         nickname: diary.user_nickname,
       };
     });

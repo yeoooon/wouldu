@@ -213,8 +213,10 @@ export class FriendService {
     };
   }
 
-  async findTitle(friendId: string) {
-    const friend = await this.friendRepository.findOne({ where: { friendId } });
+  async findTitle(fromUserId: string) {
+    const friend = await this.friendRepository.findOne({
+      where: { fromUserId },
+    });
     return friend.title;
   }
 
