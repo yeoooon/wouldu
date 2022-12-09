@@ -14,10 +14,10 @@ const MypageTab = () => {
       <p className={pageState === "mypage" ? "clicked" : ""} onClick={() => setPageState("mypage")}>
         내 정보
       </p>
-      <hr></hr>
+      {/* <hr></hr>
       <p className={pageState === "profile" ? "clicked" : ""} onClick={() => setPageState("profile")}>
         프로필 수정
-      </p>
+      </p> */}
       <hr></hr>
       <p className={pageState === "connect" ? "clicked" : ""} onClick={() => setPageState("connect")}>
         연결 관리
