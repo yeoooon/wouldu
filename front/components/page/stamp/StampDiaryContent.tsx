@@ -43,6 +43,7 @@ const DiarySummary = styled(Box)`
   height: 37%;
   display: grid;
   grid-template-columns: 12% 88%;
+  justify-content: flex-start;
   border: 1px solid ${props => props.theme.color.borderPoint};
 `;
 const Name = styled(Box)`
