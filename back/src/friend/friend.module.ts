@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
+import { Diary } from 'src/diary/entities/diary.entity';
 import { EmailService } from 'src/email/email.service';
 import { UserModule } from 'src/user/user.module';
 import { SendFriendRequestDTO } from './dto/send-friend-request.dto';
@@ -11,7 +12,7 @@ import { FriendService } from './friend.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([FriendRequest, Friend]),
+    TypeOrmModule.forFeature([FriendRequest, Friend, Diary]),
     AuthModule,
     UserModule,
   ],

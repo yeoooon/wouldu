@@ -11,16 +11,19 @@ import { DataSource, Repository } from 'typeorm';
 import { Friend } from './entities/friend.entity';
 import { FriendRequest } from './entities/friendRequest.entity';
 import * as uuid from 'uuid';
+import { Diary } from 'src/diary/entities/diary.entity';
 
 @Injectable()
 export class FriendService {
   constructor(
     private readonly userService: UserService,
+    private dataSource: DataSource,
     @InjectRepository(FriendRequest)
     private readonly friendRequestRepository: Repository<FriendRequest>,
     @InjectRepository(Friend)
     private readonly friendRepository: Repository<Friend>,
-    private dataSource: DataSource,
+    @InjectRepository(Diary)
+    private readonly diaryRepository: Repository<Diary>,
   ) {}
 
   async sendFriendRequest(currentUserId: string, code: string) {
@@ -192,23 +195,6 @@ export class FriendService {
       .andWhere(`friend.fromUserId = :myUserId`, { myUserId: userId }) // fromUserId가 내 ID인 경우
       .andWhere(`friend.status = :status`, { status: 1 }) // 친구 관계가 유지되고 있는 경우
       .getMany();
-
-    // return await this.friendRepository
-    //   .createQueryBuilder('friend')
-    //   .select('friend.id')
-    //   .addSelect('friend.friendId')
-    //   .addSelect('friend.fromUserId')
-    //   .addSelect('friend.toUserId')
-    //   .addSelect('friend.title')
-    //   .addSelect('friend.createdAt')
-    //   .addSelect('fromUser.nickname')
-    //   .leftJoin(
-    //     'friend.fromUser',
-    //     'fromUser',
-    //     'friend.fromUserId = fromUser.id',
-    //   )
-    //   .where(`friend.friendId = :friendId`, { friendId: me.friendId })
-    //   .getMany();
   }
 
   async findTitle(friendId: string) {
@@ -218,12 +204,28 @@ export class FriendService {
 
   async disconnectFriend(currentUserId: string) {
     const friendId = await this.findFriendId(currentUserId);
-    await this.friendRepository
-      .createQueryBuilder('friend')
-      .delete()
-      .where('friendId=:friendId', { friendId })
-      .execute();
-    return '연결 끊기 완료';
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await this.diaryRepository
+        .createQueryBuilder('diary')
+        .delete()
+        .where('friendId=:friendId', { friendId })
+        .execute();
+
+      await this.friendRepository
+        .createQueryBuilder('friend')
+        .delete()
+        .where('friendId=:friendId', { friendId })
+        .execute();
+      return '연결 끊기 완료';
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async updateDiaryTitle(currentUserId: string, title: string) {
