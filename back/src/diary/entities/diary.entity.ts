@@ -15,13 +15,16 @@ export class Diary {
   friendId: number;
 
   @Column()
-  authorId: string;
+  userId: string;
 
   @Column()
   content: string;
 
   @Column()
   date: string;
+
+  @Column()
+  emotion: string;
 
   @CreateDateColumn({ type: 'datetime' })
   createdAt?: Date;

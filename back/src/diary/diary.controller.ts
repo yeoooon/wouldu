@@ -20,16 +20,6 @@ import { ReadDiaryDto } from './dto/read-diary.dto';
 export class DiaryController {
   constructor(private readonly diaryService: DiaryService) {}
 
-  @Get('model')
-  @ApiOperation({
-    summary: '모델 테스트',
-    description: '아무 문장이나 query에 넣으면 슬픔 반환',
-  })
-  @UseGuards(AuthGuard('jwt'))
-  model(@Query('sentence') sentence: string) {
-    return this.diaryService.model(sentence);
-  }
-
   @Post()
   @ApiOperation({
     summary: '교환일기 작성 API',

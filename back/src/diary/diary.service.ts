@@ -15,24 +15,18 @@ export class DiaryService {
     private readonly httpService: HttpService,
   ) {}
 
-  async model(sentence: string) {
-    const emotion = await this.httpService.axiosRef.get(
-      'http://kdt-ai5-team05.elicecoding.com:3000/?sentence=' + sentence,
-    );
-
-    return emotion.data;
-  }
-
   async create(currentUserId: string, createDiaryDto: CreateDiaryDto) {
     const diary = new Diary();
     const { content } = createDiaryDto;
-    diary.friendId = await this.friendService.findFriendId(currentUserId);
-    diary.authorId = currentUserId;
-    diary.content = content;
 
     const emotion = await this.httpService.axiosRef.get(
       'http://kdt-ai5-team05.elicecoding.com:3000/?sentence=' + content,
     );
+
+    diary.friendId = await this.friendService.findFriendId(currentUserId);
+    diary.userId = currentUserId;
+    diary.content = content;
+    diary.emotion = emotion.data;
 
     const dt = new Date();
     diary.date =
@@ -43,13 +37,13 @@ export class DiaryService {
       throw new BadRequestException('오늘 일기를 이미 작성했습니다.');
     }
 
-    return this.diaryDAO.createOne(diary), emotion.data;
+    return this.diaryDAO.createOne(diary);
   }
 
   async checkDiary(currentUserId: string, date: string) {
     const diary = await this.diaryDAO.getMany({
       where: {
-        authorId: currentUserId,
+        userId: currentUserId,
         date: date,
       },
     });
