@@ -7,52 +7,51 @@ import { testEmotion, TestEmotionProps } from '@services/utils/testEmotion';
 import { sumMonthEmotion } from '@services/utils/sumMonthEmotion';
 import { CheckIcon } from '@components/icons/CheckIcon';
 import { GraphIcon } from '@components/icons/GraphIcon';
-import { useSetRecoilState } from 'recoil';
-import { isEmoAnalysisAtom } from '@recoil/stamp';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { isEmoAnalysisAtom, MonthEmotionAtom } from '@recoil/stamp';
+import { colorList } from '@services/utils/emojiList';
+
+interface Data {
+  labels: string[];
+  datasets: [{
+    label: string,
+    data: number[],
+    backgroundColor: (string | null)[],
+    borderColor: (string | null)[],
+    borderWidth: number,
+  }]
+}
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const EmotionObj = sumMonthEmotion(testEmotion);
-// console.log(EmotionObj);
-
-export const data = { 
-  labels: Object.keys(EmotionObj),
-  datasets: [
-    {
-      label: '감정',
-      data: Object.values(EmotionObj),
-      backgroundColor: [
-        'rgba(255, 172, 204, 0.5)',
-        'rgba(243, 228, 128, 0.5)',
-        'rgba(249, 136, 132, 0.5)',
-        'rgba(141, 148, 216, 0.5)',
-        'rgba(172, 211, 169, 0.5)',
-        'rgba(108, 194, 236, 0.5)',
-      ],
-      borderColor: [
-        '#FFACCC',
-        '#f3e480',
-        '#f98884',
-        '#8D94D8',
-        '#acd3a9',
-        '#6CC2EC',
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
-const options = {
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false,
-      position: "left" as const,
-    },
-  },
-};
-
 const EmotionGraph = () => {
   const setIsEmoAnalysisOpen = useSetRecoilState(isEmoAnalysisAtom);
+  const MonthEmotionData = useRecoilValue(MonthEmotionAtom);
+  const EmotionObj = sumMonthEmotion(MonthEmotionData);
+
+  const data : Data = { 
+    labels: Object.keys(EmotionObj),
+    datasets: [
+      {
+        label: '감정',
+        data: Object.values(EmotionObj),
+        backgroundColor: Object.keys(EmotionObj).map(emo => colorList(emo, 0.3)),
+        borderColor: Object.keys(EmotionObj).map(emo => colorList(emo, 1)),
+        borderWidth: 1,
+      },
+    ],
+  };
+  const options = {
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+        position: "left" as const,
+      },
+    },
+  };
+
+
   return (
     <EmotionGraphBox>
       <PieBox>
@@ -74,22 +73,18 @@ const EmotionGraphBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-color: saddlebrown; */
 `;
 const PieBox = styled.div`
   width: 70%;
   height: 90%;
   flex-direction: column;
-  /* background-color: rebeccapurple; */
 `;
 const DoughnutBox = styled.div`
   height: 22vh;
-  /* background-color: aliceblue; */
 `;
 const TextBox = styled.div`
   padding: 1em;
   width: 100%;
-  /* background-color: red; */
   display: flex;
   align-items: center;
   justify-content: flex-start;

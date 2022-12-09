@@ -1,18 +1,19 @@
-import { isEmoAnalysisAtom } from '@recoil/stamp';
+import { isEmoAnalysisAtom, MonthEmotionAtom } from '@recoil/stamp';
 import { colorList, emojiList } from '@services/utils/emojiList';
 import { sumMonthEmotion } from '@services/utils/sumMonthEmotion';
 import { testEmotion } from '@services/utils/testEmotion';
 import { Box } from '@styles/layout';
 import Link from 'next/link';
 import React, { useState } from 'react'
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css } from 'styled-components';
 
 const EmotionAnalysis = () => {
   const [selectedEmotion, setSelectedEmotion] = useState<string>('기쁨');
   const [isEmoAnalysisOpen, setIsEmoAnalysisOpen] = useRecoilState(isEmoAnalysisAtom);
-  const EmotionObj = sumMonthEmotion(testEmotion);
-  const totalDays = Object.values(testEmotion).length;
+  const MonthEmotionData = useRecoilValue(MonthEmotionAtom);
+  const EmotionObj = sumMonthEmotion(MonthEmotionData);
+  const totalDays = Object.values(MonthEmotionData).length;
 
   const handleClickDetail = (key: string) => {
     setIsEmoAnalysisOpen(true);

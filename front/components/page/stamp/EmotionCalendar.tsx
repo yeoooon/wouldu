@@ -1,12 +1,17 @@
 import { LeftarrowIcon, RightarrowIcon } from '@components/icons/ArrowIcons';
+import { MonthEmotionAtom } from '@recoil/stamp';
+import { getMonthEmotion } from '@services/api/stamp';
 import { getEmoji } from '@services/utils/getEmoji';
-import { testEmotion } from '@services/utils/testEmotion';
 import { Box } from '@styles/layout';
+import { useQuery } from '@tanstack/react-query';
+import { MonthEmotionProps } from '@type/stamp';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 
 const EmotionCalendar = () => {
+  const setMonthEmotionData = useSetRecoilState(MonthEmotionAtom); 
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const DAYS_OF_THE_WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
@@ -18,6 +23,24 @@ const EmotionCalendar = () => {
   const [month, setMonth] = useState(date.getMonth());
   const [year, setYear] = useState(date.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date));
+
+  const { data: MonthEmotion } = useQuery(
+    ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
+    () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
+    {
+      onSuccess: (value) => {
+        setMonthEmotionData(value)
+      },
+    },
+  );
+
+  const checkData = ({...data} = {}) => {
+    if(data !== undefined && data !== null) {
+      return Object.keys(data)
+    } else {
+      return [];
+    }
+  };
 
   useEffect(() => {
     setDay(date.getDate());
@@ -82,9 +105,9 @@ const EmotionCalendar = () => {
                   notInMonth={d < 1}
                 >
                   {d > 0 ? <DayText>{d}</DayText> : null}
-                  {Object.keys(testEmotion)?.includes(String(d)) ?
-                  <EmojiBox>
-                    {getEmoji({data: testEmotion, day: d})}
+                  {checkData(MonthEmotion)?.includes(String(d)) ?
+                  <EmojiBox key={d}>
+                    {getEmoji({data: MonthEmotion, day: d})}
                   </EmojiBox>
                   : null}
                 </DayTile>
