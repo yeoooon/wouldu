@@ -9,7 +9,7 @@ const Suggesttodo = () => {
     <SuggestContainer>
       <TitleBox>
         <CheckIcon />
-        <Text>오늘의 추천 활동</Text>
+        <Text>추천 활동</Text>
       </TitleBox>
       <TodoItem description="감정분석을 통한 해야할일" isCompleted={0} />
     </SuggestContainer>
