@@ -245,12 +245,11 @@ export class FriendService {
   }
 
   async updateDiaryTitle(currentUserId: string, title: string) {
-    const friendId = await this.findFriendId(currentUserId);
     await this.friendRepository
       .createQueryBuilder('friend')
       .update(Friend)
       .set({ title: title })
-      .where('friendId = :friendId', { friendId: friendId })
+      .where('fromUserId = :fromUserId', { fromUserId: currentUserId })
       .execute();
     return '다이어리 제목 수정 완료';
   }
