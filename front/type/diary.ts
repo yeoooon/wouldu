@@ -2,7 +2,7 @@ export interface Diary {
   title: string;
   id?: string;
   friendId?: string;
-  authorId?: string;
+  userId?: string;
   nickname: string;
   content: string;
   date: string;
