@@ -12,7 +12,7 @@ import { getDiaries } from "../services/api/diary";
 import { useGetFriend } from "@services/utils/useGetFriend";
 
 const Diary = () => {
-  const { isConnected } = useGetFriend();
+  const { isConnected, friend } = useGetFriend();
 
   if (isConnected) {
     return (
@@ -21,7 +21,7 @@ const Diary = () => {
           <DiarySidebar />
         </SidebarContainer>
         <DiaryContainer>
-          <DiaryMain />
+          <DiaryMain title={friend?.title} />
         </DiaryContainer>
       </DiaryWrapper>      
     );
