@@ -27,7 +27,6 @@ const DiaryMain = ({ title }: TitleProps) => {
   const dayStr = getDayString(clickedDiaryDate);
 
   const { userDiary, partnerDiary } = useGetDiary(yyyymmdd);
-  // const { friend } = useGetFriend();
 
   return (
     <MainContainer>

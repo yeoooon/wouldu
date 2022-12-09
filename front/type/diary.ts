@@ -5,6 +5,7 @@ export interface Diary {
   authorId?: string;
   nickname: string;
   content: string;
+  date: string;
 }
 
 export interface MonthDiaries {

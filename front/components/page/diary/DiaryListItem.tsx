@@ -4,21 +4,26 @@ import styled from 'styled-components';
 import DiaryListDay from './DiaryListDay';
 import { useQuery } from '@tanstack/react-query';
 import { getDiaries } from '../../../services/api/diary';
-import { MonthDiaries } from '../../../type/diary';
+import { Diary, MonthDiaries } from '../../../type/diary';
 import { formatDate } from '@services/utils/formatDate';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { clickedDiaryDateState, clickedDiaryMonthState, today } from '@recoil/diary';
 
+interface DiaryResponse {
+  title: string,
+  diaries: Array<Diary>
+}
+
 const DiaryListItem = () => {
-  const [diaryList, setDiaryList] = useState<Array<MonthDiaries> | undefined>(undefined);
+  const [diaryList, setDiaryList] = useState<Array<Diary> | undefined>(undefined);
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
   const clickedMonth = useRecoilValue(clickedDiaryMonthState);
   const [year, month] = clickedMonth.split('-');
 
   const getTodayMain = () => {
-    setClickedDiaryDate(String(formatDate(new Date())));  
+    setClickedDiaryDate(todayDate);
   }
 
   const isTodayWritten = (element: MonthDiaries) => {
