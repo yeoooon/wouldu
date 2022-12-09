@@ -40,7 +40,6 @@ const DiaryListItem = () => {
 
   useEffect(() => {
     setDiaryList(data?.diaries);
-    console.log(data?.diaries?.filter((el) => el.userId === user?.id))
   }, [data]);
 
   return (

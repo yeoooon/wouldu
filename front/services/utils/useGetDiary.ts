@@ -24,26 +24,28 @@ export const useGetDiary = (date: string) => {
     }
 
     if (data?.diaries?.find((el: any) => el.userId === user?.id)) {
+      const userDiaryInfo = data?.diaries?.find((el: any) => el.userId === user?.id);
       setUserDiary({
         title: data?.title!,
-        userId: data?.diaries?.find((el) => el.userId === user?.id)!.userId,
-        id: data?.diaries?.find((el) => el.userId === user?.id)!.id,
-        nickname: data?.diaries?.find((el) => el.userId === user?.id)!.user.nickname,
-        content: data?.diaries?.find((el) => el.userId === user?.id)!.content,
-        date: data?.diaries?.find((el) => el.useId === user?.id)?.date?.substring(0, 10),
+        userId: userDiaryInfo.userId,
+        id: userDiaryInfo.id,
+        nickname: userDiaryInfo.user.nickname,
+        content: userDiaryInfo.content,
+        date: userDiaryInfo.date?.substring(0, 10),
       });
     } else {
       setUserDiary(undefined);
     }
 
     if (data?.diaries?.find((el: any) => el.userId !== user?.id)) {
+      const partnerDiaryInfo = data?.diaries?.find((el: any) => el.userId !== user?.id);
       setPartnerDiary({
         title: data?.title!,
-        userId: data?.diaries?.find((el) => el.userId !== user?.id)!.userId,
-        id: data?.diaries?.find((el) => el.userId !== user?.id)!.id,
-        nickname: data?.diaries?.find((el) => el.userId !== user?.id)!.user.nickname,
-        content: data?.diaries?.find((el) => el.userId !== user?.id)!.content,
-        date: data?.diaries?.find((el) => el.userId !== user?.id)?.date?.substring(0, 10),
+        userId: partnerDiaryInfo.userId,
+        id: partnerDiaryInfo.id,
+        nickname: partnerDiaryInfo.user.nickname,
+        content: partnerDiaryInfo.content,
+        date: partnerDiaryInfo.date?.substring(0, 10),
       });
     } else {
       setPartnerDiary(undefined);
