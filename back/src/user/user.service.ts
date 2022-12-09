@@ -54,12 +54,12 @@ export class UserService {
     user.signupVerifyToken = signupVerifyToken;
     user.registerProgress = 0;
     user.friendCode = await this.makeFriendCode();
-    this.userRepository.save(user);
+    await this.userRepository.save(user);
     this.sendMemberJoinEmail(email, signupVerifyToken);
   }
 
   async makeFriendCode(): Promise<string> {
-    var code = Math.random().toString(36).substring(2, 8);
+    let code = Math.random().toString(36).substring(2, 8);
     while (true) {
       const isCodeExist = await this.findOneByCode(code);
       if (isCodeExist !== undefined) break;
@@ -68,8 +68,11 @@ export class UserService {
     return code;
   }
 
-  async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
-    this.emailService.sendMemberJoinVerification(email, signupVerifyToken);
+  sendMemberJoinEmail(email: string, signupVerifyToken: string) {
+    return this.emailService.sendMemberJoinVerification(
+      email,
+      signupVerifyToken,
+    );
   }
 
   async verifyEmail(signupVerifyToken: string): Promise<any> {
@@ -84,7 +87,7 @@ export class UserService {
     user.registerProgress = 1;
     await this.userRepository.save(user);
 
-    return this.authService.login(user);
+    return '이메일 인증 완료';
   }
 
   async findOneById(id: string): Promise<User | undefined> {

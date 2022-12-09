@@ -20,10 +20,7 @@ export class EmailService {
       },
     });
   }
-  async sendMemberJoinVerification(
-    emailAddress: string,
-    signupVerifyToken: string,
-  ) {
+  sendMemberJoinVerification(emailAddress: string, signupVerifyToken: string) {
     const baseUrl = `${process.env.BACKEND_HOST}:${process.env.BACKEND_PORT}`;
     const url = `${baseUrl}/user/email-verify?signupVerifyToken=${signupVerifyToken}`;
 
@@ -37,7 +34,7 @@ export class EmailService {
         </form>
         `,
     };
-    this.transporter.sendMail(mailOptions);
+    return this.transporter.sendMail(mailOptions);
   }
 
   async sendNewPassword(emailAddress: string, newPassword: string) {

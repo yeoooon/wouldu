@@ -181,7 +181,7 @@ export class FriendService {
     if (me === null) {
       throw new NotFoundException('맺은 친구가 없습니다.');
     }
-    return await this.friendRepository
+    const friend = await this.friendRepository
       .createQueryBuilder('friend')
       .select('friend.id')
       .addSelect('friend.friendId')
@@ -189,16 +189,34 @@ export class FriendService {
       .addSelect('friend.toUserId')
       .addSelect('friend.title')
       .addSelect('friend.createdAt')
-      .addSelect('toUser') // fromUser는 내 정보이고, toUser가 친구의 정보입니다. 위에서 fromUserId를 현재 사용자ID로 검색했기 때문에
+      .addSelect('fromUser.nickname') // fromUser는 내 정보이고, toUser가 친구의 정보입니다. 위에서 fromUserId를 현재 사용자ID로 검색했기 때문에
+      .addSelect('toUser.nickname') // fromUser는 내 정보이고, toUser가 친구의 정보입니다. 위에서 fromUserId를 현재 사용자ID로 검색했기 때문에
       .leftJoin('friend.toUser', 'toUser', 'friend.toUserId = toUser.id')
+      .leftJoin(
+        'friend.fromUser',
+        'fromUser',
+        'friend.fromUserId = fromUser.id',
+      )
       .where(`friend.friendId = :friendId`, { friendId: me.friendId })
       .andWhere(`friend.fromUserId = :myUserId`, { myUserId: userId }) // fromUserId가 내 ID인 경우
       .andWhere(`friend.status = :status`, { status: 1 }) // 친구 관계가 유지되고 있는 경우
-      .getMany();
+      .getRawMany();
+
+    return {
+      id: friend[0].friend_id,
+      friendId: friend[0].friend_friendId,
+      fromUserId: friend[0].friend_fromUserId,
+      fromUserNickname: friend[0].fromUser_nickname,
+      toUserId: friend[0].friend_toUserId,
+      toUserNickname: friend[0].toUser_nickname,
+      title: friend[0].friend_title,
+    };
   }
 
-  async findTitle(friendId: string) {
-    const friend = await this.friendRepository.findOne({ where: { friendId } });
+  async findTitle(fromUserId: string) {
+    const friend = await this.friendRepository.findOne({
+      where: { fromUserId },
+    });
     return friend.title;
   }
 
@@ -229,12 +247,11 @@ export class FriendService {
   }
 
   async updateDiaryTitle(currentUserId: string, title: string) {
-    const friendId = await this.findFriendId(currentUserId);
     await this.friendRepository
       .createQueryBuilder('friend')
       .update(Friend)
       .set({ title: title })
-      .where('friendId = :friendId', { friendId: friendId })
+      .where('fromUserId = :fromUserId', { fromUserId: currentUserId })
       .execute();
     return '다이어리 제목 수정 완료';
   }
