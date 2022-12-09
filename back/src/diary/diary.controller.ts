@@ -14,6 +14,7 @@ import { DiaryService } from './diary.service';
 import { CreateDiaryDto } from './dto/create-diary.dto';
 import { Request, Response } from 'express';
 import { ReadDiaryDto } from './dto/read-diary.dto';
+import { DiaryDateDto } from './dto/diary-date.dto';
 
 @Controller('diary')
 @ApiTags('교환일기 API')
@@ -71,5 +72,17 @@ export class DiaryController {
       }
       return response.status(200).send(diaryList);
     }
+  }
+
+  @Get('emotions')
+  @ApiOperation({
+    summary: '월단위 감점 API',
+    description:
+      'query로 year, month를 넣으면 해당 달의 일정이 있었던 날을 알려줌',
+  })
+  @UseGuards(AuthGuard('jwt'))
+  emotions(@Req() request: Request, @Query() plannerDateDto: DiaryDateDto) {
+    const userId = request.user['userId'];
+    return this.diaryService.collectEmotions(userId, plannerDateDto);
   }
 }

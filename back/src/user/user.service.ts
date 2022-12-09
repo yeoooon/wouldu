@@ -47,8 +47,8 @@ export class UserService {
     user.signupVerifyToken = signupVerifyToken;
     user.registerProgress = 0;
     user.friendCode = await this.makeFriendCode();
-    await this.userRepository.save(user);
-    await this.sendMemberJoinEmail(email, signupVerifyToken);
+    this.userRepository.save(user);
+    this.sendMemberJoinEmail(email, signupVerifyToken);
   }
 
   async makeFriendCode(): Promise<string> {
@@ -62,10 +62,7 @@ export class UserService {
   }
 
   async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
-    await this.emailService.sendMemberJoinVerification(
-      email,
-      signupVerifyToken,
-    );
+    this.emailService.sendMemberJoinVerification(email, signupVerifyToken);
   }
 
   async verifyEmail(signupVerifyToken: string): Promise<any> {

@@ -3,6 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { FriendService } from 'src/friend/friend.service';
 import { DiaryDAO } from './dao/diary.dao';
 import { CreateDiaryDto } from './dto/create-diary.dto';
+import { DiaryDateDto } from './dto/diary-date.dto';
 import { Diary } from './entities/diary.entity';
 
 @Injectable()
@@ -108,5 +109,9 @@ export class DiaryService {
       title: title,
       diaries: diaries,
     };
+  }
+
+  async collectEmotions(userId: string, diaryDateDto: DiaryDateDto) {
+    return this.diaryDAO.getEmotions(userId, diaryDateDto);
   }
 }

@@ -8,9 +8,12 @@ import { axiosInstance } from "./axiosInstance";
 export const userJoin = async (joinInfo: UserJoinForm) => {
   const bodyData = JSON.stringify(joinInfo);
   try {
+    console.log(11111111111);
     const { status } = await axiosInstance.post("user/register", bodyData);
+    console.log(22222222222);
     return status;
   } catch (err) {
+    console.log("여기가 문제입니다");
     console.log(err);
 
     if (axios.isAxiosError(err) && err?.response?.status === 422) {
