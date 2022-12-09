@@ -54,7 +54,7 @@ def get_results(input_ids, input_mask, segment_ids, tags_vectorizer, intents_lab
         with sess.graph.as_default():
             _, first_inferred_intent, _, _, _, _ = model.predict_slots_intent([input_ids, input_mask, segment_ids], tags_vectorizer, intents_label_encoder)
     emotion = {0:'기쁨',1:'당황',2:'분노',3:'불안',4:'상처',5:'슬픔'}
-    return emotion[first_inferred_intent[0].strip()]
+    return emotion[int(first_inferred_intent[0].strip())]
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
