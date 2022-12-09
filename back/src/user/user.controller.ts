@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,6 +16,8 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { NewPasswordDTO } from './dto/new-password.dto';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { UpdateSurveyDTO } from './dto/update-survey.dto';
+
+import { Response } from 'express';
 
 @Controller('user')
 @ApiTags('유저 API')
@@ -26,8 +29,12 @@ export class UserController {
     summary: '회원 가입 API',
     description: 'email, nickname, password를 입력하여 유저를 생성한다.',
   })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(
+    @Body() createUserDto: CreateUserDto,
+    @Res() response: Response,
+  ) {
+    await this.userService.create(createUserDto);
+    return response.status(201).send('회원가입 완료');
   }
 
   @Post('/email-verify')
