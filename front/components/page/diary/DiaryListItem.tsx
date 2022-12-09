@@ -4,21 +4,28 @@ import styled from 'styled-components';
 import DiaryListDay from './DiaryListDay';
 import { useQuery } from '@tanstack/react-query';
 import { getDiaries } from '../../../services/api/diary';
-import { MonthDiaries } from '../../../type/diary';
+import { Diary, MonthDiaries } from '../../../type/diary';
 import { formatDate } from '@services/utils/formatDate';
 
+import { userAtom } from '@recoil/user';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { clickedDiaryDateState, clickedDiaryMonthState, today } from '@recoil/diary';
 
+interface DiaryResponse {
+  title: string,
+  diaries: Array<Diary>
+}
+
 const DiaryListItem = () => {
-  const [diaryList, setDiaryList] = useState<Array<MonthDiaries> | undefined>(undefined);
+  const [diaryList, setDiaryList] = useState<Array<Diary> | undefined>(undefined);
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
+  const user = useRecoilValue(userAtom);
   const todayDate = useRecoilValue(today);
   const clickedMonth = useRecoilValue(clickedDiaryMonthState);
   const [year, month] = clickedMonth.split('-');
 
   const getTodayMain = () => {
-    setClickedDiaryDate(String(formatDate(new Date())));  
+    setClickedDiaryDate(todayDate);
   }
 
   const isTodayWritten = (element: MonthDiaries) => {
@@ -33,6 +40,7 @@ const DiaryListItem = () => {
 
   useEffect(() => {
     setDiaryList(data?.diaries);
+    console.log(data?.diaries?.filter((el) => el.userId === user?.id))
   }, [data]);
 
   return (
@@ -43,7 +51,7 @@ const DiaryListItem = () => {
         <WriteTodayDiaryBtn onClick={getTodayMain}>오늘 일기 쓰기</WriteTodayDiaryBtn>
       }
       
-      {diaryList && diaryList.length > 0? diaryList.slice(0).reverse().map(diary => (
+      {diaryList && diaryList.length > 0? diaryList?.slice(0).reverse().map(diary => (
         <ListItemBox key={diary.id} id={diary.date} onClick={handleClickDate}>
           <DiaryListDay diary={diary} />
           <Text>{diary.content.length < 15 ? diary.content : diary.content.substring(0, 15)}</Text>

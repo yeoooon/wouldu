@@ -14,7 +14,11 @@ import { Diary } from '@type/diary';
 import { useGetFriend } from "@services/utils/useGetFriend";
 import { useGetDiary } from '@services/utils/useGetDiary';
 
-const DiaryMain = () => {
+interface TitleProps {
+  title: string | undefined;
+}
+
+const DiaryMain = ({ title }: TitleProps) => {
   const isTextAreaOpen = useRecoilValue(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
 
@@ -23,12 +27,11 @@ const DiaryMain = () => {
   const dayStr = getDayString(clickedDiaryDate);
 
   const { userDiary, partnerDiary } = useGetDiary(yyyymmdd);
-  const { friend } = useGetFriend();
 
   return (
     <MainContainer>
       <TextBox>
-        <Title>{friend?.title}</Title>
+        <Title>{title}</Title>
         <Date>{year}년 {month}월 {day}일 {dayStr}요일</Date>
       </TextBox>
       {isTextAreaOpen ?

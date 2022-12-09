@@ -17,7 +17,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (isLoginState && getCookie("userToken")) {
-      console.log(isLoginState);
+      // console.log(isLoginState);
       router.push("/stamp");
     }
   }, [isLoginState]);
