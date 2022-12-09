@@ -1,35 +1,34 @@
 import styled from "styled-components";
-import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import DiaryMain from "@components/page/diary/DiaryMain";
 import DiarySidebar from "@components/page/diary/DiarySidebar";
 import NoDiaryConnect from "@components/page/diary/modal/NoDiaryConnect";
 
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";
-import { useEffect, useState } from "react";
 import { Container, Wrapper, Box } from "../styles/layout";
-import { getDiaries } from "../services/api/diary";
 import { useGetFriend } from "@services/utils/useGetFriend";
 
 const Diary = () => {
-  const { isConnected, friend } = useGetFriend();
+  const { isConnected, isLoading, friend } = useGetFriend();
 
-  if (isConnected) {
-    return (
-      <DiaryWrapper>
-        <SidebarContainer>
-          <DiarySidebar />
-        </SidebarContainer>
-        <DiaryContainer>
-          <DiaryMain title={friend?.title} />
-        </DiaryContainer>
-      </DiaryWrapper>      
-    );
-  } else {
-    return (
-      <NoDiaryConnect />
-    );
-  }
+
+  return !isLoading ? (
+    <>
+      {isConnected &&
+        <DiaryWrapper>
+          <SidebarContainer>
+            <DiarySidebar />
+          </SidebarContainer>
+          <DiaryContainer>
+            <DiaryMain title={friend?.title} />
+          </DiaryContainer>
+        </DiaryWrapper>      
+      }
+      {isConnected === false && <NoDiaryConnect></NoDiaryConnect>}
+    </>
+  ) : (
+    <div>Loading...</div>
+  );
 };
 
 export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {  
@@ -37,18 +36,6 @@ export const getServerSideProps = withGetServerSideProps(async (context: GetServ
     props: {},
   };
 });
-
-// export async function getStaticProps() {
-//   const queryClient = new QueryClient();
-
-//   await queryClient.prefetchQuery(['diaries'], getDiaries);
-  
-//   return {
-//     props: {
-//       dehydratedState: dehydrate(queryClient),
-//     },
-//   }
-// }
 
 const DiaryWrapper = styled(Wrapper)`
   display: grid;

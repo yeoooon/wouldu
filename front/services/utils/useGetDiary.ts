@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 
 import { useRecoilValue } from "recoil";
 import { userAtom } from '@recoil/user';
-import { E } from "chart.js/dist/chunks/helpers.core";
 
 export const useGetDiary = (date: string) => {
   // 일기 데이터를 찾고 싶은 날짜 ('yyyy-mm-dd' 형태) 를 인자로 받습니다.
@@ -14,7 +13,9 @@ export const useGetDiary = (date: string) => {
   const [partnerDiary, setPartnerDiary] = useState<Diary>();
   const [year, month, day] = date.split('-');
 
-  const { data } = useQuery(["diaries", year, month, day], () => getDiary(date));
+  const { data } = useQuery(["diaries", year, month, day], () => getDiary(date), {
+    refetchOnMount: false,
+  });
 
   useEffect(() => {
     if (!data) {
