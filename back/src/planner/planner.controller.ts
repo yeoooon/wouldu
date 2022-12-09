@@ -63,7 +63,7 @@ export class PlannerController {
   @ApiOperation({
     summary: '일정 유무 확인 API',
     description:
-      'query로 date를 넣으면 해당 날짜에 일정이 있었는지(1) 없었는지(0) 알려줌',
+      'query로 year, month를 넣으면 해당 달의 일정이 있었던 날을 알려줌',
   })
   @UseGuards(AuthGuard('jwt'))
   checkIfThereIsPlanOrNot(

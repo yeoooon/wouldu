@@ -5,7 +5,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateNicknameDto } from './dto/update-nickname.dto';
 import { User } from './entities/user.entity';
@@ -16,6 +16,8 @@ import { EmailService } from '../email/email.service';
 import { AuthService } from 'src/auth/auth.service';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { UpdateSurveyDTO } from './dto/update-survey.dto';
+import { Friend } from 'src/friend/entities/friend.entity';
+import { Diary } from 'src/diary/entities/diary.entity';
 
 @Injectable()
 export class UserService {
@@ -24,6 +26,11 @@ export class UserService {
     private userRepository: Repository<User>,
     private emailService: EmailService,
     private authService: AuthService,
+    @InjectRepository(Friend)
+    private friendRepository: Repository<Friend>,
+    private dataSource: DataSource,
+    @InjectRepository(Diary)
+    private diaryRepository: Repository<Diary>,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -47,8 +54,8 @@ export class UserService {
     user.signupVerifyToken = signupVerifyToken;
     user.registerProgress = 0;
     user.friendCode = await this.makeFriendCode();
-    await this.userRepository.save(user);
-    await this.sendMemberJoinEmail(email, signupVerifyToken);
+    this.userRepository.save(user);
+    this.sendMemberJoinEmail(email, signupVerifyToken);
   }
 
   async makeFriendCode(): Promise<string> {
@@ -62,10 +69,7 @@ export class UserService {
   }
 
   async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
-    await this.emailService.sendMemberJoinVerification(
-      email,
-      signupVerifyToken,
-    );
+    this.emailService.sendMemberJoinVerification(email, signupVerifyToken);
   }
 
   async verifyEmail(signupVerifyToken: string): Promise<any> {
@@ -198,8 +202,38 @@ export class UserService {
     return `설문조사 수정 완료`;
   }
 
-  async remove(id: string): Promise<void> {
-    await this.userRepository.delete(id);
+  async remove(id: string) {
+    //친구를 먼저 끊어주세요 -> 고도화
+
+    const friend = await this.friendRepository.findOne({
+      where: { fromUserId: id },
+    });
+    const friendId = friend.friendId;
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await this.diaryRepository
+        .createQueryBuilder('diary')
+        .delete()
+        .where('friendId=:friendId', { friendId })
+        .execute();
+
+      await this.friendRepository
+        .createQueryBuilder('friend')
+        .delete()
+        .where('friendId=:friendId', { friendId })
+        .execute();
+
+      await this.userRepository.delete(id);
+      return '회원 탈퇴 완료';
+    } catch (err) {
+      console.log(err);
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async newPassword(email: string) {

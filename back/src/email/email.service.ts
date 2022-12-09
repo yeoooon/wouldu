@@ -37,8 +37,7 @@ export class EmailService {
         </form>
         `,
     };
-
-    return await this.transporter.sendMail(mailOptions);
+    this.transporter.sendMail(mailOptions);
   }
 
   async sendNewPassword(emailAddress: string, newPassword: string) {
