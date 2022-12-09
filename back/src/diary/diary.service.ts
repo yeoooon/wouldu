@@ -1,3 +1,4 @@
+import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { FriendService } from 'src/friend/friend.service';
 import { DiaryDAO } from './dao/diary.dao';
@@ -21,7 +22,7 @@ export class DiaryService {
     );
 
     diary.friendId = await this.friendService.findFriendId(currentUserId);
-    diary.authorId = currentUserId;
+    diary.userId = currentUserId;
     diary.content = content;
     diary.emotion = emotion.data;
 
