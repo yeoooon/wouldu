@@ -13,7 +13,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { colors } from "@styles/common_style";
 import { isAlarmModalAtom } from "@recoil/modal";
 import { ReceiveFriend } from "@type/friend";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { User } from "@type/user";
 import { getUserInfo } from "@services/api/user";
 
@@ -59,7 +59,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
       setUser(null);
       removeCookie("userToken");
       queryClient.removeQueries({ queryKey: ["user"] });
-      await router.push("/");
+      router.push("/");
     }
   };
   return (
@@ -231,4 +231,5 @@ const RoundSlider = styled.span`
   }
 `;
 
-export default AfterNavBar;
+export default React.memo(AfterNavBar);
+// export default AfterNavBar;

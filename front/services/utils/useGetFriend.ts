@@ -9,20 +9,8 @@ export const useGetFriend = () => {
   const [friend, setFriend] = useState<FriendInfo>();
 
   const { data: friendInfo, isLoading } = useQuery<Friend[]>(["friend", "info"], () => getFriend(), {
-    // staleTime: 60 * 1000,
-    onSettled: () => {
-      console.log("onSettled");
-      // setIsLoading(false);
-    },
+    staleTime: 60 * 1000,
   });
-
-  useEffect(() => {
-    console.log("getfriend , isConnected?", isConnected);
-  }, [isConnected]);
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  // }, []);
 
   useEffect(() => {
     if (friendInfo && friendInfo.length >= 1) {

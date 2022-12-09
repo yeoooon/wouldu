@@ -41,6 +41,7 @@ const AfterConnect = ({ friend }: FriendProps) => {
 
   const day = useMemo(() => {
     if (friend) {
+      console.log("useMemo", "day", friend);
       const today = new Date();
       const targetDay = new Date(friend?.createdAt);
 
