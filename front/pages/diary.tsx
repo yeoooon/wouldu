@@ -8,6 +8,8 @@ import { GetServerSidePropsContext } from "next";
 import { Container, Wrapper, Box } from "../styles/layout";
 import { useGetFriend } from "@services/utils/useGetFriend";
 
+import Loading from "@components/Loading";
+
 const Diary = () => {
   const { isConnected, isLoading, friend } = useGetFriend();
 
@@ -27,7 +29,9 @@ const Diary = () => {
       {isConnected === false && <NoDiaryConnect></NoDiaryConnect>}
     </>
   ) : (
-    <div>Loading...</div>
+    <>
+      <Loading></Loading>
+    </>
   );
 };
 
