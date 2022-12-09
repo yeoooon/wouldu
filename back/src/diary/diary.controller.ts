@@ -50,7 +50,7 @@ export class DiaryController {
         request.user['userId'],
         date,
       );
-      if (diaryList.diaries.length === 0) {
+      if (diaryList === null || diaryList.diaries.length === 0) {
         return response.status(204).send();
       }
       return response.status(200).send(diaryList);
@@ -59,7 +59,7 @@ export class DiaryController {
         request.user['userId'],
         month,
       );
-      if (diaryList.diaries.length === 0) {
+      if (diaryList === null || diaryList.diaries.length === 0) {
         return response.status(204).send();
       }
       return response.status(200).send(diaryList);

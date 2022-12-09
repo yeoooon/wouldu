@@ -104,6 +104,7 @@ export class DiaryService {
         date: monthString + '%',
       },
     );
+
     const title = await this.friendService.findTitle(friendId);
     return {
       title: title,

@@ -14,8 +14,8 @@ export class DiaryDAO {
     return this.diaryRepository.save(diary);
   }
 
-  getMany(options: string, data: object) {
-    return this.diaryRepository
+  async getMany(options: string, data: object) {
+    const diaryList = await this.diaryRepository
       .createQueryBuilder('diary')
       .select([
         'diary.id',
@@ -27,7 +27,19 @@ export class DiaryDAO {
       ])
       .where(options, data)
       .innerJoin('diary.user', 'user')
-      .getMany();
+      .getRawMany();
+
+    return diaryList.map((diary) => {
+      const dt = diary.diary_date;
+      return {
+        id: diary.diary_id,
+        friendId: diary.diary_friendId,
+        userId: diary.diary_userId,
+        content: diary.diary_content,
+        date: dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate(),
+        nickname: diary.user_nickname,
+      };
+    });
   }
 
   getOne(options: FindOneOptions<Diary>) {
