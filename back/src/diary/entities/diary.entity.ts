@@ -26,6 +26,9 @@ export class Diary {
   @Column()
   date: string;
 
+  @Column()
+  emotion: string;
+
   @CreateDateColumn({ type: 'datetime' })
   createdAt?: Date;
 

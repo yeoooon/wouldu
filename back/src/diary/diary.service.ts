@@ -1,3 +1,4 @@
+import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { FriendService } from 'src/friend/friend.service';
 import { DiaryDAO } from './dao/diary.dao';
@@ -9,14 +10,22 @@ export class DiaryService {
   constructor(
     private readonly diaryDAO: DiaryDAO,
     private readonly friendService: FriendService,
+    private readonly httpService: HttpService,
   ) {}
 
   async create(currentUserId: string, createDiaryDto: CreateDiaryDto) {
     const diary = new Diary();
     const { content } = createDiaryDto;
+
+    const emotion = await this.httpService.axiosRef.get(
+      'http://kdt-ai5-team05.elicecoding.com:3000/?sentence=' + content,
+    );
+
     diary.friendId = await this.friendService.findFriendId(currentUserId);
     diary.userId = currentUserId;
     diary.content = content;
+    diary.emotion = emotion.data;
+
     const dt = new Date();
     diary.date =
       dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate();
