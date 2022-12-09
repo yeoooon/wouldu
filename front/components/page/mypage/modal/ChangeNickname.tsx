@@ -2,6 +2,7 @@ import { CloseIcon } from "@components/icons/CloseIcon";
 import { isChangeNicknameModalAtom } from "@recoil/modal";
 import { userAtom } from "@recoil/user";
 import { changeUserNickname } from "@services/api/user";
+import { colors } from "@styles/common_style";
 import { Box } from "@styles/layout";
 import { AgreeButton, Cancel, DenyButton, ModalContainer, ModalWrapper, Overlay, Title } from "@styles/modal_layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -70,9 +71,18 @@ const ChangeNickname = () => {
                 defaultValue={user?.nickname}
                 {...register("nickname", {
                   required: "수정할 닉네임을 입력해 주세요.",
+                  minLength: {
+                    value: 2,
+                    message: "2자 이상 입력해주세요.",
+                  },
+                  maxLength: {
+                    value: 8,
+                    message: "8자 이하 입력해주세요.",
+                  },
                 })}
               />
             </Nickname>
+            <ErrorMessage>{errors?.nickname?.message}</ErrorMessage>
           </InputArea>
           <ButtonArea>
             <AgreeButton type="submit">변경</AgreeButton>
@@ -106,6 +116,11 @@ const Email = styled(Box)`
     padding: 0.5em;
     width: 80%;
   }
+`;
+const ErrorMessage = styled.p`
+  color: ${colors.red};
+  align-self: flex-end;
+  font-size: ${props => props.theme.fontSize.textXs};
 `;
 const Nickname = styled(Email)``;
 

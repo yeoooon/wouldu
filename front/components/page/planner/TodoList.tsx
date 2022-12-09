@@ -27,7 +27,7 @@ const TodoList = () => {
     <ListContainer>
       <TitleBox>
         <CheckIcon />
-        <p>오늘의 할일</p>
+        <p>계획한 일정</p>
       </TitleBox>
       {todos?.map(todo => (
         <TodoItem
