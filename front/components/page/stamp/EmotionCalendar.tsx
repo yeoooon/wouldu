@@ -1,9 +1,10 @@
+import { LeftarrowIcon, RightarrowIcon } from '@components/icons/ArrowIcons';
+import { getEmoji } from '@services/utils/getEmoji';
+import { testEmotion } from '@services/utils/testEmotion';
 import { Box } from '@styles/layout';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import LeftArrow from '/public/icon/leftarrow.svg';
-import RightArrow from '/public/icon/rightarrow.svg';
 
 const EmotionCalendar = () => {
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -23,7 +24,6 @@ const EmotionCalendar = () => {
     setMonth(date.getMonth());
     setYear(date.getFullYear());
     setStartDay(getStartDayOfMonth(date));
-    console.log(date);
   }, [date]);
 
   function getStartDayOfMonth(date: Date) {
@@ -42,7 +42,7 @@ const EmotionCalendar = () => {
     <Frame>
       <Header>
         <Button onClick={() => setDate(new Date(year, month - 1, day))}>
-          <LeftArrow />
+          <LeftarrowIcon />
         </Button>
         <MonthBox>
           {/* <Year>
@@ -53,7 +53,7 @@ const EmotionCalendar = () => {
           </Month>
         </MonthBox>
         <Button onClick={() => setDate(new Date(year, month + 1, day))}>
-          <RightArrow />
+          <RightarrowIcon />
         </Button>
       </Header>
       <Body>
@@ -79,8 +79,14 @@ const EmotionCalendar = () => {
                   className={monthDays > 35 ? "shortHeight" : ""}
                   isToday={year === today.getFullYear() && month === today.getMonth() && d === today.getDate()}
                   isSelected={d === day}
+                  notInMonth={d < 1}
                 >
                   {d > 0 ? <DayText>{d}</DayText> : null}
+                  {Object.keys(testEmotion)?.includes(String(d)) ?
+                  <EmojiBox>
+                    {getEmoji({data: testEmotion, day: d})}
+                  </EmojiBox>
+                  : null}
                 </DayTile>
               );
             })}
@@ -163,12 +169,14 @@ const WeekTile = styled.div`
   border-radius: ${props => props.theme.borderSize.borderSm};
   cursor: pointer;
 `;
-const DayTile = styled.div<{isToday : boolean, isSelected: boolean}>`
+const DayTile = styled.div<{isToday : boolean, isSelected: boolean, notInMonth: boolean}>`
   width: 14.28%;
   height: 8.3vh;
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
+  flex-direction: column;
+  /* justify-content: flex-end;
+  align-items: flex-start; */
+  border: 1px solid ${props => props.theme.color.purpleBox};
   border-radius: ${props => props.theme.borderSize.borderSm};
   cursor: pointer;
   :hover {
@@ -197,7 +205,22 @@ const DayTile = styled.div<{isToday : boolean, isSelected: boolean}>`
         background: rgba(219, 202, 244, 0.5);
         color: ${props => props.theme.color.fontPoint};
     `}
+  ${(props) =>
+    props.notInMonth &&
+    css`
+        background: none;
+        border: none;
+        :hover {
+          background: none;
+        }
+    `}
 `;
+const EmojiBox = styled(Box)`
+  /* background-color: ${props => props.theme.color.purpleBox}; */
+  border-radius: 0;
+  font-size: ${props => props.theme.fontSize.textXl};
+`;
+
 const WeekText = styled.p`
   font-weight: 600;
 `;

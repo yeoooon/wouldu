@@ -6,24 +6,18 @@ import MypageTab from "@components/page/mypage/mypagetab";
 import MyInfo from "@components/page/mypage/myinfo";
 import EditConnection from "@components/page/mypage/EditConnection";
 import EditProfile from "@components/page/mypage/editprofile";
-import ChangePassword from "@components/page/mypage/changepassword";
-import ModalBase from "@components/page/mypage/modal/ModalBase";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";
-
-export type pageSelect = "mypage" | "profile" | "connect";
-export interface pageProps {
-  pageState: pageSelect;
-  setPageState: Dispatch<SetStateAction<pageSelect>>;
-}
+import { useRecoilState, useRecoilValue } from "recoil";
+import { mypageState } from "@recoil/mypage";
 
 const Mypage = () => {
-  const [pageState, setPageState] = useState<pageSelect>("mypage");
+  const pageState = useRecoilValue(mypageState);
 
   return (
     <MypageArea>
       <div className="tab">
-        <MypageTab pageState={pageState} setPageState={setPageState}></MypageTab>
+        <MypageTab />
       </div>
       <div className="main">
         {pageState === "mypage" && <MyInfo></MyInfo>}

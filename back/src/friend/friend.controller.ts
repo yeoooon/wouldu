@@ -7,6 +7,7 @@ import {
   Req,
   UseGuards,
   Query,
+  Delete,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FriendService } from './friend.service';
@@ -14,6 +15,7 @@ import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { SendFriendRequestDTO } from './dto/send-friend-request.dto';
 import { UpdateFriendRequestDTO } from './dto/update-friend-request.dto';
+import { UpdateTitleDTO } from './dto/update-title-request.dto';
 
 @Controller('friend')
 @ApiTags('친구 API')
@@ -56,8 +58,12 @@ export class FriendController {
       return this.friendService.findReceivedFriendRequest(
         request.user['userId'],
       );
-    if (side === 'send')
+    else if (side === 'send')
       return this.friendService.findSendedFriendRequest(request.user['userId']);
+    else
+      return {
+        message: 'side must be receive or send',
+      };
   }
 
   @Put('/request/accept')
@@ -92,5 +98,29 @@ export class FriendController {
       request.user['userId'],
       requestId,
     );
+  }
+
+  @Delete()
+  @ApiOperation({
+    summary: '친구 끊기 API',
+    description: '연결된 친구를 끊는다.',
+  })
+  @UseGuards(AuthGuard('jwt'))
+  disconnectFriend(@Req() request: Request) {
+    return this.friendService.disconnectFriend(request.user['userId']);
+  }
+
+  @Put('/title')
+  @ApiOperation({
+    summary: '다이어리 제목 수정 API',
+    description: '다이어리 제목을 수정한다.',
+  })
+  @UseGuards(AuthGuard('jwt'))
+  updateDiaryTitle(
+    @Req() request: Request,
+    @Body() updateTitleDTO: UpdateTitleDTO,
+  ) {
+    const { title } = updateTitleDTO;
+    return this.friendService.updateDiaryTitle(request.user['userId'], title);
   }
 }

@@ -1,11 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { FriendService } from 'src/friend/friend.service';
-import { HttpService } from '@nestjs/axios';
-import { Like } from 'typeorm';
 import { DiaryDAO } from './dao/diary.dao';
 import { CreateDiaryDto } from './dto/create-diary.dto';
 import { Diary } from './entities/diary.entity';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class DiaryService {
@@ -24,7 +21,7 @@ export class DiaryService {
     );
 
     diary.friendId = await this.friendService.findFriendId(currentUserId);
-    diary.userId = currentUserId;
+    diary.authorId = currentUserId;
     diary.content = content;
     diary.emotion = emotion.data;
 
@@ -41,34 +38,72 @@ export class DiaryService {
   }
 
   async checkDiary(currentUserId: string, date: string) {
-    const diary = await this.diaryDAO.getMany({
-      where: {
-        userId: currentUserId,
-        date: date,
-      },
+    const diary = await this.diaryDAO.getMany('userId=:userId and date=:date', {
+      userId: currentUserId,
+      date: date,
     });
     return diary.length !== 0;
   }
 
   async findDiaryList(currentUserId: string) {
     const friendId = await this.friendService.findFriendId(currentUserId);
-    return this.diaryDAO.getMany({ where: { friendId: friendId } });
+    if (friendId === null) {
+      return {
+        message: '맺은 친구가 없습니다.',
+      };
+    }
+    const diaries = await this.diaryDAO.getMany('diary.friendId=:friendId', {
+      friendId,
+    });
+    if (diaries.length === 0) {
+      return null;
+    }
+    const title = await this.friendService.findTitle(friendId);
+    return {
+      title: title,
+      diaries: diaries,
+    };
   }
 
   async findDiaryByDate(currentUserId: string, date: string) {
     const friendId = await this.friendService.findFriendId(currentUserId);
-    return this.diaryDAO.getMany({
-      where: { friendId: friendId, date: date },
-    });
+    if (friendId === null) {
+      return {
+        message: '맺은 친구가 없습니다.',
+      };
+    }
+    const diaries = await this.diaryDAO.getMany(
+      'diary.friendId=:friendId and date=:date',
+      {
+        friendId: friendId,
+        date: date,
+      },
+    );
+    const title = await this.friendService.findTitle(friendId);
+    return {
+      title: title,
+      diaries: diaries,
+    };
   }
 
   async findDiaryByMonth(currentUserId: string, monthString: string) {
     const friendId = await this.friendService.findFriendId(currentUserId);
-    return this.diaryDAO.getMany({
-      where: {
+    if (friendId === null) {
+      return {
+        message: '맺은 친구가 없습니다.',
+      };
+    }
+    const diaries = await this.diaryDAO.getMany(
+      'diary.friendId=:friendId and date like :date',
+      {
         friendId: friendId,
-        date: Like(monthString + '%'),
+        date: monthString + '%',
       },
-    });
+    );
+    const title = await this.friendService.findTitle(friendId);
+    return {
+      title: title,
+      diaries: diaries,
+    };
   }
 }

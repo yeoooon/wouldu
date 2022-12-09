@@ -1,11 +1,14 @@
+import { LeftarrowIcon, RightarrowIcon } from "@components/icons/ArrowIcons";
+import usePlanQuery from "@services/utils/usePlanQuery";
 import { dayAtom } from "@recoil/planner";
+import { getMonthplan } from "@services/api/planner";
 import { Box } from "@styles/layout";
+import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import styled, { css } from "styled-components";
-import LeftArrow from "/public/icon/leftarrow.svg";
-import RightArrow from "/public/icon/rightarrow.svg";
+import { DiaryCircleIcon } from "@components/icons/DiaryIcon";
 
 const Calendar = () => {
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -17,10 +20,18 @@ const Calendar = () => {
   const [pickDay, setPickDay] = useRecoilState<Date>(dayAtom);
 
   const [date, setDate] = useState<Date>(pickDay);
-  const [day, setDay] = useState(date?.getDate());
-  const [month, setMonth] = useState(date?.getMonth());
-  const [year, setYear] = useState(date?.getFullYear());
+  const [day, setDay] = useState<number>(date?.getDate());
+  const [month, setMonth] = useState<number>(date?.getMonth());
+  const [year, setYear] = useState<number>(date?.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date!));
+
+  const { data: monthData } = useQuery(
+    ["plan", year.toString(), month.toString()],
+    () => getMonthplan({ nowYear: year, nowMonth: month + 1 }),
+    {
+      staleTime: 60 * 1000,
+    },
+  );
 
   useEffect(() => {
     setDate(pickDay);
@@ -33,10 +44,6 @@ const Calendar = () => {
     setStartDay(getStartDayOfMonth(date!));
     setPickDay(date);
   }, [date]);
-
-  useEffect(() => {
-    console.log(pickDay);
-  }, [pickDay]);
 
   function getStartDayOfMonth(date: Date) {
     const startDate = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
@@ -54,17 +61,15 @@ const Calendar = () => {
     <Frame>
       <Header>
         <MonthBox>
-          {/* <Year>
-            {year}년
-          </Year> */}
+          <Year>{year}년</Year>
           <Month>{MONTHS[month]}</Month>
         </MonthBox>
         <ButtonBox>
           <Button onClick={() => setDate(new Date(year, month - 1, day))}>
-            <LeftArrow />
+            <LeftarrowIcon />
           </Button>
           <Button onClick={() => setDate(new Date(year, month + 1, day))}>
-            <RightArrow />
+            <RightarrowIcon />
           </Button>
         </ButtonBox>
       </Header>
@@ -91,6 +96,11 @@ const Calendar = () => {
                   isSelected={d === day}
                 >
                   {d > 0 ? <DayText>{d}</DayText> : ""}
+                  {monthData?.includes(d) ? (
+                    <CircleBox>
+                      <DiaryCircleIcon />
+                    </CircleBox>
+                  ) : null}
                 </DayTile>
               );
             })}
@@ -177,8 +187,9 @@ const DayTile = styled.div<{ isToday: boolean; isSelected: boolean }>`
   width: 14.28%;
   height: 13vh;
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
   border-radius: ${props => props.theme.borderSize.borderSm};
   cursor: pointer;
   :hover {
@@ -215,6 +226,13 @@ const WeekText = styled.p`
 const DayText = styled.p`
   font-weight: normal;
   margin: 0.5em;
+`;
+
+const CircleBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-right: 0.2em;
 `;
 
 export default Calendar;

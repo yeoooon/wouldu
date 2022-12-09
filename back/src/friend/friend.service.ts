@@ -7,9 +7,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Friend } from './entities/friend.entity';
 import { FriendRequest } from './entities/friendRequest.entity';
+import * as uuid from 'uuid';
 
 @Injectable()
 export class FriendService {
@@ -19,6 +20,7 @@ export class FriendService {
     private readonly friendRequestRepository: Repository<FriendRequest>,
     @InjectRepository(Friend)
     private readonly friendRepository: Repository<Friend>,
+    private dataSource: DataSource,
   ) {}
 
   async sendFriendRequest(currentUserId: string, code: string) {
@@ -64,7 +66,18 @@ export class FriendService {
     const friendRequestList = await this.friendRequestRepository.find({
       where: { toUserId: currentUserId, requestProgress: 0 },
     });
-    return friendRequestList;
+    const resFriendRequestList = [];
+    for (const request of friendRequestList) {
+      const user = await this.userService.findOneById(request.fromUserId);
+      const nickname = user.nickname;
+      resFriendRequestList.push({
+        id: request.id,
+        fromUserId: request.fromUserId,
+        fromUserNickname: nickname,
+        createdAt: request.createdAt,
+      });
+    }
+    return resFriendRequestList;
   }
 
   async findSendedFriendRequest(currentUserId: string) {
@@ -77,8 +90,18 @@ export class FriendService {
   async acceptFriendRequest(currentUserId: string, requestId: number) {
     const friendRequest = await this.friendRequestRepository.findOne({
       where: { id: requestId },
+      relations: {
+        fromUser: true,
+        toUser: true,
+      },
     });
-    if (friendRequest.toUserId !== currentUserId) {
+    if (!friendRequest) {
+      throw new BadRequestException('해당하는 요청이 없습니다.');
+    }
+
+    const { toUserId, fromUserId, fromUser, toUser } = friendRequest;
+
+    if (toUserId !== currentUserId) {
       throw new UnauthorizedException('수락할 권한이 없습니다.');
     }
     friendRequest.requestProgress = 1;
@@ -87,16 +110,45 @@ export class FriendService {
     const receivedFriendRequests = await this.findReceivedFriendRequest(
       currentUserId,
     );
-    receivedFriendRequests.forEach((request) => {
-      request.requestProgress = 3;
-      this.friendRequestRepository.save(request);
+    const statusChangedRequests = receivedFriendRequests.flatMap((request) => {
+      return {
+        ...request,
+        requestProgress: request.id === requestId ? 1 : 3,
+      };
     });
 
-    const friend = new Friend();
-    friend.fromUserId = friendRequest.fromUserId;
-    friend.toUserId = friendRequest.toUserId;
-    await this.friendRepository.save(friend);
-    return '수락 완료';
+    const friendId = uuid.v4();
+    const fromFriend = {
+      ...new Friend(),
+      friendId,
+      fromUserId,
+      toUserId,
+      title: `${fromUser.nickname} & ${toUser.nickname} 's diary`,
+      status: 1,
+    };
+
+    const toFriend = {
+      ...new Friend(),
+      friendId,
+      fromUserId: toUserId,
+      toUserId: fromUserId,
+      title: `${toUser.nickname} & ${fromUser.nickname} 's diary`,
+      status: 1,
+    };
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await this.friendRequestRepository.save(statusChangedRequests);
+      await this.friendRepository.save(fromFriend);
+      await this.friendRepository.save(toFriend);
+      return '수락 완료';
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async rejectFriendRequest(currentUserId: string, requestId: number) {
@@ -112,21 +164,76 @@ export class FriendService {
   }
 
   async findFriendId(userId: string) {
-    const from = await this.friendRepository.findOne({
+    const friend = await this.friendRepository.findOne({
       where: { fromUserId: userId },
     });
-    const to = await this.friendRepository.findOne({
-      where: { toUserId: userId },
-    });
-    const friend = from === null ? to : from;
-    return friend === null ? null : friend.id;
+    return friend === null ? null : friend.friendId;
   }
 
   async findFriend(userId: string) {
-    const friend = await this.friendRepository.findOne({
-      where: [{ fromUserId: userId }, { toUserId: userId }],
+    const me = await this.friendRepository.findOne({
+      where: { fromUserId: userId },
     });
 
-    return friend;
+    if (me === null) {
+      throw new NotFoundException('맺은 친구가 없습니다.');
+    }
+    return await this.friendRepository
+      .createQueryBuilder('friend')
+      .select('friend.id')
+      .addSelect('friend.friendId')
+      .addSelect('friend.fromUserId')
+      .addSelect('friend.toUserId')
+      .addSelect('friend.title')
+      .addSelect('friend.createdAt')
+      .addSelect('toUser') // fromUser는 내 정보이고, toUser가 친구의 정보입니다. 위에서 fromUserId를 현재 사용자ID로 검색했기 때문에
+      .leftJoin('friend.toUser', 'toUser', 'friend.toUserId = toUser.id')
+      .where(`friend.friendId = :friendId`, { friendId: me.friendId })
+      .andWhere(`friend.fromUserId = :myUserId`, { myUserId: userId }) // fromUserId가 내 ID인 경우
+      .andWhere(`friend.status = :status`, { status: 1 }) // 친구 관계가 유지되고 있는 경우
+      .getMany();
+
+    // return await this.friendRepository
+    //   .createQueryBuilder('friend')
+    //   .select('friend.id')
+    //   .addSelect('friend.friendId')
+    //   .addSelect('friend.fromUserId')
+    //   .addSelect('friend.toUserId')
+    //   .addSelect('friend.title')
+    //   .addSelect('friend.createdAt')
+    //   .addSelect('fromUser.nickname')
+    //   .leftJoin(
+    //     'friend.fromUser',
+    //     'fromUser',
+    //     'friend.fromUserId = fromUser.id',
+    //   )
+    //   .where(`friend.friendId = :friendId`, { friendId: me.friendId })
+    //   .getMany();
+  }
+
+  async findTitle(friendId: string) {
+    const friend = await this.friendRepository.findOne({ where: { friendId } });
+    return friend.title;
+  }
+
+  async disconnectFriend(currentUserId: string) {
+    const friendId = await this.findFriendId(currentUserId);
+    await this.friendRepository
+      .createQueryBuilder('friend')
+      .delete()
+      .where('friendId=:friendId', { friendId })
+      .execute();
+    return '연결 끊기 완료';
+  }
+
+  async updateDiaryTitle(currentUserId: string, title: string) {
+    const friendId = await this.findFriendId(currentUserId);
+    await this.friendRepository
+      .createQueryBuilder('friend')
+      .update(Friend)
+      .set({ title: title })
+      .where('friendId = :friendId', { friendId: friendId })
+      .execute();
+    return '다이어리 제목 수정 완료';
   }
 }

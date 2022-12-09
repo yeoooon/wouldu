@@ -1,10 +1,10 @@
 import { Box } from '@styles/layout';
-import { Diary, DiaryProps } from '@type/diary';
+import { MonthDiaryProps } from '@type/diary';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import getDayString from '../../../services/utils/getDayString';
 
-const DiaryListDay = ({ diary }: DiaryProps) => {
+const DiaryListDay = ({ diary }: MonthDiaryProps) => {
   const dayStr = getDayString(diary.date.substring(0, 10));
 
   return (

@@ -2,12 +2,12 @@ import { Box } from "@styles/layout";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import StampTodoBox from "./StampTodoBox";
-import Check from "/public/icon/check.svg";
 import Link from "next/link";
 import { Planner } from "@type/planner";
 import { formatDate } from "@services/utils/formatDate";
-import usePlanQuery from "@hooks/usePlanQuery";
+import usePlanQuery from "@services/utils/usePlanQuery";
 import StampTodoNone from "./StampTodoNone";
+import { CheckIcon } from "@components/icons/CheckIcon";
 
 const StampTodoList = () => {
   const [todos, setTodos] = useState<Planner[] | null>(null);
@@ -23,7 +23,9 @@ const StampTodoList = () => {
     <StampTodoContainer>
       <HeaderBox>
         <TitleBox>
-          <CheckSvg />
+          <CheckIconBox>
+            <CheckIcon />
+          </CheckIconBox>
           <Title>오늘의 할일</Title>
         </TitleBox>
         {todos?.length === 0 || (
@@ -67,7 +69,7 @@ const TitleBox = styled(Box)`
   font-size: ${props => props.theme.fontSize.textLg};
   font-weight: 700;
 `;
-const CheckSvg = styled(Check)`
+const CheckIconBox = styled(Box)`
   margin: 0.5em;
 `;
 const Title = styled.p``;
