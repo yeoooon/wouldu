@@ -4,7 +4,7 @@ import { Diary } from "@type/diary";
 import { useEffect, useState } from "react";
 
 import { useRecoilValue } from "recoil";
-import { userAtom } from '@recoil/user';
+import { userAtom } from "@recoil/user";
 
 export const useGetDiary = (date: string) => {
   // 일기 데이터를 찾고 싶은 날짜 ('yyyy-mm-dd' 형태) 를 인자로 받습니다.
@@ -29,7 +29,7 @@ export const useGetDiary = (date: string) => {
         title: data?.title!,
         userId: userDiaryInfo.userId,
         id: userDiaryInfo.id,
-        nickname: userDiaryInfo.user.nickname,
+        nickname: userDiaryInfo.nickname,
         content: userDiaryInfo.content,
         date: userDiaryInfo.date?.substring(0, 10),
       });
@@ -43,7 +43,7 @@ export const useGetDiary = (date: string) => {
         title: data?.title!,
         userId: partnerDiaryInfo.userId,
         id: partnerDiaryInfo.id,
-        nickname: partnerDiaryInfo.user.nickname,
+        nickname: partnerDiaryInfo.nickname,
         content: partnerDiaryInfo.content,
         date: partnerDiaryInfo.date?.substring(0, 10),
       });
