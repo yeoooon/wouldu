@@ -177,7 +177,7 @@ const ErrorMessage = styled.p`
 
 const ConnectButton = styled.button`
   width: 110px;
-  height: 30px;
+  padding: 0.5em 1em;
   margin-top: 20px;
 `;
 
