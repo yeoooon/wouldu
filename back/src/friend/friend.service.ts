@@ -210,6 +210,7 @@ export class FriendService {
       toUserId: friend[0].friend_toUserId,
       toUserNickname: friend[0].toUser_nickname,
       title: friend[0].friend_title,
+      createdAt: friend[0].friend_createdAt,
     };
   }
 
