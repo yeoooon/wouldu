@@ -16,8 +16,11 @@ import { ReceiveFriend } from "@type/friend";
 import React, { useEffect } from "react";
 import { User } from "@type/user";
 import { getUserInfo } from "@services/api/user";
-import { HomeIcon, MypageIcon, NoteIcon, NotepadIcon } from "./icons/NavIcon";
 import { RightarrowIcon } from "./icons/ArrowIcons";
+import Home from "public/icon/home.svg";
+import Mypage from "public/icon/me.svg";
+import Note from "public/icon/note.svg";
+import Notepad from "public/icon/notepad.svg";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -31,12 +34,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
   const setIsAlarmOpen = useSetRecoilState<boolean>(isAlarmModalAtom);
-  const navIcon = [
-    <HomeIcon color={darkMode ? "white" : "grey"} />,
-    <NotepadIcon color={darkMode ? "white" : "grey"} />,
-    <NoteIcon color={darkMode ? "white" : "grey"} />,
-    <MypageIcon color={darkMode ? "white" : "grey"} />,
-  ];
+  const navIcon = [<HomeIcon  />, <NotepadIcon  />, <NoteIcon  />, <MypageIcon  />];
 
   const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
   const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
@@ -136,6 +134,11 @@ const NavLink = styled(Container)`
   margin: 1.5em 1em 5em 1em;
   width: 100%;
 `;
+const HomeIcon = styled(Home)``;
+const NoteIcon = styled(Note)``;
+const NotepadIcon = styled(Notepad)``;
+const MypageIcon = styled(Mypage)``;
+
 const LinkButton = styled.div`
   width: 100%;
   height: 10vh;
@@ -146,6 +149,11 @@ const LinkButton = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  ${NoteIcon}, ${HomeIcon}, ${MypageIcon}, ${NotepadIcon} {
+    path {
+      fill: ${props => props.theme.color.fontMain};
+    }
+  }
   &.active {
     justify-content: space-between;
     background-color: rgba(219, 202, 244, 0.5);
@@ -153,13 +161,17 @@ const LinkButton = styled.div`
     width: 100%;
     a {
       color: ${props => props.theme.color.fontPoint};
-      font-size: ${props => props.theme.fontSize.textLg};
+      font-size: ${props => props.theme.fontSize.textMd};
       font-weight: bold;
+    }
+    ${NoteIcon}, ${HomeIcon}, ${MypageIcon}, ${NotepadIcon} {
+      path {
+        fill: ${props => props.theme.color.fontPoint};
+      }
     }
   }
   &:hover {
     background-color: rgba(245, 245, 245, 0.5);
-    /* font-size: ${props => props.theme.fontSize.textLg}; */
   }
 `;
 const TextBox = styled(Box)`
@@ -253,11 +265,12 @@ const RoundSlider = styled.span`
 `;
 
 const IconBox = styled(Box)`
-  margin: 0 1.8em;
+  margin: 0 1.3em 0 1.8em;
 `;
 const ArrowBox = styled.div`
   justify-self: flex-end;
   margin-right: 1em;
 `;
+
 export default React.memo(AfterNavBar);
 // export default AfterNavBar;

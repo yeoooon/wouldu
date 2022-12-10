@@ -1,4 +1,5 @@
 import { CheckIcon, PencilIcon, SmallCheckIcon } from "@components/icons/CheckIcon";
+import { HandshakeIcon } from "@components/icons/HandshakeIcon";
 import { UserIcon } from "@components/icons/UserIcon";
 import { today } from "@recoil/diary";
 import { isDisconnectModalAtom } from "@recoil/modal";
@@ -24,6 +25,7 @@ const AfterConnect = ({ friend }: FriendProps) => {
   const queryClient = useQueryClient();
   const [isDisconnectOpen, setIsDisconnectOpen] = useRecoilState(isDisconnectModalAtom);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const user = useRecoilValue(userAtom);
   const {
     register,
     handleSubmit,
@@ -90,16 +92,17 @@ const AfterConnect = ({ friend }: FriendProps) => {
           <Profile>
             <User>
               <UserIcon width={80} height={80} />
-              <p className="userName">나</p>
+              <p className="userName">{user?.nickname}</p>
             </User>
+            <HandshakeIcon/>
             <Mate>
               <UserIcon width={80} height={80} />
               <p className="mateName">{friend?.toUserNickname}</p>
             </Mate>
           </Profile>
           <Dday>
-            <p>연결한 지</p>
-            <p>{day}일</p>
+            <p><BoldText>{friend?.toUserNickname}</BoldText>와 일기를 공유한 지 <BoldText>{day}</BoldText>일</p>
+            <p>앞으로 더 많은 일기를 기록하여 서로의 감정을 공유해보아요~</p>
           </Dday>
         </div>
         <DisconnectA onClick={() => setIsDisconnectOpen(true)}>연결 끊기</DisconnectA>
@@ -112,25 +115,19 @@ const AfterConnect = ({ friend }: FriendProps) => {
 const ContentArea = styled(Container)`
   display: grid;
   position: relative;
-  /* grid-template-rows: 70% 30%; */
-
   grid-template-areas: "info";
-
   width: 100%;
   height: 70vh;
-
   padding: 1.5rem 0;
 
   .info {
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    justify-content: center;
     gap: 1.5rem;
-  }
-
-  .info {
-    align-self: center;
+    height: 80%;
+    /* background-color: palegoldenrod; */
   }
 `;
 const EditButton = styled.button`
@@ -146,40 +143,36 @@ const DiaryName = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
+  /* background-color: rebeccapurple; */
   gap: 10px;
+  p {
+    font-size: ${props => props.theme.fontSize.textLg};
+    color: ${props => props.theme.color.fontMain};
+  }
 `;
-
 const Profile = styled.div`
   display: flex;
-  flex-direction: row;
-
+  height: 25vh;
+  align-items: center;
   gap: 20px;
 `;
-
 const User = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-
+  align-items: center;;
   gap: 10px;
+  width: 120px;
+  font-weight: 600;
 `;
-const Mate = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 10px;
-`;
-
+const Mate = styled(User)``;
 const Dday = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  gap: 10px;
+  letter-spacing: 0.03em;
+  margin-top: 2vh;
+  gap: 20px;
 `;
-
 const ErrorMessage = styled.p`
   font-size: ${fontSize.textXs};
   margin-top: 5px;
@@ -190,24 +183,36 @@ const DisconnectA = styled.a`
   right: 0;
   bottom: 0;
   margin: 20px;
+  text-decoration: underline;
   background-color: ${props => props.theme.color.nav};
-  border-bottom: 1px solid ${props => props.theme.color.fontMain};
+  color: ${props => props.theme.color.fontSub};
   font-size: ${fontSize.textSm};
+  &:hover {
+    color: ${props => props.theme.color.fontMain};
+  }
 `;
-
 const Form = styled.form`
   display: flex;
   position: relative;
 `;
 const EditIcon = styled.div`
   cursor: pointer;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
 `;
-
 const Input = styled.input`
   width: 200px;
   height: 30px;
   border-radius: 6px;
   padding-right: 40px;
+`;
+const BoldText = styled.span`
+  font-size: ${props => props.theme.fontSize.textMd};
+  color: ${props => props.theme.color.fontPoint};
+  font-weight: 500;
+  margin: 0 3px;
 `;
 
 export default AfterConnect;
