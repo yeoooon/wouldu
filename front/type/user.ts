@@ -34,4 +34,11 @@ export interface NicknameForm {
 export interface SurveyForm {
   id: string;
   survey: string[];
-};
+}
+
+export interface kakaoForm {
+  grant_type: string;
+  client_id: string;
+  redirect_uri: string;
+  code: string;
+}

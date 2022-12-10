@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { isFindPasswordModalAtom } from "@recoil/modal";
 import FindPasswordForm from "@components/FindPasswordForm";
+import { kakaoInit } from "@services/utils/kakaoInit";
 
 const Login = () => {
   const router = useRouter();
@@ -33,6 +34,14 @@ const Login = () => {
         router.push("/");
       }
     } catch (err) {}
+  };
+
+  const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+  const handleClickKakao = () => {
+    const kakao = kakaoInit();
+    kakao.Auth.authorize({
+      redirectUri: REDIRECT_URI,
+    });
   };
 
   return (
@@ -69,16 +78,12 @@ const Login = () => {
         <SocialContainer>
           <p>SNS 간편로그인 </p>
           <SocialBox>
-            <Link href={"/"}>
-              <IconBox social={LOGIN.KAKAO}>
-                <Image src={"/icon/kakao_icon.svg"} width={20} height={20} alt="kakao" />
-              </IconBox>
-            </Link>
-            <Link href={"/"}>
-              <IconBox social={LOGIN.GOOGLE}>
-                <Image src={"/icon/google_icon.svg"} width={20} height={20} alt="google" />
-              </IconBox>
-            </Link>
+            <IconBox social={LOGIN.KAKAO} onClick={handleClickKakao}>
+              <Image src={"/icon/kakao_icon.svg"} width={20} height={20} alt="kakao" />
+            </IconBox>
+            <IconBox social={LOGIN.GOOGLE}>
+              <Image src={"/icon/google_icon.svg"} width={20} height={20} alt="google" />
+            </IconBox>
           </SocialBox>
         </SocialContainer>
         <EtcBox>

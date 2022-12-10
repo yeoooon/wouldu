@@ -1,19 +1,17 @@
 import { FindPasswordFormValue } from "@components/FindPasswordForm";
 import { getCookie, removeCookie, setCookie } from "@services/utils/cookies";
-import { NicknameForm, PasswordForm, SurveyForm, UserJoinForm, UserLoginForm } from "@type/user";
+import { kakaoForm, NicknameForm, PasswordForm, SurveyForm, UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";
+import qs from "qs";
 import { axiosInstance } from "./axiosInstance";
 
 //회원가입
 export const userJoin = async (joinInfo: UserJoinForm) => {
   const bodyData = JSON.stringify(joinInfo);
   try {
-    console.log(11111111111);
     const { status } = await axiosInstance.post("user/register", bodyData);
-    console.log(22222222222);
     return status;
   } catch (err) {
-    console.log("여기가 문제입니다");
     console.log(err);
 
     if (axios.isAxiosError(err) && err?.response?.status === 422) {
@@ -51,7 +49,6 @@ export const requestLogin = async (loginInfo: UserLoginForm) => {
     // }
   }
 };
-
 //회원탈퇴
 export const deleteUser = async () => {
   try {
@@ -109,4 +106,41 @@ export const ChangeSurveyCategory = async (surveyInfo: SurveyForm) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+//카카오 토큰
+export const getKakaoToken = async (code: string) => {
+  const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
+  const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+  const tokenUrl = "https://kauth.kakao.com/oauth/token";
+  try {
+    const res = await fetch(tokenUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+      },
+      body: qs.stringify({
+        grant_type: "authorization_code",
+        client_id: REST_API_KEY,
+        redirect_uri: REDIRECT_URI,
+        code,
+      }),
+    });
+    return res.json();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+//카카오 사용자 정보
+export const getUserFromKakao = async (access_token: string) => {
+  const userInfoUrl = "https://kapi.kakao.com/v2/user/me";
+
+  const response = await fetch(userInfoUrl, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${access_token}`,
+    },
+  }).then(res => res.json());
+  return response;
 };

@@ -13,6 +13,12 @@ import { loginStateSelector } from "../recoil/user";
 import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+
 export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
   const [isLightTheme, setIsLightTheme] = useState(false);
   const { pageTitle, pageDesc } = pageProps;
@@ -49,6 +55,7 @@ export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
                 <Layout darkMode={darkMode} setDarkMode={setDarkMode}>
                   <Seo pageTitle={pageTitle} pageDesc={pageDesc}></Seo>
                   <Component {...pageProps} />
+                  <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
                 </Layout>
               </Suspense>
             </ErrorBoundary>
