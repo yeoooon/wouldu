@@ -16,8 +16,8 @@ interface Data {
   datasets: [{
     label: string,
     data: number[],
-    backgroundColor: (string | null)[],
-    borderColor: (string | null)[],
+    backgroundColor: any,
+    borderColor: any,
     borderWidth: number,
   }]
 }
