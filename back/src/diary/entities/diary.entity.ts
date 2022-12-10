@@ -26,6 +26,9 @@ export class Diary {
   @Column()
   date: string;
 
+  @Column()
+  emotion: string;
+
   @CreateDateColumn({ type: 'datetime' })
   createdAt?: Date;
 
@@ -34,4 +37,7 @@ export class Diary {
 
   @ManyToOne(() => User, (user) => user.diaries)
   user: User;
+
+  @ManyToOne(() => Friend, (friend) => friend.diaries)
+  friend: Friend;
 }

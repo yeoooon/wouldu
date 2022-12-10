@@ -1,38 +1,32 @@
 import { Box } from "@styles/layout";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useQuery } from "@tanstack/react-query";
 import { today } from "@recoil/diary";
-import { getDiaries } from "@services/api/diary";
 import { useRecoilValue } from "recoil";
 import { Diary } from "@type/diary";
-import { isUserDiary, isPartnerDiary } from "@services/utils/diaryAuthor";
-import UserDiary from "../diary/UserDiary";
-import PartnerDiary from "../diary/PartnerDiary";
+import { useGetDiary } from "@services/utils/useGetDiary";
+import { useGetFriend } from "@services/utils/useGetFriend";
 
 const StampDiaryContent = () => {
-  // const [todayDiary, setTodayDiary] = useState<Array<Diary> | undefined>([]);
+  const { isConnected } = useGetFriend();
 
-  // const todayDate = useRecoilValue(today);
-  // const { data } = useQuery(["diaries", todayDate], () => getDiaries(todayDate));
-
-  // useEffect(() => {
-  //   setTodayDiary(data.diaries);
-  // }, [data]);
+  const todayDate = useRecoilValue(today);
+  
+  const { userDiary, partnerDiary } = useGetDiary(todayDate);
 
   return (
     <ContentBox>
       <DiarySummary>
         <Name>나</Name>
-        {/* <Content>
-            {todayDiary && todayDiary.length > 0? todayDiary.find(isUserDiary)!.content : <p>작성된 일기가 없어요.</p>}
-          </Content> */}
+        <Content>
+            {!isConnected? <p>먼저 친구와 연결해 보세요!</p> : (userDiary !== undefined? userDiary?.content.substring(0, 15) : "작성된 일기가 없습니다.")}
+          </Content>
       </DiarySummary>
       <PartnerDiarySummary>
         <PartnerName>상대</PartnerName>
-        {/* <Content>
-            {todayDiary && todayDiary.length > 0? todayDiary.find(isPartnerDiary)!.content : <p>작성된 일기가 없어요.</p>}
-          </Content> */}
+        <Content>
+          {!isConnected? <p>먼저 친구와 연결해 보세요!</p> : (partnerDiary !== undefined? partnerDiary?.content.substring(0, 15) : "작성된 일기가 없습니다.")}
+        </Content>
       </PartnerDiarySummary>
     </ContentBox>
   );
@@ -49,6 +43,7 @@ const DiarySummary = styled(Box)`
   height: 37%;
   display: grid;
   grid-template-columns: 12% 88%;
+  justify-content: flex-start;
   border: 1px solid ${props => props.theme.color.borderPoint};
 `;
 const Name = styled(Box)`

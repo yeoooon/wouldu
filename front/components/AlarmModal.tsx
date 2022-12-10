@@ -1,25 +1,63 @@
-import { isAlarmModalAtom } from '@recoil/modal'
-import { colors } from '@styles/common_style';
-import { Box } from '@styles/layout';
-import { Cancel, ModalContainer, ModalWrapper, Overlay } from '@styles/modal_layout';
-import React from 'react'
-import { useRecoilState } from 'recoil'
-import styled from 'styled-components';
-import { CloseIcon } from './icons/CloseIcon';
+import { isAlarmModalAtom } from "@recoil/modal";
+import { checkRequestFriend, confirmFriend, rejectFriend } from "@services/api/friend";
+import { colors } from "@styles/common_style";
+import { Box } from "@styles/layout";
+import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ReceiveFriend } from "@type/friend";
+import React, { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import styled from "styled-components";
+import { CloseIcon } from "./icons/CloseIcon";
 
 const AlarmModal = () => {
+  const queryClient = useQueryClient();
   const [isAlarmOpen, setIsAlarmOpen] = useRecoilState(isAlarmModalAtom);
-  const handleAgreeClick = () => {
-    setIsAlarmOpen(false);
-  }
-  const handleDenyClick = () => {
-    setIsAlarmOpen(false);
-  }
+  const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
+
+  useEffect(() => {
+    console.log(receiveFriends);
+  }, [receiveFriends]);
+
+  const acceptMutation = useMutation((data: ReceiveFriend) => confirmFriend(data?.id!), {
+    onSuccess: (status, value) => {
+      queryClient.invalidateQueries(["friend"]);
+      setIsAlarmOpen(false);
+      alert("친구수락이 완료되었습니다.");
+    },
+    onError: () => {
+      alert("잠시후에 다시 시도해주세요.");
+    },
+  });
+
+  const deleteMutation = useMutation((data: ReceiveFriend) => rejectFriend(data?.id!), {
+    onSuccess: (status, value) => {
+      queryClient.invalidateQueries(["friend", "list"]);
+      alert("친구거절이 완료되었습니다.");
+    },
+    onError: () => {
+      alert("잠시후에 다시 시도해주세요.");
+    },
+  });
+
+  const handleAgreeClick = async (friendInfo: ReceiveFriend) => {
+    //confirmFriend
+    const result = window.confirm("친구요청을 수락하시겠어요?");
+    if (result) {
+      acceptMutation.mutate(friendInfo);
+    }
+  };
+  const handleDenyClick = async (friendInfo: ReceiveFriend) => {
+    const result = window.confirm("친구요청을 거절하시겠어요?");
+    if (result) {
+      deleteMutation.mutate(friendInfo);
+    }
+  };
   return (
     <>
-      {isAlarmOpen &&
+      {isAlarmOpen && (
         <ModalWrapper>
-          <ModalContainer height='500px'>
+          <ModalContainer height="500px">
             <Cancel onClick={() => setIsAlarmOpen(false)}>
               <CloseIcon />
             </Cancel>
@@ -27,24 +65,27 @@ const AlarmModal = () => {
               <Title>알림</Title>
               <FriendAlarm>
                 <SubTitle>✓ 친구 요청 확인</SubTitle>
-                  {true ?
-                    <Content>
-                      <Text>(상대방)님에게 친구요청이 왔습니다.</Text>
+                {receiveFriends && receiveFriends?.length >= 1 ? (
+                  receiveFriends.map(friend => (
+                    <Content key={friend.id}>
+                      <Text>{`${friend.fromUserNickname}님에게 친구요청이 왔습니다.`}</Text>
                       <Box>
-                        <AgreeButton onClick={handleAgreeClick}>수락</AgreeButton>
-                        <DenyButton onClick={handleDenyClick}>거절</DenyButton>
+                        <AgreeButton onClick={() => handleAgreeClick(friend)}>수락</AgreeButton>
+                        <DenyButton onClick={() => handleDenyClick(friend)}>거절</DenyButton>
                       </Box>
                     </Content>
-                    :<NoFriendBox>친구요청이 없습니다.</NoFriendBox>
-                  }
+                  ))
+                ) : (
+                  <NoFriendBox>친구요청이 없습니다.</NoFriendBox>
+                )}
               </FriendAlarm>
             </ContentArea>
           </ModalContainer>
           <Overlay />
         </ModalWrapper>
-      }
+      )}
     </>
-  )
+  );
 };
 
 const ContentArea = styled(Box)`
@@ -66,7 +107,7 @@ const Title = styled.h1`
   margin: 1em 0 1.5em 0;
   font-weight: bold;
 `;
-const SubTitle =styled.p`
+const SubTitle = styled.p`
   align-self: flex-start;
   padding: 0.5em 1em 0.5em 1.5em;
   color: ${props => props.theme.color.fontPoint};

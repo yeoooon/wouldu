@@ -1,5 +1,6 @@
+import { FindPasswordFormValue } from "@components/FindPasswordForm";
 import { getCookie, removeCookie, setCookie } from "@services/utils/cookies";
-import { PasswordForm, UserJoinForm, UserLoginForm } from "@type/user";
+import { NicknameForm, PasswordForm, SurveyForm, UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 
@@ -7,12 +8,31 @@ import { axiosInstance } from "./axiosInstance";
 export const userJoin = async (joinInfo: UserJoinForm) => {
   const bodyData = JSON.stringify(joinInfo);
   try {
+    console.log(11111111111);
     const { status } = await axiosInstance.post("user/register", bodyData);
+    console.log(22222222222);
     return status;
   } catch (err) {
+    console.log("여기가 문제입니다");
     console.log(err);
 
     if (axios.isAxiosError(err) && err?.response?.status === 422) {
+      return err.response.status;
+    }
+  }
+};
+
+//회원정보
+export const getUserInfo = async (id: string) => {
+  console.log("getUserInfo", id);
+  try {
+    const { data } = await axiosInstance.get(`user/${id}`);
+    console.log(data);
+    return data;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err?.response?.status) {
+      console.log(err);
+
       return err.response.status;
     }
   }
@@ -48,8 +68,10 @@ export const deleteUser = async () => {
 
 //비밀번호 수정
 export const changePassword = async (passwordInfo: PasswordForm) => {
+  const { id, oldPassword, newPassword } = passwordInfo;
+
   try {
-    const { data } = await axiosInstance.post("user/password", passwordInfo);
+    const { data } = await axiosInstance.put(`user/${id}/password`, { oldPassword, newPassword });
     return data;
   } catch (err) {
     console.log(err);
@@ -57,9 +79,32 @@ export const changePassword = async (passwordInfo: PasswordForm) => {
 };
 
 //닉네임 수정
-export const changeNickname = async (nickname: string) => {
+export const changeUserNickname = async (nicknameInfo: NicknameForm) => {
+  const { id, nickname } = nicknameInfo;
   try {
-    const { data } = await axiosInstance.post("user/password", { nickname });
+    const { data } = await axiosInstance.put(`user/${id}/nickname`, { nickname });
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//회원비밀번호 찾기
+export const FindUserPassword = async (data: FindPasswordFormValue) => {
+  console.log(data);
+  try {
+    const { status } = await axiosInstance.post(`/user/new-password`, data);
+    return status;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//카테고리 수정
+export const ChangeSurveyCategory = async (surveyInfo: SurveyForm) => {
+  const { id, survey } = surveyInfo;
+  try {
+    const { data } = await axiosInstance.put(`user/${id}/survey`, { survey });
     return data;
   } catch (err) {
     console.log(err);

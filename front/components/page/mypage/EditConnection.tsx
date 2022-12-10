@@ -2,25 +2,24 @@ import { useEffect, useState } from "react";
 
 import BeforeConnect from "./BeforeConnect";
 import AfterConnect from "./AfterConnect";
-import { getFriend } from "@services/api/friend";
-import { useQuery } from "@tanstack/react-query";
+import { useGetFriend } from "@services/utils/useGetFriend";
+
+import Loading from "@components/Loading";
 
 const EditConnection = () => {
-  const [isConnectState, setIsConnectState] = useState<boolean>();
-
-  // 연결 정보 받아오기 필요
-  const { data } = useQuery(["friend"], () => getFriend());
-
+  const { isConnected, friendInfo, isLoading } = useGetFriend();
   useEffect(() => {
-    data?.statusCode === 404 && setIsConnectState(false);
-    data?.status === 200 && setIsConnectState(true);
-  }, [data]);
+    console.log({ isLoading });
+  }, [isLoading]);
 
-  return (
+  return !isLoading ? (
     <>
-      {/* <button onClick={() => setIsConnectState(false)}>연결 전</button>
-      <button onClick={() => setIsConnectState(true)}>연결 후</button> */}
-      {isConnectState ? <AfterConnect></AfterConnect> : <BeforeConnect></BeforeConnect>}
+      {isConnected && <AfterConnect friend={friendInfo!}></AfterConnect>}
+      {isConnected === false && <BeforeConnect></BeforeConnect>}
+    </>
+  ) : (
+    <>
+      <Loading></Loading>
     </>
   );
 };

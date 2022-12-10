@@ -10,6 +10,7 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
+import { FriendRequest } from 'src/friend/entities/friendRequest.entity';
 
 @Entity()
 export class User {
@@ -43,6 +44,9 @@ export class User {
   @Column()
   friendCode: string;
 
+  @Column()
+  survey: string;
+
   @OneToMany(() => Planner, (planner) => planner.user)
   planners: Planner[];
 
@@ -50,8 +54,11 @@ export class User {
   diaries: Diary[];
 
   @OneToMany(() => Friend, (friendFrom) => friendFrom.fromUser)
-  friendFrom: Friend;
+  friend: Friend;
 
-  @OneToMany(() => Friend, (friendTo) => friendTo.toUser)
-  friendTo: Friend;
+  @OneToMany(() => FriendRequest, (request) => request.toUser)
+  receivedFriendRequest: FriendRequest;
+
+  @OneToMany(() => FriendRequest, (request) => request.fromUser)
+  sentFriendRequest: FriendRequest;
 }

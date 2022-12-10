@@ -1,26 +1,63 @@
-import { isSurveyModalAtom } from '@recoil/modal';
-import { surveyCategories } from '@services/utils/surveyCategory';
-import { Box, Container } from '@styles/layout';
-import { ModalWrapper, Overlay } from '@styles/modal_layout';
-import React, { useState } from 'react'
-import { useSetRecoilState } from 'recoil';
-import styled from 'styled-components';
-import { CloseIcon } from './icons/CloseIcon';
+import { isSurveyModalAtom } from "@recoil/modal";
+import { userAtom } from "@recoil/user";
+import { ChangeSurveyCategory } from "@services/api/user";
+import { surveyCategories } from "@services/utils/surveyCategory";
+import { Box, Container } from "@styles/layout";
+import { ModalWrapper, Overlay } from "@styles/modal_layout";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { SurveyForm } from "@type/user";
+import React, { useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import styled from "styled-components";
+import { CloseIcon } from "./icons/CloseIcon";
 
 const SurveyModal = () => {
+  const queryClient = useQueryClient();
+  const [user, setUser] = useRecoilState(userAtom);
   const setIsSurveyModalOpen = useSetRecoilState(isSurveyModalAtom);
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const handleAddCategory = (newCategory : string) => {
-    setSelectedCategory([...selectedCategory, newCategory])
-    if (selectedCategory.includes(newCategory)) {
-      setSelectedCategory(selectedCategory.filter((category) => category !== newCategory))
+  const [selectedCategory, setSelectedCategory] = useState(user?.survey as unknown as string[]);
+
+  const handleAddCategory = (newCategory: string) => {
+    if (selectedCategory) {
+      setSelectedCategory([...selectedCategory, newCategory]);
+      if (selectedCategory.includes(newCategory)) {
+        setSelectedCategory(selectedCategory.filter(category => category !== newCategory));
+      }
+    } else {
+      setSelectedCategory([newCategory]);
     }
+  };
+
+  const changeMutation = useMutation(
+    (data: SurveyForm) => ChangeSurveyCategory({ id: data.id, survey: selectedCategory }),
+    {
+      onSuccess: (status, value) => {
+        queryClient.invalidateQueries(["user", "info"]);
+        // setUser({ ...user!, survey: value?.survey });
+      },
+      onError: () => {},
+    },
+  );
+
+  const closeModal = () => {
+    setIsSurveyModalOpen(false);
+    if (user?.isFirstLogin === 0) {
+      setUser({ ...user, isFirstLogin: 1 });
+    }
+  };
+  const handleClickCancel = () => {
+    closeModal();
+  };
+  const handleClickConfirm = () => {
+    //api호출
+    changeMutation.mutate({ id: user?.id!, survey: selectedCategory });
+    closeModal();
   };
 
   return (
     <ModalWrapper>
       <SurveyContainer>
-        <Cancel onClick={() => setIsSurveyModalOpen(false)}>
+        <Cancel onClick={handleClickCancel}>
           <CloseIcon />
         </Cancel>
         <Head>
@@ -29,22 +66,18 @@ const SurveyModal = () => {
           <Description>마이페이지에서 선호하는 카테고리를 변경할 수 있습니다.</Description>
         </Head>
         <CheckList>
-          {surveyCategories.map(category => 
-            <CategoryButton 
-              key={category.title} 
+          {surveyCategories.map(category => (
+            <CategoryButton
+              key={category.title}
               onClick={() => handleAddCategory(category.title)}
-              className={selectedCategory.includes(category.title) ? "active" : ""}
+              className={selectedCategory !== null && selectedCategory.includes(category.title) ? "active" : ""}
             >
-              <Emoji>
-                {category.emoji}
-              </Emoji>
-              <Category>
-                {category.title} 
-              </Category>
+              <Emoji>{category.emoji}</Emoji>
+              <Category>{category.title}</Category>
             </CategoryButton>
-          )}
+          ))}
         </CheckList>
-        <Button onClick={() => setIsSurveyModalOpen(false)}>선택 완료</Button>
+        <Button onClick={handleClickConfirm}>선택 완료</Button>
       </SurveyContainer>
       <Overlay />
     </ModalWrapper>
@@ -98,7 +131,7 @@ const CategoryButton = styled.button`
   letter-spacing: 0.1em;
   padding: 0.8em 1.3em;
   &:hover {
-    color:${props => props.theme.color.white};
+    color: ${props => props.theme.color.white};
   }
   &.active {
     border: 1px solid ${props => props.theme.color.fontPoint};

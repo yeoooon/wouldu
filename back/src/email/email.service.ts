@@ -20,12 +20,8 @@ export class EmailService {
       },
     });
   }
-  async sendMemberJoinVerification(
-    emailAddress: string,
-    signupVerifyToken: string,
-  ) {
+  sendMemberJoinVerification(emailAddress: string, signupVerifyToken: string) {
     const baseUrl = `${process.env.BACKEND_HOST}:${process.env.BACKEND_PORT}`;
-
     const url = `${baseUrl}/user/email-verify?signupVerifyToken=${signupVerifyToken}`;
 
     const mailOptions: EmailOptions = {
@@ -36,6 +32,19 @@ export class EmailService {
         <form action="${url}" method="POST">
             <button>확인</button>
         </form>
+        `,
+    };
+    return this.transporter.sendMail(mailOptions);
+  }
+
+  async sendNewPassword(emailAddress: string, newPassword: string) {
+    const mailOptions: EmailOptions = {
+      to: emailAddress,
+      subject: '임시 비밀번호',
+      html: `
+        임시 비밀번호<br/>
+        ${newPassword}<br/>
+        로그인 후 새 비밀번호로 바꿔주세요.
         `,
     };
 

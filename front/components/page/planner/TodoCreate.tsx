@@ -32,7 +32,7 @@ const TodoCreate = () => {
     onSuccess: () => {
       const [year, month, day] = pickDay.split("-");
       console.log(year, month);
-      queryClient.invalidateQueries(["plan", year]);
+      queryClient.invalidateQueries(["plan", year, month]);
     },
   });
   const onCreateSubmit = async (data: Planner) => {

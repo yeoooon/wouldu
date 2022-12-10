@@ -1,10 +1,17 @@
 import { LeftarrowIcon, RightarrowIcon } from '@components/icons/ArrowIcons';
+import { MonthEmotionAtom } from '@recoil/stamp';
+import { getMonthEmotion } from '@services/api/stamp';
+import { getEmoji } from '@services/utils/getEmoji';
 import { Box } from '@styles/layout';
+import { useQuery } from '@tanstack/react-query';
+import { MonthEmotionProps } from '@type/stamp';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 
 const EmotionCalendar = () => {
+  const setMonthEmotionData = useSetRecoilState(MonthEmotionAtom); 
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const DAYS_OF_THE_WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
@@ -17,12 +24,29 @@ const EmotionCalendar = () => {
   const [year, setYear] = useState(date.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date));
 
+  const { data: MonthEmotion } = useQuery(
+    ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
+    () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
+    {
+      onSuccess: (value) => {
+        setMonthEmotionData(value)
+      },
+    },
+  );
+
+  const checkData = ({...data} = {}) => {
+    if(data !== undefined && data !== null) {
+      return Object.keys(data)
+    } else {
+      return [];
+    }
+  };
+
   useEffect(() => {
     setDay(date.getDate());
     setMonth(date.getMonth());
     setYear(date.getFullYear());
     setStartDay(getStartDayOfMonth(date));
-    console.log(date);
   }, [date]);
 
   function getStartDayOfMonth(date: Date) {
@@ -78,8 +102,14 @@ const EmotionCalendar = () => {
                   className={monthDays > 35 ? "shortHeight" : ""}
                   isToday={year === today.getFullYear() && month === today.getMonth() && d === today.getDate()}
                   isSelected={d === day}
+                  notInMonth={d < 1}
                 >
                   {d > 0 ? <DayText>{d}</DayText> : null}
+                  {checkData(MonthEmotion)?.includes(String(d)) ?
+                  <EmojiBox key={d}>
+                    {getEmoji({data: MonthEmotion, day: d})}
+                  </EmojiBox>
+                  : null}
                 </DayTile>
               );
             })}
@@ -162,12 +192,14 @@ const WeekTile = styled.div`
   border-radius: ${props => props.theme.borderSize.borderSm};
   cursor: pointer;
 `;
-const DayTile = styled.div<{isToday : boolean, isSelected: boolean}>`
+const DayTile = styled.div<{isToday : boolean, isSelected: boolean, notInMonth: boolean}>`
   width: 14.28%;
   height: 8.3vh;
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
+  flex-direction: column;
+  /* justify-content: flex-end;
+  align-items: flex-start; */
+  border: 1px solid ${props => props.theme.color.purpleBox};
   border-radius: ${props => props.theme.borderSize.borderSm};
   cursor: pointer;
   :hover {
@@ -196,7 +228,22 @@ const DayTile = styled.div<{isToday : boolean, isSelected: boolean}>`
         background: rgba(219, 202, 244, 0.5);
         color: ${props => props.theme.color.fontPoint};
     `}
+  ${(props) =>
+    props.notInMonth &&
+    css`
+        background: none;
+        border: none;
+        :hover {
+          background: none;
+        }
+    `}
 `;
+const EmojiBox = styled(Box)`
+  /* background-color: ${props => props.theme.color.purpleBox}; */
+  border-radius: 0;
+  font-size: ${props => props.theme.fontSize.textXl};
+`;
+
 const WeekText = styled.p`
   font-weight: 600;
 `;

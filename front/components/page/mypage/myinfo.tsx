@@ -1,57 +1,81 @@
 import { UserIcon } from "@components/icons/UserIcon";
 import SurveyModal from "@components/SurveyModal";
-import { isSurveyModalAtom } from "@recoil/modal";
+import { isChangeNicknameModalAtom, isChangePasswordModalAtom, isDeleteUserModalAtom, isSurveyModalAtom } from "@recoil/modal";
 import { userAtom } from "@recoil/user";
 import { User } from "@type/user";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import css from "styled-jsx/css";
 import { Box, Container } from "../../../styles/layout";
-
-const TestCategoryData = ["운동", "음악", "인테리어", "패션", "사진", "친구 만나기", "드라마"];
+import ChangeNickname from "./modal/ChangeNickname";
+import ChangePassword from "./modal/ChangePassword";
+import DeleteUserConfirm from "./modal/DeleteUserConfirm";
 
 const MyInfo = () => {
   const userAtomData = useRecoilValue(userAtom);
   const [user, setUser] = useState<User | null>();
   const [isSurveyOpen, setIsSurveyOpen] = useRecoilState<boolean>(isSurveyModalAtom);
+  const [isDeleteUserOpen, setIsDeleteUserOpen] = useRecoilState(isDeleteUserModalAtom);
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useRecoilState(isChangePasswordModalAtom);
+  const [isChangeNickNameOpen, setIsChangeNicknameOpen] = useRecoilState(isChangeNicknameModalAtom);
 
   useEffect(() => {
     setUser(userAtomData);
-  }, []);
+  }, [userAtomData]);
 
   return (
     <ContentArea>
-      <InfoArea className="info">
-        <UserIcon width={100} height={100} />
-        <p className="nickname">{`${user?.nickname} 님`}</p>
-        <p className="email">{user?.email}</p>
-      </InfoArea>
-      <CategoryArea>
-        {TestCategoryData?.map((item) => (
-          <Category key={item}>{item}</Category>
-        ))}
-      </CategoryArea>
-      <Button onClick={() => setIsSurveyOpen(true)}>나의 카테고리 변경하러 가기 →</Button>
+      <UpperBox>
+        <InfoArea className="info">
+          <UserIcon width={90} height={90} />
+          <p className="nickname">{`${user?.nickname} 님`}</p>
+          <p className="email">{user?.email}</p>
+        </InfoArea>
+        <CategoryArea>
+          {user?.survey?.map((item) => (
+            <Category key={item} className={item === '' ? "empty" : ""}>{item}</Category>
+          ))}
+        </CategoryArea>
+        <Button onClick={() => setIsSurveyOpen(true)}>나의 카테고리 변경하러 가기 →</Button>
+      </UpperBox>
+      <UnderButtonBox>
+        <ButtonArea>
+          <EditNicknameButton onClick={() => setIsChangeNicknameOpen(true)}>닉네임 변경</EditNicknameButton>
+          <EditPasswordButton onClick={() => setIsChangePasswordOpen(true)}>비밀번호 변경</EditPasswordButton>
+        </ButtonArea>
+        <DeleteUserButton onClick={() => setIsDeleteUserOpen(true)}>회원 탈퇴</DeleteUserButton>
+      </UnderButtonBox>
+      {isChangeNickNameOpen && <ChangeNickname />}
+      {isChangePasswordOpen && <ChangePassword />}
+      {isDeleteUserOpen && <DeleteUserConfirm />}
       {isSurveyOpen? <SurveyModal/> : ""}
     </ContentArea>
   );
 };
 
 const ContentArea = styled(Container)`
+  position: relative;
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
   height: 70vh;
-  padding: 3rem;
+  padding: 2rem;
 `;
-
+const UpperBox = styled(Box)`
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  height: 80%;
+`;
 const InfoArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin: 8vh 0 1em 0;
+  margin-top: 7vh;
+  margin-bottom: 1em;
   gap: 15px;
   .nickname {
     font-size: ${props => props.theme.fontSize.textMain};
@@ -70,10 +94,13 @@ const Category = styled(Box)`
   font-size: ${props => props.theme.fontSize.textXs};
   border-radius: 30px;
   margin: 0.3em;
+  &.empty {
+    display: none;
+  }
 `;
 const Button = styled.button`
-  margin: 2em;
-  padding: 0.5em 1.5em;
+  margin: 1em 0 2em 0;
+  padding: 0.5em;
   font-size: ${props => props.theme.fontSize.textSm};
   background: none;
   color: ${props => props.theme.color.fontMain};
@@ -82,6 +109,45 @@ const Button = styled.button`
   &:hover {
     background: none;
     font-weight: 700;
+  }
+`;
+const UnderButtonBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: absolute;
+  bottom: 5vh;
+  /* background-color: red; */
+`;
+const ButtonArea = styled(Box)`
+`;
+const EditNicknameButton = styled.button`
+  padding: 0 1em;
+  margin-top: 1.5em;
+  border-radius: 0;
+  font-size: ${props => props.theme.fontSize.textSm};
+  background: none;
+  color: ${props => props.theme.color.fontMain};
+  cursor: pointer;
+  &:hover {
+    background: none;
+    font-weight: 700;
+  }
+`;
+const EditPasswordButton = styled(EditNicknameButton)`
+  border-left: 1px solid ${props => props.theme.color.fontMain};
+`;
+const DeleteUserButton = styled.button`
+  margin-top: 2em;
+  background: none;
+  font-size: ${props => props.theme.fontSize.textXs};
+  color: ${props => props.theme.color.fontSub};
+  text-decoration: underline;
+  cursor: pointer;
+  &:hover {
+    background: none;
+    font-weight: 700;
+    color: ${props => props.theme.color.fontMain};
   }
 `;
 

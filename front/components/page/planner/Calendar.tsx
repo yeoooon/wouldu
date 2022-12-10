@@ -8,6 +8,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import styled, { css } from "styled-components";
+import { DiaryCircleIcon } from "@components/icons/DiaryIcon";
 
 const Calendar = () => {
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -25,7 +26,7 @@ const Calendar = () => {
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date!));
 
   const { data: monthData } = useQuery(
-    ["plan", year.toString(), month.toString()],
+    ["plan", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
     () => getMonthplan({ nowYear: year, nowMonth: month + 1 }),
     {
       staleTime: 60 * 1000,
@@ -53,8 +54,20 @@ const Calendar = () => {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
-  const days = isLeapYear(year) ? DAYS_LEAP : DAYS;
-  const monthDays = days[month] + (startDay - 1);
+  const days = React.useMemo(() => (isLeapYear(year) ? DAYS_LEAP : DAYS), [year]);
+  const monthDays = React.useMemo(() => days[month] + (startDay - 1), []);
+
+  //useMemo , useCallback
+
+  // const getStartDayOfMonth = React.useCallback((date: Date) => {
+  //   const startDate = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  //   return startDate === 0 ? 7 : startDate;
+  // }, []);
+
+  const test = React.useCallback((year: number) => (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0, []);
+
+  // const days = React.useMemo(() => (isLeapYear(year) ? DAYS_LEAP : DAYS), [year]);
+  // const monthDays = React.useMemo(() => days[month] + (startDay - 1), []);
 
   return (
     <Frame>
@@ -95,7 +108,11 @@ const Calendar = () => {
                   isSelected={d === day}
                 >
                   {d > 0 ? <DayText>{d}</DayText> : ""}
-                  {monthData?.includes(d) ? <Circle>o</Circle> : null}
+                  {monthData?.includes(d) ? (
+                    <CircleBox>
+                      <DiaryCircleIcon />
+                    </CircleBox>
+                  ) : null}
                 </DayTile>
               );
             })}
@@ -223,8 +240,11 @@ const DayText = styled.p`
   margin: 0.5em;
 `;
 
-const Circle = styled.div`
-  margin-right: 0.5em;
+const CircleBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-right: 0.2em;
 `;
 
 export default Calendar;

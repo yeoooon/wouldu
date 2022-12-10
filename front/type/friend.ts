@@ -1,10 +1,32 @@
 export type requestType = "send" | "receive";
 
-export interface MatchCodeFormValue {
-  code1: string;
-  code2: string;
-  code3: string;
-  // code4: string;
-  // code5: string;
-  // code6: string;
+export type FCodeType = "code1" | "code2" | "code3" | "code4" | "code5" | "code6";
+export type MatchCodeFormValue = { [K in FCodeType]: string };
+
+export interface ReceiveFriend {
+  id: number;
+  fromUserId: string;
+  fromUserNickname: string;
+  // requestProgress?: number;
+  createdAt: Date;
+}
+
+//백엔드에서 친구 데이터 받는 형식
+export interface Friend {
+  toUserId: string;
+  toUserNickname: string;
+  title: string;
+  createdAt: Date;
+}
+
+// // 프론트에서 원하는 형태로 바꾸기 위함.
+// export interface FriendInfo {
+//   id: string;
+//   nickname: string;
+//   title: string;
+//   createdAt: Date;
+// }
+
+export interface FriendProps {
+  friend: Friend;
 }

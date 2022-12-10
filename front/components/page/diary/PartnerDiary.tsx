@@ -1,20 +1,19 @@
 import { DiaryBox, ProfileBox, UserName, DiaryContent, UnwrittenDiaryBox, Text } from "./UserDiary";
-import Image from "next/image";
 import React from "react";
-import { isPartnerDiary } from "@services/utils/diaryAuthor";
 import { UserIcon } from "@components/icons/UserIcon";
+import { DiaryProps } from "@type/diary";
 
-const PartnerDiary = ({ diaryList }: any) => {
+const PartnerDiary = ({ diary }: DiaryProps) => {
 
   return (
     <>
-      {diaryList && diaryList.find(isPartnerDiary) ? (
+      {diary? (
         <DiaryBox>
           <ProfileBox>
             <UserIcon width={30} height={30} />
-            <UserName>{diaryList.find(isPartnerDiary).user.nickname}</UserName>
+            <UserName>{diary.nickname}</UserName>
           </ProfileBox>
-          <DiaryContent>{diaryList.find(isPartnerDiary).content}</DiaryContent>
+          <DiaryContent>{diary.content}</DiaryContent>
         </DiaryBox>
       ) : (
         <UnwrittenDiaryBox>

@@ -61,8 +61,8 @@ const Join = () => {
                   message: "2자 이상 입력해주세요.",
                 },
                 maxLength: {
-                  value: 10,
-                  message: "10자 이하 입력해주세요.",
+                  value: 8,
+                  message: "8자 이하 입력해주세요.",
                 },
               })}
             />

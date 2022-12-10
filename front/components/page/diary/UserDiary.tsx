@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { diarywriteState, today, clickedDiaryDateState } from '@recoil/diary';
 import styled from 'styled-components';
-import { isUserDiary } from '@services/utils/diaryAuthor';
-import { Diary } from '@type/diary';
+import { DiaryProps } from '@type/diary';
+import { UserIcon } from "@components/icons/UserIcon";
 
-const UserDiary = ({ diaryList }) => {
+const UserDiary = ({ diary }: DiaryProps) => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
@@ -16,19 +16,19 @@ const UserDiary = ({ diaryList }) => {
 
   return (
     <>
-    {diaryList && diaryList.find(isUserDiary)? 
+    {diary?
       <DiaryBox>
         <ProfileBox>
-          <Image src="/icon/user.svg" alt="user" width={30} height={30} />
-          <UserName>{diaryList.find(isUserDiary).user.nickname}</UserName>
+          <UserIcon width={30} height={30} />
+          <UserName>{diary.nickname}</UserName>
         </ProfileBox>
         <DiaryContent>
-          {diaryList.find(isUserDiary).content}
+          {diary.content}
         </DiaryContent>
       </DiaryBox>
       :
       <UnwrittenDiaryBox>
-        {clickedDiaryDate === todayDate?
+        {clickedDiaryDate.substring(0, 10) === todayDate?
           <>
             <Text>
               아직 일기가 작성되지 않았습니다.<br/>

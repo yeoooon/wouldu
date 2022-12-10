@@ -6,7 +6,6 @@ export class LoginDTO {
    * 이메일
    * @example 'email@email.com'
    */
-  @ApiProperty()
   @IsString()
   email: string;
 
@@ -14,7 +13,6 @@ export class LoginDTO {
    * 패스워드
    * @example '12341234'
    */
-  @ApiProperty()
   @IsString()
   password: string;
 }

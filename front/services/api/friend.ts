@@ -1,12 +1,13 @@
+import { userAtom } from "@recoil/user";
 import { MatchCodeFormValue, requestType } from "@type/friend";
 import axios from "axios";
+import { useRecoilValue } from "recoil";
 import { axiosInstance } from "./axiosInstance";
-
 //친구요청 api
 export const requestFriend = async (friendCode: string) => {
-  console.log(friendCode);
+  console.log({ code: friendCode });
   try {
-    const { status } = await axiosInstance.post("friend/request", friendCode);
+    const { status } = await axiosInstance.post("friend/request", { code: friendCode });
     return status; //201 성공
   } catch (err) {
     console.log(err);
@@ -42,10 +43,10 @@ export const getFriend = async () => {
 };
 
 // 친구수락
-export const confirmFriend = async (requestId: string) => {
+export const confirmFriend = async (requestId: number) => {
   try {
     const { status } = await axiosInstance.put("friend/request/accept", { requestId });
-    return status; //201 성공
+    return status;
   } catch (err) {
     if (axios.isAxiosError(err) && err?.response?.status) {
       return err.response.status;
@@ -54,10 +55,22 @@ export const confirmFriend = async (requestId: string) => {
 };
 //친구거절
 
-export const rejectFriend = async (requestId: string) => {
+export const rejectFriend = async (requestId: number) => {
   try {
     const { status } = await axiosInstance.put("friend/request/reject", { requestId });
     return status; //201 성공
+  } catch (err) {
+    if (axios.isAxiosError(err) && err?.response?.status) {
+      return err.response.status;
+    }
+  }
+};
+
+//다이어리 제목 수정 API
+export const changeDiaryTitle = async (title: string) => {
+  try {
+    const { status } = await axiosInstance.put("friend/title", { title });
+    return status;
   } catch (err) {
     if (axios.isAxiosError(err) && err?.response?.status) {
       return err.response.status;

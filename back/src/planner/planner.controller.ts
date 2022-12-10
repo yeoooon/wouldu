@@ -22,16 +22,16 @@ import { PlannerDateDto } from './dto/planner-date.dto';
 
 @Controller('planner')
 @ApiTags('플래너 API')
+@ApiBearerAuth('access-token')
 export class PlannerController {
   constructor(private readonly plannerService: PlannerService) {}
 
-  @Post()
+  @Get()
   @ApiOperation({
     summary: '계획 생성 API',
     description: 'description, date를 입력하여 계획을 생성',
   })
   @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
   create(@Req() request: Request, @Body() createPlannerDto: CreatePlannerDto) {
     const userId = request.user['userId'];
     return this.plannerService.createPlan(userId, createPlannerDto);
@@ -44,7 +44,6 @@ export class PlannerController {
       'query에 yyyy-yy-dd 형식으로 날짜를 넣으면 해당하는 계획을 모두 불러옴',
   })
   @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
   findAll(@Req() request: Request, @Query('date') date: Date) {
     const userId = request.user['userId'];
     return this.plannerService.findAllByDate(userId, date);
@@ -56,7 +55,6 @@ export class PlannerController {
     description: 'plan의 id를 param으로 해당 일정을 불러옴',
   })
   @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
   findOne(@Param() plannerIdDto: PlannerIdDto) {
     return this.plannerService.findOne(plannerIdDto);
   }
@@ -65,10 +63,9 @@ export class PlannerController {
   @ApiOperation({
     summary: '일정 유무 확인 API',
     description:
-      'query로 date를 넣으면 해당 날짜에 일정이 있었는지(1) 없었는지(0) 알려줌',
+      'query로 year, month를 넣으면 해당 달의 일정이 있었던 날을 알려줌',
   })
   @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
   checkIfThereIsPlanOrNot(
     @Req() request: Request,
     @Query() plannerDateDto: PlannerDateDto,
@@ -84,7 +81,6 @@ export class PlannerController {
       'param으로 plan id를 받아 계획을 수정, 3가지 모두 넣을 필요 없음',
   })
   @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
   update(
     @Param() plannerIdDto: PlannerIdDto,
     @Body() updateUserDto: UpdatePlannerDto,
@@ -98,7 +94,6 @@ export class PlannerController {
     description: 'param으로 plan id를 받아 계획을 삭제',
   })
   @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
   delete(@Param() plannerIdDto: PlannerIdDto) {
     return this.plannerService.deletePlan(plannerIdDto);
   }
@@ -109,7 +104,6 @@ export class PlannerController {
     description: '계획 완료 상태를 수정해줌',
   })
   @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
   changCompletionStatus(@Param() plannerIdDto: PlannerIdDto) {
     return this.plannerService.changeCompletionStatus(plannerIdDto);
   }
@@ -120,7 +114,6 @@ export class PlannerController {
     description: 'plan id를 param으로 우선순위를 Body에 받아 우선순위 수정',
   })
   @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
   changPriority(
     @Param() plannerIdDto: PlannerIdDto,
     @Query('priority') priority: number,

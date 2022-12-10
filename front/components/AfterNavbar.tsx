@@ -4,16 +4,20 @@ import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/user";
-import { useEffect, useState } from "react";
-import { User } from "@type/user";
 import { removeCookie } from "@services/utils/cookies";
 import { LogoBlackIcon, LogoWhiteIcon } from "./icons/LogoIcon";
 import { AlarmIcon } from "./icons/AlarmIcon";
 import { UserIcon } from "./icons/UserIcon";
-import { checkRequestFriend } from "@services/api/friend";
+import { checkRequestFriend, getFriend } from "@services/api/friend";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { colors } from "@styles/common_style";
 import { isAlarmModalAtom } from "@recoil/modal";
+import { ReceiveFriend } from "@type/friend";
+import React, { useEffect } from "react";
+import { User } from "@type/user";
+import { getUserInfo } from "@services/api/user";
+import { HomeIcon, MypageIcon, NoteIcon, NotepadIcon } from "./icons/NavIcon";
+import { RightarrowIcon } from "./icons/ArrowIcons";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -24,21 +28,27 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const router = useRouter();
   const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
-
   const queryClient = useQueryClient();
+  const [user, setUser] = useRecoilState(userAtom);
+  const setIsAlarmOpen = useSetRecoilState<boolean>(isAlarmModalAtom);
+  const navIcon = [
+    <HomeIcon color={darkMode ? "white" : "grey"} />,
+    <NotepadIcon color={darkMode ? "white" : "grey"} />,
+    <NoteIcon color={darkMode ? "white" : "grey"} />,
+    <MypageIcon color={darkMode ? "white" : "grey"} />,
+  ];
 
-  const setIsAlarmOpen = useSetRecoilState(isAlarmModalAtom);
-  const [userAtomData, setUserAtomData] = useRecoilState(userAtom);
-  const [user, setUser] = useState<User | null>();
-  const { data: receiveFriends } = useQuery(["friend"], () => checkRequestFriend("receive"));
+  const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
+  const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
+
+  // useEffect(() => {
+  //   setUser(userAtomData);
+  // }, []);
 
   useEffect(() => {
-    setUser(userAtomData);
-  }, []);
-
-  useEffect(() => {
-    console.log("friend receive", receiveFriends);
-  }, [receiveFriends]);
+    console.log("afternavbar Test-----", userInfo);
+    setUser({ ...user!, ...userInfo! });
+  }, [userInfo]);
 
   const toggleTheme = () => {
     const theme = localStorage.getItem("theme");
@@ -54,10 +64,9 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
     const result = confirm("로그아웃 하시겠어요?");
     if (result) {
       setUser(null);
-      setUserAtomData(null);
       removeCookie("userToken");
       queryClient.removeQueries({ queryKey: ["user"] });
-      await router.push("/");
+      router.push("/");
     }
   };
   return (
@@ -66,15 +75,15 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
       <UserBox>
         <AlarmButton onClick={() => setIsAlarmOpen(true)}>
           <AlarmIcon width={18} height={18} />
-          {receiveFriends?.length >= 1 && (
+          {receiveFriends && receiveFriends?.length >= 1 && (
             <AlarmNumber>
               <p>{receiveFriends.length}</p>
             </AlarmNumber>
           )}
         </AlarmButton>
         <UserIcon width={60} height={60} />
-        <TextBox1>{`${user?.nickname} 님`}</TextBox1>
       </UserBox>
+      <TextBox1>{`${user?.nickname} 님`}</TextBox1>
       <DarkModeBox>
         <SwitchBox>
           <input type="checkbox" onChange={toggleTheme} />
@@ -87,7 +96,17 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
         {navMenus.map((menu, index) => (
           <Link href={navLinks[index]} key={index}>
             <LinkButton className={router.pathname === navLinks[index] ? "active" : ""}>
-              <a>{menu}</a>
+              <IconBox>{navIcon[index]}</IconBox>
+              <TextBox>
+                <a>{menu}</a>
+              </TextBox>
+              {router.pathname === navLinks[index] ? (
+                <ArrowBox>
+                  <RightarrowIcon />
+                </ArrowBox>
+              ) : (
+                ""
+              )}
             </LinkButton>
           </Link>
         ))}
@@ -125,9 +144,10 @@ const LinkButton = styled.div`
   color: ${props => props.theme.color.fontMain};
   background-color: ${props => props.theme.color.nav};
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   &.active {
+    justify-content: space-between;
     background-color: rgba(219, 202, 244, 0.5);
     border-radius: 0px 50px 50px 0px;
     width: 100%;
@@ -142,10 +162,13 @@ const LinkButton = styled.div`
     /* font-size: ${props => props.theme.fontSize.textLg}; */
   }
 `;
+const TextBox = styled(Box)`
+  width: 90px;
+`;
 const UserBox = styled(Container)`
   flex-direction: column;
   width: 35%;
-  margin: 1em 0;
+  margin: 1em 0 0.5em 0;
 `;
 const AlarmButton = styled(Box)`
   width: 100%;
@@ -164,7 +187,7 @@ const AlarmNumber = styled(Box)`
   cursor: pointer;
 `;
 const TextBox1 = styled(Box)`
-  margin-top: 20px;
+  margin-bottom: 10px;
   font-size: ${props => props.theme.fontSize.textMain};
 `;
 
@@ -229,4 +252,12 @@ const RoundSlider = styled.span`
   }
 `;
 
-export default AfterNavBar;
+const IconBox = styled(Box)`
+  margin: 0 1.8em;
+`;
+const ArrowBox = styled.div`
+  justify-self: flex-end;
+  margin-right: 1em;
+`;
+export default React.memo(AfterNavBar);
+// export default AfterNavBar;

@@ -1,12 +1,23 @@
 export interface Diary {
+  title: string;
   id?: string;
   friendId?: string;
-  authorId?: string;
-  nickname?: string;
+  userId?: string;
+  nickname: string;
   content: string;
-  date?: any;
+  date: string;
+}
+
+export interface MonthDiaries {
+  id?: string;
+  date: string;
+  content: string;
 }
 
 export interface DiaryProps {
-  diary: Diary;
+  diary: Diary | undefined;
+}
+
+export interface MonthDiaryProps {
+  diary: MonthDiaries;
 }

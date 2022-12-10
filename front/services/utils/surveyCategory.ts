@@ -1,7 +1,7 @@
 export interface Category {
   emoji: string;
   title: string;
-}
+};
 
 export const surveyCategories: Category[] = [
   {
@@ -9,7 +9,7 @@ export const surveyCategories: Category[] = [
     title: "운동"
   },
   {
-    emoji:  "🎞",
+    emoji:  "🎬",
     title: "영화"
   },
   {
@@ -73,11 +73,19 @@ export const surveyCategories: Category[] = [
     title: "인테리어"
   },
   {
+    emoji:  "🖼",
+    title: "전시회 관람"
+  },
+  {
     emoji:  "🛠",
     title: "DIY"
   },
   {
-    emoji:  "🍽",
-    title: "푸드"
+    emoji:  "🛍",
+    title: "쇼핑"
+  },
+  {
+    emoji:  "🎪",
+    title: "연극/뮤지컬"
   },
 ];

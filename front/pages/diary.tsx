@@ -1,64 +1,44 @@
 import styled from "styled-components";
-import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import DiaryMain from "@components/page/diary/DiaryMain";
 import DiarySidebar from "@components/page/diary/DiarySidebar";
-import NoDiaryConnect from "@components/page/diary/NoDiaryConnect";
+import NoDiaryConnect from "@components/page/diary/modal/NoDiaryConnect";
 
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";
-import { useEffect, useState } from "react";
 import { Container, Wrapper, Box } from "../styles/layout";
-import { getDiaries } from "../services/api/diary";
+import { useGetFriend } from "@services/utils/useGetFriend";
+
+import Loading from "@components/Loading";
 
 const Diary = () => {
-  const [connectState, setConnectState] = useState(false);
+  const { isConnected, isLoading, friendInfo } = useGetFriend();
 
-  if (connectState) {
-    return (
-      <DiaryWrapper>
-        <SidebarContainer>
-          <DiarySidebar />
-        </SidebarContainer>
-        <DiaryContainer>
-          <DiaryMain connectState={connectState} setConnectState={setConnectState} />
-        </DiaryContainer>
-      </DiaryWrapper>      
-    );
-  } else {
-    return (
-      <Wrapper>
-        <BeforeConnectContainer>
-          <NoDiaryConnect connectState={connectState} setConnectState={setConnectState} />
-        </BeforeConnectContainer>
-      </Wrapper>
-    );
-  }
+  return !isLoading ? (
+    <>
+      {isConnected && (
+        <DiaryWrapper>
+          <SidebarContainer>
+            <DiarySidebar />
+          </SidebarContainer>
+          <DiaryContainer>
+            <DiaryMain title={friendInfo?.title} />
+          </DiaryContainer>
+        </DiaryWrapper>
+      )}
+      {isConnected === false && <NoDiaryConnect></NoDiaryConnect>}
+    </>
+  ) : (
+    <>
+      <Loading></Loading>
+    </>
+  );
 };
 
-export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {  
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
     props: {},
   };
 });
-
-// export async function getStaticProps() {
-//   const queryClient = new QueryClient();
-
-//   await queryClient.prefetchQuery(['diaries'], getDiaries);
-  
-//   return {
-//     props: {
-//       dehydratedState: dehydrate(queryClient),
-//     },
-//   }
-// }
-
-const BeforeConnectContainer = styled(Container)`
-  width: 95%;
-  height: 95vh;
-  position: relative;
-  border: 1px solid ${props => props.theme.color.border};
-`
 
 const DiaryWrapper = styled(Wrapper)`
   display: grid;
