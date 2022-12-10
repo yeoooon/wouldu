@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +14,7 @@ export class AuthService {
     private jwtService: JwtService,
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private httpService: HttpService,
   ) {}
 
   async login(user: User) {
@@ -42,5 +45,31 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  async kakao(code: string) {
+    const kakao_api_url = `https://kauth.kakao.com/oauth/token
+    ?grant_type=authorization_code
+    &client_id=${process.env.KAKAO_CLIENT_ID}
+    &redirect_url=${process.env.KAKAO_REDIRECT_URL}
+    &code=${code}`;
+    console.log(kakao_api_url);
+
+    const token_res = await firstValueFrom(
+      this.httpService.post(kakao_api_url),
+    );
+    console.log(token_res);
+    const accessToken: string = token_res.data.access_token;
+    console.log(accessToken);
+    // const userInfo = await firstValueFrom(
+    //   this.httpService.get('https://kapi.kakao.com/v2/user/me', {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //   }),
+    // );
+    // console.log(userInfo);
+    // const userId: string = userInfo.data.id;
+    // console.log(userId);
   }
 }
