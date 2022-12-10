@@ -14,21 +14,19 @@ export interface ReceiveFriend {
 //백엔드에서 친구 데이터 받는 형식
 export interface Friend {
   toUserId: string;
-  toUser: {
-    nickname: string;
-  };
+  toUserNickname: string;
   title: string;
   createdAt: Date;
 }
 
-// 프론트에서 원하는 형태로 바꾸기 위함.
-export interface FriendInfo {
-  id: string;
-  nickname: string;
-  title: string;
-  createdAt: Date;
-}
+// // 프론트에서 원하는 형태로 바꾸기 위함.
+// export interface FriendInfo {
+//   id: string;
+//   nickname: string;
+//   title: string;
+//   createdAt: Date;
+// }
 
 export interface FriendProps {
-  friend: FriendInfo;
+  friend: Friend;
 }

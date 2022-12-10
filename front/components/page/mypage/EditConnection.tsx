@@ -7,14 +7,14 @@ import { useGetFriend } from "@services/utils/useGetFriend";
 import Loading from "@components/Loading";
 
 const EditConnection = () => {
-  const { isConnected, friend, isLoading } = useGetFriend();
+  const { isConnected, friendInfo, isLoading } = useGetFriend();
   useEffect(() => {
     console.log({ isLoading });
   }, [isLoading]);
 
   return !isLoading ? (
     <>
-      {isConnected && <AfterConnect friend={friend!}></AfterConnect>}
+      {isConnected && <AfterConnect friend={friendInfo!}></AfterConnect>}
       {isConnected === false && <BeforeConnect></BeforeConnect>}
     </>
   ) : (

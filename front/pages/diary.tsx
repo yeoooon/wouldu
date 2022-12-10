@@ -11,21 +11,20 @@ import { useGetFriend } from "@services/utils/useGetFriend";
 import Loading from "@components/Loading";
 
 const Diary = () => {
-  const { isConnected, isLoading, friend } = useGetFriend();
-
+  const { isConnected, isLoading, friendInfo } = useGetFriend();
 
   return !isLoading ? (
     <>
-      {isConnected &&
+      {isConnected && (
         <DiaryWrapper>
           <SidebarContainer>
             <DiarySidebar />
           </SidebarContainer>
           <DiaryContainer>
-            <DiaryMain title={friend?.title} />
+            <DiaryMain title={friendInfo?.title} />
           </DiaryContainer>
-        </DiaryWrapper>      
-      }
+        </DiaryWrapper>
+      )}
       {isConnected === false && <NoDiaryConnect></NoDiaryConnect>}
     </>
   ) : (
@@ -35,7 +34,7 @@ const Diary = () => {
   );
 };
 
-export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {  
+export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
     props: {},
   };

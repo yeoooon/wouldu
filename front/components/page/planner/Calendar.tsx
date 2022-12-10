@@ -54,8 +54,20 @@ const Calendar = () => {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
-  const days = isLeapYear(year) ? DAYS_LEAP : DAYS;
-  const monthDays = days[month] + (startDay - 1);
+  const days = React.useMemo(() => (isLeapYear(year) ? DAYS_LEAP : DAYS), [year]);
+  const monthDays = React.useMemo(() => days[month] + (startDay - 1), []);
+
+  //useMemo , useCallback
+
+  // const getStartDayOfMonth = React.useCallback((date: Date) => {
+  //   const startDate = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  //   return startDate === 0 ? 7 : startDate;
+  // }, []);
+
+  const test = React.useCallback((year: number) => (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0, []);
+
+  // const days = React.useMemo(() => (isLeapYear(year) ? DAYS_LEAP : DAYS), [year]);
+  // const monthDays = React.useMemo(() => days[month] + (startDay - 1), []);
 
   return (
     <Frame>

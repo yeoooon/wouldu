@@ -6,7 +6,7 @@ import { userAtom } from "@recoil/user";
 import { changeDiaryTitle, getFriend } from "@services/api/friend";
 import { fontSize } from "@styles/common_style";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Friend, FriendInfo, FriendProps } from "@type/friend";
+import { Friend, FriendProps } from "@type/friend";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -94,7 +94,7 @@ const AfterConnect = ({ friend }: FriendProps) => {
             </User>
             <Mate>
               <UserIcon width={80} height={80} />
-              <p className="mateName">{friend?.nickname}</p>
+              <p className="mateName">{friend?.toUserNickname}</p>
             </Mate>
           </Profile>
           <Dday>
