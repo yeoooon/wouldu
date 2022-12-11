@@ -9,16 +9,18 @@ import { formatDate } from '@services/utils/formatDate';
 const DiarySidebar = () => {
   const [clickedMonth, setClickedMonth] = useRecoilState(clickedDiaryMonthState);
 
-  var nowYearStr = clickedMonth.substring(0, 4);
-  var nowMonth = Number(clickedMonth.substring(5, 7));
+  const nowYearStr = clickedMonth.substring(0, 4);
+  const nowMonth = Number(clickedMonth.substring(5, 7));
+  let returnMonth;
+  let yearStr;
 
   const handleChangeLastMonth = () => {
     if (nowMonth === 1) {
-      var returnMonth = 12;
-      var yearStr = String(Number(nowYearStr) - 1);
+      returnMonth = 12;
+      yearStr = String(Number(nowYearStr) - 1);
     } else {
-      var returnMonth = nowMonth - 1;
-      var yearStr = nowYearStr;
+      returnMonth = nowMonth - 1;
+      yearStr = nowYearStr;
     }
     
     const returnMonthStr = yearStr + '-' + String(returnMonth);
@@ -27,11 +29,11 @@ const DiarySidebar = () => {
 
   const handleChangeNextMonth = () => {
     if (nowMonth === 12) {
-      var returnMonth = 1;
-      var yearStr = String(Number(nowYearStr) + 1);
+      returnMonth = 1;
+      yearStr = String(Number(nowYearStr) + 1);
     } else {
-      var returnMonth = nowMonth+1;
-      var yearStr = nowYearStr;
+      returnMonth = nowMonth+1;
+      yearStr = nowYearStr;
     }
     
     const returnMonthStr = yearStr + '-' + String(returnMonth);
