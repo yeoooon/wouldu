@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { FriendService } from 'src/friend/friend.service';
+import { groupBy } from 'src/util/groupBy';
 import { DiaryDAO } from './dao/diary.dao';
 import { CreateDiaryDto } from './dto/create-diary.dto';
 import { DiaryDateDto } from './dto/diary-date.dto';
@@ -111,7 +112,9 @@ export class DiaryService {
 
     return {
       title: title,
-      diaries: diaries,
+      diaries: groupBy(diaries, (item) => {
+        return item.date;
+      }),
     };
   }
 
