@@ -1,5 +1,5 @@
 import { Box, Container } from '@styles/layout';
-import React, { useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { diarywriteState, clickedDiaryDateState } from '../../../recoil/diary';
@@ -7,11 +7,6 @@ import DiaryTextarea from './DiaryTextarea';
 import PartnerDiary from './PartnerDiary';
 import UserDiary from './UserDiary';
 import getDayString from '../../../services/utils/getDayString';
-import { getDiary } from '@services/api/diary';
-import { useQuery } from '@tanstack/react-query';
-import DiaryListDay from './DiaryListDay';
-import { Diary } from '@type/diary';
-import { useGetFriend } from "@services/utils/useGetFriend";
 import { useGetDiary } from '@services/utils/useGetDiary';
 
 interface TitleProps {
@@ -22,7 +17,7 @@ const DiaryMain = ({ title }: TitleProps) => {
   const isTextAreaOpen = useRecoilValue(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
 
-  const yyyymmdd = clickedDiaryDate.substring(0, 10);
+  const yyyymmdd = useMemo(() => clickedDiaryDate?.substring(0, 10), [clickedDiaryDate]);
   const [year, month, day] = yyyymmdd.split('-');
   const dayStr = getDayString(clickedDiaryDate);
 

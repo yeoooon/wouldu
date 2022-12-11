@@ -1,20 +1,19 @@
 import { Box, Container } from '@styles/layout';
-import React, { useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import DiaryListItem from './DiaryListItem';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { clickedDiaryDateState, clickedDiaryMonthState, today } from '@recoil/diary';
-import { formatDate } from '@services/utils/formatDate';
+import { useRecoilState } from 'recoil';
+import { clickedDiaryMonthState } from '@recoil/diary';
 
 const DiarySidebar = () => {
   const [clickedMonth, setClickedMonth] = useRecoilState(clickedDiaryMonthState);
 
-  const nowYearStr = clickedMonth.substring(0, 4);
-  const nowMonth = Number(clickedMonth.substring(5, 7));
+  const nowYearStr = useMemo(() => clickedMonth.substring(0, 4), [clickedMonth]);
+  const nowMonth = useMemo(() => Number(clickedMonth.substring(5, 7)), [clickedMonth]);
   let returnMonth;
   let yearStr;
 
-  const handleChangeLastMonth = () => {
+  const handleChangeLastMonth = useCallback(() => {
     if (nowMonth === 1) {
       returnMonth = 12;
       yearStr = String(Number(nowYearStr) - 1);
@@ -25,9 +24,9 @@ const DiarySidebar = () => {
     
     const returnMonthStr = yearStr + '-' + String(returnMonth);
     setClickedMonth(returnMonthStr);
-  }
+  }, [nowYearStr, nowMonth])
 
-  const handleChangeNextMonth = () => {
+  const handleChangeNextMonth = useCallback(() => {
     if (nowMonth === 12) {
       returnMonth = 1;
       yearStr = String(Number(nowYearStr) + 1);
@@ -38,7 +37,7 @@ const DiarySidebar = () => {
     
     const returnMonthStr = yearStr + '-' + String(returnMonth);
     setClickedMonth(returnMonthStr);
-  }
+  }, [nowYearStr, nowMonth])
   
   return (
     <SidebarContainer>

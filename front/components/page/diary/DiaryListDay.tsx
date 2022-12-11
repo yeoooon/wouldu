@@ -1,6 +1,6 @@
 import { Box } from '@styles/layout';
 import { MonthDiaryProps } from '@type/diary';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import getDayString from '../../../services/utils/getDayString';
 
