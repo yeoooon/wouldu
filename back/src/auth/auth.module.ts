@@ -1,3 +1,4 @@
+import { HttpModule, HttpService } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -22,6 +23,7 @@ import { LocalStrategy } from './local.strategy';
         expiresIn: '6000s',
       },
     }),
+    HttpModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
