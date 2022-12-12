@@ -31,6 +31,7 @@ export const lightTheme: DefaultTheme = {
     fontSub: colors.gray_300,
     white: colors.white,
     fontPoint: colors.purple_700,
+    fontDark: colors.gray_700,
   },
   ...defaultTheme,
 };
@@ -50,6 +51,7 @@ export const darkTheme: DefaultTheme = {
     fontSub: colors.gray_300,
     white: colors.white,
     fontPoint: colors.purple_700,
+    fontDark: colors.white,
   },
   ...defaultTheme,
 };

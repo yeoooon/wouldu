@@ -73,7 +73,9 @@ const Textarea = styled.textarea`
   width: 100%;
   height: 100%;
   border: none;
-  padding: 15px;
+  padding: 3em;
+  line-height: 20px;
+  letter-spacing: 0.5px;
   border-radius: 10px;
   outline: none;
   background-color: ${props => props.theme.color.purpleBox};

@@ -65,7 +65,7 @@ const EmotionCalendar = () => {
     <Frame>
       <Header>
         <Button onClick={() => setDate(new Date(year, month - 1, day))}>
-          <LeftarrowIcon />
+          <LeftarrowIcon color={"#5C38FF"}/>
         </Button>
         <MonthBox>
           {/* <Year>
@@ -76,7 +76,7 @@ const EmotionCalendar = () => {
           </Month>
         </MonthBox>
         <Button onClick={() => setDate(new Date(year, month + 1, day))}>
-          <RightarrowIcon />
+          <RightarrowIcon color={"#5C38FF"}/>
         </Button>
       </Header>
       <Body>
