@@ -70,7 +70,7 @@ const SurveyModal = () => {
             <CategoryButton
               key={category.title}
               onClick={() => handleAddCategory(category.title)}
-              className={selectedCategory !== null && selectedCategory.includes(category.title) ? "active" : ""}
+              className={selectedCategory && selectedCategory?.includes(category.title) ? "active" : ""}
             >
               <Emoji>{category.emoji}</Emoji>
               <Category>{category.title}</Category>
