@@ -4,6 +4,7 @@ from vectorizers.bert_vectorizer import BERTVectorizer
 from models.joint_bert import JointBertModel
 from vectorizers.tags_vectorizer import TagsVectorizer
 from vectorizers import albert_tokenization
+from sub_model import sub_model
 
 import os
 import pickle
@@ -50,10 +51,14 @@ def listen():
     return get_results(data_input_ids, data_input_mask, data_segment_ids, tags_vectorizer, intents_label_encoder)
 
 def get_results(input_ids, input_mask, segment_ids, tags_vectorizer, intents_label_encoder):
+    emotion = {0:'기쁨',1:'당황',2:'분노',3:'불안',4:'상처',5:'슬픔'}
     with sess.as_default():
         with sess.graph.as_default():
             _, first_inferred_intent, _, _, _, _ = model.predict_slots_intent([input_ids, input_mask, segment_ids], tags_vectorizer, intents_label_encoder)
-    emotion = {0:'기쁨',1:'당황',2:'분노',3:'불안',4:'상처',5:'슬픔'}
+    if int(first_inferred_intent[0].strip()) in [3,5]:
+        intent = sub_model([input_ids, input_mask, segment_ids], tags_vectorizer, intents_label_encoder, sess)
+        return emotion[intent]
+
     return emotion[int(first_inferred_intent[0].strip())]
 
 if __name__ == "__main__":
