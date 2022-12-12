@@ -75,10 +75,10 @@ const Calendar = () => {
         </MonthBox>
         <ButtonBox>
           <Button onClick={() => setDate(new Date(year, month - 1, day))}>
-            <LeftarrowIcon />
+            <LeftarrowIcon color={"#5C38FF"}/>
           </Button>
           <Button onClick={() => setDate(new Date(year, month + 1, day))}>
-            <RightarrowIcon />
+            <RightarrowIcon color={"#5C38FF"}/>
           </Button>
         </ButtonBox>
       </Header>

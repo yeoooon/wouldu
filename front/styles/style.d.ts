@@ -16,6 +16,7 @@ declare module "styled-components" {
       fontSub: string;
       white: string;
       fontPoint: string;
+      fontDark: string;
     };
     fontSize: {
       textXl: string;

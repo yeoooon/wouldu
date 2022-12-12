@@ -21,7 +21,7 @@ const DateBox = styled(Box)`
   background-color: ${props => props.theme.color.purpleBox};
   border-radius: 0;
   flex-direction: column;
-  color: #222222;
+  color: ${props => props.theme.color.fontDark};
   margin: 0 1.3em;
 `;
 

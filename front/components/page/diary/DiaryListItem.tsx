@@ -45,12 +45,19 @@ const DiaryListItem = () => {
 }
 
 const WriteTodayDiaryBtn = styled.p`
+  background-color: ${props => props.theme.color.purpleBox};
+  width: 100%;
   font-size: ${props => props.theme.fontSize.textSm};
-  color: ${props => props.theme.color.fontSub};
-  text-decoration: underline;
+  color: ${props => props.theme.color.fontMain};
+  /* text-decoration: underline; */
   text-align: center;
-  margin-top: 10px;
+  padding: 10px;
   cursor: pointer;
+  &:hover {
+    background-color: ${props => props.theme.color.buttonHover};
+    color: ${props => props.theme.color.white};
+    font-weight: 600;
+  }
 `
 
 const ListItemBox = styled(Box)`
