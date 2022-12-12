@@ -1,7 +1,14 @@
 import { UserIcon } from "@components/icons/UserIcon";
 import SurveyModal from "@components/SurveyModal";
-import { isChangeNicknameModalAtom, isChangePasswordModalAtom, isDeleteUserModalAtom, isSurveyModalAtom } from "@recoil/modal";
+import {
+  isChangeNicknameModalAtom,
+  isChangePasswordModalAtom,
+  isDeleteUserModalAtom,
+  isSurveyModalAtom,
+} from "@recoil/modal";
 import { userAtom } from "@recoil/user";
+import { getUserInfo } from "@services/api/user";
+import { useQuery } from "@tanstack/react-query";
 import { User } from "@type/user";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -14,15 +21,17 @@ import DeleteUserConfirm from "./modal/DeleteUserConfirm";
 
 const MyInfo = () => {
   const userAtomData = useRecoilValue(userAtom);
-  const [user, setUser] = useState<User | null>();
+  // const [user, setUser] = useState<User | null>();
   const [isSurveyOpen, setIsSurveyOpen] = useRecoilState<boolean>(isSurveyModalAtom);
   const [isDeleteUserOpen, setIsDeleteUserOpen] = useRecoilState(isDeleteUserModalAtom);
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useRecoilState(isChangePasswordModalAtom);
   const [isChangeNickNameOpen, setIsChangeNicknameOpen] = useRecoilState(isChangeNicknameModalAtom);
 
+  const { data: user } = useQuery<User>(["user", "info"], () => getUserInfo(userAtomData?.id!));
+
   useEffect(() => {
-    setUser(userAtomData);
-  }, [userAtomData]);
+    console.log("mypage user", user);
+  }, [user]);
 
   return (
     <ContentArea>
@@ -33,8 +42,10 @@ const MyInfo = () => {
           <p className="email">{user?.email}</p>
         </InfoArea>
         <CategoryArea>
-          {user?.survey?.map((item) => (
-            <Category key={item} className={item === '' ? "empty" : ""}>{item}</Category>
+          {user?.survey?.map(item => (
+            <Category key={item} className={item === "" ? "empty" : ""}>
+              {item}
+            </Category>
           ))}
         </CategoryArea>
         <Button onClick={() => setIsSurveyOpen(true)}>나의 카테고리 변경하러 가기 →</Button>
@@ -49,7 +60,7 @@ const MyInfo = () => {
       {isChangeNickNameOpen && <ChangeNickname />}
       {isChangePasswordOpen && <ChangePassword />}
       {isDeleteUserOpen && <DeleteUserConfirm />}
-      {isSurveyOpen? <SurveyModal/> : ""}
+      {isSurveyOpen ? <SurveyModal /> : ""}
     </ContentArea>
   );
 };
@@ -119,8 +130,7 @@ const UnderButtonBox = styled.div`
   bottom: 5vh;
   /* background-color: red; */
 `;
-const ButtonArea = styled(Box)`
-`;
+const ButtonArea = styled(Box)``;
 const EditNicknameButton = styled.button`
   padding: 0 1em;
   margin-top: 1.5em;

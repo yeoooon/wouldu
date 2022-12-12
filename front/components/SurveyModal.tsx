@@ -1,12 +1,12 @@
 import { isSurveyModalAtom } from "@recoil/modal";
 import { userAtom } from "@recoil/user";
-import { ChangeSurveyCategory } from "@services/api/user";
+import { ChangeSurveyCategory, getUserInfo } from "@services/api/user";
 import { surveyCategories } from "@services/utils/surveyCategory";
 import { Box, Container } from "@styles/layout";
 import { ModalWrapper, Overlay } from "@styles/modal_layout";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { SurveyForm } from "@type/user";
-import React, { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { SurveyForm, User } from "@type/user";
+import React, { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { CloseIcon } from "./icons/CloseIcon";
@@ -15,8 +15,13 @@ const SurveyModal = () => {
   const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
   const setIsSurveyModalOpen = useSetRecoilState(isSurveyModalAtom);
-  const [selectedCategory, setSelectedCategory] = useState(user?.survey as unknown as string[]);
 
+  const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
+  const [selectedCategory, setSelectedCategory] = useState<string[]>();
+
+  useEffect(() => {
+    userInfo && setSelectedCategory(userInfo?.survey);
+  }, [userInfo]);
   const handleAddCategory = (newCategory: string) => {
     if (selectedCategory) {
       setSelectedCategory([...selectedCategory, newCategory]);
@@ -27,7 +32,6 @@ const SurveyModal = () => {
       setSelectedCategory([newCategory]);
     }
   };
-
   const changeMutation = useMutation(
     (data: SurveyForm) => ChangeSurveyCategory({ id: data.id, survey: selectedCategory }),
     {
