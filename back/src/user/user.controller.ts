@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   Res,
+  Redirect,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -39,6 +40,7 @@ export class UserController {
 
   @Post('/email-verify')
   @ApiOperation({ summary: '이메일 인증 API' })
+  @Redirect(`http://${process.env.BACKEND_HOST}/auth/login`, 201)
   async verifyEmail(@Query() query): Promise<string> {
     const { signupVerifyToken } = query;
     return await this.userService.verifyEmail(signupVerifyToken);
