@@ -24,8 +24,22 @@ export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
   const [isLightTheme, setIsLightTheme] = useState(false);
   const { pageTitle, pageDesc } = pageProps;
 
-  const [queryClient] = useState(() => new QueryClient());
-  // const queryClient = new QueryClient();
+  const queryClient = new QueryClient();
+
+  // const [queryClient] = useState(() => new QueryClient());
+
+  // const [queryClient] = useState(
+  //   () =>
+  //     new QueryClient({
+  //       defaultOptions: {
+  //         queries: {
+  //           refetchOnWindowFocus: false,
+  //           // refetchOnMount: false,
+  //           retry: false,
+  //         },
+  //       },
+  //     }),
+  // );
 
   const [darkMode, setDarkMode] = useState<boolean>(false);
   useEffect(() => {

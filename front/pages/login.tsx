@@ -31,7 +31,7 @@ const Login = () => {
       const { id, accessToken, email, nickname, friendCode, isFirstLogin } = await requestLogin(data);
       if (accessToken) {
         setUser({ id, email, accessToken, nickname, friendCode, isFirstLogin });
-        router.push("/");
+        router.replace("/");
       }
     } catch (err) {}
   };

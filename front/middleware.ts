@@ -10,5 +10,5 @@ export default function commonMiddleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/diary", "/stamp", "/planner", "/mypage"],
+  matcher: ["/diary/:path*", "/stamp/:path*", "/planner/:path*", "/mypage/:path*"],
 };
