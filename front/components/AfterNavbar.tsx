@@ -41,11 +41,6 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
 
   const queryCache = new QueryCache();
 
-  useEffect(() => {
-    console.log("afternavbar Test-----", userInfo);
-    setUser({ ...user!, ...userInfo! });
-  }, [userInfo]);
-
   const toggleTheme = () => {
     const theme = localStorage.getItem("theme");
     if (theme) {
@@ -61,13 +56,9 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
     if (result) {
       setUser(null);
       removeCookie("userToken");
-      // queryClient.removeQueries({ queryKey: ["user", "info"] });
-      queryCache.clear();
-      queryClient.removeQueries(["user"]);
       queryClient.clear();
 
-      // queryClient.removeQueries({ queryKey: ["user"] });
-      router.push("/");
+      router.replace("/");
     }
   };
   return (
