@@ -8,10 +8,11 @@ import {
   UseGuards,
   Query,
   Delete,
+  Res,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FriendService } from './friend.service';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { SendFriendRequestDTO } from './dto/send-friend-request.dto';
 import { UpdateFriendRequestDTO } from './dto/update-friend-request.dto';
@@ -43,8 +44,13 @@ export class FriendController {
     description: '현재 친구를 확인한다.',
   })
   @UseGuards(AuthGuard('jwt'))
-  findFriend(@Req() request: Request) {
-    return this.friendService.findFriend(request.user['userId']);
+  async findFriend(@Req() request: Request, @Res() response: Response) {
+    const friend = await this.friendService.findFriend(request.user['userId']);
+    if (friend === null) {
+      return response.status(204).send();
+    } else {
+      return response.status(200).send(friend);
+    }
   }
 
   @Get('/request')
