@@ -179,8 +179,9 @@ export class FriendService {
     });
 
     if (me === null) {
-      throw new NotFoundException('맺은 친구가 없습니다.');
+      return null;
     }
+
     const friend = await this.friendRepository
       .createQueryBuilder('friend')
       .select('friend.id')
