@@ -31,6 +31,6 @@ const Home: NextPage = () => {
 };
 
 const NewWrapper = styled(Wrapper)`
-  height: 400vh;
+  height: 440vh;
 `;
 export default Home;

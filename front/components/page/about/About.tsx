@@ -8,25 +8,78 @@ import Note from "public/icon/note.svg";
 import Notepad from "public/icon/notepad.svg";
 import { HandshakeIcon } from "@components/icons/HandshakeIcon";
 import { aboutText } from "@services/utils/aboutText";
+import { useLayoutEffect, useRef, useState } from "react";
+import Link from "next/link";
+
+interface Show {
+  itemOne: boolean;
+  itemTwo: boolean;
+  itemThree: boolean;
+  itemFour: boolean;
+  itemFive: boolean;
+}
 
 const About = () => {
+
+  const [show, doShow] = useState<Show>({
+    itemOne: false,
+    itemTwo: false,
+    itemThree: false,
+    itemFour: false,
+    itemFive: false,
+  });
+  const ourRef = useRef(null),
+    anotherRef = useRef(null),
+    refThree = useRef(null),
+    refFour = useRef(null),
+    refFive = useRef(null);
+
+  useLayoutEffect(() => {
+    const topPos = (element: any | null) => element?.getBoundingClientRect().top;
+    const div1Pos = topPos(ourRef.current),
+      div2Pos = topPos(anotherRef.current),
+      div3Pos = topPos(refThree.current),
+      div4Pos = topPos(refFour.current),
+      div5Pos = topPos(refFive.current);
+
+    const onScroll = () => {
+      const scrollPos = window.scrollY + window.innerHeight;
+      if (div1Pos < scrollPos) {
+        doShow(state => ({ ...state, itemOne: true }));
+      } else if (div2Pos < scrollPos) {
+        doShow(state => ({ ...state, itemTwo: true }));
+      } else if (div3Pos < scrollPos) {
+        doShow(state => ({ ...state, itemThree: true }));
+      } else if (div4Pos < scrollPos) {
+        doShow(state => ({ ...state, itemFour: true }));
+      } else if (div5Pos < scrollPos) {
+        doShow(state => ({ ...state, itemFive: true }));
+      }
+    };
+
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <AboutWrapper>
       <FirstPage>
-        <Left>
+        <Left animate={show.itemFive} ref={refFive}>
           <MainTitle>
             {aboutText[0].title}
           </MainTitle>
           <SubTitle>
             {aboutText[0].dessciption}
           </SubTitle>
-          <Button>우쥬 하러가기</Button>
+          <Link href="/login">
+            <Button>우쥬 하러가기</Button>
+          </Link>
         </Left>
-        <Right>
+        <Right animate={show.itemFive} ref={refFive}>
           <Image src={'/aboutpic1.png'} width={500} height={500} />
         </Right>
       </FirstPage>
-      <SecondPart>
+      <SecondPart animate={show.itemFour} ref={refFour}>
         <ImageArea>
           <Image src={'/temporaryimage.png'} width={700} height={400} />
         </ImageArea>
@@ -36,7 +89,7 @@ const About = () => {
           <SubText>{aboutText[1].dessciption}</SubText>
         </TextArea>
       </SecondPart>
-      <ThirdPart>
+      <ThirdPart animate={show.itemThree} ref={refThree}>
         <TopArea>
           <TextArea>
             <MainText>{aboutText[2].title}</MainText>
@@ -54,7 +107,7 @@ const About = () => {
           <Image src={'/temporaryimage.png'} width={380} height={250} />
         </BottomArea>
       </ThirdPart>
-      <ForthPart>
+      <ForthPart animate={show.itemTwo} ref={anotherRef}>
         <ImageArea>
           <Image src={'/temporaryimage.png'} width={700} height={400} />
         </ImageArea>
@@ -64,7 +117,7 @@ const About = () => {
           <SubText>{aboutText[3].dessciption}</SubText>
         </TextArea>
       </ForthPart>
-      <FifthPart>
+      <FifthPart animate={show.itemOne} ref={ourRef}>
         <ImageArea>
           <Image src={'/temporaryimage.png'} width={700} height={400} />
         </ImageArea>
@@ -81,7 +134,7 @@ const About = () => {
 const AboutWrapper = styled.div`
   width: 100%;
   background-color: ${colors.white};
-  height: 400vh;
+  height: 440vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -96,13 +149,15 @@ const FirstPage = styled.div`
   align-items: center;
   justify-content: center;
 `;
-const Left = styled.div`
-  /* background-color: rebeccapurple; */
+const Left = styled.div<{ animate: boolean }>`
+
   display: flex;
   flex-direction: column;
   justify-self: flex-end;
   width: 70%;
   gap: 3vh;
+  transform: translateY(${({ animate }) => (animate ? "0" : "-5vh")});
+  transition: transform 1s;
 `;
 const MainTitle = styled.p`
   font-size: 45px;
@@ -112,6 +167,7 @@ const MainTitle = styled.p`
   letter-spacing: 1px;
   line-height: 50px;
   white-space: pre-line;
+
 `;
 const SubTitle = styled.p`
   font-size: ${props => props.theme.fontSize.textMd};
@@ -120,32 +176,35 @@ const SubTitle = styled.p`
   color: ${colors.purple_200};
 `;
 const Button = styled.button`
+  font-weight: 600;
+  font-size: ${props => props.theme.fontSize.textMd};
+  height: 2.5em;
   width: 15em;
 `;
-const Right = styled.div`
+const Right = styled.div<{ animate: boolean }>`
   padding-left: 10vh;
-  /* background-color: royalblue; */
+  transform: translateY(${({ animate }) => (animate ? "0" : "5vh")});
+  transition: transform 1s;
 `;
 
-const SecondPart = styled.div`
+const SecondPart = styled.div<{ animate: boolean }>`
   width: 100%;
-  height: 75vh;
-  /* background-color: pink; */
+  height: 85vh;
   display: grid;
   grid-template-columns: 60% 40%; 
+  transform: translateY(${({ animate }) => (animate ? "0" : "20vw")});
+  transition: transform 1s;
 `;
 const ImageArea = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: palegoldenrod; */
 `;
 const NoteIcon = styled(Note)``;
 const NotePadIcon = styled(Notepad)``;
 const HomeIcon = styled(Home)``;
 const MypageIcon = styled(Mypage)``;
 const TextArea = styled.div`
-  /* background-color: palegreen; */
   padding: 1em;
   display: flex;
   flex-direction: column;
@@ -176,19 +235,18 @@ const SubText = styled.p`
   letter-spacing: 1px;
   line-height: 20px;
 `;
-const ThirdPart = styled.div`
+const ThirdPart = styled.div<{ animate: boolean }>`
   width: 100%;
-  height: 75vh;
+  height: 85vh;
   display: grid;
   grid-template-rows: 35% 65%; 
-  /* background-color: hotpink; */
-
+  transform: translateY(${({ animate }) => (animate ? "0" : "20vw")});
+  transition: transform 1s;
 `;
 const TopArea = styled.div`
   display: flex;
   justify-content: space-around;
   justify-self: center;
-  /* background-color: rebeccapurple; */
   width: 80%;
   padding: 1em;
   ${IconBox} {
@@ -205,14 +263,9 @@ const BottomArea = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: honeydew; */
   gap: 10vh;
 `;
-const ForthPart = styled(SecondPart)`
-  /* background-color: plum; */
-`;
-const FifthPart = styled(SecondPart)`
-  /* background-color: palevioletred; */
-`;
+const ForthPart = styled(SecondPart)``;
+const FifthPart = styled(SecondPart)``;
 
 export default About;
