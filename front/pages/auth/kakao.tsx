@@ -17,8 +17,8 @@ const KakaoAuth = () => {
       (async () => {
         const data = await getKakaoToken(authCode as string);
         console.log("getToken이후 access_token", data);
-        const info = await getUserFromKakao(data.access_token);
-        console.log("kakao user Info!!", info);
+        // const info = await getUserFromKakao(data.access_token);
+        // console.log("kakao user Info!!", info);
       })();
     }
   }, [authCode, kakaoServerError]);

@@ -118,7 +118,7 @@ export class DiaryService {
     };
   }
 
-  async collectEmotions(userId: string, diaryDateDto: DiaryDateDto) {
+  async collectEmotions(userId: string | null, diaryDateDto: DiaryDateDto) {
     return this.diaryDAO.getEmotions(userId, diaryDateDto);
   }
 }

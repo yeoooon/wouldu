@@ -48,27 +48,20 @@ export class AuthService {
   }
 
   async kakao(code: string) {
-    const kakao_api_url = `https://kauth.kakao.com/oauth/token
-    ?grant_type=authorization_code
-    &client_id=${process.env.KAKAO_CLIENT_ID}
-    &redirect_url=${process.env.KAKAO_REDIRECT_URL}
-    &code=${code}`;
-    console.log(kakao_api_url);
+    const kakao_api_url = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.KAKAO_CLIENT_ID}&redirect_url=${process.env.KAKAO_REDIRECT_URL}&code=${code}`;
 
-    const token_res = await firstValueFrom(
-      this.httpService.post(kakao_api_url),
-    );
-    console.log(token_res);
+    const token_res = await this.httpService.axiosRef.post(kakao_api_url);
+
     const accessToken: string = token_res.data.access_token;
-    console.log(accessToken);
-    // const userInfo = await firstValueFrom(
-    //   this.httpService.get('https://kapi.kakao.com/v2/user/me', {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //     },
-    //   }),
-    // );
-    // console.log(userInfo);
+    const userInfo = await this.httpService.axiosRef.get(
+      'https://kapi.kakao.com/v2/user/me',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    console.log(userInfo);
     // const userId: string = userInfo.data.id;
     // console.log(userId);
   }
