@@ -27,20 +27,22 @@ interface LayoutProps {
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
+const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
+
+const mapMenuToIcon: { [key: string]: () => ReactNode } = {
+  홈: () => <HomeIcon />,
+  일정관리: () => <NotepadIcon />,
+  교환일기: () => <NoteIcon />,
+  마이페이지: () => <MypageIcon />,
+};
+
 const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const router = useRouter();
-  const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
-  const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
   const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
   const setIsAlarmOpen = useSetRecoilState<boolean>(isAlarmModalAtom);
   // const navIcon = [<HomeIcon />, <NotepadIcon />, <NoteIcon />, <MypageIcon />];
-  const mapMenuToIcon: { [key: string]: () => ReactNode } = {
-    홈: () => <HomeIcon />,
-    일정관리: () => <NotepadIcon />,
-    교환일기: () => <NoteIcon />,
-    마이페이지: () => <MypageIcon />,
-  };
 
   const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
   const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
@@ -62,7 +64,24 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
     if (result) {
       setUser(null);
       removeCookie("userToken");
-      queryClient.clear();
+      // queryClient.clear();
+      // queryClient.removeQueries();
+      queryCache.clear();
+
+      // const tmpQueryKeys: string[] = [];
+      // const remainCache = queryClient.getQueryCache() as any;
+
+      // remainCache.queries.forEach((q: any) => {
+      //   console.log(q.queryKey);
+      //   tmpQueryKeys.concat(q.queryKey);
+      // });
+      // const remainQuerykeys = tmpQueryKeys.filter((key, index, array) => key === array[index]);
+      // remainQuerykeys.forEach(key => {
+      //   queryClient.removeQueries({ queryKey: [key] });
+      // });
+
+      const _remainCache = queryClient.getQueryCache();
+      console.log("_remainCache", _remainCache);
 
       router.replace("/");
     }
