@@ -26,7 +26,7 @@ import { PlannerDateDto } from './dto/planner-date.dto';
 export class PlannerController {
   constructor(private readonly plannerService: PlannerService) {}
 
-  @Get()
+  @Post()
   @ApiOperation({
     summary: '계획 생성 API',
     description: 'description, date를 입력하여 계획을 생성',
