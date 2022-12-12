@@ -1,26 +1,16 @@
 import { Box } from '@styles/layout';
-import React, { useState, useEffect, ObjectHTMLAttributes } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Diary, MonthDiaries } from '../../../type/diary';
-import { formatDate } from '@services/utils/formatDate';
+import { MonthDiaries } from '../../../type/diary';
 import DiaryListDay from './DiaryListDay';
-import { userAtom } from '@recoil/user';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { clickedDiaryDateState, clickedDiaryMonthState, today } from '@recoil/diary';
 import useGetDiaries from '@services/utils/useGetDiaries';
 
-interface DiaryResponse {
-  title: string,
-  diaries: Array<Diary>
-}
-
 const DiaryListItem = () => {
-  const [diaryList, setDiaryList] = useState<Object | undefined>(undefined);
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
-  const user = useRecoilValue(userAtom);
   const todayDate = useRecoilValue(today);
   const clickedMonth = useRecoilValue(clickedDiaryMonthState);
-  const [year, month] = clickedMonth.split('-');
 
   const getTodayMain = () => {
     setClickedDiaryDate(todayDate);
