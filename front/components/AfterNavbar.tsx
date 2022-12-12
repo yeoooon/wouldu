@@ -9,7 +9,7 @@ import { LogoBlackIcon, LogoWhiteIcon } from "./icons/LogoIcon";
 import { AlarmIcon } from "./icons/AlarmIcon";
 import { UserIcon } from "./icons/UserIcon";
 import { checkRequestFriend, getFriend } from "@services/api/friend";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, QueryCache } from "@tanstack/react-query";
 import { colors } from "@styles/common_style";
 import { isAlarmModalAtom } from "@recoil/modal";
 import { ReceiveFriend } from "@type/friend";
@@ -34,14 +34,12 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
   const setIsAlarmOpen = useSetRecoilState<boolean>(isAlarmModalAtom);
-  const navIcon = [<HomeIcon  />, <NotepadIcon  />, <NoteIcon  />, <MypageIcon  />];
+  const navIcon = [<HomeIcon />, <NotepadIcon />, <NoteIcon />, <MypageIcon />];
 
   const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
   const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
 
-  // useEffect(() => {
-  //   setUser(userAtomData);
-  // }, []);
+  const queryCache = new QueryCache();
 
   useEffect(() => {
     console.log("afternavbar Test-----", userInfo);
@@ -63,7 +61,12 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
     if (result) {
       setUser(null);
       removeCookie("userToken");
-      queryClient.removeQueries({ queryKey: ["user"] });
+      // queryClient.removeQueries({ queryKey: ["user", "info"] });
+      queryCache.clear();
+      queryClient.removeQueries(["user"]);
+      queryClient.clear();
+
+      // queryClient.removeQueries({ queryKey: ["user"] });
       router.push("/");
     }
   };

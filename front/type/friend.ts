@@ -18,15 +18,6 @@ export interface Friend {
   title: string;
   createdAt: Date;
 }
-
-// // 프론트에서 원하는 형태로 바꾸기 위함.
-// export interface FriendInfo {
-//   id: string;
-//   nickname: string;
-//   title: string;
-//   createdAt: Date;
-// }
-
 export interface FriendProps {
   friend: Friend;
 }
