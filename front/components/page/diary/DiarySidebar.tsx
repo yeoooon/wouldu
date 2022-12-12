@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import DiaryListItem from './DiaryListItem';
 import { useRecoilState } from 'recoil';
 import { clickedDiaryMonthState } from '@recoil/diary';
+import { LeftarrowIcon, RightarrowIcon } from '@components/icons/ArrowIcons';
 
 const DiarySidebar = () => {
   const [clickedMonth, setClickedMonth] = useRecoilState(clickedDiaryMonthState);
@@ -42,9 +43,9 @@ const DiarySidebar = () => {
   return (
     <SidebarContainer>
       <MonthBox>
-        <ChangeLastMonth onClick={handleChangeLastMonth}>지난 달</ChangeLastMonth>
+        <ChangeLastMonth onClick={handleChangeLastMonth}><LeftarrowIcon color={"white"}/></ChangeLastMonth>
         {clickedMonth.substring(0, 4)}년 {clickedMonth.substring(5, 7)}월
-        <ChangeNextMonth onClick={handleChangeNextMonth}>다음 달</ChangeNextMonth>
+        <ChangeNextMonth onClick={handleChangeNextMonth}><RightarrowIcon color={"white"}/></ChangeNextMonth>
       </MonthBox>
       <DiaryListItem />
     </SidebarContainer>

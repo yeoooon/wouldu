@@ -59,6 +59,8 @@ export const DiaryBox = styled(Box)`
   flex-direction: column;
   justify-content: flex-start;
   padding: 2em;
+  line-height: 20px;
+  letter-spacing: 0.5px;
 `;
 
 export const UnwrittenDiaryBox = styled(DiaryBox)`
@@ -89,8 +91,9 @@ export const UserName = styled.p`
 `;
 
 export const DiaryContent = styled(Box)`
+  align-self: flex-start;
   font-size: ${props => props.theme.fontSize.textSm};
-  padding: 1.5em 0;
+  padding: 1.5em 1em;
   overflow-y: auto;
 `;
 

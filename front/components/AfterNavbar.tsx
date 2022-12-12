@@ -94,7 +94,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
               </TextBox>
               {router.pathname === navLinks[index] ? (
                 <ArrowBox>
-                  <RightarrowIcon />
+                  <RightarrowIcon color={"#5C38FF"}/>
                 </ArrowBox>
               ) : (
                 ""
