@@ -38,10 +38,11 @@ export class UserController {
     return response.status(201).send('회원가입 완료');
   }
 
-  @Post('/email-verify')
+  @Get('/email-verify')
   @ApiOperation({ summary: '이메일 인증 API' })
-  @Redirect(`http://${process.env.BACKEND_HOST}/auth/login`, 201)
-  async verifyEmail(@Query() query): Promise<string> {
+  @Redirect(`http://kdt-ai5-team05.elicecoding.com/login`, 201)
+  async verifyEmail(@Query() query): Promise<Object> {
+    console.log(process.env.BACKEND_HOST);
     const { signupVerifyToken } = query;
     return await this.userService.verifyEmail(signupVerifyToken);
   }

@@ -29,7 +29,7 @@ export class EmailService {
       subject: '가입 인증 메일',
       html: `
         가입을 완료하려면 아래 버튼을 눌러주세요.<br/>
-        <form action="${url}" method="POST">
+        <form action="${url}" method="GET">
             <button>확인</button>
         </form>
         `,
