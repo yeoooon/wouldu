@@ -38,13 +38,15 @@ export class UserController {
     return response.status(201).send('회원가입 완료');
   }
 
-  @Get('/email-verify')
+  @Post('/email-verify')
   @ApiOperation({ summary: '이메일 인증 API' })
   @Redirect(`http://kdt-ai5-team05.elicecoding.com/login`, 201)
   async verifyEmail(@Query() query): Promise<Object> {
-    console.log(process.env.BACKEND_HOST);
     const { signupVerifyToken } = query;
-    return await this.userService.verifyEmail(signupVerifyToken);
+    await this.userService.verifyEmail(signupVerifyToken);
+    return {
+      url: `http://kdt-ai5-team05.elicecoding.com/login`,
+    };
   }
 
   @Get()
