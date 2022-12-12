@@ -56,7 +56,7 @@ def get_results(input_ids, input_mask, segment_ids, tags_vectorizer, intents_lab
         with sess.graph.as_default():
             _, first_inferred_intent, _, _, _, _ = model.predict_slots_intent([input_ids, input_mask, segment_ids], tags_vectorizer, intents_label_encoder)
     if int(first_inferred_intent[0].strip()) in [3,5]:
-        intent = sub_model([input_ids, input_mask, segment_ids], tags_vectorizer, intents_label_encoder, sess)
+        intent = sub_model([input_ids, input_mask, segment_ids], tags_vectorizer, intents_label_encoder)
         return emotion[intent]
 
     return emotion[int(first_inferred_intent[0].strip())]
