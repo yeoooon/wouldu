@@ -8,10 +8,12 @@ import { Box, Container, Wrapper } from "@styles/layout";
 import { GetServerSidePropsContext } from "next";
 import { useState } from "react";
 import styled from "styled-components";
+import { useGetFriend } from "@services/utils/useGetFriend";
 
 const Stamp = () => {
   const [openStamp, setOpenStamp] = useState(false);
 
+  const { isConnected } = useGetFriend();
   const handleToggle = () => setOpenStamp(!openStamp);
 
   return (
@@ -29,9 +31,12 @@ const Stamp = () => {
           <Button onClick={handleToggle} className={openStamp ? "" : "active"}>
             나
           </Button>
+          {isConnected?
           <Button onClick={handleToggle} className={openStamp ? "active" : ""}>
             상대방
           </Button>
+          :
+          <></>}
         </ButtonBox>
         <CalendarBox>
           <EmotionCalendar />
