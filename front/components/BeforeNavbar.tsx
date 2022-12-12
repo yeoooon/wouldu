@@ -22,8 +22,8 @@ const Header = styled.div`
   width: 100%;
   max-width: 100vw;
   z-index: 999;
-  height: 84px;
-  background-color: ${colors.white};
+  height: 80px;
+  background-color: rgba(255, 255, 255, 0.5);
   font-size: ${props => props.theme.fontSize.textLg};
 
   button {

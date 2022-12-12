@@ -28,9 +28,6 @@ const Calendar = () => {
   const { data: monthData } = useQuery(
     ["plan", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
     () => getMonthplan({ nowYear: year, nowMonth: month + 1 }),
-    {
-      staleTime: 60 * 1000,
-    },
   );
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import { NextPage } from "next";
 import About from "@components/page/about/About";
 import { useRouter } from "next/router";
 import { getCookie } from "@services/utils/cookies";
+import styled from "styled-components";
 
 const Home: NextPage = () => {
   const isLoginStateAtom = useRecoilValue(loginStateSelector);
@@ -24,8 +25,12 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Wrapper>{isLoginState || <About />}</Wrapper>
+      <NewWrapper>{isLoginState || <About />}</NewWrapper>
     </>
   );
 };
+
+const NewWrapper = styled(Wrapper)`
+  height: 400vh;
+`;
 export default Home;

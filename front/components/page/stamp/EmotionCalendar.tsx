@@ -29,7 +29,7 @@ const EmotionCalendar = () => {
     () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
     {
       onSuccess: (value) => {
-        setMonthEmotionData(value)
+        setMonthEmotionData(value);
       },
     },
   );

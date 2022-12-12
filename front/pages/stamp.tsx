@@ -8,9 +8,11 @@ import { Box, Container, Wrapper } from "@styles/layout";
 import { GetServerSidePropsContext } from "next";
 import { useState } from "react";
 import styled from "styled-components";
+import { useGetFriend } from "@services/utils/useGetFriend";
 
 const Stamp = () => {
   const [openStamp, setOpenStamp] = useState(false);
+  const { isConnected } = useGetFriend();
 
   const handleToggle = () => setOpenStamp(!openStamp);
 
@@ -25,20 +27,28 @@ const Stamp = () => {
         </LeftBox>
       </LeftContainer>
       <RightContainer>
-        <ButtonBox>
-          <Button onClick={handleToggle} className={openStamp ? "" : "active"}>
-            나
-          </Button>
-          <Button onClick={handleToggle} className={openStamp ? "active" : ""}>
-            상대방
-          </Button>
-        </ButtonBox>
+        {isConnected && (
+          <ButtonBox>
+            <Button onClick={handleToggle} className={openStamp ? "" : "active"}>
+              나
+            </Button>
+            <Button onClick={handleToggle} className={openStamp ? "active" : ""}>
+              상대방
+            </Button>
+          </ButtonBox>
+        )}
         <CalendarBox>
           <EmotionCalendar />
         </CalendarBox>
         <EmotionBox>
-          <EmotionGraph />
-          <EmotionAnalysis />
+          {isConnected ? (
+            <>
+              <EmotionGraph />
+              <EmotionAnalysis />
+            </>
+          ) : (
+            <p>친구와 연결하고 감정 분석 기능을 경험해 보세요!</p>
+          )}
         </EmotionBox>
       </RightContainer>
     </StampWrapper>
@@ -109,4 +119,5 @@ const EmotionBox = styled(CalendarBox)`
   align-items: center;
   border-radius: ${props => props.theme.borderSize.borderSm};
   background-color: ${props => props.theme.color.purpleBox};
+  justify-content: center;
 `;

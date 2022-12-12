@@ -12,7 +12,7 @@ export const userJoin = async (joinInfo: UserJoinForm) => {
     const { status } = await axiosInstance.post("user/register", bodyData);
     return status;
   } catch (err) {
-    console.log(err);
+    // console.log(err);
 
     if (axios.isAxiosError(err) && err?.response?.status === 422) {
       return err.response.status;
@@ -22,10 +22,10 @@ export const userJoin = async (joinInfo: UserJoinForm) => {
 
 //회원정보
 export const getUserInfo = async (id: string) => {
-  console.log("getUserInfo", id);
+  // console.log("getUserInfo", id);
   try {
     const { data } = await axiosInstance.get(`user/${id}`);
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (err) {
     if (axios.isAxiosError(err) && err?.response?.status) {
@@ -88,7 +88,7 @@ export const changeUserNickname = async (nicknameInfo: NicknameForm) => {
 
 //회원비밀번호 찾기
 export const FindUserPassword = async (data: FindPasswordFormValue) => {
-  console.log(data);
+  // console.log(data);
   try {
     const { status } = await axiosInstance.post(`/user/new-password`, data);
     return status;

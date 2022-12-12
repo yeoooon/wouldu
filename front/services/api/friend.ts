@@ -5,12 +5,12 @@ import { useRecoilValue } from "recoil";
 import { axiosInstance } from "./axiosInstance";
 //친구요청 api
 export const requestFriend = async (friendCode: string) => {
-  console.log({ code: friendCode });
+  // console.log({ code: friendCode });
   try {
     const { status } = await axiosInstance.post("friend/request", { code: friendCode });
     return status; //201 성공
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     if (axios.isAxiosError(err) && err?.response?.status) {
       return err.response.status;
     }
@@ -31,12 +31,12 @@ export const checkRequestFriend = async (side: requestType) => {
 export const getFriend = async () => {
   try {
     const { data } = await axiosInstance.get("friend");
-    console.log(data);
+    // console.log(data);
 
     return data;
   } catch (err) {
     if (axios.isAxiosError(err) && err?.response?.status) {
-      console.log(err.response.data);
+      // console.log(err.response.data);
       return err.response.data.statusCode;
     }
   }

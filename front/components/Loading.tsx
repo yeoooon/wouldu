@@ -7,11 +7,11 @@ const Loading = () => {
       <span></span>
       <span></span>
     </LoadingDiv>
-  )
-}
+  );
+};
 
 const LoadingDiv = styled.div`
-  margin: 0; 
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,7 +23,7 @@ const LoadingDiv = styled.div`
     width: 10px;
     height: 10px;
     background-color: gray;
-    border-radius: 50%;
+
     animation: loading 1s 0s linear infinite;
   }
 
@@ -50,6 +50,6 @@ const LoadingDiv = styled.div`
       transform: scale(1.2);
     }
   }
-`
+`;
 
 export default Loading;
