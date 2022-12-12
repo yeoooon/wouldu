@@ -14,7 +14,6 @@ const Stamp = () => {
   const [openStamp, setOpenStamp] = useState(false);
   const { isConnected } = useGetFriend();
 
-  const { isConnected } = useGetFriend();
   const handleToggle = () => setOpenStamp(!openStamp);
 
   return (
@@ -28,7 +27,7 @@ const Stamp = () => {
         </LeftBox>
       </LeftContainer>
       <RightContainer>
-        {isConnected &&
+        {isConnected && (
           <ButtonBox>
             <Button onClick={handleToggle} className={openStamp ? "" : "active"}>
               나
@@ -36,21 +35,20 @@ const Stamp = () => {
             <Button onClick={handleToggle} className={openStamp ? "active" : ""}>
               상대방
             </Button>
-          </ButtonBox>        
-        }
+          </ButtonBox>
+        )}
         <CalendarBox>
           <EmotionCalendar />
         </CalendarBox>
         <EmotionBox>
-          {isConnected?
+          {isConnected ? (
             <>
               <EmotionGraph />
-              <EmotionAnalysis />            
+              <EmotionAnalysis />
             </>
-            :
+          ) : (
             <p>친구와 연결하고 감정 분석 기능을 경험해 보세요!</p>
-          }
-
+          )}
         </EmotionBox>
       </RightContainer>
     </StampWrapper>
