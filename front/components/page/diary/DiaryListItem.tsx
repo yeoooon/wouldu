@@ -1,15 +1,13 @@
 import { Box } from '@styles/layout';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ObjectHTMLAttributes } from 'react';
 import styled from 'styled-components';
-import DiaryListDay from './DiaryListDay';
-import { useQuery } from '@tanstack/react-query';
-import { getDiaries } from '../../../services/api/diary';
 import { Diary, MonthDiaries } from '../../../type/diary';
 import { formatDate } from '@services/utils/formatDate';
-
+import DiaryListDay from './DiaryListDay';
 import { userAtom } from '@recoil/user';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { clickedDiaryDateState, clickedDiaryMonthState, today } from '@recoil/diary';
+import useGetDiaries from '@services/utils/useGetDiaries';
 
 interface DiaryResponse {
   title: string,
@@ -17,7 +15,7 @@ interface DiaryResponse {
 }
 
 const DiaryListItem = () => {
-  const [diaryList, setDiaryList] = useState<Array<Diary> | undefined>(undefined);
+  const [diaryList, setDiaryList] = useState<Object | undefined>(undefined);
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
   const user = useRecoilValue(userAtom);
   const todayDate = useRecoilValue(today);
@@ -36,24 +34,24 @@ const DiaryListItem = () => {
     if (e.target instanceof Element) setClickedDiaryDate(e.currentTarget.id);
   }
 
-  const { data } = useQuery(["diaries", year, month], () => getDiaries(clickedMonth));
+  const monthDiaryList = useGetDiaries(clickedMonth);
 
   useEffect(() => {
-    setDiaryList(data?.diaries);
-  }, [data]);
+    console.log(monthDiaryList);
+  }, [monthDiaryList])
 
   return (
     <>
-      {diaryList && diaryList.length > 0 && diaryList.find(isTodayWritten)?
+      {monthDiaryList && monthDiaryList.length > 0 && monthDiaryList.find((el) => el.forEach((diary) => isTodayWritten(diary)))?
         <></>
         : 
         <WriteTodayDiaryBtn onClick={getTodayMain}>오늘 일기 쓰기</WriteTodayDiaryBtn>
       }
       
-      {diaryList && diaryList.length > 0? diaryList?.slice(0).reverse().map(diary => (
-        <ListItemBox key={diary.id} id={diary.date} onClick={handleClickDate}>
-          <DiaryListDay diary={diary} />
-          <Text>{diary.content.length < 15 ? diary.content : diary.content.substring(0, 15)}</Text>
+      {monthDiaryList && monthDiaryList.length > 0? monthDiaryList?.slice(0).reverse().map(diaries => (
+        <ListItemBox key={diaries[0].id} id={diaries[0].date} onClick={handleClickDate}>
+          <DiaryListDay diary={diaries[0]} />
+          <Text>{diaries[0].content.length < 15 ? diaries[0].content : diaries[0].content.substring(0, 15)}</Text>
         </ListItemBox>
       )) : <TextBox>작성된 일기가 없습니다.</TextBox>}
     </>
