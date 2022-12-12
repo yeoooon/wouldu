@@ -3,9 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
 
   //나중에 이부분 없애기
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // eslint: {
+  //   ignoreDuringBuilds: true,
+  // },
   swcMinify: true,
   compiler: {
     styledComponents: true,

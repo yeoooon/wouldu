@@ -13,7 +13,7 @@ import { useQuery, useQueryClient, QueryCache } from "@tanstack/react-query";
 import { colors } from "@styles/common_style";
 import { isAlarmModalAtom } from "@recoil/modal";
 import { ReceiveFriend } from "@type/friend";
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { User } from "@type/user";
 import { getUserInfo } from "@services/api/user";
 import { RightarrowIcon } from "./icons/ArrowIcons";
@@ -34,7 +34,13 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
   const setIsAlarmOpen = useSetRecoilState<boolean>(isAlarmModalAtom);
-  const navIcon = [<HomeIcon />, <NotepadIcon />, <NoteIcon />, <MypageIcon />];
+  // const navIcon = [<HomeIcon />, <NotepadIcon />, <NoteIcon />, <MypageIcon />];
+  const mapMenuToIcon: { [key: string]: () => ReactNode } = {
+    홈: () => <HomeIcon />,
+    일정관리: () => <NotepadIcon />,
+    교환일기: () => <NoteIcon />,
+    마이페이지: () => <MypageIcon />,
+  };
 
   const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
   const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
@@ -88,7 +94,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
         {navMenus.map((menu, index) => (
           <Link href={navLinks[index]} key={index}>
             <LinkButton className={router.pathname === navLinks[index] ? "active" : ""}>
-              <IconBox>{navIcon[index]}</IconBox>
+              <IconBox>{mapMenuToIcon[menu]()}</IconBox>
               <TextBox>
                 <a>{menu}</a>
               </TextBox>

@@ -24,9 +24,12 @@ export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
   const [isLightTheme, setIsLightTheme] = useState(false);
   const { pageTitle, pageDesc } = pageProps;
 
-  const queryClient = new QueryClient();
+  // const queryClient = new QueryClient();
 
-  // const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(() => {
+    console.log("_app queryClient");
+    return new QueryClient();
+  });
 
   // const [queryClient] = useState(
   //   () =>
