@@ -1,14 +1,11 @@
+import { CircleCheckBackIcon, CircleCheckIcon } from "@components/icons/CircleIcon";
 import { checkPlan, deletePlan, updatePlan } from "@services/api/planner";
 import { Box } from "@styles/layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useSetRecoilState } from "recoil";
 import styled, { css } from "styled-components";
-import CircleCheck from "/public/icon/circlecheck.svg";
-import CircleCheckBack from "/public/icon/circlecheckback.svg";
-import Trash from "/public/icon/trash.svg";
 
 const TodoItem = (plan: Planner) => {
   const queryClient = useQueryClient();
@@ -23,19 +20,22 @@ const TodoItem = (plan: Planner) => {
 
   const deleteMutation = useMutation((data: Planner) => deletePlan(data?.id!), {
     onSuccess: (status, value) => {
-      queryClient.invalidateQueries(["plan", value.date]);
+      const [year, month, day] = value && value.date!.split("-");
+      queryClient.invalidateQueries(["plan", year]); // month로 하면 왜 달력 쿼리는 무효화 안되지 ?
     },
   });
 
   const checkMutation = useMutation((data: Planner) => checkPlan(data?.id!), {
     onSuccess: (status, value) => {
-      queryClient.invalidateQueries(["plan", value.date]);
+      const [year, month, day] = value && value.date!.split("-");
+      queryClient.invalidateQueries(["plan", year, month, day]);
     },
   });
 
   const updateMutation = useMutation((data: Planner) => updatePlan(data), {
     onSuccess: (status, value) => {
-      queryClient.invalidateQueries(["plan", value.date]);
+      const [year, month, day] = value && value.date!.split("-");
+      queryClient.invalidateQueries(["plan", year, month, day]);
     },
   });
 
@@ -61,8 +61,8 @@ const TodoItem = (plan: Planner) => {
   return (
     <TodoBox className={plan.isCompleted === 1 ? "finish" : ""}>
       {editMode ? (
-        <form onSubmit={handleSubmit(onUpdateSubmit)}>
-          <input
+        <Form onSubmit={handleSubmit(onUpdateSubmit)}>
+          <Input
             autoFocus
             defaultValue={plan.description}
             {...register("description", {
@@ -75,10 +75,10 @@ const TodoItem = (plan: Planner) => {
             <Button type="submit">수정</Button>
             <Button onClick={() => setIsEditMode(false)}>취소</Button>
           </ButtonBox>
-        </form>
+        </Form>
       ) : (
         <>
-          <CheckBox onClick={handleToggle}>{plan.isCompleted ? <CircleCheckSvg /> : <CircleCheckBackSvg />}</CheckBox>
+          <CheckBox onClick={handleToggle}>{plan.isCompleted ? <CircleCheckIcon /> : <CircleCheckBackIcon />}</CheckBox>
           <Text>{plan.description}</Text>
           <ButtonBox>
             <Button onClick={() => setIsEditMode(true)}>수정</Button>
@@ -95,7 +95,7 @@ const ButtonBox = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  /* display: none; */
+  display: none;
 `;
 const Button = styled.button`
   background-color: inherit;
@@ -124,11 +124,11 @@ const TodoBox = styled(Box)`
   background-color: ${props => props.theme.color.purpleBox};
   border: 1px solid ${props => props.theme.color.borderPoint};
 
-  /* &:hover {
+  &:hover {
     ${ButtonBox} {
       display: initial;
     }
-  } */
+  }
   &.finish {
     border: 1px solid ${props => props.theme.color.border};
     background-color: ${props => props.theme.color.grayBox};
@@ -139,6 +139,19 @@ const TodoBox = styled(Box)`
     }
   }
 `;
+const Form = styled.form`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+const Input = styled.input`
+  border: none;
+  outline: none;
+  width: 70%;
+  padding: 0.3em 0.5em;
+`;
 const CheckBox = styled(Box)`
   margin: 0;
   padding: 0;
@@ -146,9 +159,5 @@ const CheckBox = styled(Box)`
   left: -15px;
   cursor: pointer;
 `;
-
-const CircleCheckSvg = styled(CircleCheck)``;
-
-const CircleCheckBackSvg = styled(CircleCheckBack)``;
 
 export default TodoItem;

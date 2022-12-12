@@ -1,14 +1,21 @@
 import Link from "next/link";
-import Image from "next/image";
-import LogoLight from "/public/icon/logoblack.svg";
-import LogoDark from "/public/icon/logowhite.svg";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Box, Container } from "../styles/layout";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/user";
-import { useEffect, useState } from "react";
+import { removeCookie } from "@services/utils/cookies";
+import { LogoBlackIcon, LogoWhiteIcon } from "./icons/LogoIcon";
+import { AlarmIcon } from "./icons/AlarmIcon";
+import { UserIcon } from "./icons/UserIcon";
+import { checkRequestFriend, getFriend } from "@services/api/friend";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { colors } from "@styles/common_style";
+import { isAlarmModalAtom } from "@recoil/modal";
+import { ReceiveFriend } from "@type/friend";
+import { useEffect } from "react";
 import { User } from "@type/user";
+import { getUserInfo } from "@services/api/user";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -20,12 +27,21 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const navMenus = ["홈", "일정관리", "교환일기", "마이페이지"];
   const navLinks = ["/stamp", "/planner", "/diary", "/mypage"];
 
-  const [userAtomData, setUserAtomData] = useRecoilState(userAtom);
-  const [user, setUser] = useState<User | null>();
+  const queryClient = useQueryClient();
+  const [user, setUser] = useRecoilState(userAtom);
+  const setIsAlarmOpen = useSetRecoilState<boolean>(isAlarmModalAtom);
+
+  const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
+  const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
+
+  // useEffect(() => {
+  //   setUser(userAtomData);
+  // }, []);
 
   useEffect(() => {
-    setUser(userAtomData);
-  }, []);
+    console.log("afternavbar Test-----", userInfo);
+    setUser({ ...user!, ...userInfo! });
+  }, [userInfo]);
 
   const toggleTheme = () => {
     const theme = localStorage.getItem("theme");
@@ -40,22 +56,25 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const onClickLogout = async () => {
     const result = confirm("로그아웃 하시겠어요?");
     if (result) {
-      await router.push("/");
       setUser(null);
-      setUserAtomData(null);
-      sessionStorage.removeItem("userToken");
+      removeCookie("userToken");
+      queryClient.removeQueries({ queryKey: ["user"] });
+      await router.push("/");
     }
   };
   return (
     <Nav>
-      <LogoBox>
-        {darkMode ? <LogoDark /> : <LogoLight />}
-      </LogoBox>
+      <LogoBox>{darkMode ? <LogoWhiteIcon /> : <LogoBlackIcon />}</LogoBox>
       <UserBox>
-        <AlarmButton>
-          <Image src="/icon/alarm.svg" alt="alarm" width={15} height={15} />
+        <AlarmButton onClick={() => setIsAlarmOpen(true)}>
+          <AlarmIcon width={18} height={18} />
+          {receiveFriends && receiveFriends?.length >= 1 && (
+            <AlarmNumber>
+              <p>{receiveFriends.length}</p>
+            </AlarmNumber>
+          )}
         </AlarmButton>
-        <Image src="/icon/user.svg" alt="user" width={60} height={60} />
+        <UserIcon width={60} height={60} />
         <TextBox1>{`${user?.nickname} 님`}</TextBox1>
       </UserBox>
       <DarkModeBox>
@@ -78,7 +97,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
       <a onClick={onClickLogout}>로그아웃</a>
     </Nav>
   );
-}
+};
 
 const Nav = styled(Container)`
   position: relative;
@@ -134,6 +153,17 @@ const AlarmButton = styled(Box)`
   width: 100%;
   justify-content: flex-end;
   margin: 0.5em;
+  cursor: pointer;
+`;
+const AlarmNumber = styled(Box)`
+  background-color: ${props => colors.red};
+  width: 1.5em;
+  height: 1.5em;
+  font-size: 10px;
+  margin-left: -7px;
+  margin-top: -12px;
+  color: ${props => props.theme.color.white};
+  cursor: pointer;
 `;
 const TextBox1 = styled(Box)`
   margin-top: 20px;
@@ -184,20 +214,20 @@ const RoundSlider = styled.span`
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 
   &:before {
-  border-radius: 50%;
-  position: absolute;
-  content: "";
-  height: 1.1em;
-  width: 1.1em;
-  left: 3px;
-  bottom: 2.5px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+    border-radius: 50%;
+    position: absolute;
+    content: "";
+    height: 1.1em;
+    width: 1.1em;
+    left: 3px;
+    bottom: 2.5px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
   }
 `;
 

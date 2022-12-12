@@ -4,34 +4,63 @@ import styled from 'styled-components';
 import DiaryListDay from './DiaryListDay';
 import { useQuery } from '@tanstack/react-query';
 import { getDiaries } from '../../../services/api/diary';
-import { Diary } from '../../../type/diary';
+import { MonthDiaries } from '../../../type/diary';
+import { formatDate } from '@services/utils/formatDate';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { clickedDiaryDateState, clickedDiaryMonthState } from '@recoil/diary';
+import { clickedDiaryDateState, clickedDiaryMonthState, today } from '@recoil/diary';
 
 const DiaryListItem = () => {
-  const [diaryList, setDiaryList] = useState<Diary[] | undefined>(undefined);
+  const [diaryList, setDiaryList] = useState<Array<MonthDiaries> | undefined>(undefined);
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
-
+  const todayDate = useRecoilValue(today);
   const clickedMonth = useRecoilValue(clickedDiaryMonthState);
+
+  const getTodayMain = () => {
+    setClickedDiaryDate(String(formatDate(new Date())));
+  }
+
+  const isTodayWritten = (element: MonthDiaries) => {
+    return (element.date.substring(0, 10) === todayDate);
+  }
+
+  const handleClickDate = (e: React.MouseEvent<HTMLElement>) => {
+    if (e.target instanceof Element) setClickedDiaryDate(e.currentTarget.id);
+  }
 
   const { data } = useQuery(["diaries", clickedMonth], () => getDiaries(clickedMonth));
 
   useEffect(() => {
-    setDiaryList(data);
+    // setDiaryList(data.diaries);
+    console.log(data);
   }, [data]);
 
   return (
     <>
-      {diaryList && diaryList.length > 0? diaryList.map(diary => (
-        <ListItemBox key={diary.id} onClick={() => setClickedDiaryDate(diary.date)}>
+      {diaryList && diaryList.length > 0 && diaryList.find(isTodayWritten)?
+        <></>
+        : 
+        <WriteTodayDiaryBtn onClick={getTodayMain}>오늘 일기 쓰기</WriteTodayDiaryBtn>
+      }
+      
+      {diaryList && diaryList.length > 0? diaryList.slice(0).reverse().map(diary => (
+        <ListItemBox key={diary.id} id={diary.date} onClick={handleClickDate}>
           <DiaryListDay diary={diary} />
           <Text>{diary.content.length < 30 ? diary.content : diary.content.substring(0, 30) + "..."}</Text>
         </ListItemBox>
-      )) : <div>작성된 일기가 없습니다.</div>}
+      )) : <TextBox>작성된 일기가 없습니다.</TextBox>}
     </>
   )
 }
+
+const WriteTodayDiaryBtn = styled.p`
+  font-size: ${props => props.theme.fontSize.textSm};
+  color: ${props => props.theme.color.fontSub};
+  text-decoration: underline;
+  text-align: center;
+  margin-top: 10px;
+  cursor: pointer;
+`
 
 const ListItemBox = styled(Box)`
   width: 100%;
@@ -51,6 +80,9 @@ const ListItemBox = styled(Box)`
 const Text = styled.p`
   font-size: ${props => props.theme.fontSize.textSm};
   padding: 0.5em;
+`;
+const TextBox = styled(Box)`
+  padding: 1.5em;
 `;
 
 export default DiaryListItem;

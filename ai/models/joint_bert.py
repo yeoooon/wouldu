@@ -1,15 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-@author: mwahdan
-"""
-
 import tensorflow as tf
 from tensorflow.python.keras import backend as K
 from tensorflow.python.keras.models import Model
-from tensorflow.python.keras.layers import Input, Dense, Multiply, TimeDistributed
+from tensorflow.python.keras.layers import Input, Dense, TimeDistributed
 from models.nlu_model import NLUModel
-# from layers.bert_layer import BertLayer
-#from layers.korbert_layer import KorBertLayer
 from layers.albert_layer import AlbertLayer
 import numpy as np
 import os
@@ -25,7 +18,6 @@ class JointBertModel(NLUModel):
         self.num_bert_fine_tune_layers = num_bert_fine_tune_layers
         self.is_bert = is_bert
         self.is_training = is_training
-        #self.bert_config_path = '/home/demiust/data1/A090_dialogue_engine/bert/002_bert_morp_tensorflow/' # KorBert by Etri
 
         self.model_params = {
                 'slots_num': slots_num,
@@ -42,10 +34,8 @@ class JointBertModel(NLUModel):
 
 
     def compile_model(self):
-        # Instead of `using categorical_crossentropy`,
-        # we use `sparse_categorical_crossentropy`, which does expect integer targets.
 
-        optimizer = tf.keras.optimizers.Adam(lr=5e-5)#0.001)
+        optimizer = tf.keras.optimizers.Adam(lr=5e-5)
 
         losses = {
         	'time_distributed': 'sparse_categorical_crossentropy',
@@ -64,23 +54,7 @@ class JointBertModel(NLUModel):
         in_id = Input(shape=(None,), dtype=tf.int32, name='input_ids')
         in_mask = Input(shape=(None,), dtype=tf.int32, name='input_masks')
         in_segment = Input(shape=(None,), dtype=tf.int32, name='segment_ids')
-        #in_valid_positions = Input(shape=(None, self.slots_num), dtype=tf.float32, name='valid_positions')
-
-        # in_valid_positions = K.ones(shape=(64, self.slots_num), name='valid_positions')
-        bert_inputs = [in_id, in_mask, in_segment] # tf.keras layers
-
-#        if self.is_bert and self.bert_hub_path != None:
-#            bert_pooled_output, bert_sequence_output = KorBertLayer(
-#                seq_len=64,
-#                n_tune_layers=self.num_bert_fine_tune_layers,
-#                pooling='mean',
-#                verbose=False,
-#                name='KorBertLayer')(bert_inputs)
-#        else:
-#             bert_pooled_output, bert_sequence_output = AlbertLayer(
-#                fine_tune=True if self.num_bert_fine_tune_layers > 0 else False,
-#                albert_path=self.bert_hub_path,
-#                pooling='mean', name='AlbertLayer')(bert_inputs)
+        bert_inputs = [in_id, in_mask, in_segment]
 
         bert_pooled_output, bert_sequence_output = AlbertLayer(
            fine_tune=True if self.num_bert_fine_tune_layers > 0 else False,
@@ -97,29 +71,13 @@ class JointBertModel(NLUModel):
 
 
     def fit(self, X, Y, validation_data=None, epochs=5, batch_size=64):
-        """
-        X: batch of [input_ids, input_mask, segment_ids, valid_positions]
-        """
-        # X = (X[0], X[1], X[2], self.prepare_valid_positions(X[3]))
         X = (X[0], X[1], X[2])
         if validation_data is not None:
             X_val, Y_val = validation_data
-            #validation_data = ((X_val[0], X_val[1], X_val[2], self.prepare_valid_positions(X_val[3])), Y_val)
             validation_data = ((X_val[0], X_val[1], X_val[2]), Y_val)
 
         history = self.model.fit(X, Y, validation_data=validation_data,
                                  epochs=epochs, batch_size=batch_size)
-        #self.visualize_metric(history.history, 'time_distributed_loss')
-        #self.visualize_metric(history.history, 'intent_classifier_loss')
-        #self.visualize_metric(history.history, 'loss')
-        #self.visualize_metric(history.history, 'intent_classifier_acc')
-
-    # def prepare_valid_positions(self, in_valid_positions):
-    #     in_valid_positions = np.expand_dims(in_valid_positions, axis=2)
-    #     in_valid_positions = np.tile(in_valid_positions, (1, 1, self.slots_num))
-
-    #     print(f'in valid positions : {in_valid_positions}')
-    #     return in_valid_positions
 
     def initialize_vars(self, sess):
         sess.run(tf.compat.v1.local_variables_initializer())
@@ -129,25 +87,10 @@ class JointBertModel(NLUModel):
 
     def predict_slots_intent(self, x, slots_vectorizer, intent_vectorizer, remove_start_end=True):
 
-        # valid_positions = x[3]
-        # x = (x[0], x[1], x[2])
         input_ids = x[0]
         y_slots, y_intent = self.predict(x)
 
-#        print('y slots :', y_slots.shape)
-#        print('y_intent :', y_intent)
-
         slots = slots_vectorizer.inverse_transform(y_slots, input_ids)
-
-        def notPAD(element):
-            if element == '<PAD>':
-                return False
-            else:
-                return True
-#        slots = [list(filter(notPAD, x)) for x in slots]
-
-#        if remove_start_end:
-#            slots = [x[1:-1] for x in slots]
 
         y_slots = np.array(y_slots)
         slots_score = np.array([[np.max(a) for a in y_slots[i][1:(len(slots[i])+1)]] for i in range(y_slots.shape[0])])
@@ -161,25 +104,12 @@ class JointBertModel(NLUModel):
 
     def predict_slots_intent_allsenets(self, x, slots_vectorizer, intent_vectorizer, remove_start_end=True):
 
-        # valid_positions = x[3]
-        # x = (x[0], x[1], x[2])
         input_ids = x[0]
         y_slots, y_intent = self.predict(x)
 
-#        print('y slots :', y_slots.shape)
-#        print('y_intent :', y_intent)
 
         slots = slots_vectorizer.inverse_transform(y_slots, input_ids)
 
-        def notPAD(element):
-            if element == '<PAD>':
-                return False
-            else:
-                return True
-#        slots = [list(filter(notPAD, x)) for x in slots]
-
-#        if remove_start_end:
-#            slots = [x[1:-1] for x in slots]
 
         y_slots = np.array(y_slots)
         slots_score = np.array([[np.max(a) for a in y_slots[i][1:(len(slots[i])+1)]] for i in range(y_slots.shape[0])])
@@ -196,7 +126,7 @@ class JointBertModel(NLUModel):
             json.dump(self.model_params, json_file)
         self.model.save(os.path.join(model_path, 'joint_bert_model.h5'))
 
-    def load(load_folder_path, sess): # load for inference or model evaluation
+    def load(load_folder_path, sess):
         with open(os.path.join(load_folder_path, 'params.json'), 'r') as json_file:
             model_params = json.load(json_file)
 

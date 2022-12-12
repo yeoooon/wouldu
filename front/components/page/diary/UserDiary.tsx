@@ -1,42 +1,52 @@
 import { Box } from '@styles/layout';
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
-import React, { useState } from 'react'
-import { useRecoilState } from 'recoil';
-import { diarywriteState } from '../../../recoil/diary';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useQuery } from '@tanstack/react-query';
+import { diarywriteState, today, clickedDiaryDateState } from '@recoil/diary';
 import styled from 'styled-components';
-import { Diary } from '@type/diary';
+import { isUserDiary } from '@services/utils/diaryAuthor';
+import { Diary, DiaryProps } from '@type/diary';
+import { getDiary } from '@services/api/diary';
 
-const UserDiary = ({ diaryList }: any) => {
+const UserDiary = ({ diary }: DiaryProps) => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
+  const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
+  const todayDate = useRecoilValue(today);
 
-  const isUserDiary = (element: Diary) => {
-    if (element.authorId === sessionStorage.getItem("userId")) {
-      return true;
-    }
-  }
   const handleToggle = () => setIsTextareaOpen(!isTextareaOpen);
 
   return (
     <>
-    {diaryList && diaryList.find(isUserDiary)? 
+    {diary?
       <DiaryBox>
         <ProfileBox>
           <Image src="/icon/user.svg" alt="user" width={30} height={30} />
-          <UserName>작성자 닉네임</UserName>
+          <UserName>{diary.nickname}</UserName>
         </ProfileBox>
         <DiaryContent>
-          {diaryList.find(isUserDiary).content}
+          {diary.content}
         </DiaryContent>
       </DiaryBox>
       :
       <UnwrittenDiaryBox>
-        <Text>
-        아직 일기가 작성되지 않았습니다.<br/>
-        오늘의 일기를 작성하여 친구와 공유해 보세요.
-        </Text>
-        <Button onClick={handleToggle}>
-          나의 일기 작성하러 가기
-        </Button>
+        {clickedDiaryDate === todayDate?
+          <>
+            <Text>
+              아직 일기가 작성되지 않았습니다.<br/>
+              오늘의 일기를 작성하여 친구와 공유해 보세요.
+            </Text>
+            <Button onClick={handleToggle}>
+              나의 일기 작성하러 가기
+            </Button>
+          </>
+          :
+          <>
+            <Text>
+              작성된 일기가 없습니다.
+            </Text>
+          </>    
+        }
       </UnwrittenDiaryBox>
     }
     </>

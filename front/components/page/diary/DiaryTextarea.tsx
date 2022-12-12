@@ -21,11 +21,12 @@ const DiaryTextarea = () => {
 
   const handlePostSubmit: SubmitHandler<{ content: string }> = (data) => {
     postDiary(data);
+    setIsTextareaOpen(!isTextareaOpen);
   }
 
   return (
     <TextContainer>
-      <form onSubmit={handleSubmit(handlePostSubmit)}>
+      <FormBox onSubmit={handleSubmit(handlePostSubmit)}>
         <Textarea
           {...register("content", {
             required: true
@@ -42,7 +43,7 @@ const DiaryTextarea = () => {
             나의 일기 저장하기
           </SaveButton>
         </ButtonBox>
-      </form>
+      </FormBox>
     </TextContainer>
   )
 }
@@ -50,15 +51,20 @@ const DiaryTextarea = () => {
 const TextContainer = styled(Container)`
   position: relative;
   flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
 `;
-
+const FormBox = styled.form`
+  width: 100%;
+  height: 90%;
+  flex-direction: column;
+`;
 const Textarea = styled.textarea`
   width: 100%;
   height: 100%;
   border: none;
-  padding: 1.5em;
+  padding: 15px;
   border-radius: 10px;
   outline: none;
   background-color: ${props => props.theme.color.purpleBox};

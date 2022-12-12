@@ -1,3 +1,4 @@
+import { CirclePlusIcon } from "@components/icons/CircleIcon";
 import { dayAtom } from "@recoil/planner";
 import { colors } from "@styles/common_style";
 import { Box, Container } from "@styles/layout";
@@ -9,7 +10,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { createPlan } from "../../../services/api/planner";
 import { formatDate } from "../../../services/utils/formatDate";
-import CirclePlus from "/public/icon/circleplus.svg";
 
 const TodoCreate = () => {
   const [open, setOpen] = useState(false);
@@ -26,21 +26,18 @@ const TodoCreate = () => {
 
   //달력날짜에 프롭스로 받아서 변경될 예정
   const recoilDay = useRecoilValue<Date>(dayAtom);
-  const day: string = formatDate(recoilDay);
-
-  // useEffect(() => {
-  //   setDay(formatDate(recoilDay));
-  // }, [recoilDay]);
+  const pickDay: string = formatDate(recoilDay);
 
   const updateMutation = useMutation((data: Planner) => createPlan(data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(["plan", day]);
+      const [year, month, day] = pickDay.split("-");
+      console.log(year, month);
+      queryClient.invalidateQueries(["plan", year]);
     },
   });
-
   const onCreateSubmit = async (data: Planner) => {
     // priority는 옵션임으로, 우선 1로 셋팅해놓음.
-    updateMutation.mutate({ date: day, ...data, priority: 1 });
+    updateMutation.mutate({ date: pickDay, ...data, priority: 1 });
     setOpen(false);
     resetField("description");
   };
@@ -51,7 +48,9 @@ const TodoCreate = () => {
         <CreateContainer>
           <InsertForm onSubmit={handleSubmit(onCreateSubmit)}>
             <BtnBox onClick={handleToggle}>
-              <CircleCloseSvg />
+              <CircleCloseBox>
+                <CirclePlusIcon />
+              </CircleCloseBox>
             </BtnBox>
             <Input
               autoFocus
@@ -67,7 +66,9 @@ const TodoCreate = () => {
         </CreateContainer>
       ) : (
         <BtnBox onClick={handleToggle}>
-          <CirclePlusSvg />
+          <CirclePlusBox>
+            <CirclePlusIcon />
+          </CirclePlusBox>
         </BtnBox>
       )}
     </>
@@ -94,14 +95,16 @@ const InsertForm = styled.form`
   flex-direction: column;
   align-items: center;
 `;
-const CircleCloseSvg = styled(CirclePlus)`
+const CirclePlusBox = styled(Box)`
+  padding: 0;
+  margin-top: 2em;
+  margin-bottom: 3em;
+`;
+const CircleCloseBox = styled(CirclePlusBox)`
   top: -20px;
   position: absolute;
   transform: rotate(45deg);
-`;
-const CirclePlusSvg = styled(CirclePlus)`
-  margin-top: 2em;
-  margin-bottom: 3em;
+  margin: 0;
 `;
 const BtnBox = styled(Box)`
   z-index: 5;
@@ -112,7 +115,6 @@ const Input = styled.input`
   margin: 1em;
   width: 80%;
 `;
-
 const ErrorMessage = styled.p`
   color: ${colors.red};
   align-self: flex-end;

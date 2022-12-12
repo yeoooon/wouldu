@@ -11,11 +11,12 @@ import { getDiary } from '@services/api/diary';
 import { useQuery } from '@tanstack/react-query';
 import DiaryListDay from './DiaryListDay';
 import { Diary } from '@type/diary';
+import { useGetFriend } from "@services/utils/useGetFriend";
+import { useGetDiary } from '@services/utils/useGetDiary';
 
 const DiaryMain = () => {
   const isTextAreaOpen = useRecoilValue(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
-  const [diaryList, setDiaryList] = useState([]);
 
   const yyyymmdd = clickedDiaryDate.substring(0, 10);
   const year = yyyymmdd.split('-')[0];
@@ -23,16 +24,12 @@ const DiaryMain = () => {
   const day = yyyymmdd.split('-')[2];
   const dayStr = getDayString(clickedDiaryDate);
 
-  const { data } = useQuery(["diaries", yyyymmdd], () => getDiary(yyyymmdd));
-  
-  useEffect(() => {
-    setDiaryList(data);
-  }, [data])
+  const { diaryName, userDiary, partnerDiary } = useGetDiary(yyyymmdd);
 
   return (
     <MainContainer>
       <TextBox>
-        <Title>딩딩이와 댕댕이의 일기장💘📖🖋</Title>
+        <Title>{diaryName}</Title>
         <Date>{year}년 {month}월 {day}일 {dayStr}요일</Date>
       </TextBox>
       {isTextAreaOpen ?
@@ -41,8 +38,8 @@ const DiaryMain = () => {
       </InsideContainer>
        : 
       <InsideContainer2>
-        <UserDiary diaryList={diaryList} />
-        <PartnerDiary diaryList={diaryList} />
+        <UserDiary diary={userDiary} />
+        <PartnerDiary diary={partnerDiary} />
       </InsideContainer2>
       }
     </MainContainer>

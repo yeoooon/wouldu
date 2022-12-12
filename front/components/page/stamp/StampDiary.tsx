@@ -2,15 +2,17 @@ import { Box, Container } from '@styles/layout';
 import React from 'react';
 import styled from 'styled-components';
 import StampDiaryContent from './StampDiaryContent';
-import Check from '/public/icon/check.svg';
 import Link from "next/link";
+import { CheckIcon } from '@components/icons/CheckIcon';
 
 const StampDiary = () => {
   return (
     <StampDiaryContainer>
       <HeaderBox>
         <TitleBox>
-          <CheckSvg />
+          <CheckIconBox>
+            <CheckIcon />
+          </CheckIconBox>
           <Title>오늘의 일기</Title>
         </TitleBox>
         <Link href="/diary">
@@ -43,7 +45,7 @@ const TitleBox = styled(Box)`
   font-size: ${props => props.theme.fontSize.textLg};
   font-weight: 700;
 `;
-const CheckSvg = styled(Check)`
+const CheckIconBox = styled(Box)`
   margin: 0.5em;
 `;
 const Title = styled.p``;

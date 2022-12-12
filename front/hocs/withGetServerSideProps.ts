@@ -1,8 +1,9 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
-const PATH = {
+export const PATH = {
   HOME: "/",
   LOGIN: "/login",
+  FINDPW: "/findPassword",
   JOIN: "/join",
   STAMP: "/stamp",
   DIARY: "/diary",
@@ -13,6 +14,7 @@ const PATH = {
 const mapPathToTitle: { [key: string]: string } = {
   [PATH.HOME]: "홈",
   [PATH.LOGIN]: "로그인",
+  [PATH.FINDPW]: "비밀번호 찾기",
   [PATH.JOIN]: "회원가입",
   [PATH.STAMP]: "스탬프",
   [PATH.DIARY]: "다이어리",
@@ -23,6 +25,7 @@ const mapPathToTitle: { [key: string]: string } = {
 const mapPathToDesc: { [key: string]: string } = {
   [PATH.HOME]: "홈 화면 입니다. ",
   [PATH.LOGIN]: "우쥬, 로그인 페이지 입니다. ",
+  [PATH.FINDPW]: "비밀번호 찾기 페이지 입니다.",
   [PATH.JOIN]: "회원가입 페이지 입니다.",
   [PATH.STAMP]: "스탬프 페이지 입니다. ",
   [PATH.DIARY]: "다이어리 페이지 입니다.",
@@ -31,14 +34,12 @@ const mapPathToDesc: { [key: string]: string } = {
 };
 
 const withGetServerSideProps = (getServerSideProps: GetServerSideProps) => {
-  console.log("withGetServerSideProps");
   return async (context: GetServerSidePropsContext) => {
-    console.log(context.resolvedUrl);
-    console.log(context);
+    // console.log(context.resolvedUrl);
     const pagePath = context.resolvedUrl;
-    console.log({ pagePath });
+    // console.log({ pagePath });
     return await getServerSideProps(context).then((res: { [key: string]: any }) => {
-      console.log(res.props);
+      // console.log(res.props);
       return {
         ...res,
         props: {

@@ -2,10 +2,12 @@ import { useState } from "react";
 
 import styled from "styled-components";
 import React from "react";
-import { pageProps } from "../../../pages/mypage";
 
-const MypageTab = ({ pageState, setPageState }: pageProps) => {
-  const [clicked, setClicked] = useState(false);
+import { useRecoilState } from "recoil";
+import { mypageState } from "@recoil/mypage";
+
+const MypageTab = () => {
+  const [pageState, setPageState] = useRecoilState(mypageState);
 
   return (
     <Tab>

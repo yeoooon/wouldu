@@ -1,114 +1,119 @@
-import Image from "next/image";
 import styled from "styled-components";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Container } from "../../../styles/layout";
+import { Box, Container } from "../../../styles/layout";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useEffect, useState } from "react";
+import { User } from "@type/user";
+import { userAtom } from "@recoil/user";
+import { UserIcon } from "@components/icons/UserIcon";
+import { isChangeNicknameModalAtom, isChangePasswordModalAtom, isDeleteUserModalAtom } from "@recoil/modal";
+import DeleteUserConfirm from "./modal/DeleteUserConfirm";
+import ChangePassword from "./modal/ChangePassword";
+import ChangeNickname from "./modal/ChangeNickname";
 
 interface EditProfileFormValue {
-  profileImage: File
-  nickname: string
+  profileImage: File;
+  nickname: string;
 }
 
 const EditProfile = () => {
-  const { register, handleSubmit, watch, formState: { errors }, } = useForm<EditProfileFormValue>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<EditProfileFormValue>();
+  const [isDeleteUserOpen, setIsDeleteUserOpen] = useRecoilState(isDeleteUserModalAtom);
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useRecoilState(isChangePasswordModalAtom);
+  const [isChangeNickNameOpen, setIsChangeNicknameOpen] = useRecoilState(isChangeNicknameModalAtom);
+  const user = useRecoilValue(userAtom);
 
-  const onSubmitHandler: SubmitHandler<EditProfileFormValue> = (data) => {
+  const onSubmitHandler: SubmitHandler<EditProfileFormValue> = data => {
     console.log(data);
-  }
+  };
 
   return (
     <ContentArea>
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <div className="info">
-          <ProfileArea>
-            <Image src="/icon/user.svg" alt="user" width={80} height={80} />
-            <label>프로필 사진 업로드</label>
-            <input {...register("profileImage")} type="file"></input>
-            <p>허용 확장자 *.jpg, *.png | 최대 nKB</p>          
-          </ProfileArea>    
-          <InputArea>
-            <Email>
-              <label>이메일</label>
-              <input disabled placeholder="123456@naver.com"></input>
-            </Email>
-            <Nickname>
-              <label>닉네임</label>
-              <input {...register("nickname", {
-                required: "수정할 닉네임을 입력해 주세요.",
-              })}></input>
-            </Nickname>             
-          </InputArea>
-        </div>
-        <div className="button">
-          <button type="submit">수정</button>
-        </div>
-      </form>
+      <Form onSubmit={handleSubmit(onSubmitHandler)}>
+        <ProfileArea>
+          <UserIcon width={100} height={100} />
+          {/* <label>프로필 사진 업로드</label>
+          <input {...register("profileImage")} type="file"></input>
+          <p>허용 확장자 *.jpg, *.png | 최대 nKB</p> */}
+        </ProfileArea>
+        {/* <button type="submit">수정</button> */}
+      </Form>
+      <InfoArea className="info">
+        <p className="nickname">{`${user?.nickname} 님`}</p>
+        <p className="email">{user?.email}</p>
+      </InfoArea>
+      <ButtonArea>
+        <EditNicknameButton onClick={() => setIsChangeNicknameOpen(true)}>닉네임 변경</EditNicknameButton>
+        <EditPasswordButton onClick={() => setIsChangePasswordOpen(true)}>비밀번호 변경</EditPasswordButton>
+        <DeleteUserButton onClick={() => setIsDeleteUserOpen(true)}>회원 탈퇴</DeleteUserButton>
+      </ButtonArea>
+      {isChangeNickNameOpen && <ChangeNickname />}
+      {isChangePasswordOpen && <ChangePassword />}
+      {isDeleteUserOpen && <DeleteUserConfirm />}
     </ContentArea>
-  )
-}
+  );
+};
 
 const ContentArea = styled(Container)`
-  form {
-    height: 100%;
-    
-    display: grid;
-    grid-template-rows: 70% 30%;
-
-    grid-template-areas:
-    "info"
-    "button";
-  }
-
-  .info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    align-self: end;
-
-    gap: 2.5rem;
-  }
-
-  .button {
-    align-self: start;
-    justify-self: center;
-
-    margin-top: 3rem;
-  }
-
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 70vh;
-  
   padding: 1.5rem 0;
-`
-
+`;
+const InfoArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 1em 0 2.5em 0;
+  gap: 15px;
+  .nickname {
+    font-size: ${props => props.theme.fontSize.textMain};
+  }
+  .email {
+    font-size: ${props => props.theme.fontSize.textXs};
+  }
+`;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 const ProfileArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  align-self: center;
-
   gap: 10px;
-`
-
-const InputArea = styled.div`
-  display: flex;
+`;
+const ButtonArea = styled(Box)`
   flex-direction: column;
-  align-items: center;
-
-  gap: 10px;
-`
-
-const Email = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-`
-
-const Nickname = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-`
-
+`;
+const EditNicknameButton = styled.button`
+  padding: 0.6em 1.3em;
+  width: 10em;
+`;
+const EditPasswordButton = styled(EditNicknameButton)`
+  margin: 1em;
+`;
+const DeleteUserButton = styled.button`
+  background: none;
+  font-size: ${props => props.theme.fontSize.textXs};
+  color: ${props => props.theme.color.fontSub};
+  text-decoration: underline;
+  text-align: center;
+  margin-top: 4em;
+  cursor: pointer;
+  &:hover {
+    background: none;
+    font-weight: 700;
+  }
+`;
 export default EditProfile;
