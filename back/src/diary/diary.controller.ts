@@ -15,12 +15,16 @@ import { CreateDiaryDto } from './dto/create-diary.dto';
 import { Request, Response } from 'express';
 import { ReadDiaryDto } from './dto/read-diary.dto';
 import { DiaryDateDto } from './dto/diary-date.dto';
+import { FriendService } from 'src/friend/friend.service';
 
 @Controller('diary')
 @ApiTags('교환일기 API')
 @ApiBearerAuth('access-token')
 export class DiaryController {
-  constructor(private readonly diaryService: DiaryService) {}
+  constructor(
+    private readonly diaryService: DiaryService,
+    private readonly friendService: FriendService,
+  ) {}
 
   @Post()
   @ApiOperation({
@@ -66,12 +70,26 @@ export class DiaryController {
   @Get('emotions')
   @ApiOperation({
     summary: '월단위 감정 API',
-    description:
-      'query로 year, month를 넣으면 해당 달의 일정이 있었던 날을 알려줌',
+    description: 'query로 year, month를 넣으면 해당 달의 감정 반환',
   })
   @UseGuards(AuthGuard('jwt'))
   emotions(@Req() request: Request, @Query() plannerDateDto: DiaryDateDto) {
     const userId = request.user['userId'];
     return this.diaryService.collectEmotions(userId, plannerDateDto);
+  }
+
+  @Get('friend/emotions')
+  @ApiOperation({
+    summary: '월단위 감정 API',
+    description: 'query로 year, month를 넣으면 해당 달의 친구 감정 반환',
+  })
+  @UseGuards(AuthGuard('jwt'))
+  async friendEmotions(
+    @Req() request: Request,
+    @Query() plannerDateDto: DiaryDateDto,
+  ) {
+    const userId = request.user['userId'];
+    const friend = await this.friendService.findFriend(userId);
+    return this.diaryService.collectEmotions(friend.toUserId, plannerDateDto);
   }
 }

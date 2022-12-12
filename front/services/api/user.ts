@@ -110,23 +110,9 @@ export const ChangeSurveyCategory = async (surveyInfo: SurveyForm) => {
 
 //카카오 토큰
 export const getKakaoToken = async (code: string) => {
-  const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
-  const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
-  const tokenUrl = "https://kauth.kakao.com/oauth/token";
   try {
-    const res = await fetch(tokenUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-      },
-      body: qs.stringify({
-        grant_type: "authorization_code",
-        client_id: REST_API_KEY,
-        redirect_uri: REDIRECT_URI,
-        code,
-      }),
-    });
-    return res.json();
+    const { data } = await axiosInstance.get(`auth/social/kakao?code=${code}`);
+    return data;
   } catch (err) {
     console.error(err);
   }
