@@ -65,7 +65,7 @@ export class DiaryController {
 
   @Get('emotions')
   @ApiOperation({
-    summary: '월단위 감점 API',
+    summary: '월단위 감정 API',
     description:
       'query로 year, month를 넣으면 해당 달의 일정이 있었던 날을 알려줌',
   })
