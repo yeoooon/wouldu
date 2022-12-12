@@ -19,27 +19,27 @@ declare global {
     Kakao: any;
   }
 }
+const queryClient = new QueryClient();
+// const queryClient = new QueryClient({
+//   defaultOptions: {
+//     queries: {
+//       suspense: true,
+//       staleTime: 1000 * 60 * 5,
+//       onError(err) {
+//         console.log(err);
+//       },
+//     },
+//   },
+// });
 
 export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
   const [isLightTheme, setIsLightTheme] = useState(false);
   const { pageTitle, pageDesc } = pageProps;
 
-  const queryClient = new QueryClient();
-
-  // const [queryClient] = useState(() => new QueryClient());
-
-  // const [queryClient] = useState(
-  //   () =>
-  //     new QueryClient({
-  //       defaultOptions: {
-  //         queries: {
-  //           refetchOnWindowFocus: false,
-  //           // refetchOnMount: false,
-  //           retry: false,
-  //         },
-  //       },
-  //     }),
-  // );
+  // const [queryClient] = useState(() => {
+  //   console.log("_app queryClient");
+  //   return new QueryClient();
+  // });
 
   const [darkMode, setDarkMode] = useState<boolean>(false);
   useEffect(() => {

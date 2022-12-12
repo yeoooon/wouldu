@@ -33,7 +33,7 @@ export interface NicknameForm {
 
 export interface SurveyForm {
   id: string;
-  survey: string[];
+  survey?: string[];
 }
 
 export interface kakaoForm {
