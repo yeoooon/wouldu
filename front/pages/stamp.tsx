@@ -17,11 +17,21 @@ import { emojiList } from "@services/utils/emojiList";
 const emotion = ["기쁨", "상처", "당황", "분노", "불안", "슬픔"];
 
 const Stamp = () => {
-  const [openStamp, setOpenStamp] = useState(false);
+  const [openStamp, setOpenStamp] = useState<boolean>(false);
+  const [isUserCalendar, setIsUserCalendar] = useState<boolean>(true);
   const { isConnected } = useGetFriend();
   const MonthEmotion = useRecoilValue(MonthEmotionAtom);
 
-  const handleToggle = () => setOpenStamp(!openStamp);
+  const handleToggle = (e: React.MouseEvent<HTMLElement>) => {
+    const target = e.target as HTMLDivElement;
+    if (target.id === "user") {
+      setIsUserCalendar(true);
+      setOpenStamp(false);
+    } else if (target.id === "partner") {
+      setIsUserCalendar(false);
+      setOpenStamp(true);
+    }
+  }
 
   return (
     <StampWrapper>
@@ -36,16 +46,16 @@ const Stamp = () => {
       <RightContainer>
         {isConnected && (
           <ButtonBox>
-            <Button onClick={handleToggle} className={openStamp ? "" : "active"}>
+            <Button onClick={handleToggle} id={"user"} className={openStamp ? "" : "active"}>
               나
             </Button>
-            <Button onClick={handleToggle} className={openStamp ? "active" : ""}>
+            <Button onClick={handleToggle} id={"partner"} className={openStamp ? "active" : ""}>
               상대방
             </Button>
           </ButtonBox>
         )}
         <CalendarBox>
-          <EmotionCalendar />
+          <EmotionCalendar isUserCalendar={isUserCalendar} />
         </CalendarBox>
         <EmotionBox>
           {isConnected ? (
