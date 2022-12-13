@@ -6,13 +6,17 @@ import StampTodoList from "@components/page/stamp/StampTodoList";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { GetServerSidePropsContext } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useGetFriend } from "@services/utils/useGetFriend";
+import { useRecoilValue } from "recoil";
+import { MonthEmotionAtom } from "@recoil/stamp";
+import Link from "next/link";
 
 const Stamp = () => {
   const [openStamp, setOpenStamp] = useState(false);
   const { isConnected } = useGetFriend();
+  const MonthEmotion = useRecoilValue(MonthEmotionAtom);
 
   const handleToggle = () => setOpenStamp(!openStamp);
 
@@ -42,12 +46,25 @@ const Stamp = () => {
         </CalendarBox>
         <EmotionBox>
           {isConnected ? (
+            Object.keys(MonthEmotion).length !== 0 ?
             <>
               <EmotionGraph />
               <EmotionAnalysis />
-            </>
+            </> : 
+            <TextBox>
+              <p>분석할 일기가 없습니다.</p>
+              <p>일기를 작성하고 감정을 분석해보세요.</p>
+              <Link href="/diary">
+                <button>일기 작성하러 가기</button>
+              </Link>
+            </TextBox>
           ) : (
-            <p>친구와 연결하고 감정 분석 기능을 경험해 보세요!</p>
+            <TextBox>
+              <p>친구와 연결하고 감정 분석 기능을 경험해 보세요!</p>
+              <Link href="/mypage">
+                <button>친구 연결하러 가기</button>
+              </Link>
+            </TextBox>
           )}
         </EmotionBox>
       </RightContainer>
@@ -120,4 +137,11 @@ const EmotionBox = styled(CalendarBox)`
   border-radius: ${props => props.theme.borderSize.borderSm};
   background-color: ${props => props.theme.color.purpleBox};
   justify-content: center;
+`;
+const TextBox = styled(Box)`
+  flex-direction: column;
+  gap: 10px;
+  button {
+    margin-top: 1em;
+  }
 `;
