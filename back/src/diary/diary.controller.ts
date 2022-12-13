@@ -60,7 +60,11 @@ export class DiaryController {
       diaryList = await this.diaryService.findDiaryList(userId);
     }
 
-    if (diaryList === null || diaryList.diaries.length === 0) {
+    if (
+      diaryList?.message ||
+      diaryList === null ||
+      diaryList.diaries.length === 0
+    ) {
       return response.status(204).send();
     }
 
