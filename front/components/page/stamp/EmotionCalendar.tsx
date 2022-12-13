@@ -1,21 +1,27 @@
-import { LeftarrowIcon, RightarrowIcon } from '@components/icons/ArrowIcons';
-import { MonthEmotionAtom } from '@recoil/stamp';
-import { getMonthEmotion } from '@services/api/stamp';
-import { getEmoji } from '@services/utils/getEmoji';
-import { Box } from '@styles/layout';
-import { useQuery } from '@tanstack/react-query';
-import { MonthEmotionProps } from '@type/stamp';
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
-import styled, { css } from 'styled-components';
+import { LeftarrowIcon, RightarrowIcon } from "@components/icons/ArrowIcons";
+import { MonthEmotionAtom } from "@recoil/stamp";
+import { getMonthEmotion, getPartnerMonthEmotion } from "@services/api/stamp";
+import { getEmoji } from "@services/utils/getEmoji";
+import { Box } from "@styles/layout";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { MonthEmotionProps } from "@type/stamp";
+import * as React from "react";
+import { useState, useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import styled, { css } from "styled-components";
+// import { useGetEmotionQuery } from '@services/utils/useGetEmotionQuery';
+import { today } from "@recoil/diary";
 
-const EmotionCalendar = () => {
-  const setMonthEmotionData = useSetRecoilState(MonthEmotionAtom); 
+interface calendarProps {
+  isUserCalendar: boolean;
+}
+
+const EmotionCalendar = ({ isUserCalendar }: calendarProps) => {
+  const setMonthEmotionData = useSetRecoilState(MonthEmotionAtom);
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  const DAYS_OF_THE_WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-  const MONTHS = ['1 월', '2 월', '3 월', '4 월', '5 월', '6 월', '7 월', '8 월', '9 월', '10 월', '11 월', '12 월'];
+  const DAYS_OF_THE_WEEK = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+  const MONTHS = ["1 월", "2 월", "3 월", "4 월", "5 월", "6 월", "7 월", "8 월", "9 월", "10 월", "11 월", "12 월"];
 
   const today = new Date();
   const [date, setDate] = useState(today);
@@ -24,19 +30,60 @@ const EmotionCalendar = () => {
   const [year, setYear] = useState(date.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date));
 
-  const { data: MonthEmotion } = useQuery(
-    ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
-    () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
+  // const results = useQueries({
+  //   queries: [
+  //   {
+  //     queryKey: ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
+  //     queryFn: () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
+  //     enabled: !!isUserCalendar,
+  //   },
+  //   {
+  //     queryKey: ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
+  //     queryFn: () => getPartnerMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
+  //     enabled: !isUserCalendar,
+  //   },
+  // ]});
+
+  // useEffect(() => {
+  //   console.log(results);
+  // }, [results]);
+
+  // const { MonthEmotion } = useGetEmotionQuery(isUserCalendar, year, month);
+
+  // const { data: MonthEmotion } = useQuery(
+  //   ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
+  //   () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
+  //   {
+  //     onSuccess: (value) => {
+  //       setMonthEmotionData(value);
+  //     },
+  //   },
+  // );
+
+  const { data: emotion } = useQuery(
+    [
+      "emotion",
+      isUserCalendar ? "me" : "friend",
+      year.toString(),
+      (month + 1 <= 9 ? "0" + (month + 1) : month + 1).toString(),
+    ],
+    () => {
+      return isUserCalendar
+        ? getMonthEmotion({ nowYear: year, nowMonth: month + 1 })
+        : getPartnerMonthEmotion({ nowYear: year, nowMonth: month + 1 });
+    },
     {
-      onSuccess: (value) => {
-        setMonthEmotionData(value);
-      },
+      onSuccess: data => setMonthEmotionData(data),
     },
   );
 
-  const checkData = ({...data} = {}) => {
-    if(data !== undefined && data !== null) {
-      return Object.keys(data)
+  useEffect(() => {
+    console.log("내감정!!", emotion);
+  }, [emotion]);
+
+  const checkData = ({ ...data } = {}) => {
+    if (data !== undefined && data !== null) {
+      return Object.keys(data);
     } else {
       return [];
     }
@@ -65,27 +112,21 @@ const EmotionCalendar = () => {
     <Frame>
       <Header>
         <Button onClick={() => setDate(new Date(year, month - 1, day))}>
-          <LeftarrowIcon color={"#5C38FF"}/>
+          <LeftarrowIcon color={"#5C38FF"} />
         </Button>
         <MonthBox>
-          {/* <Year>
-            {year}년
-          </Year> */}
-          <Month>
-            {MONTHS[month]}
-          </Month>
+          <Year>{year}년</Year>
+          <Month>{MONTHS[month]}</Month>
         </MonthBox>
         <Button onClick={() => setDate(new Date(year, month + 1, day))}>
-          <RightarrowIcon color={"#5C38FF"}/>
+          <RightarrowIcon color={"#5C38FF"} />
         </Button>
       </Header>
       <Body>
         <WeekBox>
-          {DAYS_OF_THE_WEEK.map((w) => (
+          {DAYS_OF_THE_WEEK.map(w => (
             <WeekTile key={w}>
-              <WeekText>
-                {w}
-              </WeekText>
+              <WeekText>{w}</WeekText>
             </WeekTile>
           ))}
         </WeekBox>
@@ -104,12 +145,8 @@ const EmotionCalendar = () => {
                   isSelected={d === day}
                   notInMonth={d < 1}
                 >
-                  {d > 0 ? <DayText>{d}</DayText> : null}
-                  {checkData(MonthEmotion)?.includes(String(d)) ?
-                  <EmojiBox key={d}>
-                    {getEmoji({data: MonthEmotion, day: d})}
-                  </EmojiBox>
-                  : null}
+                  {d > 0 ? <DayText>{d}</DayText> : ""}
+                  {emotion && d in emotion ? <EmojiBox key={d}>{getEmoji(emotion[d])}</EmojiBox> : null}
                 </DayTile>
               );
             })}
@@ -117,7 +154,7 @@ const EmotionCalendar = () => {
       </Body>
     </Frame>
   );
-}
+};
 
 const Frame = styled.div`
   position: relative;
@@ -138,7 +175,6 @@ const Header = styled.div`
   margin-bottom: 0.5em;
 `;
 const MonthBox = styled(Box)`
-  flex-direction: column;
   margin: 0 0.5em;
 `;
 const Year = styled(Box)`
@@ -148,8 +184,7 @@ const Year = styled(Box)`
 `;
 const Month = styled(Box)`
   color: ${props => props.theme.color.fontMain};
-  font-size: ${props => props.theme.fontSize.textLg};
-  font-weight: 500;
+  font-size: ${props => props.theme.fontSize.textMd};
 `;
 const ButtonBox = styled(Box)`
   height: 100%;
@@ -192,7 +227,7 @@ const WeekTile = styled.div`
   border-radius: ${props => props.theme.borderSize.borderSm};
   cursor: pointer;
 `;
-const DayTile = styled.div<{isToday : boolean, isSelected: boolean, notInMonth: boolean}>`
+const DayTile = styled.div<{ isToday: boolean; isSelected: boolean; notInMonth: boolean }>`
   width: 14.28%;
   height: 8.3vh;
   display: flex;
@@ -209,33 +244,34 @@ const DayTile = styled.div<{isToday : boolean, isSelected: boolean, notInMonth: 
   &.shortHeight {
     height: 7vh;
   }
-  ${(props) =>
+  ${props =>
     props.isToday &&
     css`
       background: ${props => props.theme.color.grayBox};
       font-weight: bold;
       color: ${props => props.theme.color.fontPoint};
-        :hover, :focus {
-          background: #6f48eb33;
-          font-weight: bold;
-          color: ${props => props.theme.color.fontPoint};
-        }
+      :hover,
+      :focus {
+        background: #6f48eb33;
+        font-weight: bold;
+        color: ${props => props.theme.color.fontPoint};
+      }
     `}
 
-  ${(props) =>
+  ${props =>
     props.isSelected &&
     css`
-        background: rgba(219, 202, 244, 0.5);
-        color: ${props => props.theme.color.fontPoint};
+      background: rgba(219, 202, 244, 0.5);
+      color: ${props => props.theme.color.fontPoint};
     `}
-  ${(props) =>
+  ${props =>
     props.notInMonth &&
     css`
+      background: none;
+      border: none;
+      :hover {
         background: none;
-        border: none;
-        :hover {
-          background: none;
-        }
+      }
     `}
 `;
 const EmojiBox = styled(Box)`
