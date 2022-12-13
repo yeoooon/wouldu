@@ -288,4 +288,4 @@ const DayText = styled.p`
   margin: 0.5em;
 `;
 
-export default EmotionCalendar;
+export default React.memo(EmotionCalendar);

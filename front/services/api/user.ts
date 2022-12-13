@@ -105,8 +105,11 @@ export const ChangeSurveyCategory = async (surveyInfo: SurveyForm) => {
 
 //카카오 로그인
 export const kakaoLogin = async (code: string) => {
+  console.log("소셜로그인호출------------------------");
   try {
     const { data } = await axiosInstance.get(`auth/social/kakao?code=${code}`);
+    setCookie("userToken", data?.accessToken);
+
     return data;
   } catch (err) {
     console.error(err);
