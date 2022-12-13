@@ -12,6 +12,9 @@ import { useGetFriend } from "@services/utils/useGetFriend";
 import { useRecoilValue } from "recoil";
 import { MonthEmotionAtom } from "@recoil/stamp";
 import Link from "next/link";
+import { emojiList } from "@services/utils/emojiList";
+
+const emotion = ["기쁨", "상처", "당황", "분노", "불안", "슬픔"];
 
 const Stamp = () => {
   const [openStamp, setOpenStamp] = useState(false);
@@ -53,26 +56,18 @@ const Stamp = () => {
             </> : 
             <TextBox>
               <p>분석할 일기가 없습니다.</p>
-              <p>일기를 작성하고 감정을 분석해보세요.</p>
-              <Link href="/diary">
-                <button>일기 작성하러 가기</button>
-              </Link>
+              <EmojiBox>
+                {emotion.map(e => emojiList(e, 20))}
+              </EmojiBox>
             </TextBox>
           ) : (
-            <TextBox>
-              <p>친구와 연결하고 감정 분석 기능을 경험해 보세요!</p>
-              <Link href="/mypage">
-                <button>친구 연결하러 가기</button>
-              </Link>
-            </TextBox>
+            <p>친구와 연결하고 감정 분석 기능을 경험해 보세요!</p>
           )}
         </EmotionBox>
       </RightContainer>
     </StampWrapper>
   );
 };
-
-export default Stamp;
 
 export const getServerSideProps = withGetServerSideProps(async (context: GetServerSidePropsContext) => {
   return {
@@ -140,8 +135,10 @@ const EmotionBox = styled(CalendarBox)`
 `;
 const TextBox = styled(Box)`
   flex-direction: column;
-  gap: 10px;
-  button {
-    margin-top: 1em;
-  }
+  gap: 1.5em;
 `;
+const EmojiBox = styled(Box)`
+  gap: 1em;
+`;
+
+export default Stamp;
