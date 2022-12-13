@@ -1,17 +1,17 @@
-import { Box, Container } from '@styles/layout'
-import React, { useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { Box, Container } from "@styles/layout";
+import React, { useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { SubmitHandler, useForm } from "react-hook-form";
-import styled from 'styled-components'
-import { diarywriteState, clickedDiaryDateState } from '../../../recoil/diary';
-import { postDiary } from '../../../services/api/diary';
-import { Diary } from '@type/diary';
-import { useQueryClient, useMutation } from '@tanstack/react-query';
+import styled from "styled-components";
+import { diarywriteState, clickedDiaryDateState } from "../../../recoil/diary";
+import { postDiary } from "../../../services/api/diary";
+import { Diary } from "@type/diary";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 const DiaryTextarea = () => {
   const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
   const queryClient = useQueryClient();
-  const handleBackClick = () => setIsTextareaOpen(!isTextareaOpen);
+  const handleBackClick = () => setIsTextareaOpen(false);
   const pickDay = useRecoilValue(clickedDiaryDateState);
 
   const {
@@ -21,41 +21,37 @@ const DiaryTextarea = () => {
     formState: { errors },
   } = useForm<{ content: string }>();
 
-  const updateMutation = useMutation((data : {content: string}) => postDiary(data), {
+  const updateMutation = useMutation((data: { content: string }) => postDiary(data), {
     onSuccess: () => {
       const [year, month, day] = pickDay.split("-");
       queryClient.invalidateQueries(["diaries", year, month]);
-    }
-  })
+    },
+  });
 
-  const handlePostSubmit: SubmitHandler<{ content: string }> = (data) => {
+  const handlePostSubmit: SubmitHandler<{ content: string }> = data => {
     updateMutation.mutate(data);
-    setIsTextareaOpen(!isTextareaOpen);
-  }
+    setIsTextareaOpen(false);
+  };
 
   return (
     <TextContainer>
       <FormBox onSubmit={handleSubmit(handlePostSubmit)}>
         <Textarea
           {...register("content", {
-            required: true
+            required: true,
           })}
           autoFocus
           placeholder="오늘의 일기를 작성해주세요.
           수정, 삭제가 불가하니 신중하게 적어주세요 *^^*"
         />
         <ButtonBox>
-          <BackButton onClick={handleBackClick}>
-            뒤로 가기
-          </BackButton>
-          <SaveButton type="submit">
-            나의 일기 저장하기
-          </SaveButton>
+          <BackButton onClick={handleBackClick}>뒤로 가기</BackButton>
+          <SaveButton type="submit">나의 일기 저장하기</SaveButton>
         </ButtonBox>
       </FormBox>
     </TextContainer>
-  )
-}
+  );
+};
 
 const TextContainer = styled(Container)`
   position: relative;
@@ -92,5 +88,5 @@ const SaveButton = styled.button`
   padding: 0.7em 2em;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `;
-const BackButton =styled(SaveButton)``;
+const BackButton = styled(SaveButton)``;
 export default DiaryTextarea;

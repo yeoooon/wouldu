@@ -1,10 +1,10 @@
-import { Box } from '@styles/layout';
-import React from 'react'
-import Image from 'next/image';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { diarywriteState, today, clickedDiaryDateState } from '@recoil/diary';
-import styled from 'styled-components';
-import { DiaryProps } from '@type/diary';
+import { Box } from "@styles/layout";
+import React from "react";
+import Image from "next/image";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { diarywriteState, today, clickedDiaryDateState } from "@recoil/diary";
+import styled from "styled-components";
+import { DiaryProps } from "@type/diary";
 import { UserIcon } from "@components/icons/UserIcon";
 
 const UserDiary = ({ diary }: DiaryProps) => {
@@ -12,41 +12,36 @@ const UserDiary = ({ diary }: DiaryProps) => {
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
 
-  const handleToggle = () => setIsTextareaOpen(!isTextareaOpen);
+  const handleToggle = () => setIsTextareaOpen(true);
 
   return (
     <>
-    {diary?
-      <DiaryBox>
-        <ProfileBox>
-          <UserIcon width={30} height={30} />
-          <UserName>{diary.nickname}</UserName>
-        </ProfileBox>
-        <DiaryContent>
-          {diary.content}
-        </DiaryContent>
-      </DiaryBox>
-      :
-      <UnwrittenDiaryBox>
-        {clickedDiaryDate.substring(0, 10) === todayDate?
-          <>
-            <Text>
-              아직 일기가 작성되지 않았습니다.<br/>
-              오늘의 일기를 작성하여 친구와 공유해 보세요.
-            </Text>
-            <Button onClick={handleToggle}>
-              나의 일기 작성하러 가기
-            </Button>
-          </>
-          :
-          <>
-            <Text>
-              작성된 일기가 없습니다.
-            </Text>
-          </>    
-        }
-      </UnwrittenDiaryBox>
-    }
+      {diary ? (
+        <DiaryBox>
+          <ProfileBox>
+            <UserIcon width={30} height={30} />
+            <UserName>{diary.nickname}</UserName>
+          </ProfileBox>
+          <DiaryContent>{diary.content}</DiaryContent>
+        </DiaryBox>
+      ) : (
+        <UnwrittenDiaryBox>
+          {clickedDiaryDate.substring(0, 10) === todayDate ? (
+            <>
+              <Text>
+                아직 일기가 작성되지 않았습니다.
+                <br />
+                오늘의 일기를 작성하여 친구와 공유해 보세요.
+              </Text>
+              <Button onClick={handleToggle}>나의 일기 작성하러 가기</Button>
+            </>
+          ) : (
+            <>
+              <Text>작성된 일기가 없습니다.</Text>
+            </>
+          )}
+        </UnwrittenDiaryBox>
+      )}
     </>
   );
 };
