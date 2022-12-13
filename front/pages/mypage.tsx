@@ -21,7 +21,6 @@ const Mypage = () => {
       </div>
       <div className="main">
         {pageState === "mypage" && <MyInfo></MyInfo>}
-        {/* {pageState === "profile" && <EditProfile></EditProfile>} */}
         {pageState === "connect" && <EditConnection></EditConnection>}
       </div>
     </MypageArea>
