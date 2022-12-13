@@ -20,7 +20,7 @@ export class DiaryService {
     const { content } = createDiaryDto;
 
     const emotion = await this.httpService.axiosRef.get(
-      'http://kdt-ai5-team05.elicecoding.com:3000/?sentence=' + content,
+      'http://kdt-ai5-team05.elicecoding.com:3306/?sentence=' + content,
     );
 
     diary.friendId = await this.friendService.findFriendId(currentUserId);

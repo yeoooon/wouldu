@@ -13,6 +13,7 @@ import { UserService } from 'src/user/user.service';
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly userService: UserService,
     private jwtService: JwtService,
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -64,24 +65,44 @@ export class AuthService {
         },
       }),
     );
+    let payload;
     const email =
       userInfo.data.kakao_account.email ?? userInfo.data.id + '@kakao.com';
-    console.log(email);
     const data = await this.userRepository.findOne({ where: { email: email } });
-    console.log(data);
     if (!data) {
       const user = new User();
-
       const signupVerifyToken = uuid.v4();
       user.email = email;
-      user.nickname = data.nickname;
+      user.nickname = userInfo.data.properties.nickname;
       user.hashedPassword = 'kakao';
       user.socialId = 'kakao' ?? null;
       user.profileImgUrl = null;
       user.signupVerifyToken = signupVerifyToken;
       user.registerProgress = 1;
       user.friendCode = await this.userService.makeFriendCode();
-      await this.userRepository.save(user);
+      const newUserInfo = await this.userRepository.save(user);
+
+      payload = { userId: newUserInfo.id };
+
+      return {
+        accessToken: this.jwtService.sign(payload),
+        id: newUserInfo.id,
+        email: user.email,
+        nickname: user.nickname,
+        friendCode: user.friendCode,
+        isFirstLogin: 0,
+      };
+    } else {
+      payload = { userId: data.id };
+
+      return {
+        accessToken: this.jwtService.sign(payload),
+        id: data.id,
+        email: data.email,
+        nickname: data.nickname,
+        friendCode: data.friendCode,
+        isFirstLogin: 1,
+      };
     }
   }
 }

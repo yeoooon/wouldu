@@ -25,7 +25,6 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private emailService: EmailService,
-    private authService: AuthService,
     @InjectRepository(Friend)
     private friendRepository: Repository<Friend>,
     private dataSource: DataSource,
