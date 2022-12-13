@@ -1,16 +1,22 @@
 import { LeftarrowIcon, RightarrowIcon } from '@components/icons/ArrowIcons';
 import { MonthEmotionAtom } from '@recoil/stamp';
-import { getMonthEmotion } from '@services/api/stamp';
+import { getMonthEmotion, getPartnerMonthEmotion } from '@services/api/stamp';
 import { getEmoji } from '@services/utils/getEmoji';
 import { Box } from '@styles/layout';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { MonthEmotionProps } from '@type/stamp';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
+import { useGetEmotionQuery } from '@services/utils/useGetEmotionQuery';
+import { today } from '@recoil/diary';
 
-const EmotionCalendar = () => {
+interface calendarProps {
+  isUserCalendar: boolean
+}
+
+const EmotionCalendar = ({ isUserCalendar }: calendarProps) => {
   const setMonthEmotionData = useSetRecoilState(MonthEmotionAtom); 
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -24,15 +30,57 @@ const EmotionCalendar = () => {
   const [year, setYear] = useState(date.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date));
 
-  const { data: MonthEmotion } = useQuery(
-    ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
-    () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
-    {
-      onSuccess: (value) => {
-        setMonthEmotionData(value);
-      },
-    },
-  );
+  // const results = useQueries({
+  //   queries: [
+  //   {
+  //     queryKey: ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
+  //     queryFn: () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
+  //     enabled: !!isUserCalendar,
+  //   },
+  //   {
+  //     queryKey: ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
+  //     queryFn: () => getPartnerMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
+  //     enabled: !isUserCalendar,
+  //   },
+  // ]});
+
+  // useEffect(() => {
+  //   console.log(results);
+  // }, [results]);
+
+  // const { MonthEmotion } = useGetEmotionQuery(isUserCalendar, year, month);
+
+  // const { data: MonthEmotion } = useQuery(
+  //   ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
+  //   () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
+  //   {
+  //     onSuccess: (value) => {
+  //       setMonthEmotionData(value);
+  //     },
+  //   },
+  // );
+
+  // const { data: MonthEmotion } = useQuery(
+  //   ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
+  //   () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
+  //   {
+  //     enabled: isUserCalendar,
+  //     onSuccess: (value) => {
+  //       setMonthEmotionData(value);
+  //     },
+  //   },
+  // );
+
+  // const { data: MonthEmotion } = useQuery(
+  //   ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
+  //   () => getPartnerMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
+  //   {
+  //     enabled: !isUserCalendar,
+  //     onSuccess: (value) => {
+  //       setMonthEmotionData(value);
+  //     },
+  //   },
+  // );
 
   const checkData = ({...data} = {}) => {
     if(data !== undefined && data !== null) {
@@ -90,7 +138,7 @@ const EmotionCalendar = () => {
           ))}
         </WeekBox>
         <DayBox>
-          {Array(monthDays)
+          {/* {Array(monthDays)
             .fill(null)
             .map((_, index) => {
               const d = index - (startDay - 2);
@@ -112,7 +160,7 @@ const EmotionCalendar = () => {
                   : null}
                 </DayTile>
               );
-            })}
+            })} */}
         </DayBox>
       </Body>
     </Frame>
