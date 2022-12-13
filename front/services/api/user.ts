@@ -2,7 +2,6 @@ import { FindPasswordFormValue } from "@components/FindPasswordForm";
 import { getCookie, removeCookie, setCookie } from "@services/utils/cookies";
 import { kakaoForm, NicknameForm, PasswordForm, SurveyForm, UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";
-import qs from "qs";
 import { axiosInstance } from "./axiosInstance";
 
 //회원가입
@@ -12,8 +11,6 @@ export const userJoin = async (joinInfo: UserJoinForm) => {
     const { status } = await axiosInstance.post("user/register", bodyData);
     return status;
   } catch (err) {
-    // console.log(err);
-
     if (axios.isAxiosError(err) && err?.response?.status === 422) {
       return err.response.status;
     }
@@ -22,10 +19,8 @@ export const userJoin = async (joinInfo: UserJoinForm) => {
 
 //회원정보
 export const getUserInfo = async (id: string) => {
-  // console.log("getUserInfo", id);
   try {
     const { data } = await axiosInstance.get(`user/${id}`);
-    // console.log(data);
     return data;
   } catch (err) {
     if (axios.isAxiosError(err) && err?.response?.status) {
@@ -50,11 +45,11 @@ export const requestLogin = async (loginInfo: UserLoginForm) => {
   }
 };
 //회원탈퇴
-export const deleteUser = async () => {
+export const deleteUser = async (id: string) => {
   try {
-    const { data } = await axiosInstance.put("user/delete");
+    const { status } = await axiosInstance.delete(`user/${id}`);
     removeCookie("userToken");
-    return data;
+    return status;
   } catch (err) {
     console.log(err);
     // if (axios.isAxiosError(err) && err.response?.status === 400) {

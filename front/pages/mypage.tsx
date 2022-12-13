@@ -1,18 +1,18 @@
-import { useState, Dispatch, SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
-import { Wrapper, Container, Box } from "../styles/layout";
+import { Wrapper } from "../styles/layout";
 
 import MypageTab from "@components/page/mypage/mypagetab";
 import MyInfo from "@components/page/mypage/myinfo";
 import EditConnection from "@components/page/mypage/EditConnection";
-import EditProfile from "@components/page/mypage/editprofile";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { mypageState } from "@recoil/mypage";
 
 const Mypage = () => {
   const pageState = useRecoilValue(mypageState);
+  useEffect(() => {});
 
   return (
     <MypageArea>

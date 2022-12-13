@@ -77,3 +77,15 @@ export const changeDiaryTitle = async (title: string) => {
     }
   }
 };
+
+// 친구 끊기
+export const disconnectFriend = async () => {
+  try {
+    const { status } = await axiosInstance.delete("friend");
+    return status;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err?.response?.status) {
+      return err.response.status;
+    }
+  }
+};

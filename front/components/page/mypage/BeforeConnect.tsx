@@ -1,6 +1,7 @@
 import { CirclePlusIcon } from "@components/icons/CircleIcon";
 import { UserIcon } from "@components/icons/UserIcon";
 import { isCodeModalAtom } from "@recoil/friend";
+import { mypageState } from "@recoil/mypage";
 import { userAtom } from "@recoil/user";
 import Image from "next/image";
 import { useEffect } from "react";

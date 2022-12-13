@@ -32,7 +32,7 @@ const AlarmModal = () => {
 
   const deleteMutation = useMutation((data: ReceiveFriend) => rejectFriend(data?.id!), {
     onSuccess: (status, value) => {
-      queryClient.invalidateQueries(["friend", "list"]);
+      queryClient.invalidateQueries(["friend", "info"]);
       alert("친구거절이 완료되었습니다.");
     },
     onError: () => {

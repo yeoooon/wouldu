@@ -4,7 +4,7 @@ import { UserIcon } from "@components/icons/UserIcon";
 import { today } from "@recoil/diary";
 import { isDisconnectModalAtom } from "@recoil/modal";
 import { userAtom } from "@recoil/user";
-import { changeDiaryTitle, getFriend } from "@services/api/friend";
+import { changeDiaryTitle, disconnectFriend, getFriend } from "@services/api/friend";
 import { fontSize } from "@styles/common_style";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Friend, FriendProps } from "@type/friend";
@@ -94,14 +94,16 @@ const AfterConnect = ({ friend }: FriendProps) => {
               <UserIcon width={80} height={80} />
               <p className="userName">{user?.nickname}</p>
             </User>
-            <HandshakeIcon/>
+            <HandshakeIcon />
             <Mate>
               <UserIcon width={80} height={80} />
               <p className="mateName">{friend?.toUserNickname}</p>
             </Mate>
           </Profile>
           <Dday>
-            <p><BoldText>{friend?.toUserNickname}</BoldText>와 일기를 공유한 지 <BoldText>{day}</BoldText>일</p>
+            <p>
+              <BoldText>{friend?.toUserNickname}</BoldText>와 일기를 공유한 지 <BoldText>{day}</BoldText>일
+            </p>
             <p>앞으로 더 많은 일기를 기록하여 서로의 감정을 공유해보아요~</p>
           </Dday>
         </div>
@@ -159,7 +161,7 @@ const Profile = styled.div`
 const User = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;;
+  align-items: center;
   gap: 10px;
   width: 120px;
   font-weight: 600;

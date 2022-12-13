@@ -1,6 +1,8 @@
 import { atom } from "recoil";
 
-export const mypageState = atom({
+type tab = "mypage" | "connect";
+
+export const mypageState = atom<tab>({
   key: "mypagetab",
   default: "mypage",
-})
+});
