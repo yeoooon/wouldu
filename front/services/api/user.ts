@@ -103,25 +103,12 @@ export const ChangeSurveyCategory = async (surveyInfo: SurveyForm) => {
   }
 };
 
-//카카오 토큰
-export const getKakaoToken = async (code: string) => {
+//카카오 로그인
+export const kakaoLogin = async (code: string) => {
   try {
     const { data } = await axiosInstance.get(`auth/social/kakao?code=${code}`);
     return data;
   } catch (err) {
     console.error(err);
   }
-};
-
-//카카오 사용자 정보
-export const getUserFromKakao = async (access_token: string) => {
-  const userInfoUrl = "https://kapi.kakao.com/v2/user/me";
-
-  const response = await fetch(userInfoUrl, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${access_token}`,
-    },
-  }).then(res => res.json());
-  return response;
 };
