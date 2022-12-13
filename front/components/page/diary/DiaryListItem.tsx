@@ -6,11 +6,13 @@ import DiaryListDay from './DiaryListDay';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { clickedDiaryDateState, clickedDiaryMonthState, today } from '@recoil/diary';
 import { useGetDiaries } from '@services/utils/useGetDiaries';
+import { diarywriteState } from '@recoil/diary';
 
 const DiaryListItem = () => {
   const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
   const clickedMonth = useRecoilValue(clickedDiaryMonthState);
+  const [isTextAreaOpen, setIsTextAreaOpen] = useRecoilState(diarywriteState);
 
   const getTodayMain = () => {
     setClickedDiaryDate(todayDate);
@@ -22,6 +24,7 @@ const DiaryListItem = () => {
 
   const handleClickDate = (e: React.MouseEvent<HTMLElement>) => {
     if (e.target instanceof Element) setClickedDiaryDate(e.currentTarget.id);
+    setIsTextAreaOpen((pre) => !pre);
   }
 
   const { monthDiaryList } = useGetDiaries(clickedMonth);
