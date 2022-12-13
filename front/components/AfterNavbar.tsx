@@ -64,26 +64,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
     if (result) {
       setUser(null);
       removeCookie("userToken");
-      // queryClient.clear();
-      // queryClient.removeQueries();
-      queryCache.clear();
-
-      // const tmpQueryKeys: string[] = [];
-      // const remainCache = queryClient.getQueryCache() as any;
-
-      // remainCache.queries.forEach((q: any) => {
-      //   console.log(q.queryKey);
-      //   tmpQueryKeys.concat(q.queryKey);
-      // });
-      // const remainQuerykeys = tmpQueryKeys.filter((key, index, array) => key === array[index]);
-      // remainQuerykeys.forEach(key => {
-      //   queryClient.removeQueries({ queryKey: [key] });
-      // });
-
-      const _remainCache = queryClient.getQueryCache();
-      console.log("_remainCache", _remainCache);
-
-      router.replace("/");
+      router.push("/");
     }
   };
   return (
@@ -119,7 +100,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
               </TextBox>
               {router.pathname === navLinks[index] ? (
                 <ArrowBox>
-                  <RightarrowIcon color={"#5C38FF"}/>
+                  <RightarrowIcon color={"#5C38FF"} />
                 </ArrowBox>
               ) : (
                 ""

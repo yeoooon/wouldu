@@ -85,4 +85,4 @@ const ContentBox = styled(Box)`
   justify-content: flex-start;
   overflow-y: auto;
 `;
-export default StampTodoList;
+export default React.memo(StampTodoList);

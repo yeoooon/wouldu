@@ -9,7 +9,7 @@ import { fontSize } from "@styles/common_style";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Friend, FriendProps } from "@type/friend";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -43,7 +43,7 @@ const AfterConnect = ({ friend }: FriendProps) => {
 
   const day = useMemo(() => {
     if (friend) {
-      console.log("useMemo", "day", friend);
+      // console.log("useMemo", "day", friend);
       const today = new Date();
       const targetDay = new Date(friend?.createdAt);
 
@@ -218,4 +218,5 @@ const BoldText = styled.span`
   margin: 0 3px;
 `;
 
+// export default React.memo(AfterConnect);
 export default AfterConnect;

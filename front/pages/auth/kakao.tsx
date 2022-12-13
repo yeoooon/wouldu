@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { kakaoLogin } from "@services/api/user";
 import { useSetRecoilState } from "recoil";
+import { setCookie } from "@services/utils/cookies";
+import { User } from "@type/user";
 
 const KakaoAuth = () => {
   const setUser = useSetRecoilState(userAtom);
@@ -12,10 +14,12 @@ const KakaoAuth = () => {
 
   async function kakaoRequest(authCode: string) {
     console.log("authCOde", authCode);
-    const kakaoUser = await kakaoLogin(authCode as string);
+    const kakaoUser: User = await kakaoLogin(authCode as string);
     console.log("kakaoUser", kakaoUser);
-    setUser(kakaoUser);
+    // localStorage.setItem("userToken", kakaoUser?.accessToken);
+    setUser(prev => ({ ...prev, ...kakaoUser } as any));
     router.replace("/");
+    // setCookie("userToken", kakaoUser?.accessToken);
   }
 
   useEffect(() => {

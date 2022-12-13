@@ -109,6 +109,7 @@ export const kakaoLogin = async (code: string) => {
   try {
     const { data } = await axiosInstance.get(`auth/social/kakao?code=${code}`);
     setCookie("userToken", data?.accessToken);
+
     return data;
   } catch (err) {
     console.error(err);
