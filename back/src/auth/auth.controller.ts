@@ -28,14 +28,6 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  // @Post('social/kakao')
-  // @ApiOperation({
-  //   summary: '소셜 로그인 - 카카오',
-  // })
-  // async kakao(@Body() socialLoginDTO: SocialLoginDTO) {
-  //   const { code } = socialLoginDTO;
-  //   return this.authService.kakao(code);
-  // }
   @Get('social/kakao')
   @ApiOperation({
     summary: '소셜 로그인 - 카카오',
