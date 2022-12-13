@@ -211,23 +211,25 @@ export class UserService {
     const friend = await this.friendRepository.findOne({
       where: { fromUserId: id },
     });
-    const friendId = friend.friendId;
+    const friendId = friend === null ? null : friend.friendId;
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      await this.diaryRepository
-        .createQueryBuilder('diary')
-        .delete()
-        .where('friendId=:friendId', { friendId })
-        .execute();
+      if (friendId !== null) {
+        await this.diaryRepository
+          .createQueryBuilder('diary')
+          .delete()
+          .where('friendId=:friendId', { friendId })
+          .execute();
 
-      await this.friendRepository
-        .createQueryBuilder('friend')
-        .delete()
-        .where('friendId=:friendId', { friendId })
-        .execute();
+        await this.friendRepository
+          .createQueryBuilder('friend')
+          .delete()
+          .where('friendId=:friendId', { friendId })
+          .execute();
+      }
 
       await this.userRepository.delete(id);
       return '회원 탈퇴 완료';
