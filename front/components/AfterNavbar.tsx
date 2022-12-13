@@ -142,7 +142,7 @@ const Nav = styled(Container)`
   padding: 2em 0;
   margin: 0;
   border-radius: 0;
-  box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
 `;
 const LogoBox = styled(Box)`
   width: 100%;

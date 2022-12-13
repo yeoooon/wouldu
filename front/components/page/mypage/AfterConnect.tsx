@@ -121,6 +121,7 @@ const ContentArea = styled(Container)`
   width: 100%;
   height: 70vh;
   padding: 1.5rem 0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   .info {
     display: flex;

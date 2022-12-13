@@ -48,9 +48,9 @@ const DiaryWrapper = styled(Wrapper)`
 `;
 
 const SidebarContainer = styled(Container)`
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   height: 95vh;
   position: relative;
-  border: 1px solid ${props => props.theme.color.border};
 `;
 
 const DiaryContainer = styled(SidebarContainer)``;

@@ -88,6 +88,7 @@ const LeftContainer = styled(Container)`
 `;
 
 const RightContainer = styled(Container)`
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   flex-direction: column;
   width: 58%;
   height: 95vh;
@@ -97,6 +98,7 @@ const LeftBox = styled(Box)`
   width: 100%;
   height: 49%;
   background-color: ${props => props.theme.color.nav};
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 const ButtonBox = styled.div`
   width: 100%;
