@@ -15,12 +15,15 @@ const About = () => {
 
   return (
     <AboutWrapper>
-      <FirstPage
-        initial="offscreen"
-        whileInView="onscreen"
-        viewport={{ once: true, amount: 0.1 }}
-      >
-        <Left variants={TextVariants}>
+      <FirstPage>
+        <Left       
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+        duration: 0.8,
+        delay: 0.5,
+        ease: [0, 0.71, 0.2, 1.01]
+      }}>
           <MainTitle>
             {aboutText[0].title}
           </MainTitle>
@@ -34,7 +37,14 @@ const About = () => {
             >우쥬 하러가기</Button>
           </Link>
         </Left>
-        <Right variants={cardVariants}>
+        <Right
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+          duration: 0.8,
+          delay: 0.5,
+          ease: [0, 0.71, 0.2, 1.01]
+        }}>
           <Image src={'/aboutpic1.png'} width={500} height={500} />
         </Right>
       </FirstPage>
