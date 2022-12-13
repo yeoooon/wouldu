@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -36,13 +31,16 @@ export class UserService {
     const user = new User();
     const { email, nickname, password, socialId, profileImgUrl } =
       createUserDto;
-    const emailExist = await this.checkUserExistsByEmail(email);
-    if (emailExist) {
-      throw new UnprocessableEntityException('이메일 중복');
+    const emailUser = await this.findOneByEmail(email);
+    if (emailUser?.registerProgress === 0) {
+      throw new HttpException('이메일 인증 중', 473);
+    }
+    if (emailUser) {
+      throw new HttpException('이메일 중복', 471);
     }
     const nicknameExist = await this.checkUserExistsByNickname(nickname);
     if (nicknameExist) {
-      throw new UnprocessableEntityException('닉네임 중복');
+      throw new HttpException('닉네임 중복', 472);
     }
     const signupVerifyToken = uuid.v4();
     user.email = email;
@@ -164,7 +162,7 @@ export class UserService {
     });
     const nicknameExist = await this.checkUserExistsByNickname(nickname);
     if (nicknameExist) {
-      throw new UnprocessableEntityException('닉네임 중복');
+      throw new HttpException('닉네임 중복', 472);
     }
     user.nickname = nickname;
 
@@ -183,7 +181,7 @@ export class UserService {
       user?.hashedPassword ?? '',
     );
     if (!isPasswordMatched) {
-      throw new HttpException('기존 비밀번호가 틀립니다', 401);
+      throw new HttpException('기존 비밀번호가 틀립니다', 491);
     }
     user.hashedPassword = await bcrypt.hash(newPassword, 10);
 

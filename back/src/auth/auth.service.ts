@@ -43,7 +43,8 @@ export class AuthService {
       password,
       user?.hashedPassword ?? '',
     );
-    if (!isPasswordMatched || user.registerProgress === 0) {
+
+    if (!isPasswordMatched) {
       return null;
     }
 
