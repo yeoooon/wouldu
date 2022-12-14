@@ -16,13 +16,13 @@ const DiaryListDay = ({ diary }: MonthDiaryProps) => {
 };
 
 const DateBox = styled(Box)`
-  width: 3.5em;
-  height: 3.5em;
+  width: 50px;
+  height: 50px;
   background-color: ${props => props.theme.color.purpleBox};
   border-radius: 0;
   flex-direction: column;
   color: ${props => props.theme.color.fontDark};
-  margin: 0 1.3em;
+  margin: 0 1em;
 `;
 
 const Date1 = styled.p`
