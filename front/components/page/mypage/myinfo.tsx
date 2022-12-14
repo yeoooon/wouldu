@@ -10,10 +10,8 @@ import { userAtom } from "@recoil/user";
 import { getUserInfo } from "@services/api/user";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@type/user";
-import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import css from "styled-jsx/css";
 import { Box, Container } from "../../../styles/layout";
 import ChangeNickname from "./modal/ChangeNickname";
 import ChangePassword from "./modal/ChangePassword";
@@ -21,7 +19,6 @@ import DeleteUserConfirm from "./modal/DeleteUserConfirm";
 
 const MyInfo = () => {
   const userAtomData = useRecoilValue(userAtom);
-  // const [user, setUser] = useState<User | null>();
   const [isSurveyOpen, setIsSurveyOpen] = useRecoilState<boolean>(isSurveyModalAtom);
   const [isDeleteUserOpen, setIsDeleteUserOpen] = useRecoilState(isDeleteUserModalAtom);
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useRecoilState(isChangePasswordModalAtom);
@@ -29,6 +26,20 @@ const MyInfo = () => {
 
   const { data: user } = useQuery<User>(["user", "info"], () => getUserInfo(userAtomData?.id!));
 
+  const handleClickNickname = () => {
+    if (user?.socialId !== "kakao") {
+      setIsChangeNicknameOpen(true);
+    } else {
+      alert("간편로그인은 닉네임을 수정할 수 없습니다.");
+    }
+  };
+  const handleClickPassword = () => {
+    if (user?.socialId !== "kakao") {
+      setIsChangePasswordOpen(true);
+    } else {
+      alert("간편로그인은 비밀번호를 수정할 수 없습니다.");
+    }
+  };
   return (
     <ContentArea>
       <UpperBox>
@@ -48,8 +59,8 @@ const MyInfo = () => {
       </UpperBox>
       <UnderButtonBox>
         <ButtonArea>
-          <EditNicknameButton onClick={() => setIsChangeNicknameOpen(true)}>닉네임 변경</EditNicknameButton>
-          <EditPasswordButton onClick={() => setIsChangePasswordOpen(true)}>비밀번호 변경</EditPasswordButton>
+          <EditNicknameButton onClick={handleClickNickname}>닉네임 변경</EditNicknameButton>
+          <EditPasswordButton onClick={handleClickPassword}>비밀번호 변경</EditPasswordButton>
         </ButtonArea>
         <DeleteUserButton onClick={() => setIsDeleteUserOpen(true)}>회원 탈퇴</DeleteUserButton>
       </UnderButtonBox>
