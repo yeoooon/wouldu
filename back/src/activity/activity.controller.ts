@@ -1,4 +1,4 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ActivityService } from './activity.service';
 
@@ -6,7 +6,7 @@ import { ActivityService } from './activity.service';
 @ApiTags('활동추천 API')
 export class ActivityController {
   constructor(private readonly activityService: ActivityService) {}
-  @Get()
+  @Post()
   async getActivity() {
     return this.activityService.getActivity();
   }
