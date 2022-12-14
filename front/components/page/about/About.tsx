@@ -12,61 +12,50 @@ import { motion, Variants } from "framer-motion";
 import { cardVariants, TextVariants } from "./styles";
 
 const About = () => {
-
   return (
     <AboutWrapper>
       <FirstPage>
-        <Left       
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-        duration: 0.8,
-        delay: 0.5,
-        ease: [0, 0.71, 0.2, 1.01]
-      }}>
-          <MainTitle>
-            {aboutText[0].title}
-          </MainTitle>
-          <SubTitle>
-            {aboutText[0].dessciption}
-          </SubTitle>
+        <Left
+          initial={{ opacity: 0.6, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 0.8,
+            ease: [0, 0.71, 0.2, 1.01],
+          }}
+        >
+          <MainTitle>{aboutText[0].title}</MainTitle>
+          <SubTitle>{aboutText[0].dessciption}</SubTitle>
           <Link href="/login">
-            <Button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >우쥬 하러가기</Button>
+            <Button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              우쥬 하러가기
+            </Button>
           </Link>
         </Left>
         <Right
-          initial={{ opacity: 0, scale: 0.5 }}
+          initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{
-          duration: 0.8,
-          delay: 0.5,
-          ease: [0, 0.71, 0.2, 1.01]
-        }}>
-          <Image src={'/aboutpic1.png'} width={500} height={500} />
+            duration: 0.8,
+            ease: [0, 0.71, 0.2, 1.01],
+            delay: 0.15,
+          }}
+        >
+          <Image src={"/aboutpic1.png"} width={500} height={500} />
         </Right>
       </FirstPage>
-      <SecondPart
-        initial="offscreen"
-        whileInView="onscreen"
-        viewport={{ once: true, amount: 0.5 }}
-      >
+      <SecondPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
         <ImageArea variants={cardVariants}>
-          <Image src={'/temporaryimage.png'} width={700} height={400} />
+          <Image src={"/temporaryimage.png"} width={700} height={400} />
         </ImageArea>
         <TextArea variants={TextVariants}>
-          <IconBox><NoteIcon /></IconBox>
+          <IconBox>
+            <NoteIcon />
+          </IconBox>
           <MainText>{aboutText[1].title}</MainText>
           <SubText>{aboutText[1].dessciption}</SubText>
         </TextArea>
       </SecondPart>
-      <ThirdPart
-        initial="offscreen"
-        whileInView="onscreen"
-        viewport={{ once: true, amount: 0.5 }}
-      >
+      <ThirdPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
         <TopArea variants={TextVariants}>
           <TextArea>
             <MainText>{aboutText[2].title}</MainText>
@@ -79,35 +68,31 @@ const About = () => {
           </IconBox>
         </TopArea>
         <BottomArea variants={cardVariants}>
-          <Image src={'/temporaryimage.png'} width={380} height={250} />
-          <Image src={'/temporaryimage.png'} width={380} height={250} />
-          <Image src={'/temporaryimage.png'} width={380} height={250} />
+          <Image src={"/temporaryimage.png"} width={380} height={250} />
+          <Image src={"/temporaryimage.png"} width={380} height={250} />
+          <Image src={"/temporaryimage.png"} width={380} height={250} />
         </BottomArea>
       </ThirdPart>
-      <ForthPart
-        initial="offscreen"
-        whileInView="onscreen"
-        viewport={{ once: true, amount: 0.5 }}
-      >
+      <ForthPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
         <ImageArea variants={cardVariants}>
-          <Image src={'/temporaryimage.png'} width={700} height={400} />
+          <Image src={"/temporaryimage.png"} width={700} height={400} />
         </ImageArea>
         <TextArea variants={TextVariants}>
-          <IconBox><HomeIcon /></IconBox>
+          <IconBox>
+            <HomeIcon />
+          </IconBox>
           <MainText>{aboutText[3].title}</MainText>
           <SubText>{aboutText[3].dessciption}</SubText>
         </TextArea>
       </ForthPart>
-      <FifthPart
-        initial="offscreen"
-        whileInView="onscreen"
-        viewport={{ once: true, amount: 0.5 }}
-      >
+      <FifthPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
         <ImageArea variants={cardVariants}>
-          <Image src={'/temporaryimage.png'} width={700} height={400} />
+          <Image src={"/temporaryimage.png"} width={700} height={400} />
         </ImageArea>
         <TextArea variants={TextVariants}>
-          <IconBox><NotePadIcon /></IconBox>
+          <IconBox>
+            <NotePadIcon />
+          </IconBox>
           <MainText>{aboutText[4].title}</MainText>
           <SubText>{aboutText[4].dessciption}</SubText>
         </TextArea>
@@ -131,7 +116,7 @@ const FirstPage = styled(motion.div)`
   height: 100vh;
   color: ${colors.white};
   display: grid;
-  grid-template-columns: 50% 50%; 
+  grid-template-columns: 50% 50%;
   align-items: center;
   justify-content: center;
 `;
@@ -150,7 +135,6 @@ const MainTitle = styled.p`
   letter-spacing: 1px;
   line-height: 50px;
   white-space: pre-line;
-
 `;
 const SubTitle = styled.p`
   font-size: ${props => props.theme.fontSize.textMd};
@@ -172,7 +156,7 @@ const SecondPart = styled(motion.div)`
   width: 100%;
   height: 85vh;
   display: grid;
-  grid-template-columns: 60% 40%; 
+  grid-template-columns: 60% 40%;
 `;
 const ImageArea = styled(motion.div)`
   display: flex;
@@ -197,7 +181,7 @@ const IconBox = styled.div`
     path {
       fill: ${colors.purple_300};
     }
- }
+  }
 `;
 const MainText = styled.p`
   font-size: ${props => props.theme.fontSize.textXl};
@@ -218,7 +202,7 @@ const ThirdPart = styled(motion.div)`
   width: 100%;
   height: 85vh;
   display: grid;
-  grid-template-rows: 35% 65%; 
+  grid-template-rows: 35% 65%;
 `;
 const TopArea = styled(motion.div)`
   display: flex;
