@@ -57,7 +57,7 @@ const AlarmModal = () => {
         <ModalWrapper>
           <ModalContainer
             height="500px"
-            key="alarmModal"
+            // key="alarmModal"
             variants={ModalVariant}
             initial="initial"
             animate="animate"
