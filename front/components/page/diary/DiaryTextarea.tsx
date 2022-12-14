@@ -39,6 +39,14 @@ const DiaryTextarea = () => {
         <Textarea
           {...register("content", {
             required: true,
+            minLength: {
+              value: 10,
+              message: "원활한 감정 분석을 위해 10자 이상 입력해 주세요.",
+            },
+            maxLength: {
+              value: 5000,
+              message: "일기는 5000자까지만 입력 가능합니다.",
+            },
           })}
           autoFocus
           placeholder="오늘의 일기를 작성해주세요.

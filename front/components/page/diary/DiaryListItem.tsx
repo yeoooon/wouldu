@@ -33,7 +33,7 @@ const DiaryListItem = () => {
     <>
       {monthDiaryList &&
       monthDiaryList.length > 0 &&
-      monthDiaryList.find(el => el?.forEach(diary => isTodayWritten(diary))) ? (
+      monthDiaryList.find(el => el?.some(diary => isTodayWritten(diary))) ? (
         <></>
       ) : (
         <WriteTodayDiaryBtn onClick={getTodayMain}>오늘 일기 쓰기</WriteTodayDiaryBtn>
