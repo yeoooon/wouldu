@@ -49,12 +49,6 @@ export class UserController {
     };
   }
 
-  @Get()
-  @ApiOperation({ summary: '전체 회원 정보 조회 API' })
-  findAll() {
-    return this.userService.findAll();
-  }
-
   @Get(':id')
   @ApiOperation({ summary: '특정 회원 정보 조회 API' })
   findOne(@Param('id') id: string) {
