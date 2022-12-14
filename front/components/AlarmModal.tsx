@@ -51,20 +51,17 @@ const AlarmModal = () => {
       deleteMutation.mutate(friendInfo);
     }
   };
+  const handleCancelClick = () => {
+    setIsAlarmOpen(false);
+  };
+
   return (
     <AnimatePresence>
       {isAlarmOpen && (
         <ModalWrapper>
-          <ModalContainer
-            height="500px"
-            // key="alarmModal"
-            variants={ModalVariant}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            <Cancel onClick={() => setIsAlarmOpen(false)}>
-              <CloseIcon width={15} height={15}/>
+          <ModalContainer height="500px" {...ModalVariant}>
+            <Cancel onClick={handleCancelClick}>
+              <CloseIcon />
             </Cancel>
             <ContentArea>
               <Title>알림</Title>
@@ -86,7 +83,7 @@ const AlarmModal = () => {
               </FriendAlarm>
             </ContentArea>
           </ModalContainer>
-          <Overlay variants={OverlayVariant} initial="initial" animate="animate" exit="exit" />
+          <Overlay {...OverlayVariant} onClick={handleCancelClick} />
         </ModalWrapper>
       )}
     </AnimatePresence>

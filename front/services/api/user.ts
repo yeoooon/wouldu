@@ -1,4 +1,4 @@
-import { FindPasswordFormValue } from "@components/FindPasswordForm";
+import { FindPasswordFormValue } from "@components/FindPasswordModal";
 import { getCookie, removeCookie, setCookie } from "@services/utils/cookies";
 import { kakaoForm, NicknameForm, PasswordForm, SurveyForm, UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";
@@ -72,7 +72,7 @@ export const changePassword = async (passwordInfo: PasswordForm) => {
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.status === 491) {
       alert("현재 비밀번호가 틀립니다.");
-    } 
+    }
   }
 };
 
