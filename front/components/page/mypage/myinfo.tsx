@@ -22,7 +22,7 @@ const MyInfo = () => {
   const setIsSurveyOpen = useSetRecoilState<boolean>(isSurveyModalAtom);
   const [isDeleteUserOpen, setIsDeleteUserOpen] = useRecoilState(isDeleteUserModalAtom);
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useRecoilState(isChangePasswordModalAtom);
-  const [isChangeNickNameOpen, setIsChangeNicknameOpen] = useRecoilState(isChangeNicknameModalAtom);
+  const setIsChangeNicknameOpen = useSetRecoilState(isChangeNicknameModalAtom);
 
   const { data: user } = useQuery<User>(["user", "info"], () => getUserInfo(userAtomData?.id!));
 
@@ -64,7 +64,7 @@ const MyInfo = () => {
         </ButtonArea>
         <DeleteUserButton onClick={() => setIsDeleteUserOpen(true)}>회원 탈퇴</DeleteUserButton>
       </UnderButtonBox>
-      {isChangeNickNameOpen && <ChangeNickname />}
+      <ChangeNickname />
       {isChangePasswordOpen && <ChangePassword />}
       {isDeleteUserOpen && <DeleteUserConfirm />}
       <SurveyModal />

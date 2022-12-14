@@ -4,9 +4,11 @@ import { userAtom } from "@recoil/user";
 import { changeUserNickname } from "@services/api/user";
 import { colors } from "@styles/common_style";
 import { Box } from "@styles/layout";
+import { ModalVariant, OverlayVariant } from "@styles/ModalVariants";
 import { AgreeButton, Cancel, DenyButton, ModalContainer, ModalWrapper, Overlay, Title } from "@styles/modal_layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { NicknameForm, User } from "@type/user";
+import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -25,9 +27,12 @@ const ChangeNickname = () => {
     watch,
     formState: { errors },
   } = useForm<EditProfileFormValue>();
-  // const userAtomData = useRecoilValue(userAtom);
-  const setIsChangeNicknameOpen = useSetRecoilState(isChangeNicknameModalAtom);
+  const [changeNickname, setIsChangeNickname] = useRecoilState(isChangeNicknameModalAtom);
   const [user, setUser] = useRecoilState(userAtom);
+
+  const closeModal = () => {
+    setIsChangeNickname(false);
+  };
 
   const changeMutation = useMutation(
     (data: NicknameForm) => changeUserNickname({ id: data.id, nickname: data.nickname }),
@@ -40,58 +45,55 @@ const ChangeNickname = () => {
     },
   );
 
-  // useEffect(() => {
-  //   setUser(userAtomData);
-  // }, []);
-
   const onSubmitHandler: SubmitHandler<EditProfileFormValue> = data => {
-    setIsChangeNicknameOpen(false);
+    closeModal();
     changeMutation.mutate({ id: user?.id!, nickname: data.nickname });
-
-    //mutation ["user", "info"]
-    // changeUserNickname({ id: user?.id!, nickname: data.nickname });
   };
 
   return (
-    <ModalWrapper>
-      <ModalContainer height="300px">
-        <Cancel onClick={() => setIsChangeNicknameOpen(false)}>
-          <CloseIcon width={15} height={15}/>
-        </Cancel>
-        <Title>닉네임 변경</Title>
-        <Form onSubmit={handleSubmit(onSubmitHandler)}>
-          <InputArea>
-            <Email>
-              <label>이메일</label>
-              <input disabled placeholder={user?.email} />
-            </Email>
-            <Nickname>
-              <label>닉네임</label>
-              <input
-                defaultValue={user?.nickname}
-                {...register("nickname", {
-                  required: "수정할 닉네임을 입력해 주세요.",
-                  minLength: {
-                    value: 2,
-                    message: "2자 이상 입력해주세요.",
-                  },
-                  maxLength: {
-                    value: 8,
-                    message: "8자 이하 입력해주세요.",
-                  },
-                })}
-              />
-            </Nickname>
-            <ErrorMessage>{errors?.nickname?.message}</ErrorMessage>
-          </InputArea>
-          <ButtonArea>
-            <AgreeButton type="submit">변경</AgreeButton>
-            <DenyButton onClick={() => setIsChangeNicknameOpen(false)}>취소</DenyButton>
-          </ButtonArea>
-        </Form>
-      </ModalContainer>
-      <Overlay />
-    </ModalWrapper>
+    <AnimatePresence>
+      {changeNickname && (
+        <ModalWrapper>
+          <ModalContainer height="300px" {...ModalVariant}>
+            <Cancel onClick={closeModal}>
+              <CloseIcon width={15} height={15} />
+            </Cancel>
+            <Title>닉네임 변경</Title>
+            <Form onSubmit={handleSubmit(onSubmitHandler)}>
+              <InputArea>
+                <Email>
+                  <label>이메일</label>
+                  <input disabled placeholder={user?.email} />
+                </Email>
+                <Nickname>
+                  <label>닉네임</label>
+                  <input
+                    defaultValue={user?.nickname}
+                    {...register("nickname", {
+                      required: "수정할 닉네임을 입력해 주세요.",
+                      minLength: {
+                        value: 2,
+                        message: "2자 이상 입력해주세요.",
+                      },
+                      maxLength: {
+                        value: 8,
+                        message: "8자 이하 입력해주세요.",
+                      },
+                    })}
+                  />
+                </Nickname>
+                <ErrorMessage>{errors?.nickname?.message}</ErrorMessage>
+              </InputArea>
+              <ButtonArea>
+                <AgreeButton type="submit">변경</AgreeButton>
+                <DenyButton onClick={closeModal}>취소</DenyButton>
+              </ButtonArea>
+            </Form>
+          </ModalContainer>
+          <Overlay {...OverlayVariant} onClick={closeModal} />
+        </ModalWrapper>
+      )}
+    </AnimatePresence>
   );
 };
 
