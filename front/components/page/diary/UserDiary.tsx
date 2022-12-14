@@ -49,7 +49,7 @@ const UserDiary = ({ diary }: DiaryProps) => {
 export const DiaryBox = styled(Box)`
   background-color: ${props => props.theme.color.purpleBox};
   width: 100%;
-  height: 48%;
+  height: 45%;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   flex-direction: column;
   justify-content: flex-start;
