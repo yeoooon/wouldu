@@ -13,9 +13,7 @@ import { useQuery, useQueryClient, QueryCache } from "@tanstack/react-query";
 import { colors } from "@styles/common_style";
 import { isAlarmModalAtom } from "@recoil/modal";
 import { ReceiveFriend } from "@type/friend";
-import React, { ReactNode, useEffect } from "react";
-import { User } from "@type/user";
-import { getUserInfo } from "@services/api/user";
+import React, { ReactNode } from "react";
 import { RightarrowIcon } from "./icons/ArrowIcons";
 import Home from "public/icon/home.svg";
 import Mypage from "public/icon/me.svg";
@@ -42,12 +40,8 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
   const setIsAlarmOpen = useSetRecoilState<boolean>(isAlarmModalAtom);
-  // const navIcon = [<HomeIcon />, <NotepadIcon />, <NoteIcon />, <MypageIcon />];
 
   const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
-  const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
-
-  const queryCache = new QueryCache();
 
   const toggleTheme = () => {
     const theme = localStorage.getItem("theme");
