@@ -24,13 +24,14 @@ const ChangeNicknameModal = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm<EditProfileFormValue>();
-  const [changeNickname, setIsChangeNickname] = useRecoilState(isChangeNicknameModalAtom);
+  const [isChangeNickname, setIsChangeNickname] = useRecoilState(isChangeNicknameModalAtom);
   const [user, setUser] = useRecoilState(userAtom);
 
   const closeModal = () => {
+    reset();
     setIsChangeNickname(false);
   };
 
@@ -52,7 +53,7 @@ const ChangeNicknameModal = () => {
 
   return (
     <AnimatePresence>
-      {changeNickname && (
+      {isChangeNickname && (
         <ModalWrapper>
           <ModalContainer height="300px" {...ModalVariant}>
             <Cancel onClick={closeModal}>

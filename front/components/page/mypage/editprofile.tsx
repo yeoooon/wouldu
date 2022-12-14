@@ -8,8 +8,8 @@ import { userAtom } from "@recoil/user";
 import { UserIcon } from "@components/icons/UserIcon";
 import { isChangeNicknameModalAtom, isChangePasswordModalAtom, isDeleteUserModalAtom } from "@recoil/modal";
 import DeleteUserConfirm from "./modal/DeleteUserConfirm";
-import ChangePassword from "./modal/ChangePassword";
-import ChangeNickname from "./modal/ChangeNicknameModal";
+import ChangePasswordModal from "./modal/ChangePasswordModal";
+import ChangeNicknameModal from "./modal/ChangeNicknameModal";
 
 interface EditProfileFormValue {
   profileImage: File;
@@ -48,8 +48,8 @@ const EditProfile = () => {
         <EditPasswordButton onClick={() => setIsChangePasswordOpen(true)}>비밀번호 변경</EditPasswordButton>
         <DeleteUserButton onClick={() => setIsDeleteUserOpen(true)}>회원 탈퇴</DeleteUserButton>
       </ButtonArea>
-      {isChangeNickNameOpen && <ChangeNickname />}
-      {isChangePasswordOpen && <ChangePassword />}
+      {isChangeNickNameOpen && <ChangeNicknameModal />}
+      {isChangePasswordOpen && <ChangePasswordModal />}
       {isDeleteUserOpen && <DeleteUserConfirm />}
     </ContentArea>
   );
