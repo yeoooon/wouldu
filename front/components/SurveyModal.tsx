@@ -62,7 +62,7 @@ const SurveyModal = () => {
     <ModalWrapper>
       <SurveyContainer>
         <Cancel onClick={handleClickCancel}>
-          <CloseIcon />
+          <CloseIcon width={15} height={15}/>
         </Cancel>
         <Head>
           <Title>선호하는 카테고리를 선택하세요.</Title>

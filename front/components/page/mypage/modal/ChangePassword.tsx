@@ -34,7 +34,7 @@ const ChangePassword = () => {
       <ModalWrapper>
         <InfoBox>
           <Cancel onClick={() => setIsChangePasswordOpen(false)}>
-            <CloseIcon />
+            <CloseIcon width={15} height={15}/>
           </Cancel>
           <Title>비밀번호 변경</Title>
           <form onSubmit={handleSubmit(onSubmitHandler)}>

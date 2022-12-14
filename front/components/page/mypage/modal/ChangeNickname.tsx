@@ -56,7 +56,7 @@ const ChangeNickname = () => {
     <ModalWrapper>
       <ModalContainer height="300px">
         <Cancel onClick={() => setIsChangeNicknameOpen(false)}>
-          <CloseIcon />
+          <CloseIcon width={15} height={15}/>
         </Cancel>
         <Title>닉네임 변경</Title>
         <Form onSubmit={handleSubmit(onSubmitHandler)}>

@@ -65,6 +65,12 @@ const DiaryWrapper = styled(Wrapper)`
   grid-template-columns: 26% 70%;
   width: 100%;
   gap: 1.5%;
+  
+  @media screen and (max-width: 720px) {
+    display: flex;
+    height: auto;
+    flex-direction: column;
+  }
 `;
 const DiaryWrapper2 = styled(Wrapper)`
   width: 100%;
@@ -73,6 +79,11 @@ const SidebarContainer = styled(Container)`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   height: 95vh;
   position: relative;
+
+  @media screen and (max-width: 720px) {
+    margin-top: 30px;
+    width: 90%;
+  }
 `;
 const DiaryContainer = styled(SidebarContainer)``;
 const UnconnectedContainer = styled(SidebarContainer)`
