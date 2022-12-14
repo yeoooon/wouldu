@@ -45,7 +45,7 @@ const About = () => {
       </FirstPage>
       <SecondPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
         <ImageArea variants={cardVariants}>
-          <Image src={"/temporaryimage.png"} width={700} height={400} />
+          <Image src={"/temporaryimage.png"} width={600} height={400} />
         </ImageArea>
         <TextArea variants={TextVariants}>
           <IconBox>
@@ -68,14 +68,14 @@ const About = () => {
           </IconBox>
         </TopArea>
         <BottomArea variants={cardVariants}>
-          <Image src={"/temporaryimage.png"} width={380} height={250} />
-          <Image src={"/temporaryimage.png"} width={380} height={250} />
-          <Image src={"/temporaryimage.png"} width={380} height={250} />
+          <Image src={"/temporaryimage.png"} width={350} height={250} />
+          <Image src={"/temporaryimage.png"} width={350} height={250} />
+          <Image src={"/temporaryimage.png"} width={350} height={250} />
         </BottomArea>
       </ThirdPart>
       <ForthPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
         <ImageArea variants={cardVariants}>
-          <Image src={"/temporaryimage.png"} width={700} height={400} />
+          <Image src={"/temporaryimage.png"} width={600} height={400} />
         </ImageArea>
         <TextArea variants={TextVariants}>
           <IconBox>
@@ -87,7 +87,7 @@ const About = () => {
       </ForthPart>
       <FifthPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
         <ImageArea variants={cardVariants}>
-          <Image src={"/temporaryimage.png"} width={700} height={400} />
+          <Image src={"/temporaryimage.png"} width={600} height={400} />
         </ImageArea>
         <TextArea variants={TextVariants}>
           <IconBox>
@@ -110,16 +110,6 @@ const AboutWrapper = styled.div`
   justify-content: flex-start;
   overflow: hidden;
 `;
-const FirstPage = styled(motion.div)`
-  background-image: url("/About.png");
-  width: 100%;
-  height: 100vh;
-  color: ${colors.white};
-  display: grid;
-  grid-template-columns: 50% 50%;
-  align-items: center;
-  justify-content: center;
-`;
 const Left = styled(motion.div)`
   display: flex;
   flex-direction: column;
@@ -141,6 +131,10 @@ const SubTitle = styled.p`
   letter-spacing: 1px;
   line-height: 20px;
   color: ${colors.purple_200};
+
+  @media screen and (max-width: 850px) {
+    display: none;
+  }
 `;
 const Button = styled(motion.button)`
   font-weight: 600;
@@ -150,13 +144,42 @@ const Button = styled(motion.button)`
 `;
 const Right = styled(motion.div)`
   padding-left: 10vh;
+    
+  @media screen and (max-width: 850px) {
+    display: none;
+  }
 `;
-
-const SecondPart = styled(motion.div)`
+const FirstPage = styled(motion.div)`
+  background-image: url("/About.png");
   width: 100%;
-  height: 85vh;
+  height: 100vh;
+  color: ${colors.white};
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 50% 50%;
+  align-items: center;
+  justify-content: center;
+  @media screen and (max-width: 1280px) {
+    ${MainTitle} {
+      font-size: 35px;
+    }
+    ${SubTitle} {
+      font-size: ${props => props.theme.fontSize.textMain};
+    }
+  }
+  @media screen and (max-width: 850px) {
+    grid-template-columns: 1fr 0;
+    ${Left} {
+      width: 90%;
+    }
+    ${MainTitle} {
+      font-size: ${props => props.theme.fontSize.textXl};
+    }
+    ${Button} {
+      font-size: ${props => props.theme.fontSize.textMain};
+      height: 2.5em;
+      width: 12em;
+    }
+  }
 `;
 const ImageArea = styled(motion.div)`
   display: flex;
@@ -198,11 +221,47 @@ const SubText = styled.p`
   letter-spacing: 1px;
   line-height: 20px;
 `;
-const ThirdPart = styled(motion.div)`
+const SecondPart = styled(motion.div)`
   width: 100%;
   height: 85vh;
   display: grid;
-  grid-template-rows: 35% 65%;
+  grid-template-columns: 60% 40%;
+
+  @media screen and (max-width: 1280px) {
+    ${MainText} {
+      font-size: ${props => props.theme.fontSize.textMd};
+      line-height: 25px;
+    }
+    ${SubText} {
+      font-size: ${props => props.theme.fontSize.textSm};
+    }
+    ${ImageArea} {
+      width: 450px;
+      justify-self: center;
+    }
+    ${TextArea} {
+      gap: 1vh;
+      padding-bottom: 5vh;
+    }
+  }
+  @media screen and (max-width: 850px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    ${SubText} {
+      width: 100%;
+    }
+    ${ImageArea} {
+      width: 85%;
+      justify-self: center;
+    }
+    ${TextArea} {
+      gap: 1vh;
+      text-align: center;
+    }
+  }
 `;
 const TopArea = styled(motion.div)`
   display: flex;
@@ -225,6 +284,62 @@ const BottomArea = styled(motion.div)`
   justify-content: center;
   align-items: center;
   gap: 10vh;
+`;
+const ThirdPart = styled(motion.div)`
+  width: 100%;
+  height: 85vh;
+  display: grid;
+  grid-template-rows: 35% 65%;
+
+  @media screen and (max-width: 1280px) {
+    ${MainText} {
+      font-size: ${props => props.theme.fontSize.textMd};
+      line-height: 25px;
+    }
+    ${SubText} {
+      font-size: ${props => props.theme.fontSize.textSm};
+    }
+    ${BottomArea} {
+      width: 80%;
+      gap: 3vh;
+      justify-self: center;
+    }
+  }
+  @media screen and (max-width: 850px) {
+    display: grid;
+    grid-template-rows: 35% 65%; 
+    gap: 30px;
+
+    ${MainText} {
+      font-size: ${props => props.theme.fontSize.textMd};
+      line-height: 25px;
+    }
+    ${SubText} {
+      width: 100%;
+    }
+    ${MypageIcon} {
+      width: 40px;
+      height: 40px;
+    }
+    ${TopArea} {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      ${IconBox} {
+        order: -1;
+      }
+      ${TextArea} {
+        text-align: center;
+        margin-bottom: 2em;
+      }
+    }
+    ${BottomArea} {
+      flex-direction: column;
+      width: 80%;
+      gap: 1vh;
+      justify-self: center;
+    }
+  }
 `;
 const ForthPart = styled(SecondPart)``;
 const FifthPart = styled(SecondPart)``;

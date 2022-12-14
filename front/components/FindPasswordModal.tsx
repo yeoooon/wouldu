@@ -43,7 +43,7 @@ const FindPasswordModal = () => {
         <ModalWrapper>
           <ModalContainer height="300px" {...ModalVariant}>
             <Cancel onClick={() => setIsFindPasswordOpen(false)}>
-              <CloseIcon />
+              <CloseIcon width={15} height={15} />
             </Cancel>
             {isEmailSent ? (
               <CheckDesc>

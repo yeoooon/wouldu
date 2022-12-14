@@ -28,6 +28,12 @@ const Header = styled.div`
 
   button {
     height: 70%;
+
+    @media screen and (max-width: 850px) {
+      font-size: ${props => props.theme.fontSize.textMain};
+      height: 2.5em;
+      width: 11em;
+    }
   }
 
   display: flex;

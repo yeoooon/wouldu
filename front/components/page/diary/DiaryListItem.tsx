@@ -47,7 +47,7 @@ const DiaryListItem = () => {
             <ListItemBox key={diaries[0]?.id} id={diaries[0].date} onClick={handleClickDate}>
               <DiaryListDay diary={diaries[0]} />
               <Text>
-                {diaries[0]?.content.length < 20 ? diaries[0]?.content : diaries[0]?.content.substring(0, 20)}
+                {diaries[0]?.content.length < 16 ? diaries[0]?.content : diaries[0]?.content.substring(0, 15)+ "..."}
               </Text>
             </ListItemBox>
           ))
@@ -79,7 +79,9 @@ const ListItemBox = styled(Box)`
   height: 5em;
   border-radius: 0;
   border-bottom: 0.5px solid ${props => props.theme.color.border};
-  display: flex;
+  display: grid;
+  grid-template-columns: 25% 75%;
+  align-items: center;
   justify-content: flex-start;
   &.active {
     background-color: rgba(142, 117, 253, 0.5);
