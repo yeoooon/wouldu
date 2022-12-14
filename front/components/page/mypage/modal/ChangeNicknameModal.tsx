@@ -19,7 +19,7 @@ interface EditProfileFormValue {
   nickname: string;
 }
 
-const ChangeNickname = () => {
+const ChangeNicknameModal = () => {
   const queryClient = useQueryClient();
   const {
     register,
@@ -126,4 +126,4 @@ const ErrorMessage = styled.p`
 `;
 const Nickname = styled(Email)``;
 
-export default ChangeNickname;
+export default ChangeNicknameModal;

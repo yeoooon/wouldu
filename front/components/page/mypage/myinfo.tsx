@@ -13,7 +13,7 @@ import { User } from "@type/user";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Box, Container } from "../../../styles/layout";
-import ChangeNickname from "./modal/ChangeNickname";
+import ChangeNickname from "./modal/ChangeNicknameModal";
 import ChangePassword from "./modal/ChangePassword";
 import DeleteUserConfirm from "./modal/DeleteUserConfirm";
 

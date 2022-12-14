@@ -9,7 +9,7 @@ import { UserIcon } from "@components/icons/UserIcon";
 import { isChangeNicknameModalAtom, isChangePasswordModalAtom, isDeleteUserModalAtom } from "@recoil/modal";
 import DeleteUserConfirm from "./modal/DeleteUserConfirm";
 import ChangePassword from "./modal/ChangePassword";
-import ChangeNickname from "./modal/ChangeNickname";
+import ChangeNickname from "./modal/ChangeNicknameModal";
 
 interface EditProfileFormValue {
   profileImage: File;
