@@ -133,6 +133,10 @@ const JoinTitle = styled.h2`
   font-size: ${props => props.theme.fontSize.textXl};
   height: 50px;
   margin-bottom: 20px;
+
+  @media screen and (max-width: 850px) {
+    font-size: 24px;
+  }
 `;
 
 const JoinContainer = styled(Container)`
@@ -167,15 +171,22 @@ const JoinInput = styled.input`
   &:first-child {
     margin-bottom: 10px;
   }
+  @media screen and (max-width: 850px) {
+    width: 100%;
+  }
 `;
 
 const JoinButton = styled.button`
   margin-top: 20px;
   width: 500px;
   height: 50px;
+
+  @media screen and (max-width: 850px) {
+    width: 350px;
+  }
 `;
 
-const SocialContainer = styled(Container)`
+const SocialContainer = styled(Box)`
   width: 100%;
   padding: 10px 10px;
   margin-top: 30px;
@@ -183,6 +194,10 @@ const SocialContainer = styled(Container)`
   justify-content: space-between;
   border: none;
   border-radius: 0;
+
+  @media screen and (max-width: 850px) {
+    width: 350px;
+  }
 `;
 const SocialBox = styled(Box)`
   display: flex;

@@ -103,6 +103,9 @@ const FindDesc = styled.p`
   font-size: ${props => props.theme.fontSize.textSm};
   margin-bottom: 2em;
   font-weight: 600;
+  @media screen and (max-width: 850px) {
+    font-size: ${props => props.theme.fontSize.textXs};
+  }
 `;
 
 const ErrorMessage = styled.p`

@@ -72,8 +72,9 @@ const Login = () => {
             />
             <ErrorMessage>{errors?.password?.message}</ErrorMessage>
           </InputBox>
-
-          <LoginButton>로그인</LoginButton>
+          <LoginButtonBox>
+            <LoginButton>로그인</LoginButton>
+          </LoginButtonBox>
         </form>
         <SocialContainer>
           <p>SNS 간편로그인 </p>
@@ -122,6 +123,10 @@ const LoginTitle = styled.h2`
   font-size: ${props => props.theme.fontSize.textXl};
   height: 50px;
   margin-bottom: 20px;
+
+  @media screen and (max-width: 850px) {
+    font-size: 24px;
+  }
 `;
 
 const LoginContainer = styled(Container)`
@@ -157,14 +162,22 @@ const LoginInput = styled.input`
   &:first-child {
     margin-bottom: 10px;
   }
+  @media screen and (max-width: 850px) {
+    width: 100%;
+  }
 `;
-
 const LoginButton = styled.button`
   margin-top: 20px;
   width: 500px;
   height: 50px;
-`;
 
+  @media screen and (max-width: 850px) {
+    width: 350px;
+  }
+`;
+const LoginButtonBox = styled(Box)`
+  width: 100%;
+`;
 const SocialContainer = styled(Container)`
   width: 100%;
   padding: 10px 10px;
@@ -174,6 +187,10 @@ const SocialContainer = styled(Container)`
   border: none;
   border-radius: 0;
   border-bottom: 1px solid ${props => props.theme.color.border};
+
+  @media screen and (max-width: 850px) {
+    width: 350px;
+  }
 `;
 const SocialBox = styled(Box)`
   display: flex;
