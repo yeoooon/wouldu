@@ -90,6 +90,7 @@ export const DiaryContent = styled(Box)`
   font-size: ${props => props.theme.fontSize.textSm};
   padding: 1.5em 1em;
   overflow-y: auto;
+  white-space: pre-line;
 `;
 
 export default UserDiary;
