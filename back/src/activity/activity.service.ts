@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Diary } from 'src/diary/entities/diary.entity';
 import { Planner } from 'src/planner/entities/planner.entity';
 import { User } from 'src/user/entities/user.entity';
-import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { Activity } from './entities/activity.entity';
 
@@ -19,6 +19,7 @@ export class ActivityService {
     @InjectRepository(Planner)
     private plannerRepository: Repository<Planner>,
   ) {}
+
   async getActivity() {
     const now = new Date();
     const today =
@@ -31,28 +32,60 @@ export class ActivityService {
       const user = await this.userRepository.findOne({
         where: { id: element.userId },
       });
-      const category = user.survey.split(',');
-      category.push('공통');
-      const data = await this.activityRepository
-        .createQueryBuilder('activity')
-        .select(['activity.activity'])
-        .where('activity.category IN (:category)', { category })
-        .orderBy('RAND()')
-        .limit(1)
-        .getOne();
-      const tomorrow =
-        now.getFullYear() +
-        '-' +
-        (now.getMonth() + 1) +
-        '-' +
-        (now.getDate() + 1);
-      this.plannerRepository.save({
-        description: data.activity,
-        date: tomorrow,
-        isRecommended: 1,
-        userId: element.userId,
-        prority: 1,
-      });
+      const category = user.survey?.split(',') ?? 0;
+      if (category !== 0) {
+        category.push('공통');
+        const data = await this.activityRepository
+          .createQueryBuilder('activity')
+          .select(['activity.activity'])
+          .where('activity.category IN (:category)', { category })
+          .orderBy('RAND()')
+          .limit(1)
+          .getOne();
+        const tomorrow =
+          now.getFullYear() +
+          '-' +
+          (now.getMonth() + 1) +
+          '-' +
+          (now.getDate() + 1);
+        this.plannerRepository.save({
+          description: data.activity,
+          date: tomorrow,
+          isRecommended: 1,
+          userId: element.userId,
+          prority: 1,
+        });
+      } else {
+        const data = await this.activityRepository
+          .createQueryBuilder('activity')
+          .select(['activity.activity'])
+          .orderBy('RAND()')
+          .limit(1)
+          .getOne();
+        const tomorrow =
+          now.getFullYear() +
+          '-' +
+          (now.getMonth() + 1) +
+          '-' +
+          (now.getDate() + 1);
+        this.plannerRepository.save({
+          description: data.activity,
+          date: tomorrow,
+          isRecommended: 1,
+          userId: element.userId,
+          prority: 1,
+        });
+      }
     });
+  }
+
+  private readonly logger = new Logger(ActivityService.name);
+
+  @Cron('50 59 23 * * *', {
+    timeZone: 'Asia/Seoul',
+  })
+  handleCroe() {
+    this.getActivity();
+    this.logger.debug('Recommend new activity');
   }
 }
