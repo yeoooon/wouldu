@@ -47,12 +47,16 @@ const MatchCodeSubmit = () => {
         alert("요청이 완료되었습니다.");
         resetInput();
         break;
-      case 400:
-        alert("이미 친구 요청했습니다.");
+      case 481:
+        alert("친구의 코드를 다시 확인해 주세요.");
+        break;
+      case 482:
+        alert("이미 친구가 있습니다.");
         resetInput();
         break;
-      case 404:
-        alert("친구의 코드를 다시 확인해주세요.");
+      case 483:
+        alert("같은 유저에게 보낸 대기 중인 요청이 있습니다.");
+        resetInput();
         break;
     }
   };

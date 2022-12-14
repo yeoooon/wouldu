@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { colors } from "./common_style";
+import { motion } from "framer-motion";
 
-export const Overlay = styled.div`
+export const Overlay = styled(motion.div)`
   z-index: 100;
   position: fixed;
   left: 0px;
@@ -23,7 +24,7 @@ export const ModalWrapper = styled.div`
   margin: 0;
 `;
 
-export const ModalContainer = styled.div<{ width?: string; height?: string }>`
+export const ModalContainer = styled(motion.div)<{ width?: string; height?: string }>`
   position: relative;
   z-index: 10000;
   display: flex;
@@ -39,9 +40,9 @@ export const ModalContainer = styled.div<{ width?: string; height?: string }>`
 `;
 
 export const Cancel = styled.div`
-align-self: flex-end;
-margin: 0.8em;
-cursor: pointer;
+  align-self: flex-end;
+  margin: 0.8em;
+  cursor: pointer;
 `;
 
 export const AgreeButton = styled.button`
