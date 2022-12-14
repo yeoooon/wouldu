@@ -11,8 +11,14 @@ export const userJoin = async (joinInfo: UserJoinForm) => {
     const { status } = await axiosInstance.post("user/register", bodyData);
     return status;
   } catch (err) {
-    if (axios.isAxiosError(err) && err?.response?.status === 422) {
-      return err.response.status;
+    if (axios.isAxiosError(err) && err?.response?.status === 471) {
+      alert("이미 가입된 이메일입니다.");
+    }
+    if (axios.isAxiosError(err) && err?.response?.status === 472) {
+      alert("이미 존재하는 닉네임입니다.");
+    }
+    if (axios.isAxiosError(err) && err?.response?.status === 473) {
+      alert("이미 가입되어 인증 대기 상태인 이메일입니다. 메일함을 확인해 주세요.");
     }
   }
 };
@@ -38,10 +44,11 @@ export const requestLogin = async (loginInfo: UserLoginForm) => {
     setCookie("userToken", data?.accessToken);
     return data;
   } catch (err) {
-    console.log("requestLgoin error!!!!!", err);
-    // if (axios.isAxiosError(err) && err.response?.status === 401) {
-    //   alert("이메일 또는 비밀번호가 일치하지 않습니다.");
-    // }
+    if (axios.isAxiosError(err) && err.response?.status === 461) {
+      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
+    } else if (axios.isAxiosError(err) && err.response?.status === 462) {
+      alert("이메일 인증 대기 중입니다. 가입 신청한 이메일 주소의 메일함을 확인해 주세요.");
+    }
   }
 };
 //회원탈퇴
@@ -63,7 +70,9 @@ export const changePassword = async (passwordInfo: PasswordForm) => {
     const { data } = await axiosInstance.put(`user/${id}/password`, { oldPassword, newPassword });
     return data;
   } catch (err) {
-    console.log(err);
+    if (axios.isAxiosError(err) && err.response?.status === 491) {
+      alert("현재 비밀번호가 틀립니다.");
+    } 
   }
 };
 
