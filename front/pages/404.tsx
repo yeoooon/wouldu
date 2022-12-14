@@ -50,6 +50,9 @@ const Button = styled.button`
 `;
 const ErrorImgBox = styled(ErrorTextBox)`
   gap: 20px;
+  @media screen and (max-width: 720px) {
+    display: none;
+  }
 `;
 
 export default NotFound;

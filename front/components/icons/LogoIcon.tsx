@@ -1,8 +1,9 @@
+import { IconProps } from '@type/icon';
 import React, {SVGProps} from 'react';
 
-export const LogoBlackIcon: React.FC = () => {
+export const LogoBlackIcon = ({height}: IconProps) => {
   return (
-    <svg width="148" height="73" viewBox="0 0 148 73" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="148" height={height} viewBox="0 0 148 73" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g filter="url(#filter0_d_354_1472)">
       <path d="M138.881 18.893C122.49 -6.86047 83.426 1.21906 65.9428 8.478C-26.937 59.2275 65.9428 32.7166 57.4743 53.1679C50.6995 69.5289 91.6213 64.656 112.929 60.1744C128.409 57.1445 155.271 44.6465 138.881 18.893Z" fill="#DBCAF4" fill-opacity="0.7" shape-rendering="crispEdges"/>
       </g>
@@ -78,9 +79,9 @@ export const LogoBlackIcon: React.FC = () => {
   );
 };
 
-export const LogoWhiteIcon: React.FC = () => {
+export const LogoWhiteIcon = ({height}: IconProps) => {
   return (
-    <svg width="144" height="73" viewBox="0 0 144 73" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="144" height={height} viewBox="0 0 144 73" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g filter="url(#filter0_i_354_1488)">
       <path d="M138.881 18.893C122.49 -6.86047 83.426 1.21906 65.9428 8.478C-26.937 59.2275 65.9428 32.7166 57.4743 53.1679C50.6995 69.5289 91.6213 64.656 112.929 60.1744C128.409 57.1445 155.271 44.6465 138.881 18.893Z" fill="#DBCAF4" fill-opacity="0.7"/>
       </g>

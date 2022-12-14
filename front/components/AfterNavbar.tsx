@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Box, Container } from "../styles/layout";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/user";
@@ -13,7 +13,7 @@ import { useQuery, useQueryClient, QueryCache } from "@tanstack/react-query";
 import { colors } from "@styles/common_style";
 import { isAlarmModalAtom } from "@recoil/modal";
 import { ReceiveFriend } from "@type/friend";
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { User } from "@type/user";
 import { getUserInfo } from "@services/api/user";
 import { RightarrowIcon } from "./icons/ArrowIcons";
@@ -21,6 +21,9 @@ import Home from "public/icon/home.svg";
 import Mypage from "public/icon/me.svg";
 import Note from "public/icon/note.svg";
 import Notepad from "public/icon/notepad.svg";
+import Hamburger from "public/icon/hamburger.svg";
+import { Overlay } from "@styles/modal_layout";
+import { CloseIcon } from "./icons/CloseIcon";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -42,7 +45,7 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
   const setIsAlarmOpen = useSetRecoilState<boolean>(isAlarmModalAtom);
-  // const navIcon = [<HomeIcon />, <NotepadIcon />, <NoteIcon />, <MypageIcon />];
+  const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
 
   const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
   const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
@@ -58,7 +61,10 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
     }
     setDarkMode(!darkMode);
   };
-
+  const handleAlarmClick = () => {
+    setIsOpenMenu(false);
+    setIsAlarmOpen(true);
+  };
   const onClickLogout = async () => {
     const result = confirm("로그아웃 하시겠어요?");
     if (result) {
@@ -68,10 +74,11 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
     }
   };
   return (
-    <Nav>
-      <LogoBox>{darkMode ? <LogoWhiteIcon /> : <LogoBlackIcon />}</LogoBox>
+    <NavContainer>
+    <Nav open={isOpenMenu}>
+      <LogoBox>{darkMode ? <LogoWhiteIcon height={73}/> : <LogoBlackIcon height={73}/>}</LogoBox>
       <UserBox>
-        <AlarmButton onClick={() => setIsAlarmOpen(true)}>
+        <AlarmButton onClick={handleAlarmClick}>
           <AlarmIcon width={18} height={18} />
           {receiveFriends && receiveFriends?.length >= 1 && (
             <AlarmNumber>
@@ -93,7 +100,10 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
       <NavLink>
         {navMenus.map((menu, index) => (
           <Link href={navLinks[index]} key={index}>
-            <LinkButton className={router.pathname === navLinks[index] ? "active" : ""}>
+            <LinkButton 
+              className={router.pathname === navLinks[index] ? "active" : ""}
+              onClick={() => setIsOpenMenu(false)}
+            >
               <IconBox>{mapMenuToIcon[menu]()}</IconBox>
               <TextBox>
                 <a>{menu}</a>
@@ -111,10 +121,38 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
       </NavLink>
       <a onClick={onClickLogout}>로그아웃</a>
     </Nav>
+    <TopNav>
+      <IconBox onClick={() => setIsOpenMenu(cur => !cur)}>
+        {isOpenMenu ? <CloseIcon width={23} height={23}/> : <HamburgerIcon />}
+      </IconBox>
+      <Link href='/'>
+        <LogoBox>
+          {darkMode ? <LogoWhiteIcon height={50}/> : <LogoBlackIcon height={50}/>}
+        </LogoBox>
+      </Link>
+    </TopNav>
+    {isOpenMenu && <Overlay />}
+    </NavContainer>  
   );
 };
 
-const Nav = styled(Container)`
+const NavContainer = styled.div`
+  width: 240px;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  @media screen and (max-width: 960px) {
+    width: 100%;
+  }
+`;
+const LogoBox = styled(Box)`
+  width: 100%;
+  overflow: visible;
+  @media screen and (max-width: 960px) {
+    width: 20%;
+  }
+`;
+const Nav = styled(Container)<{open:boolean}>`
   position: relative;
   flex-direction: column;
   width: 240px;
@@ -123,11 +161,35 @@ const Nav = styled(Container)`
   padding: 2em 0;
   margin: 0;
   border-radius: 0;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
-`;
-const LogoBox = styled(Box)`
-  width: 100%;
-  overflow: visible;
+  box-shadow: 4px 5px 4px rgba(0, 0, 0, 0.25);
+
+  @media screen and (max-width: 960px) {
+    display: none;
+
+    ${props =>
+    props.open &&
+    css`
+      display: flex;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 50%;
+      height: 100vh;
+      z-index: 200;
+      /* transform: translateX(100%);
+      transition: transform 0.5s ease-in-out;      */
+    `}
+    ${LogoBox} {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    ${props =>
+    props.open &&
+    css`
+      width: 80%;
+    `}
+  }
 `;
 const NavLink = styled(Container)`
   flex-direction: column;
@@ -202,11 +264,9 @@ const TextBox1 = styled(Box)`
   margin-bottom: 10px;
   font-size: ${props => props.theme.fontSize.textMain};
 `;
-
 const DarkModeBox = styled(Box)`
   overflow: visible;
 `;
-
 const SwitchBox = styled.label`
   position: relative;
   align-items: center;
@@ -263,14 +323,36 @@ const RoundSlider = styled.span`
     transition: 0.4s;
   }
 `;
-
 const IconBox = styled(Box)`
   margin: 0 1.3em 0 1.8em;
+  &:hover {
+    opacity: 0.8;
+    scale: 1.1;
+  }
 `;
 const ArrowBox = styled.div`
   justify-self: flex-end;
   margin-right: 1em;
 `;
+const HamburgerIcon = styled(Hamburger)`
+  path {
+    fill: ${props => props.theme.color.fontMain};
+  }
+`;
+const TopNav = styled.div`
+  display: none;
 
+  @media screen and (max-width: 960px) {
+    z-index: 200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    background-color: ${props => props.theme.color.nav};
+  }
+`;
 export default React.memo(AfterNavBar);
 // export default AfterNavBar;

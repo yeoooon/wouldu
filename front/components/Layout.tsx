@@ -47,6 +47,11 @@ const LayoutWrapper = styled.div`
   display: grid;
   grid-template-columns: 240px 1fr;
   height: 720px;
+
+  @media screen and (max-width: 960px) {
+   grid-template-columns: 1fr;
+   grid-template-rows: 60px 1fr;
+  }
 `;
 
 export default Layout;

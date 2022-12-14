@@ -17,7 +17,7 @@ const NoDiaryConnect = () => {
       <ModalContainer>
         <Link href={'/stamp'}>
           <Cancel>
-            <CloseIcon />
+            <CloseIcon width={15} height={15}/>
           </Cancel>        
         </Link>
         <DescArea>
