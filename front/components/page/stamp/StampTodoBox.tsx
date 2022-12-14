@@ -11,12 +11,14 @@ const StampTodoBox = (plan: Planner) => {
   );
 };
 
-const Text = styled.p``;
+const Text = styled.p`
+  height: 100%;
+`;
+
 const TodoBox = styled(Box)`
   background-color: ${props => props.theme.color.purpleBox};
   border: 1px solid ${props => props.theme.color.borderPoint};
   width: 95%;
-  height: 100%;
   justify-content: flex-start;
   margin-bottom: 0.8em;
   padding: 1em 1.2em;
