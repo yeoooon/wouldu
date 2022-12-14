@@ -61,7 +61,7 @@ const AlarmModal = () => {
         <ModalWrapper>
           <ModalContainer height="500px" {...ModalVariant}>
             <Cancel onClick={handleCancelClick}>
-              <CloseIcon />
+              <CloseIcon width={15} height={15}/>
             </Cancel>
             <ContentArea>
               <Title>알림</Title>
