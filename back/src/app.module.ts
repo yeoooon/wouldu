@@ -7,6 +7,7 @@ import { DiaryModule } from './diary/diary.module';
 import { PlannerModule } from './planner/planner.module';
 import { JwtModule } from '@nestjs/jwt';
 import { FriendModule } from './friend/friend.module';
+import { ActivityModule } from './activity/activity.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { FriendModule } from './friend/friend.module';
     DiaryModule,
     PlannerModule,
     FriendModule,
+    ActivityModule,
   ],
 })
 export class AppModule {}

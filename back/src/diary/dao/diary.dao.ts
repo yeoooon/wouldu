@@ -45,9 +45,13 @@ export class DiaryDAO {
     return this.diaryRepository.findOne(options);
   }
 
+  updateEmotion(emotion: string, diaryId: number) {
+    return this.diaryRepository.save({ id: diaryId, emotion });
+  }
+
   async getEmotions(userId: string, diaryDateDto: DiaryDateDto) {
     const { year, month } = diaryDateDto;
-    
+
     const plans = await this.diaryRepository
       .createQueryBuilder('diary')
       .select(['diary.date', 'diary.emotion'])
