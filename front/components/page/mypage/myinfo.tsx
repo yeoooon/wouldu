@@ -15,12 +15,12 @@ import styled from "styled-components";
 import { Box, Container } from "../../../styles/layout";
 import ChangeNicknameModal from "./modal/ChangeNicknameModal";
 import ChangePasswordModal from "./modal/ChangePasswordModal";
-import DeleteUserConfirm from "./modal/DeleteUserConfirm";
+import DeleteUserModal from "./modal/DeleteUserModal";
 
 const MyInfo = () => {
   const userAtomData = useRecoilValue(userAtom);
   const setIsSurveyOpen = useSetRecoilState<boolean>(isSurveyModalAtom);
-  const [isDeleteUserOpen, setIsDeleteUserOpen] = useRecoilState(isDeleteUserModalAtom);
+  const setIsDeleteUserOpen = useSetRecoilState(isDeleteUserModalAtom);
   const setIsChangePasswordOpen = useSetRecoilState(isChangePasswordModalAtom);
   const setIsChangeNicknameOpen = useSetRecoilState(isChangeNicknameModalAtom);
 
@@ -66,7 +66,7 @@ const MyInfo = () => {
       </UnderButtonBox>
       <ChangeNicknameModal />
       <ChangePasswordModal />
-      {isDeleteUserOpen && <DeleteUserConfirm />}
+      <DeleteUserModal />
       <SurveyModal />
     </ContentArea>
   );
