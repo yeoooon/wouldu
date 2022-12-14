@@ -2,9 +2,11 @@ import { isAlarmModalAtom } from "@recoil/modal";
 import { checkRequestFriend, confirmFriend, rejectFriend } from "@services/api/friend";
 import { colors } from "@styles/common_style";
 import { Box } from "@styles/layout";
+import { ModalVariant, OverlayVariant } from "@styles/ModalVariants";
 import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ReceiveFriend } from "@type/friend";
+import { AnimatePresence } from "framer-motion";
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -50,10 +52,17 @@ const AlarmModal = () => {
     }
   };
   return (
-    <>
+    <AnimatePresence>
       {isAlarmOpen && (
         <ModalWrapper>
-          <ModalContainer height="500px">
+          <ModalContainer
+            height="500px"
+            key="alarmModal"
+            variants={ModalVariant}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
             <Cancel onClick={() => setIsAlarmOpen(false)}>
               <CloseIcon />
             </Cancel>
@@ -77,10 +86,10 @@ const AlarmModal = () => {
               </FriendAlarm>
             </ContentArea>
           </ModalContainer>
-          <Overlay />
+          <Overlay variants={OverlayVariant} initial="initial" animate="animate" exit="exit" />
         </ModalWrapper>
       )}
-    </>
+    </AnimatePresence>
   );
 };
 

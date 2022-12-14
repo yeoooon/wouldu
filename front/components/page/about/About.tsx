@@ -11,24 +11,6 @@ import Link from "next/link";
 import { motion, Variants } from "framer-motion";
 import { cardVariants, TextVariants } from "./styles";
 
-const animate = {
-  initial: {
-    transform: `translateY(50px)`,
-    opacity: 0,
-    transition: `transform 0.33s ease`,
-  },
-  animate: {
-    transform: `translateY(0px)`,
-    opacity: 1,
-    transition: `transform 0.33s ease`,
-  },
-  exit: {
-    transform: `translateY(50px)`,
-    opacity: 0,
-    transition: `transform 0.33s ease`,
-  },
-};
-
 const About = () => {
   return (
     <AboutWrapper>
