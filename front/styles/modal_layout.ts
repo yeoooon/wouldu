@@ -37,6 +37,10 @@ export const ModalContainer = styled(motion.div)<{ width?: string; height?: stri
   background-color: ${props => props.theme.color.purpleBox};
   border: 1px solid ${props => props.theme.color.border};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  @media screen and (max-width: 720px) {
+    width: 350px;
+  }
 `;
 
 export const Cancel = styled.div`

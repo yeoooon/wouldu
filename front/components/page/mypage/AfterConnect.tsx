@@ -172,9 +172,15 @@ const Dday = styled.div`
   letter-spacing: 0.03em;
   margin-top: 2vh;
   gap: 20px;
-
   p {
     margin: 0 1em;
+  }
+  @media screen and (max-width: 850px) {
+    p {
+      font-size: ${props => props.theme.fontSize.textSm};
+      margin: 0 2em;
+      text-align: center;
+    }
   }
 `;
 const ErrorMessage = styled.p`

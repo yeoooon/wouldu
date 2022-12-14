@@ -79,8 +79,7 @@ const ListItemBox = styled(Box)`
   height: 5em;
   border-radius: 0;
   border-bottom: 0.5px solid ${props => props.theme.color.border};
-  display: grid;
-  grid-template-columns: 30% 68%;
+  display: flex;
   justify-content: flex-start;
   &.active {
     background-color: rgba(142, 117, 253, 0.5);

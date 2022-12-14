@@ -231,10 +231,16 @@ const DayTile = styled.div<{ isToday: boolean; isSelected: boolean }>`
 `;
 const WeekText = styled.p`
   font-weight: 500;
+  @media screen and (max-width: 850px) {
+    font-size: ${props => props.theme.fontSize.textSm};
+  }
 `;
 const DayText = styled.p`
   font-weight: normal;
   margin: 0.5em;
+  @media screen and (max-width: 850px) {
+    font-size: ${props => props.theme.fontSize.textSm};
+  }
 `;
 
 const CircleBox = styled.div`

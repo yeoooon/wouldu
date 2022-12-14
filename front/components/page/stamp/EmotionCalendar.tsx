@@ -232,11 +232,17 @@ const EmojiBox = styled(Box)`
 `;
 
 const WeekText = styled.p`
-  font-weight: 600;
+  font-weight: 500;
+  @media screen and (max-width: 850px) {
+    font-size: ${props => props.theme.fontSize.textXs};
+  }
 `;
 const DayText = styled.p`
-  font-weight: normal;
+  font-size: ${props => props.theme.fontSize.textSm};
   margin: 0.5em;
+  @media screen and (max-width: 850px) {
+    font-size: ${props => props.theme.fontSize.textXs};
+  }
 `;
 
 export default React.memo(EmotionCalendar);
