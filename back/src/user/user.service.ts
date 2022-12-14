@@ -247,7 +247,7 @@ export class UserService {
     const newHashedPassword = await bcrypt.hash(newPassword, 10);
     user.hashedPassword = newHashedPassword;
     await this.userRepository.save(user);
-    await this.emailService.sendNewPassword(user.email, newPassword);
+    this.emailService.sendNewPassword(user.email, newPassword);
     return '비밀번호 찾기 완료';
   }
 }
