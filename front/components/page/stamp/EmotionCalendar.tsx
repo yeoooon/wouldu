@@ -142,7 +142,6 @@ const EmotionCalendar = ({ isUserCalendar }: calendarProps) => {
                   onClick={() => setDate(new Date(year, month, d))}
                   className={monthDays > 35 ? "shortHeight" : ""}
                   isToday={year === today.getFullYear() && month === today.getMonth() && d === today.getDate()}
-                  isSelected={d === day}
                   notInMonth={d < 1}
                 >
                   {d > 0 ? <DayText>{d}</DayText> : ""}
@@ -227,7 +226,7 @@ const WeekTile = styled.div`
   border-radius: ${props => props.theme.borderSize.borderSm};
   cursor: pointer;
 `;
-const DayTile = styled.div<{ isToday: boolean; isSelected: boolean; notInMonth: boolean }>`
+const DayTile = styled.div<{ isToday: boolean; notInMonth: boolean }>`
   width: 14.28%;
   height: 8.3vh;
   display: flex;
@@ -237,32 +236,21 @@ const DayTile = styled.div<{ isToday: boolean; isSelected: boolean; notInMonth: 
   border: 1px solid ${props => props.theme.color.purpleBox};
   border-radius: ${props => props.theme.borderSize.borderSm};
   cursor: pointer;
-  :hover {
-    background-color: rgba(245, 245, 245, 0.5);
-    color: ${props => props.theme.color.fontPoint};
-  }
+
   &.shortHeight {
     height: 7vh;
   }
   ${props =>
     props.isToday &&
     css`
-      background: ${props => props.theme.color.grayBox};
+      background: ${props => props.theme.color.purpleBox};
       font-weight: bold;
       color: ${props => props.theme.color.fontPoint};
-      :hover,
       :focus {
         background: #6f48eb33;
         font-weight: bold;
         color: ${props => props.theme.color.fontPoint};
       }
-    `}
-
-  ${props =>
-    props.isSelected &&
-    css`
-      background: rgba(219, 202, 244, 0.5);
-      color: ${props => props.theme.color.fontPoint};
     `}
   ${props =>
     props.notInMonth &&
