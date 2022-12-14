@@ -11,10 +11,10 @@ import { Friend, FriendProps } from "@type/friend";
 import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
-import DisconnectConfirm from "./modal/DisconnectConfirm";
+import FriendDisconnectModal from "./modal/FriendDisconnectModal";
 
 const timeReset = (date: Date) => {
   const targetResetTime: Date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -23,7 +23,7 @@ const timeReset = (date: Date) => {
 
 const AfterConnect = ({ friend }: FriendProps) => {
   const queryClient = useQueryClient();
-  const [isDisconnectOpen, setIsDisconnectOpen] = useRecoilState(isDisconnectModalAtom);
+  const setIsDisconnectOpen = useSetRecoilState(isDisconnectModalAtom);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const user = useRecoilValue(userAtom);
   const {
@@ -107,7 +107,7 @@ const AfterConnect = ({ friend }: FriendProps) => {
           </Dday>
         </div>
         <DisconnectA onClick={() => setIsDisconnectOpen(true)}>연결 끊기</DisconnectA>
-        {isDisconnectOpen && <DisconnectConfirm />}
+        <FriendDisconnectModal />
       </ContentArea>
     </>
   );

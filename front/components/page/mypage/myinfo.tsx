@@ -10,7 +10,7 @@ import { userAtom } from "@recoil/user";
 import { getUserInfo } from "@services/api/user";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@type/user";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Box, Container } from "../../../styles/layout";
 import ChangeNicknameModal from "./modal/ChangeNicknameModal";
