@@ -1,14 +1,13 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { Wrapper } from "../styles/layout";
-
+import MyInfo from "@components/page/mypage/MyInfo";
 import MypageTab from "@components/page/mypage/MyPageTab";
 import EditConnection from "@components/page/mypage/EditConnection";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";
 import { useRecoilValue } from "recoil";
 import { mypageState } from "@recoil/mypage";
-import MyInfo from "@components/page/mypage/myinfo";
 
 const Mypage = () => {
   const pageState = useRecoilValue(mypageState);
