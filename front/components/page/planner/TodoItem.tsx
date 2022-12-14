@@ -80,10 +80,12 @@ const TodoItem = (plan: Planner) => {
         <>
           <CheckBox onClick={handleToggle}>{plan.isCompleted ? <CircleCheckIcon /> : <CircleCheckBackIcon />}</CheckBox>
           <Text>{plan.description}</Text>
-          <ButtonBox>
-            <Button onClick={() => setIsEditMode(true)}>수정</Button>
-            <Button onClick={handleRemoveTodo}>삭제</Button>
-          </ButtonBox>
+          {plan?.isRecommended === 0 && (
+            <ButtonBox>
+              <Button onClick={() => setIsEditMode(true)}>수정</Button>
+              <Button onClick={handleRemoveTodo}>삭제</Button>
+            </ButtonBox>
+          )}
         </>
       )}
     </TodoBox>
