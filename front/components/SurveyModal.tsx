@@ -87,7 +87,7 @@ const SurveyModal = () => {
             </CheckList>
             <Button onClick={handleClickConfirm}>선택 완료</Button>
           </SurveyContainer>
-          <Overlay {...OverlayVariant} />
+          <Overlay {...OverlayVariant} onClick={handleClickCancel} />
         </ModalWrapper>
       )}
     </AnimatePresence>

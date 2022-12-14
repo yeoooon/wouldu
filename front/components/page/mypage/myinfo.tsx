@@ -10,19 +10,19 @@ import { userAtom } from "@recoil/user";
 import { getUserInfo } from "@services/api/user";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@type/user";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Box, Container } from "../../../styles/layout";
-import ChangeNickname from "./modal/ChangeNickname";
-import ChangePassword from "./modal/ChangePassword";
-import DeleteUserConfirm from "./modal/DeleteUserConfirm";
+import ChangeNicknameModal from "./modal/ChangeNicknameModal";
+import ChangePasswordModal from "./modal/ChangePasswordModal";
+import DeleteUserModal from "./modal/DeleteUserModal";
 
 const MyInfo = () => {
   const userAtomData = useRecoilValue(userAtom);
   const setIsSurveyOpen = useSetRecoilState<boolean>(isSurveyModalAtom);
-  const [isDeleteUserOpen, setIsDeleteUserOpen] = useRecoilState(isDeleteUserModalAtom);
-  const [isChangePasswordOpen, setIsChangePasswordOpen] = useRecoilState(isChangePasswordModalAtom);
-  const [isChangeNickNameOpen, setIsChangeNicknameOpen] = useRecoilState(isChangeNicknameModalAtom);
+  const setIsDeleteUserOpen = useSetRecoilState(isDeleteUserModalAtom);
+  const setIsChangePasswordOpen = useSetRecoilState(isChangePasswordModalAtom);
+  const setIsChangeNicknameOpen = useSetRecoilState(isChangeNicknameModalAtom);
 
   const { data: user } = useQuery<User>(["user", "info"], () => getUserInfo(userAtomData?.id!));
 
@@ -64,9 +64,9 @@ const MyInfo = () => {
         </ButtonArea>
         <DeleteUserButton onClick={() => setIsDeleteUserOpen(true)}>회원 탈퇴</DeleteUserButton>
       </UnderButtonBox>
-      {isChangeNickNameOpen && <ChangeNickname />}
-      {isChangePasswordOpen && <ChangePassword />}
-      {isDeleteUserOpen && <DeleteUserConfirm />}
+      <ChangeNicknameModal />
+      <ChangePasswordModal />
+      <DeleteUserModal />
       <SurveyModal />
     </ContentArea>
   );

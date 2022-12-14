@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import { Wrapper } from "../styles/layout";
 
-import MypageTab from "@components/page/mypage/mypagetab";
-import MyInfo from "@components/page/mypage/myinfo";
+import MypageTab from "@components/page/mypage/MyPageTab";
+import MyInfo from "@components/page/mypage/MyInfo";
 import EditConnection from "@components/page/mypage/EditConnection";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";

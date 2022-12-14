@@ -5,14 +5,14 @@ import { mypageState } from "@recoil/mypage";
 import { userAtom } from "@recoil/user";
 import Image from "next/image";
 import { useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
-import MatchCodeSubmit from "./modal/MatchCodeSubmit";
+import FriendConnectModal from "./modal/FriendConnectModal";
 
 const BeforeConnect = () => {
   const user = useRecoilValue(userAtom);
-  const [isCodeShow, setIsCodeShow] = useRecoilState(isCodeModalAtom);
+  const setIsCodeShow = useSetRecoilState(isCodeModalAtom);
 
   return (
     <ContentArea>
@@ -24,10 +24,6 @@ const BeforeConnect = () => {
             <UserIcon width={100} height={100} />
             <p className="userName">{user?.nickname}</p>
           </User>
-          {/* <Mate>
-            <UserIcon width={80} height={80} />
-            <p className="mateName">?</p>
-          </Mate> */}
           <IconBox>
             <CirclePlusIcon />
           </IconBox>
@@ -40,7 +36,7 @@ const BeforeConnect = () => {
       <div className="button">
         <button onClick={() => setIsCodeShow(true)}>상대방 연결 코드 입력</button>
       </div>
-      {isCodeShow && <MatchCodeSubmit />}
+      <FriendConnectModal />
     </ContentArea>
   );
 };

@@ -2,26 +2,31 @@ import { CloseIcon } from "@components/icons/CloseIcon";
 import { isDisconnectModalAtom } from "@recoil/modal";
 import { disconnectFriend } from "@services/api/friend";
 import { Box } from "@styles/layout";
+import { ModalVariant, OverlayVariant } from "@styles/ModalVariants";
 import { AgreeButton, Cancel, DenyButton, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-const DisconnectConfirm = () => {
+const FriendDisconnectModal = () => {
   const queryClient = useQueryClient();
-  const setIsDisconnectOpen = useSetRecoilState(isDisconnectModalAtom);
+  const [isDisconnectOpen, setIsDisconnectOpen] = useRecoilState(isDisconnectModalAtom);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const deleteMutation = useMutation(() => disconnectFriend(), {
     onSuccess: (status, value) => {
       queryClient.invalidateQueries(["friend", "info"]);
-      setIsDisconnectOpen(false);
+      closeModal();
       alert("친구와의 연결이 끊어졌습니다.");
     },
     onError: () => {
       alert("잠시후에 다시 시도해주세요.");
     },
   });
+  const closeModal = () => {
+    setIsDisconnectOpen(false);
+  };
 
   const hanleClickDisconnect = async () => {
     if (isChecked) {
@@ -33,28 +38,30 @@ const DisconnectConfirm = () => {
   const handleChangeCheck = useCallback(() => setIsChecked(!isChecked), [isChecked]);
 
   return (
-    <>
-      <ModalWrapper>
-        <ModalContainer>
-          <Cancel onClick={() => setIsDisconnectOpen(false)}>
-            <CloseIcon width={15} height={15}/>
-          </Cancel>
-          <DescArea>
-            <Title>정말 연결을 끊으시겠습니까?</Title>
-            <Desc>연결을 끊으면 모든 일기 데이터가 삭제됩니다.</Desc>
-            <Box>
-              <input type="checkbox" checked={isChecked} onChange={handleChangeCheck} />
-              <label>확인하였습니다.</label>
-            </Box>
-          </DescArea>
-          <ButtonArea>
-            <AgreeButton onClick={hanleClickDisconnect}>연결 끊기</AgreeButton>
-            <DenyButton onClick={() => setIsDisconnectOpen(false)}>취소</DenyButton>
-          </ButtonArea>
-        </ModalContainer>
-        <Overlay />
-      </ModalWrapper>
-    </>
+    <AnimatePresence>
+      {isDisconnectOpen && (
+        <ModalWrapper>
+          <ModalContainer {...ModalVariant}>
+            <Cancel onClick={closeModal}>
+              <CloseIcon width={15} height={15} />
+            </Cancel>
+            <DescArea>
+              <Title>정말 연결을 끊으시겠습니까?</Title>
+              <Desc>연결을 끊으면 모든 일기 데이터가 삭제됩니다.</Desc>
+              <Box>
+                <input type="checkbox" checked={isChecked} onChange={handleChangeCheck} />
+                <label>확인하였습니다.</label>
+              </Box>
+            </DescArea>
+            <ButtonArea>
+              <AgreeButton onClick={hanleClickDisconnect}>연결 끊기</AgreeButton>
+              <DenyButton onClick={closeModal}>취소</DenyButton>
+            </ButtonArea>
+          </ModalContainer>
+          <Overlay {...OverlayVariant} onClick={closeModal} />
+        </ModalWrapper>
+      )}
+    </AnimatePresence>
   );
 };
 
@@ -89,4 +96,4 @@ const DescArea = styled.div`
 
 const ButtonArea = styled.div``;
 
-export default DisconnectConfirm;
+export default FriendDisconnectModal;
