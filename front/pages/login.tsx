@@ -12,7 +12,7 @@ import { userAtom } from "../recoil/user";
 import { useRouter } from "next/router";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { isFindPasswordModalAtom } from "@recoil/modal";
-import FindPasswordForm from "@components/FindPasswordForm";
+import FindPasswordModal from "@components/FindPasswordModal";
 import { kakaoInit } from "@services/utils/kakaoInit";
 
 const Login = () => {
@@ -94,7 +94,7 @@ const Login = () => {
           </EtcTextBox>
           <EtcTextBox onClick={() => setIsFindPasswordOpen(true)}>비밀번호 찾기</EtcTextBox>
         </EtcBox>
-        {isFindPasswordOpen && <FindPasswordForm />}
+        <FindPasswordModal />
       </LoginContainer>
     </LoginWrap>
   );

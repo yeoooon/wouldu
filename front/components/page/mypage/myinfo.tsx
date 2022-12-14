@@ -10,7 +10,7 @@ import { userAtom } from "@recoil/user";
 import { getUserInfo } from "@services/api/user";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@type/user";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Box, Container } from "../../../styles/layout";
 import ChangeNickname from "./modal/ChangeNickname";
@@ -19,7 +19,7 @@ import DeleteUserConfirm from "./modal/DeleteUserConfirm";
 
 const MyInfo = () => {
   const userAtomData = useRecoilValue(userAtom);
-  const [isSurveyOpen, setIsSurveyOpen] = useRecoilState<boolean>(isSurveyModalAtom);
+  const setIsSurveyOpen = useSetRecoilState<boolean>(isSurveyModalAtom);
   const [isDeleteUserOpen, setIsDeleteUserOpen] = useRecoilState(isDeleteUserModalAtom);
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useRecoilState(isChangePasswordModalAtom);
   const [isChangeNickNameOpen, setIsChangeNicknameOpen] = useRecoilState(isChangeNicknameModalAtom);
@@ -67,7 +67,7 @@ const MyInfo = () => {
       {isChangeNickNameOpen && <ChangeNickname />}
       {isChangePasswordOpen && <ChangePassword />}
       {isDeleteUserOpen && <DeleteUserConfirm />}
-      {isSurveyOpen ? <SurveyModal /> : ""}
+      <SurveyModal />
     </ContentArea>
   );
 };

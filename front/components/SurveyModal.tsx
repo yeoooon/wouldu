@@ -3,9 +3,11 @@ import { userAtom } from "@recoil/user";
 import { ChangeSurveyCategory, getUserInfo } from "@services/api/user";
 import { surveyCategories } from "@services/utils/surveyCategory";
 import { Box, Container } from "@styles/layout";
-import { ModalWrapper, Overlay } from "@styles/modal_layout";
+import { ModalVariant, OverlayVariant } from "@styles/ModalVariants";
+import { ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SurveyForm, User } from "@type/user";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -14,7 +16,7 @@ import { CloseIcon } from "./icons/CloseIcon";
 const SurveyModal = () => {
   const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
-  const setIsSurveyModalOpen = useSetRecoilState(isSurveyModalAtom);
+  const [isSurveyModalOpen, setIsSurveyModalOpen] = useRecoilState<boolean>(isSurveyModalAtom);
 
   const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
   const [selectedCategory, setSelectedCategory] = useState<string[]>();
@@ -59,36 +61,47 @@ const SurveyModal = () => {
   };
 
   return (
-    <ModalWrapper>
-      <SurveyContainer>
-        <Cancel onClick={handleClickCancel}>
-          <CloseIcon />
-        </Cancel>
-        <Head>
-          <Title>선호하는 카테고리를 선택하세요.</Title>
-          <Description>선택한 카테고리에 맞춰서 활동을 추천해드려요.</Description>
-          <Description>마이페이지에서 선호하는 카테고리를 변경할 수 있습니다.</Description>
-        </Head>
-        <CheckList>
-          {surveyCategories.map(category => (
-            <CategoryButton
-              key={category.title}
-              onClick={() => handleAddCategory(category.title)}
-              className={selectedCategory && selectedCategory?.includes(category.title) ? "active" : ""}
-            >
-              <Emoji>{category.emoji}</Emoji>
-              <Category>{category.title}</Category>
-            </CategoryButton>
-          ))}
-        </CheckList>
-        <Button onClick={handleClickConfirm}>선택 완료</Button>
-      </SurveyContainer>
-      <Overlay />
-    </ModalWrapper>
+    <AnimatePresence>
+      {isSurveyModalOpen && (
+        <ModalWrapper>
+          <SurveyContainer {...ModalVariant}>
+            <Cancel onClick={handleClickCancel}>
+              <CloseIcon />
+            </Cancel>
+            <Head>
+              <Title>선호하는 카테고리를 선택하세요.</Title>
+              <Description>선택한 카테고리에 맞춰서 활동을 추천해드려요.</Description>
+              <Description>마이페이지에서 선호하는 카테고리를 변경할 수 있습니다.</Description>
+            </Head>
+            <CheckList>
+              {surveyCategories.map(category => (
+                <CategoryButton
+                  key={category.title}
+                  onClick={() => handleAddCategory(category.title)}
+                  className={selectedCategory && selectedCategory?.includes(category.title) ? "active" : ""}
+                >
+                  <Emoji>{category.emoji}</Emoji>
+                  <Category>{category.title}</Category>
+                </CategoryButton>
+              ))}
+            </CheckList>
+            <Button onClick={handleClickConfirm}>선택 완료</Button>
+          </SurveyContainer>
+          <Overlay {...OverlayVariant} />
+        </ModalWrapper>
+      )}
+    </AnimatePresence>
   );
 };
 
-const SurveyContainer = styled(Container)`
+const SurveyContainer = styled(motion.div)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${props => props.theme.color.nav};
+  color: ${props => props.theme.color.fontMain};
+  border-radius: 10px;
+
   z-index: 10000;
   width: 800px;
   height: 600px;
@@ -97,6 +110,7 @@ const SurveyContainer = styled(Container)`
   border: 1px solid ${props => props.theme.color.border};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
+
 const Cancel = styled.div`
   align-self: flex-end;
   margin: 0.8em;

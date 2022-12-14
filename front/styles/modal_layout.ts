@@ -12,7 +12,7 @@ export const Overlay = styled(motion.div)`
   background-color: rgba(0, 0, 0, 0.3);
 `;
 
-export const ModalWrapper = styled.div`
+export const ModalWrapper = styled(motion.div)`
   position: fixed;
   top: 0px;
   left: 0px;
