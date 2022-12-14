@@ -13,6 +13,7 @@ export interface User {
   password?: string;
   confirmPassword?: string;
   survey?: string[];
+  socialId?: string;
   isFirstLogin?: number;
 }
 
