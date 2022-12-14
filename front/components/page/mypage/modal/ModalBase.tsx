@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Box } from "../../../../styles/layout";
-import MatchCodeSubmit from "./MatchCodeSubmit";
+import MatchCodeSubmit from "./FriendConnectModal";
 import DisconnectConfirm from "./FriendDisconnectModal";
 import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
 import Layout from "@components/Layout";
