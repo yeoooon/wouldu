@@ -8,9 +8,6 @@ import Loading from "@components/Loading";
 
 const EditConnection = () => {
   const { isConnected, friendInfo, isLoading } = useGetFriend();
-  useEffect(() => {
-    console.log({ isLoading });
-  }, [isLoading]);
 
   return !isLoading ? (
     <>

@@ -20,7 +20,6 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (isLoginState && getCookie("userToken")) {
-      // console.log(isLoginState);
       router.push("/stamp");
     } else {
       queryClient.clear();

@@ -29,10 +29,6 @@ const MyInfo = () => {
 
   const { data: user } = useQuery<User>(["user", "info"], () => getUserInfo(userAtomData?.id!));
 
-  useEffect(() => {
-    console.log("mypage user", user);
-  }, [user]);
-
   return (
     <ContentArea>
       <UpperBox>

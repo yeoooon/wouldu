@@ -25,7 +25,6 @@ const ChangePassword = () => {
   } = useForm<ChangePasswordFormValue>();
 
   const onSubmitHandler: SubmitHandler<ChangePasswordFormValue> = data => {
-    console.log(data);
     changePassword({ id: user?.id!, oldPassword: data.currentPassword, newPassword: data.toChangePassword });
     setIsChangePasswordOpen(false);
   };

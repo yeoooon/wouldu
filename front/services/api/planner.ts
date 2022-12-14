@@ -14,7 +14,6 @@ export const getPlans = async (userId: string) => {
 
 //지정한 날짜의 일정
 export const getDayPlan = async (date: string) => {
-  console.log(date);
   try {
     const { data } = await axiosInstance.get(`planner?date=${date}`);
     return data;
@@ -48,13 +47,11 @@ export const deletePlan = async (id: number) => {
 //플랜수정
 export const updatePlan = async (planInfo: Planner) => {
   const { id, description } = planInfo;
-  console.log("updatePlan api호출! ", planInfo);
   try {
     const { status } = await axiosInstance.put(`planner/${id}`, { description });
     return status;
   } catch (err) {
     if (axios.isAxiosError(err) && err?.response?.status) {
-      console.log("err");
       return err.response.status;
     }
   }
@@ -63,7 +60,6 @@ export const updatePlan = async (planInfo: Planner) => {
 //플랜 완료상태 수정
 export const checkPlan = async (id: number) => {
   try {
-    // console.log("checkPlan");
     const { status } = await axiosInstance.patch(`planner/${id}`);
     return status;
   } catch (err) {
@@ -73,7 +69,6 @@ export const checkPlan = async (id: number) => {
 
 //전체 날짜의 일정
 export const getMonthplan = async ({ nowYear, nowMonth }: MonthPlan) => {
-  console.log("getMonthPlan", nowYear.toString(), nowMonth);
   try {
     const { data } = await axiosInstance.get(`planner/check/month?year=${nowYear}&month=${nowMonth}`);
     return data;

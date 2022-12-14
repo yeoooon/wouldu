@@ -19,7 +19,6 @@ const TodoList = () => {
   const { data: planData } = usePlanQuery(day);
 
   useEffect(() => {
-    console.log(planData);
     setTodos(planData);
   }, [planData]);
 

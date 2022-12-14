@@ -20,13 +20,8 @@ const Layout = ({ children, darkMode, setDarkMode }: LayoutProps) => {
   const user = useRecoilValue(userAtom);
 
   useEffect(() => {
-    console.log("layout login state", isLoginStateAtom);
     setIsLoginState(isLoginStateAtom);
   }, [isLoginStateAtom]);
-
-  useEffect(() => {
-    console.log(user?.isFirstLogin);
-  }, [user]);
 
   return (
     <>

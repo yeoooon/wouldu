@@ -31,7 +31,6 @@ const TodoCreate = () => {
   const updateMutation = useMutation((data: Planner) => createPlan(data), {
     onSuccess: () => {
       const [year, month, day] = pickDay.split("-");
-      console.log(year, month);
       queryClient.invalidateQueries(["plan", year, month]);
     },
   });

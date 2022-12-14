@@ -52,9 +52,6 @@ export const deleteUser = async (id: string) => {
     return status;
   } catch (err) {
     console.log(err);
-    // if (axios.isAxiosError(err) && err.response?.status === 400) {
-    //   return err.response.status;
-    // }
   }
 };
 
@@ -83,7 +80,6 @@ export const changeUserNickname = async (nicknameInfo: NicknameForm) => {
 
 //회원비밀번호 찾기
 export const FindUserPassword = async (data: FindPasswordFormValue) => {
-  // console.log(data);
   try {
     const { status } = await axiosInstance.post(`/user/new-password`, data);
     return status;

@@ -37,11 +37,7 @@ const EditProfile = () => {
       <Form onSubmit={handleSubmit(onSubmitHandler)}>
         <ProfileArea>
           <UserIcon width={100} height={100} />
-          {/* <label>프로필 사진 업로드</label>
-          <input {...register("profileImage")} type="file"></input>
-          <p>허용 확장자 *.jpg, *.png | 최대 nKB</p> */}
         </ProfileArea>
-        {/* <button type="submit">수정</button> */}
       </Form>
       <InfoArea className="info">
         <p className="nickname">{`${user?.nickname} 님`}</p>

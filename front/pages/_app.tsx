@@ -20,26 +20,10 @@ declare global {
   }
 }
 const queryClient = new QueryClient();
-// const queryClient = new QueryClient({
-//   defaultOptions: {
-//     queries: {
-//       suspense: true,
-//       staleTime: 1000 * 60 * 5,
-//       onError(err) {
-//         console.log(err);
-//       },
-//     },
-//   },
-// });
 
 export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
   const [isLightTheme, setIsLightTheme] = useState(false);
   const { pageTitle, pageDesc } = pageProps;
-
-  // const [queryClient] = useState(() => {
-  //   console.log("_app queryClient");
-  //   return new QueryClient();
-  // });
 
   const [darkMode, setDarkMode] = useState<boolean>(false);
   useEffect(() => {

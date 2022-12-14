@@ -15,10 +15,6 @@ const AlarmModal = () => {
   const [isAlarmOpen, setIsAlarmOpen] = useRecoilState(isAlarmModalAtom);
   const { data: receiveFriends } = useQuery<ReceiveFriend[]>(["friend", "list"], () => checkRequestFriend("receive"));
 
-  useEffect(() => {
-    console.log(receiveFriends);
-  }, [receiveFriends]);
-
   const acceptMutation = useMutation((data: ReceiveFriend) => confirmFriend(data?.id!), {
     onSuccess: (status, value) => {
       queryClient.invalidateQueries(["friend"]);

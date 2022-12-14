@@ -35,11 +35,8 @@ const mapPathToDesc: { [key: string]: string } = {
 
 const withGetServerSideProps = (getServerSideProps: GetServerSideProps) => {
   return async (context: GetServerSidePropsContext) => {
-    // console.log(context.resolvedUrl);
     const pagePath = context.resolvedUrl;
-    // console.log({ pagePath });
     return await getServerSideProps(context).then((res: { [key: string]: any }) => {
-      // console.log(res.props);
       return {
         ...res,
         props: {

@@ -3,14 +3,11 @@ import { MonthEmotionAtom } from "@recoil/stamp";
 import { getMonthEmotion, getPartnerMonthEmotion } from "@services/api/stamp";
 import { getEmoji } from "@services/utils/getEmoji";
 import { Box } from "@styles/layout";
-import { useQueries, useQuery } from "@tanstack/react-query";
-import { MonthEmotionProps } from "@type/stamp";
+import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import styled, { css } from "styled-components";
-// import { useGetEmotionQuery } from '@services/utils/useGetEmotionQuery';
-import { today } from "@recoil/diary";
 
 interface calendarProps {
   isUserCalendar: boolean;
@@ -30,36 +27,6 @@ const EmotionCalendar = ({ isUserCalendar }: calendarProps) => {
   const [year, setYear] = useState(date.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date));
 
-  // const results = useQueries({
-  //   queries: [
-  //   {
-  //     queryKey: ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
-  //     queryFn: () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
-  //     enabled: !!isUserCalendar,
-  //   },
-  //   {
-  //     queryKey: ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
-  //     queryFn: () => getPartnerMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
-  //     enabled: !isUserCalendar,
-  //   },
-  // ]});
-
-  // useEffect(() => {
-  //   console.log(results);
-  // }, [results]);
-
-  // const { MonthEmotion } = useGetEmotionQuery(isUserCalendar, year, month);
-
-  // const { data: MonthEmotion } = useQuery(
-  //   ["emotion", year.toString(), (month + 1 < 9 ? "0" + (month + 1) : month + 1).toString()],
-  //   () => getMonthEmotion({ nowYear: year, nowMonth: month + 1 }),
-  //   {
-  //     onSuccess: (value) => {
-  //       setMonthEmotionData(value);
-  //     },
-  //   },
-  // );
-
   const { data: emotion } = useQuery(
     [
       "emotion",
@@ -76,10 +43,6 @@ const EmotionCalendar = ({ isUserCalendar }: calendarProps) => {
       onSuccess: data => setMonthEmotionData(data),
     },
   );
-
-  useEffect(() => {
-    console.log("내감정!!", emotion);
-  }, [emotion]);
 
   const checkData = ({ ...data } = {}) => {
     if (data !== undefined && data !== null) {

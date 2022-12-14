@@ -11,7 +11,6 @@ import styled from "styled-components";
 import { useGetFriend } from "@services/utils/useGetFriend";
 import { useRecoilValue } from "recoil";
 import { MonthEmotionAtom } from "@recoil/stamp";
-import Link from "next/link";
 import { emojiList } from "@services/utils/emojiList";
 
 const emotion = ["기쁨", "상처", "당황", "분노", "불안", "슬픔"];

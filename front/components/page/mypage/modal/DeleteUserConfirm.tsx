@@ -19,7 +19,6 @@ const DeleteUserConfirm = () => {
   const queryClient = useQueryClient();
 
   const handleClickDelete = () => {
-    console.log(checked);
     if (checked) {
       const status = deleteUser(user?.id!);
       setIsDeletUserOpen(false);

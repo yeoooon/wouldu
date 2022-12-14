@@ -30,7 +30,6 @@ const MatchCodeSubmit = () => {
       const num = Number(targetName[targetName.length - 1]);
 
       if (num <= 5) {
-        console.log(num);
         const text = `code${num + 1}` as FCodeType;
         setFocus(text);
       }
@@ -38,12 +37,10 @@ const MatchCodeSubmit = () => {
   };
 
   const onSubmitHandler: SubmitHandler<MatchCodeFormValue> = async data => {
-    console.log(data);
     const code = codeNum.reduce((accu, cur) => {
       const text = `code${cur}` as FCodeType;
       return accu + data[text];
     }, "");
-    console.log(code);
     const status = await requestFriend(code);
     switch (status) {
       case 201:

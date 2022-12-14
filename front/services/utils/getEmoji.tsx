@@ -2,7 +2,6 @@ import { AnxiosIcon, EmbarassIcon, GladIcon, HurtIcon, SadIcon, UpsetIcon } from
 import { E } from "chart.js/dist/chunks/helpers.core";
 
 export const getEmoji = (emotion: string) => {
-  console.log("emotion", emotion);
   if (emotion === "기쁨") {
     return <GladIcon height={25} />;
   } else if (emotion === "슬픔") {

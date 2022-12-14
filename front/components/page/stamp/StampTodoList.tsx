@@ -15,7 +15,6 @@ const StampTodoList = () => {
   const { data: planData } = usePlanQuery(today);
 
   useEffect(() => {
-    console.log(planData);
     setTodos(planData);
   }, [planData]);
 
