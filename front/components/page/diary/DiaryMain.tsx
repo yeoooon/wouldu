@@ -47,15 +47,14 @@ const MainContainer = styled(Container)`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 2.5em;
+  padding: 0 25px;
+  justify-content: space-evenly;
 `;
 
 const TextBox = styled(Box)`
   flex-direction: column;
   width: 100%;
   align-items: flex-start;
-  margin-bottom: 1em;
-  padding: 0 0.5em;
 `;
 const Title = styled.h1`
   font-weight: bold;
@@ -74,8 +73,10 @@ const InsideContainer = styled(Container)`
   height: 100%;
 `;
 const InsideContainer2 = styled(InsideContainer)`
-  justify-content: space-between;
-  margin: 0;
+  flex-direction: column;
+  width: 100%;
+  height: 80%;
+  justify-content: space-evenly;
 `;
 
 

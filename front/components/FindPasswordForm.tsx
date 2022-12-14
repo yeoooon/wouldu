@@ -56,7 +56,7 @@ const FindPasswordForm = () => {
         :
         <>
           <FindTitle>비밀번호 찾기</FindTitle>
-          <FindDesc>가입할 때 입력하신 이메일로 임시 비밀번호를 발송해 드립니다.</FindDesc>
+          <FindDesc>가입할 때 입력하신 이메일로<br></br>임시 비밀번호를 발송해 드립니다.</FindDesc>
           <EmailForm onSubmit={handleSubmit(findPwSubmit)}>
             <InputBox>
               <EmailInput 
@@ -93,8 +93,10 @@ const FindTitle = styled.h2`
 const FindDesc = styled.p`
   color: ${props => props.theme.color.fontSub};
   font-size: ${props => props.theme.fontSize.textSm};
-  margin-bottom: 2em;
+  margin-bottom: 15px;
   font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
 `;
 
 const ErrorMessage = styled.p`
