@@ -86,6 +86,10 @@ export const getServerSideProps = withGetServerSideProps(async (context: GetServ
 
 const StampWrapper = styled(Wrapper)`
   justify-content: space-evenly;
+  @media screen and (max-width: 720px) {
+    height: auto;
+    flex-direction: column;
+  }
 `;
 
 const LeftContainer = styled(Container)`
@@ -94,6 +98,10 @@ const LeftContainer = styled(Container)`
   width: 36%;
   height: 95vh;
   background-color: ${props => props.theme.color.background};
+  @media screen and (max-width: 720px) {
+    margin-top: 30px;
+    width: 90%;
+  }
 `;
 
 const RightContainer = styled(Container)`
@@ -101,6 +109,10 @@ const RightContainer = styled(Container)`
   flex-direction: column;
   width: 58%;
   height: 95vh;
+  @media screen and (max-width: 720px) {
+    margin: 1em 0;
+    width: 90%;
+  }
 `;
 
 const LeftBox = styled(Box)`

@@ -129,7 +129,6 @@ const ContentArea = styled(Container)`
     justify-content: center;
     gap: 1.5rem;
     height: 80%;
-    /* background-color: palegoldenrod; */
   }
 `;
 const EditButton = styled.button`
@@ -145,7 +144,6 @@ const DiaryName = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  /* background-color: rebeccapurple; */
   gap: 10px;
   p {
     font-size: ${props => props.theme.fontSize.textLg};
@@ -174,6 +172,10 @@ const Dday = styled.div`
   letter-spacing: 0.03em;
   margin-top: 2vh;
   gap: 20px;
+
+  p {
+    margin: 0 1em;
+  }
 `;
 const ErrorMessage = styled.p`
   font-size: ${fontSize.textXs};

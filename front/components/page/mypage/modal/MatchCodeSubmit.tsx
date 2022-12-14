@@ -78,7 +78,7 @@ const MatchCodeSubmit = () => {
       <ModalWrapper>
         <ModalContainer width="400px" height="200px">
           <Cancel onClick={handleClickCancel}>
-            <CloseIcon />
+            <CloseIcon width={15} height={15}/>
           </Cancel>
           <DescArea>
             <Title>상대방의 연결 코드를 입력하세요.</Title>

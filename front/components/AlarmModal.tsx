@@ -64,7 +64,7 @@ const AlarmModal = () => {
             exit="exit"
           >
             <Cancel onClick={() => setIsAlarmOpen(false)}>
-              <CloseIcon />
+              <CloseIcon width={15} height={15}/>
             </Cancel>
             <ContentArea>
               <Title>알림</Title>

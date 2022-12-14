@@ -12,7 +12,7 @@ const ModalBase = () => {
       <ModalWrapper>
         <ModalContainer>
           <Cancel>
-            <CloseIcon />
+            <CloseIcon width={15} height={15}/>
           </Cancel>
           <MainArea>
             {/* <MatchCodeSubmit></MatchCodeSubmit> */}

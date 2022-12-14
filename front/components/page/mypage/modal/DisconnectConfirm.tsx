@@ -37,7 +37,7 @@ const DisconnectConfirm = () => {
       <ModalWrapper>
         <ModalContainer>
           <Cancel onClick={() => setIsDisconnectOpen(false)}>
-            <CloseIcon />
+            <CloseIcon width={15} height={15}/>
           </Cancel>
           <DescArea>
             <Title>정말 연결을 끊으시겠습니까?</Title>
