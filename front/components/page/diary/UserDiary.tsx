@@ -76,6 +76,7 @@ export const Button = styled.button`
 
 export const ProfileBox = styled(Box)`
   justify-content: flex-start;
+  margin-bottom: 15px;
   width: 100%;
   height: 20%;
 `;
@@ -86,9 +87,10 @@ export const UserName = styled.p`
 `;
 
 export const DiaryContent = styled(Box)`
-  align-self: flex-start;
+  width: 100%;
+  justify-content: flex-start;
   font-size: ${props => props.theme.fontSize.textSm};
-  padding: 1.5em 1em;
+  padding: 10px 10px;
   overflow-y: auto;
   white-space: pre-line;
 `;

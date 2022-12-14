@@ -112,14 +112,16 @@ const Button = styled.button`
     font-weight: 600;
   }
 `;
-const Text = styled.p``;
+const Text = styled.p`
+  width: 80%;
+`;
 
 const TodoBox = styled(Box)`
   position: relative;
   justify-content: space-between;
   padding: 1em 0.5em 1em 2em;
   width: 100%;
-  height: 4em;
+  height: 100%;
   margin-bottom: 1em;
   background-color: ${props => props.theme.color.purpleBox};
   border: 1px solid ${props => props.theme.color.borderPoint};

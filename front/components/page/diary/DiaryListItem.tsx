@@ -47,7 +47,7 @@ const DiaryListItem = () => {
             <ListItemBox key={diaries[0]?.id} id={diaries[0].date} onClick={handleClickDate}>
               <DiaryListDay diary={diaries[0]} />
               <Text>
-                {diaries[0]?.content.length < 15 ? diaries[0]?.content : diaries[0]?.content.substring(0, 15)}
+                {diaries[0]?.content.length < 20 ? diaries[0]?.content : diaries[0]?.content.substring(0, 20)}
               </Text>
             </ListItemBox>
           ))
