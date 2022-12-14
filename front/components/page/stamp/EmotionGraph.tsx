@@ -74,6 +74,11 @@ const EmotionGraphBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media screen and (max-width: 850px) {
+    width: 100%;
+    height: auto;
+  }
 `;
 const PieBox = styled.div`
   width: 70%;

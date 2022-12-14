@@ -23,5 +23,8 @@ const TemplateContainer = styled(Container)`
   padding: 3vh 5vh;
   height: 100%;
   overflow-y: auto;
+  @media screen and (max-width: 850px) {
+    height: auto;
+  }
 `;
 export default TodoTemplate;

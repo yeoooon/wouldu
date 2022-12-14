@@ -64,6 +64,7 @@ const ContentArea = styled(Container)`
   .info {
     align-self: center;
     p {
+      margin: 0 1em;
       &:first-child {
         font-size: ${props => props.theme.fontSize.textLg};
         margin-bottom: 1em;
@@ -74,6 +75,14 @@ const ContentArea = styled(Container)`
   .button {
     align-self: start;
   }
+
+  @media screen and (max-width: 850px) {
+    p:nth-child(2) {
+      font-size: ${props => props.theme.fontSize.textSm};
+      margin: 0 2em;
+      text-align: center;
+    }
+  }
 `;
 
 const User = styled.div`
@@ -82,12 +91,6 @@ const User = styled.div`
   align-items: center;
   gap: 15px;
 `;
-// const Mate = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   gap: 15px;
-// `;
 
 const Profile = styled.div`
   display: flex;

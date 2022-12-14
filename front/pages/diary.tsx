@@ -66,7 +66,7 @@ const DiaryWrapper = styled(Wrapper)`
   width: 100%;
   gap: 1.5%;
   
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 850px) {
     display: flex;
     height: auto;
     flex-direction: column;
@@ -80,7 +80,7 @@ const SidebarContainer = styled(Container)`
   height: 95vh;
   position: relative;
 
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 850px) {
     margin-top: 30px;
     width: 90%;
   }

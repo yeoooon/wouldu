@@ -26,15 +26,15 @@ const EmotionAnalysis = () => {
       <EmotionDetailBox bordercolor={colorList(selectedEmotion, 0.5)}>
         <DetailContainer>
           <DetailEmotion>
-            <DetailEmoji>{emojiList(selectedEmotion, 50)}</DetailEmoji>
+            <DetailEmoji>{emojiList(selectedEmotion, 40)}</DetailEmoji>
             <DetailTitleBox>
               <DetailTitle>{selectedEmotion}</DetailTitle>  
               <EmotionDetailPercent>{Math.floor(EmotionObj[selectedEmotion]/totalDays * 100)}%</EmotionDetailPercent>
             </DetailTitleBox>    
           </DetailEmotion>
           <DetailTextBox>
-            <DetailText>일기를 쓴 <span>{totalDays}</span>일 중에</DetailText>
-            <DetailText><span>{selectedEmotion}</span> 감정을 느낀 날은 <span>{EmotionObj[selectedEmotion]}</span>일로 <span>{Math.floor(EmotionObj[selectedEmotion]/totalDays * 100)}%</span>입니다.</DetailText>
+            <DetailText>일기를 쓴 <span>{totalDays}</span>일 중에  
+            <span>{selectedEmotion}</span>감정을 느낀 날은 <br/><span>{EmotionObj[selectedEmotion]}</span>일로 <span>{Math.floor(EmotionObj[selectedEmotion]/totalDays * 100)}%</span>입니다.</DetailText>
           </DetailTextBox>
           <ButtonBox>
             <Button onClick={() => setIsEmoAnalysisOpen(false)}>전체 감정보기 →</Button>
@@ -64,6 +64,11 @@ const EmotionAnalsisBox = styled(Box)`
   width: 50%;
   height: 100%;
   padding: 1em;
+
+  @media screen and (max-width: 850px) {
+    width: 100%;
+    height: auto;
+  }
 `;
 const EmotionCoverBox = styled(Box)`
   width: 100%;
@@ -111,12 +116,6 @@ const DetailContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
-const DetailEmotion = styled(Box)`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-`;
 const DetailEmoji = styled(Box)`
   margin-left: 5px;
 `;
@@ -124,13 +123,32 @@ const DetailTitleBox = styled(Box)`
   align-items: flex-end;
 `;
 const DetailTitle = styled.p`
-  font-size: ${props => props.theme.fontSize.textMain};
+  font-size: ${props => props.theme.fontSize.textSm};
   font-weight: 600;
   padding-bottom: 3px;
   padding-right: 5px;
 `;
+const DetailEmotion = styled(Box)`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  @media (min-width: 850px) and (max-width: 1150px) {
+    ${DetailTitleBox} {
+      width: 100%;
+      justify-content: space-between;
+    }
+    ${DetailTitle} {
+      font-size: ${props => props.theme.fontSize.textLg};
+    }
+    ${DetailEmoji} {
+      display: none;
+    }
+  }
+`;
 const EmotionDetailPercent = styled.p`
-  font-size: 35px;
+  font-size: 30px;
 `;
 const DetailTextBox = styled.div`
   display: flex;
@@ -138,10 +156,11 @@ const DetailTextBox = styled.div`
   align-items: center;
 `;
 const DetailText = styled.p`
-  font-size: ${props => props.theme.fontSize.textSm};
+  font-size: ${props => props.theme.fontSize.textXs};
   padding: 3px;
+  text-align: center;
   span {
-    font-size: ${props => props.theme.fontSize.textMd};
+    font-size: ${props => props.theme.fontSize.textSm};
     font-weight: 600;
     padding: 0 3px;
   }

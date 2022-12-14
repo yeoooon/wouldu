@@ -76,7 +76,7 @@ const MatchCodeSubmit = () => {
   return (
     <>
       <ModalWrapper>
-        <ModalContainer width="400px" height="200px">
+        <ModalContainer height="200px">
           <Cancel onClick={handleClickCancel}>
             <CloseIcon width={15} height={15}/>
           </Cancel>

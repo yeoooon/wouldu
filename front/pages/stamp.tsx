@@ -59,10 +59,10 @@ const Stamp = () => {
         <EmotionBox>
           {isConnected ? (
             Object.keys(MonthEmotion).length !== 0 ?
-            <>
+            <BottomAnalysis>
               <EmotionGraph />
               <EmotionAnalysis />
-            </> : 
+            </BottomAnalysis> : 
             <TextBox>
               <p>분석할 일기가 없습니다.</p>
               <EmojiBox>
@@ -86,7 +86,7 @@ export const getServerSideProps = withGetServerSideProps(async (context: GetServ
 
 const StampWrapper = styled(Wrapper)`
   justify-content: space-evenly;
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 850px) {
     height: auto;
     flex-direction: column;
   }
@@ -98,7 +98,7 @@ const LeftContainer = styled(Container)`
   width: 36%;
   height: 95vh;
   background-color: ${props => props.theme.color.background};
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 850px) {
     margin-top: 30px;
     width: 90%;
   }
@@ -109,9 +109,11 @@ const RightContainer = styled(Container)`
   flex-direction: column;
   width: 58%;
   height: 95vh;
-  @media screen and (max-width: 720px) {
+
+  @media screen and (max-width: 850px) {
     margin: 1em 0;
     width: 90%;
+    height: auto;
   }
 `;
 
@@ -129,7 +131,7 @@ const ButtonBox = styled.div`
 const Button = styled.button`
   background-color: inherit;
   color: ${props => props.theme.color.fontMain};
-  width: 8em;
+  width: 50%;
   height: 5vh;
   border-radius: 0;
   &.active {
@@ -146,6 +148,17 @@ const CalendarBox = styled.div`
   width: 85%;
   height: 55vh;
 `;
+const BottomAnalysis = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  
+  @media screen and (max-width: 850px) {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+`;
 const EmotionBox = styled(CalendarBox)`
   margin-top: 2vh;
   width: 90%;
@@ -155,6 +168,13 @@ const EmotionBox = styled(CalendarBox)`
   border-radius: ${props => props.theme.borderSize.borderSm};
   background-color: ${props => props.theme.color.purpleBox};
   justify-content: center;
+
+  @media screen and (max-width: 850px) {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    margin-bottom: 1em;
+  }
 `;
 const TextBox = styled(Box)`
   flex-direction: column;

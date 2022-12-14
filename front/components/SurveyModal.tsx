@@ -109,6 +109,13 @@ const SurveyContainer = styled(motion.div)`
   justify-content: flex-start;
   border: 1px solid ${props => props.theme.color.border};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  @media screen and (max-width: 720px) {
+    margin-top: 80px;
+    height: auto;
+    width: 90%;
+    overflow-y: auto;
+  }
 `;
 
 const Cancel = styled.div`
@@ -134,6 +141,9 @@ const CheckList = styled(Box)`
   width: 80%;
   height: 55%;
   flex-wrap: wrap;
+  @media screen and (max-width: 720px) {
+    width: 95%;
+  }
 `;
 const CategoryButton = styled.button`
   display: flex;
@@ -156,6 +166,10 @@ const CategoryButton = styled.button`
     color: ${props => props.theme.color.fontPoint};
     background-color: ${props => props.theme.color.purpleBox};
     font-weight: 700;
+  }
+  @media screen and (max-width: 720px) {
+    padding: 0.5em 1em;
+    font-size: ${props => props.theme.fontSize.textXs};
   }
 `;
 const Emoji = styled.p`
