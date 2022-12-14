@@ -33,6 +33,7 @@ export class AuthService {
       email: user.email,
       nickname: user.nickname,
       friendCode: user.friendCode,
+      socialId: user.socialId,
       isFirstLogin,
     };
   }
