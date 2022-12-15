@@ -19,10 +19,9 @@ const TodoBox = styled(Box)`
   background-color: ${props => props.theme.color.purpleBox};
   border: 1px solid ${props => props.theme.color.borderPoint};
   width: 95%;
-  height: 5vh;
   justify-content: flex-start;
   margin-bottom: 0.8em;
-  padding: 1em 1.2em;
+  padding: 0.8em 1.2em;
 
   &.finish {
     border: 1px solid ${props => props.theme.color.border};
