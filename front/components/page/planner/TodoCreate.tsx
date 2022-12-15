@@ -17,7 +17,7 @@ const TodoCreate = () => {
   const {
     register,
     handleSubmit,
-    resetField,
+    reset,
     formState: { errors },
   } = useForm<{ description: string }>();
   const queryClient = useQueryClient();
@@ -38,7 +38,7 @@ const TodoCreate = () => {
     // priority는 옵션임으로, 우선 1로 셋팅해놓음.
     updateMutation.mutate({ date: pickDay, ...data, priority: 1 });
     setOpen(false);
-    resetField("description");
+    reset();
   };
 
   return (
@@ -47,7 +47,7 @@ const TodoCreate = () => {
         <CreateContainer>
           <InsertForm onSubmit={handleSubmit(onCreateSubmit)}>
             <BtnBox onClick={handleToggle}>
-              <CircleCloseBox>
+              <CircleCloseBox onClick={() => reset()}>
                 <CirclePlusIcon />
               </CircleCloseBox>
             </BtnBox>
