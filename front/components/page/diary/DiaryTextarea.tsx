@@ -1,15 +1,14 @@
 import { Box, Container } from "@styles/layout";
-import React, { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import React from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { diarywriteState, clickedDiaryDateState } from "../../../recoil/diary";
 import { postDiary } from "../../../services/api/diary";
-import { Diary } from "@type/diary";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 const DiaryTextarea = () => {
-  const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
+  const setIsTextareaOpen = useSetRecoilState(diarywriteState);
   const queryClient = useQueryClient();
   const handleBackClick = () => setIsTextareaOpen(false);
   const pickDay = useRecoilValue(clickedDiaryDateState);
@@ -17,7 +16,6 @@ const DiaryTextarea = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<{ content: string }>();
 

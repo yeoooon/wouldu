@@ -29,7 +29,6 @@ const FindPasswordModal = () => {
   const findPwSubmit = async (data: FindPasswordFormValue) => {
     FindUserPassword(data).then(status => {
       if (status === 201) {
-        // alert("메일 주소로 임시비밀번호가 발급되었습니다.");
         setIsEmailSent(true);
       } else {
         alert("올바른 이메일인지 확인해주세요.");

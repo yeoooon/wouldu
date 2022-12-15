@@ -1,8 +1,8 @@
-import { Box } from '@styles/layout';
-import { MonthDiaryProps } from '@type/diary';
-import React from 'react';
-import styled from 'styled-components';
-import getDayString from '../../../services/utils/getDayString';
+import { Box } from "@styles/layout";
+import { MonthDiaryProps } from "@type/diary";
+import React from "react";
+import styled from "styled-components";
+import getDayString from "@services/utils/getDayString";
 
 const DiaryListDay = ({ diary }: MonthDiaryProps) => {
   const dayStr = getDayString(diary.date.substring(0, 10));
@@ -35,4 +35,3 @@ const Date2 = styled(Date1)`
 `;
 
 export default DiaryListDay;
-

@@ -3,9 +3,9 @@ import { checkPlan, deletePlan, updatePlan } from "@services/api/planner";
 import { Box } from "@styles/layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 const TodoItem = (plan: Planner) => {
   const queryClient = useQueryClient();
@@ -44,12 +44,6 @@ const TodoItem = (plan: Planner) => {
   };
   const handleRemoveTodo = async () => {
     deleteMutation.mutate(plan);
-  };
-  const handleUpdateTodo = () => {
-    //description에 수정에 반영될 데이터 넣어주면됨.
-
-    setIsEditMode(true);
-    // updateMutation.mutate({ ...plan, description: "일정!" });
   };
 
   const onUpdateSubmit = async ({ description }: { description: string }) => {

@@ -6,8 +6,8 @@ import { ModalVariant, OverlayVariant } from "@styles/ModalVariants";
 import { AgreeButton, Cancel, DenyButton, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
-import { useCallback, useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useCallback, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 const FriendDisconnectModal = () => {
@@ -15,7 +15,7 @@ const FriendDisconnectModal = () => {
   const [isDisconnectOpen, setIsDisconnectOpen] = useRecoilState(isDisconnectModalAtom);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const deleteMutation = useMutation(() => disconnectFriend(), {
-    onSuccess: (status, value) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["friend", "info"]);
       closeModal();
       alert("친구와의 연결이 끊어졌습니다.");

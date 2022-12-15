@@ -44,14 +44,6 @@ const EmotionCalendar = ({ isUserCalendar }: calendarProps) => {
     },
   );
 
-  const checkData = ({ ...data } = {}) => {
-    if (data !== undefined && data !== null) {
-      return Object.keys(data);
-    } else {
-      return [];
-    }
-  };
-
   useEffect(() => {
     setDay(date.getDate());
     setMonth(date.getMonth());
@@ -194,8 +186,6 @@ const DayTile = styled.div<{ isToday: boolean; notInMonth: boolean }>`
   height: 8.3vh;
   display: flex;
   flex-direction: column;
-  /* justify-content: flex-end;
-  align-items: flex-start; */
   border: 1px solid ${props => props.theme.color.purpleBox};
   border-radius: ${props => props.theme.borderSize.borderSm};
   cursor: pointer;
@@ -226,7 +216,6 @@ const DayTile = styled.div<{ isToday: boolean; notInMonth: boolean }>`
     `}
 `;
 const EmojiBox = styled(Box)`
-  /* background-color: ${props => props.theme.color.purpleBox}; */
   border-radius: 0;
   font-size: ${props => props.theme.fontSize.textXl};
 `;

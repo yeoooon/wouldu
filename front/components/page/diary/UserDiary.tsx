@@ -1,14 +1,13 @@
 import { Box } from "@styles/layout";
 import React from "react";
-import Image from "next/image";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { diarywriteState, today, clickedDiaryDateState } from "@recoil/diary";
 import styled from "styled-components";
 import { DiaryProps } from "@type/diary";
 import { UserIcon } from "@components/icons/UserIcon";
 
 const UserDiary = ({ diary }: DiaryProps) => {
-  const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
+  const setIsTextareaOpen = useSetRecoilState(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
 

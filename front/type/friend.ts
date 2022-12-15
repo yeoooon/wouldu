@@ -7,11 +7,9 @@ export interface ReceiveFriend {
   id: number;
   fromUserId: string;
   fromUserNickname: string;
-  // requestProgress?: number;
   createdAt: Date;
 }
 
-//백엔드에서 친구 데이터 받는 형식
 export interface Friend {
   toUserId: string;
   toUserNickname: string;

@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 
 export const useGetFriend = () => {
   const [isConnected, setIsConnected] = useState<boolean>();
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { data: friendInfo, isLoading } = useQuery<Friend>(["friend", "info"], () => getFriend(), {
     staleTime: 60 * 1000,

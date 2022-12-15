@@ -1,7 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
 import styled from "styled-components";
-import { colors } from "@styles/common_style";
 import { LogoBlackIcon } from "./icons/LogoIcon";
 
 const BeforeNavBar = () => {

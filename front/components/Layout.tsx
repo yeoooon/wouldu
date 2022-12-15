@@ -1,4 +1,3 @@
-import { isAlarmModalAtom, isSurveyModalAtom } from "@recoil/modal";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -16,7 +15,6 @@ export interface LayoutProps {
 const Layout = ({ children, darkMode, setDarkMode }: LayoutProps) => {
   const isLoginStateAtom = useRecoilValue(loginStateSelector);
   const [isLoginState, setIsLoginState] = useState<boolean>(false);
-  const isAlarmOpen = useRecoilValue(isAlarmModalAtom);
   const user = useRecoilValue(userAtom);
 
   useEffect(() => {
@@ -49,8 +47,8 @@ const LayoutWrapper = styled.div`
   height: 720px;
 
   @media screen and (max-width: 960px) {
-   grid-template-columns: 1fr;
-   grid-template-rows: 60px 1fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: 60px 1fr;
   }
 `;
 

@@ -6,7 +6,7 @@ import StampTodoList from "@components/page/stamp/StampTodoList";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { GetServerSidePropsContext } from "next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { useGetFriend } from "@services/utils/useGetFriend";
 import { useRecoilValue } from "recoil";
@@ -30,7 +30,7 @@ const Stamp = () => {
       setIsUserCalendar(false);
       setOpenStamp(true);
     }
-  }
+  };
 
   return (
     <StampWrapper>
@@ -58,17 +58,17 @@ const Stamp = () => {
         </CalendarBox>
         <EmotionBox>
           {isConnected ? (
-            Object.keys(MonthEmotion).length !== 0 ?
-            <BottomAnalysis>
-              <EmotionGraph />
-              <EmotionAnalysis />
-            </BottomAnalysis> : 
-            <TextBox>
-              <p>분석할 일기가 없습니다.</p>
-              <EmojiBox>
-                {emotion.map(e => emojiList(e, 20))}
-              </EmojiBox>
-            </TextBox>
+            Object.keys(MonthEmotion).length !== 0 ? (
+              <BottomAnalysis>
+                <EmotionGraph />
+                <EmotionAnalysis />
+              </BottomAnalysis>
+            ) : (
+              <TextBox>
+                <p>분석할 일기가 없습니다.</p>
+                <EmojiBox>{emotion.map(e => emojiList(e, 20))}</EmojiBox>
+              </TextBox>
+            )
           ) : (
             <p>친구와 연결하고 감정 분석 기능을 경험해 보세요!</p>
           )}
@@ -152,7 +152,7 @@ const BottomAnalysis = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
-  
+
   @media screen and (max-width: 850px) {
     display: flex;
     flex-direction: column;

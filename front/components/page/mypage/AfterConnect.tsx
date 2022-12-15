@@ -1,17 +1,15 @@
-import { CheckIcon, PencilIcon, SmallCheckIcon } from "@components/icons/CheckIcon";
+import { PencilIcon, SmallCheckIcon } from "@components/icons/CheckIcon";
 import { HandshakeIcon } from "@components/icons/HandshakeIcon";
 import { UserIcon } from "@components/icons/UserIcon";
-import { today } from "@recoil/diary";
 import { isDisconnectModalAtom } from "@recoil/modal";
 import { userAtom } from "@recoil/user";
-import { changeDiaryTitle, disconnectFriend, getFriend } from "@services/api/friend";
+import { changeDiaryTitle } from "@services/api/friend";
 import { fontSize } from "@styles/common_style";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Friend, FriendProps } from "@type/friend";
-import Image from "next/image";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { FriendProps } from "@type/friend";
 import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
 import FriendDisconnectModal from "./modal/FriendDisconnectModal";
@@ -34,7 +32,7 @@ const AfterConnect = ({ friend }: FriendProps) => {
   } = useForm<{ title: string }>();
 
   const updateMutation = useMutation(({ title }: { title: string }) => changeDiaryTitle(title), {
-    onSuccess: (status, value) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["friend", "info"]);
       setIsEdit(false);
       resetField("title");

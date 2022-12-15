@@ -1,7 +1,7 @@
 import { dayAtom } from "@recoil/planner";
 import { formatDate } from "@services/utils/formatDate";
 import usePlanQuery from "@services/utils/usePlanQuery";
-import { Box, Container } from "@styles/layout";
+import { Container } from "@styles/layout";
 import { Planner } from "@type/planner";
 import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -12,7 +12,6 @@ import TodoList from "./TodoList";
 
 const TodoTemplate = () => {
   const [todos, setTodos] = useState<Planner[] | null>(null);
-
   const recoilDay = useRecoilValue<Date>(dayAtom);
   const day = formatDate(recoilDay);
   const { data: planData } = usePlanQuery(day);

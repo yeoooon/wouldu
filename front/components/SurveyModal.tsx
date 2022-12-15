@@ -2,14 +2,14 @@ import { isSurveyModalAtom } from "@recoil/modal";
 import { userAtom } from "@recoil/user";
 import { ChangeSurveyCategory, getUserInfo } from "@services/api/user";
 import { surveyCategories } from "@services/utils/surveyCategory";
-import { Box, Container } from "@styles/layout";
+import { Box } from "@styles/layout";
 import { ModalVariant, OverlayVariant } from "@styles/ModalVariants";
-import { ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
+import { ModalWrapper, Overlay } from "@styles/modal_layout";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SurveyForm, User } from "@type/user";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { CloseIcon } from "./icons/CloseIcon";
 
@@ -39,7 +39,6 @@ const SurveyModal = () => {
     {
       onSuccess: (status, value) => {
         queryClient.invalidateQueries(["user", "info"]);
-        // setUser({ ...user!, survey: value?.survey });
       },
       onError: () => {},
     },
@@ -55,7 +54,6 @@ const SurveyModal = () => {
     closeModal();
   };
   const handleClickConfirm = () => {
-    //api호출
     changeMutation.mutate({ id: user?.id!, survey: selectedCategory });
     closeModal();
   };
@@ -66,7 +64,7 @@ const SurveyModal = () => {
         <ModalWrapper>
           <SurveyContainer {...ModalVariant}>
             <Cancel onClick={handleClickCancel}>
-              <CloseIcon width={15} height={15}/>
+              <CloseIcon width={15} height={15} />
             </Cancel>
             <Head>
               <Title>선호하는 카테고리를 선택하세요.</Title>

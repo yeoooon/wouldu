@@ -8,7 +8,7 @@ import Notepad from "public/icon/notepad.svg";
 import { HandshakeIcon } from "@components/icons/HandshakeIcon";
 import { aboutText } from "@services/utils/aboutText";
 import Link from "next/link";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { cardVariants, TextVariants } from "./styles";
 
 const About = () => {
@@ -144,7 +144,7 @@ const Button = styled(motion.button)`
 `;
 const Right = styled(motion.div)`
   padding-left: 10vh;
-    
+
   @media screen and (max-width: 850px) {
     display: none;
   }
@@ -307,7 +307,7 @@ const ThirdPart = styled(motion.div)`
   }
   @media screen and (max-width: 850px) {
     display: grid;
-    grid-template-rows: 35% 65%; 
+    grid-template-rows: 35% 65%;
     gap: 30px;
 
     ${MainText} {

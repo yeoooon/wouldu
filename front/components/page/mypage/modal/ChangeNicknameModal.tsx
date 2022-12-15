@@ -7,11 +7,11 @@ import { Box } from "@styles/layout";
 import { ModalVariant, OverlayVariant } from "@styles/ModalVariants";
 import { AgreeButton, Cancel, DenyButton, ModalContainer, ModalWrapper, Overlay, Title } from "@styles/modal_layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { NicknameForm, User } from "@type/user";
+import { NicknameForm } from "@type/user";
 import { AnimatePresence } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 interface EditProfileFormValue {

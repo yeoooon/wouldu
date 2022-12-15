@@ -4,24 +4,17 @@ import { useRecoilState } from "recoil";
 import { isCodeModalAtom } from "@recoil/friend";
 import { FCodeType, MatchCodeFormValue } from "@type/friend";
 import { requestFriend } from "@services/api/friend";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
 import { CloseIcon } from "@components/icons/CloseIcon";
 import { AnimatePresence } from "framer-motion";
 import { ModalVariant, OverlayVariant } from "@styles/ModalVariants";
-import reset from "styled-reset";
 
 const codeNum = [1, 2, 3, 4, 5, 6];
 const FriendConnectModal = () => {
   const [isCodeShow, setIsCodeShow] = useRecoilState(isCodeModalAtom);
-  const {
-    register,
-    handleSubmit,
-    setFocus,
-    reset,
-    formState: { errors },
-  } = useForm<MatchCodeFormValue>();
+  const { register, handleSubmit, setFocus, reset } = useForm<MatchCodeFormValue>();
 
   useEffect(() => {
     isCodeShow && setFocus("code1");

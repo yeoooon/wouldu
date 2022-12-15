@@ -1,18 +1,18 @@
 import { Box } from "@styles/layout";
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { MonthDiaries } from "../../../type/diary";
+import { MonthDiaries } from "@type/diary";
 import DiaryListDay from "./DiaryListDay";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { clickedDiaryDateState, clickedDiaryMonthState, today } from "@recoil/diary";
 import { useGetDiaries } from "@services/utils/useGetDiaries";
 import { diarywriteState } from "@recoil/diary";
 
 const DiaryListItem = () => {
-  const [clickedDiaryDate, setClickedDiaryDate] = useRecoilState(clickedDiaryDateState);
+  const setClickedDiaryDate = useSetRecoilState(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
   const clickedMonth = useRecoilValue(clickedDiaryMonthState);
-  const [isTextAreaOpen, setIsTextAreaOpen] = useRecoilState(diarywriteState);
+  const setIsTextAreaOpen = useSetRecoilState(diarywriteState);
 
   const getTodayMain = () => {
     setClickedDiaryDate(todayDate);
@@ -47,7 +47,7 @@ const DiaryListItem = () => {
             <ListItemBox key={diaries[0]?.id} id={diaries[0].date} onClick={handleClickDate}>
               <DiaryListDay diary={diaries[0]} />
               <Text>
-                {diaries[0]?.content.length < 16 ? diaries[0]?.content : diaries[0]?.content.substring(0, 15)+ "..."}
+                {diaries[0]?.content.length < 16 ? diaries[0]?.content : diaries[0]?.content.substring(0, 15) + "..."}
               </Text>
             </ListItemBox>
           ))
@@ -63,7 +63,6 @@ const WriteTodayDiaryBtn = styled.p`
   width: 100%;
   font-size: ${props => props.theme.fontSize.textSm};
   color: ${props => props.theme.color.fontMain};
-  /* text-decoration: underline; */
   text-align: center;
   padding: 10px;
   cursor: pointer;

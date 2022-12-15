@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { colors } from "../styles/common_style";
 import { useForm } from "react-hook-form";
 import { LOGIN, UserLoginForm } from "@type/user";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { requestLogin } from "../services/api/user";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/user";
 import { useRouter } from "next/router";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
@@ -17,8 +17,8 @@ import { kakaoInit } from "@services/utils/kakaoInit";
 
 const Login = () => {
   const router = useRouter();
-  const [user, setUser] = useRecoilState(userAtom);
-  const [isFindPasswordOpen, setIsFindPasswordOpen] = useRecoilState(isFindPasswordModalAtom);
+  const setUser = useSetRecoilState(userAtom);
+  const setIsFindPasswordOpen = useSetRecoilState(isFindPasswordModalAtom);
   const {
     register,
     handleSubmit,
@@ -82,9 +82,6 @@ const Login = () => {
             <IconBox social={LOGIN.KAKAO} onClick={handleClickKakao}>
               <Image src={"/icon/kakao_icon.svg"} width={20} height={20} alt="kakao" />
             </IconBox>
-            {/* <IconBox social={LOGIN.GOOGLE}>
-              <Image src={"/icon/google_icon.svg"} width={20} height={20} alt="google" />
-            </IconBox> */}
           </SocialBox>
         </SocialContainer>
         <EtcBox>

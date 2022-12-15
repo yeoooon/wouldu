@@ -1,17 +1,14 @@
 import { Box } from "@styles/layout";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { today } from "@recoil/diary";
 import { useRecoilValue } from "recoil";
-import { Diary } from "@type/diary";
 import { useGetDiary } from "@services/utils/useGetDiary";
 import { useGetFriend } from "@services/utils/useGetFriend";
 
 const StampDiaryContent = () => {
   const { isConnected } = useGetFriend();
-
   const todayDate = useRecoilValue(today);
-  
   const { userDiary, partnerDiary } = useGetDiary(todayDate);
 
   return (
@@ -19,25 +16,33 @@ const StampDiaryContent = () => {
       <DiarySummary>
         <Name>나</Name>
         <Content>
-            {!isConnected?
-              <p>먼저 친구와 연결해 보세요!</p>
-              :
-              (userDiary !== undefined?
-                (userDiary?.content.length < 28? userDiary?.content : userDiary?.content.substring(0, 28) + '...')
-                :
-                "작성된 일기가 없습니다.")}
-          </Content>
+          {!isConnected ? (
+            <p>먼저 친구와 연결해 보세요!</p>
+          ) : userDiary !== undefined ? (
+            userDiary?.content.length < 28 ? (
+              userDiary?.content
+            ) : (
+              userDiary?.content.substring(0, 28) + "..."
+            )
+          ) : (
+            "작성된 일기가 없습니다."
+          )}
+        </Content>
       </DiarySummary>
       <PartnerDiarySummary>
         <PartnerName>상대</PartnerName>
         <Content>
-          {!isConnected?
+          {!isConnected ? (
             <p>먼저 친구와 연결해 보세요!</p>
-            :
-            (partnerDiary !== undefined?
-              (partnerDiary?.content.length < 28? partnerDiary?.content : partnerDiary?.content.substring(0, 28) + '...')
-              :
-              "작성된 일기가 없습니다.")}
+          ) : partnerDiary !== undefined ? (
+            partnerDiary?.content.length < 28 ? (
+              partnerDiary?.content
+            ) : (
+              partnerDiary?.content.substring(0, 28) + "..."
+            )
+          ) : (
+            "작성된 일기가 없습니다."
+          )}
         </Content>
       </PartnerDiarySummary>
     </ContentBox>

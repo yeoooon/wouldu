@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import BeforeConnect from "./BeforeConnect";
 import AfterConnect from "./AfterConnect";
 import { useGetFriend } from "@services/utils/useGetFriend";

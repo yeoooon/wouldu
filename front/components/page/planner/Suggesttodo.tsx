@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { CheckIcon } from "@components/icons/CheckIcon";
 import { Box, Container } from "@styles/layout";

@@ -1,6 +1,5 @@
 import { getCookie } from "@services/utils/cookies";
 import axios from "axios";
-import { config } from "process";
 export const BASE_URL = "http://kdt-ai5-team05.elicecoding.com:5000";
 // export const BASE_URL = "http://localhost:8080/";
 

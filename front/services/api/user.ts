@@ -1,6 +1,6 @@
 import { FindPasswordFormValue } from "@components/FindPasswordModal";
-import { getCookie, removeCookie, setCookie } from "@services/utils/cookies";
-import { kakaoForm, NicknameForm, PasswordForm, SurveyForm, UserJoinForm, UserLoginForm } from "@type/user";
+import { removeCookie, setCookie } from "@services/utils/cookies";
+import { NicknameForm, PasswordForm, SurveyForm, UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 
@@ -110,7 +110,6 @@ export const ChangeSurveyCategory = async (surveyInfo: SurveyForm) => {
 
 //카카오 로그인
 export const kakaoLogin = async (code: string) => {
-  console.log("소셜로그인호출------------------------");
   try {
     const { data } = await axiosInstance.get(`auth/social/kakao?code=${code}`);
     setCookie("userToken", data?.accessToken);

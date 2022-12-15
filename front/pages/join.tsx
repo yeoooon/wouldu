@@ -3,8 +3,7 @@ import styled from "styled-components";
 import { colors } from "../styles/common_style";
 import { useForm } from "react-hook-form";
 import { LOGIN, UserJoinForm } from "@type/user";
-import { SeoPageProps } from "@components/Seo";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { userJoin } from "../services/api/user";
@@ -99,11 +98,6 @@ const Join = () => {
                 <Image src={"/icon/kakao_icon.svg"} width={20} height={20} alt="kakao" />
               </IconBox>
             </Link>
-            {/* <Link href={"/"}>
-              <IconBox social={LOGIN.GOOGLE}>
-                <Image src={"/icon/google_icon.svg"} width={20} height={20} alt="google" />
-              </IconBox>
-            </Link> */}
           </SocialBox>
         </SocialContainer>
       </JoinContainer>

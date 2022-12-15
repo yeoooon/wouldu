@@ -1,14 +1,8 @@
-import { dayAtom } from "@recoil/planner";
 import { Container } from "@styles/layout";
-import { useQuery } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
-import React, { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import React from "react";
 import styled from "styled-components";
-import { getDayPlan } from "@services/api/planner";
-import { formatDate } from "@services/utils/formatDate";
 import TodoItem from "./TodoItem";
-import usePlanQuery from "@services/utils/usePlanQuery";
 import { CheckIcon } from "@components/icons/CheckIcon";
 
 const TodoList = ({ todos }: { todos: Planner[] | undefined }) => {
