@@ -10,6 +10,7 @@ import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_lay
 import { CloseIcon } from "@components/icons/CloseIcon";
 import { AnimatePresence } from "framer-motion";
 import { ModalVariant, OverlayVariant } from "@styles/ModalVariants";
+import { colors } from "@styles/common_style";
 
 const codeNum = [1, 2, 3, 4, 5, 6];
 const FriendConnectModal = () => {
@@ -66,12 +67,12 @@ const FriendConnectModal = () => {
     <AnimatePresence>
       {isCodeShow && (
         <ModalWrapper>
-          <ModalContainer width="400px" height="200px" {...ModalVariant}>
+          <ModalContainer width="400px" height="250px" {...ModalVariant}>
             <Cancel onClick={closeModal}>
               <CloseIcon width={15} height={15} />
             </Cancel>
             <DescArea>
-              <Title>상대방의 연결 코드를 입력하세요.</Title>
+              <Title>친구의 연결 코드를 입력하세요.</Title>
               <Form onSubmit={handleSubmit(onSubmitHandler)}>
                 <InputArea>
                   <Input
@@ -146,6 +147,7 @@ const DescArea = styled.div`
 `;
 
 const Form = styled.form`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -154,6 +156,8 @@ const Form = styled.form`
 
 const InputArea = styled.div`
   display: flex;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 const Title = styled.p`
@@ -170,11 +174,18 @@ const ErrorMessage = styled.p`
 const ConnectButton = styled.button`
   width: 110px;
   padding: 0.5em 1em;
-  margin-top: 20px;
+  margin-top: 30px;
 `;
 
 const Input = styled.input`
-  width: 30px;
-  height: 30px;
+  display: flex;
+  flex-direction: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 8px;
+  border: none;
+  font-size: ${props => props.theme.fontSize.textMd};
+  box-shadow: 0 4px 5px ${colors.gray_300};
 `;
 export default FriendConnectModal;

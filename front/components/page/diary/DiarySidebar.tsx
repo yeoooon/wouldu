@@ -1,10 +1,10 @@
-import { Box, Container } from '@styles/layout';
-import React, { useCallback, useMemo } from 'react';
-import styled from 'styled-components';
-import DiaryListItem from './DiaryListItem';
-import { useRecoilState } from 'recoil';
-import { clickedDiaryMonthState } from '@recoil/diary';
-import { LeftarrowIcon, RightarrowIcon } from '@components/icons/ArrowIcons';
+import { Box, Container } from "@styles/layout";
+import React, { useCallback, useMemo } from "react";
+import styled from "styled-components";
+import DiaryListItem from "./DiaryListItem";
+import { useRecoilState } from "recoil";
+import { clickedDiaryMonthState } from "@recoil/diary";
+import { LeftarrowIcon, RightarrowIcon } from "@components/icons/ArrowIcons";
 
 const DiarySidebar = () => {
   const [clickedMonth, setClickedMonth] = useRecoilState(clickedDiaryMonthState);
@@ -22,30 +22,34 @@ const DiarySidebar = () => {
       returnMonth = nowMonth - 1;
       yearStr = nowYearStr;
     }
-    
-    const returnMonthStr = yearStr + '-' + String(returnMonth);
+
+    const returnMonthStr = yearStr + "-" + String(returnMonth);
     setClickedMonth(returnMonthStr);
-  }, [nowYearStr, nowMonth])
+  }, [nowYearStr, nowMonth]);
 
   const handleChangeNextMonth = useCallback(() => {
     if (nowMonth === 12) {
       returnMonth = 1;
       yearStr = String(Number(nowYearStr) + 1);
     } else {
-      returnMonth = nowMonth+1;
+      returnMonth = nowMonth + 1;
       yearStr = nowYearStr;
     }
-    
-    const returnMonthStr = yearStr + '-' + String(returnMonth);
+
+    const returnMonthStr = yearStr + "-" + String(returnMonth);
     setClickedMonth(returnMonthStr);
-  }, [nowYearStr, nowMonth])
-  
+  }, [nowYearStr, nowMonth]);
+
   return (
     <SidebarContainer>
       <MonthBox>
-        <ChangeLastMonth onClick={handleChangeLastMonth}><LeftarrowIcon color={"white"}/></ChangeLastMonth>
+        <ChangeLastMonth onClick={handleChangeLastMonth}>
+          <LeftarrowIcon color={"white"} />
+        </ChangeLastMonth>
         {clickedMonth.substring(0, 4)}년 {clickedMonth.substring(5, 7)}월
-        <ChangeNextMonth onClick={handleChangeNextMonth}><RightarrowIcon color={"white"}/></ChangeNextMonth>
+        <ChangeNextMonth onClick={handleChangeNextMonth}>
+          <RightarrowIcon color={"white"} />
+        </ChangeNextMonth>
       </MonthBox>
       <DiaryListItem />
     </SidebarContainer>
@@ -53,12 +57,14 @@ const DiarySidebar = () => {
 };
 
 const ChangeLastMonth = styled.button`
-  font-size: ${props => props.theme.fontSize.textXs}
-`
+  font-size: ${props => props.theme.fontSize.textXs};
+  box-shadow: none;
+`;
 
 const ChangeNextMonth = styled.button`
-  font-size: ${props => props.theme.fontSize.textXs}
-`
+  font-size: ${props => props.theme.fontSize.textXs};
+  box-shadow: none;
+`;
 
 const SidebarContainer = styled(Container)`
   display: flex;
@@ -78,7 +84,7 @@ const MonthBox = styled(Box)`
   font-size: ${props => props.theme.fontSize.textMd};
   font-weight: 500;
   line-height: 26px;
-  
+
   gap: 10px;
 `;
 

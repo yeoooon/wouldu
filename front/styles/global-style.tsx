@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import { reset } from "styled-reset";
+import { colors } from "./common_style";
 
 export const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -23,6 +24,7 @@ export const GlobalStyle = createGlobalStyle`
     border-radius: ${props => props.theme.borderSize.borderSm};
     border: none;
     cursor: pointer;
+    box-shadow: 0 2px 3px ${colors.gray_300};
     padding: 0.6em 1.2em;
     &:hover {
       background-color: ${props => props.theme.color.buttonHover};

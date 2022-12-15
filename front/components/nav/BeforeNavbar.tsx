@@ -26,6 +26,7 @@ const Header = styled.div`
 
   button {
     height: 70%;
+    box-shadow: none;
 
     @media screen and (max-width: 850px) {
       font-size: ${props => props.theme.fontSize.textMain};

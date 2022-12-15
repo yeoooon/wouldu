@@ -129,6 +129,7 @@ const ButtonBox = styled.div`
   padding: 0 1.5em;
 `;
 const Button = styled.button`
+  box-shadow: none;
   background-color: inherit;
   color: ${props => props.theme.color.fontMain};
   width: 50%;

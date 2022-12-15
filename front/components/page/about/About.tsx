@@ -141,6 +141,7 @@ const Button = styled(motion.button)`
   font-size: ${props => props.theme.fontSize.textMd};
   height: 2.5em;
   width: 15em;
+  box-shadow: none;
 `;
 const Right = styled(motion.div)`
   padding-left: 10vh;
