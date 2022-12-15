@@ -1,6 +1,6 @@
 import BeforeConnect from "./BeforeConnect";
 import AfterConnect from "./AfterConnect";
-import { useGetFriend } from "@services/utils/useGetFriend";
+import { useGetFriend } from "@hooks/useGetFriend";
 
 import Loading from "@components/Loading";
 

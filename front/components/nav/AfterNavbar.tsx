@@ -1,27 +1,27 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled, { css } from "styled-components";
-import { Box, Container } from "../styles/layout";
+import { Box, Container } from "../../styles/layout";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { userAtom } from "../recoil/user";
+import { userAtom } from "../../recoil/user";
 import { removeCookie } from "@services/utils/cookies";
-import { LogoBlackIcon, LogoWhiteIcon } from "./icons/LogoIcon";
-import { AlarmIcon } from "./icons/AlarmIcon";
-import { UserIcon } from "./icons/UserIcon";
+import { LogoBlackIcon, LogoWhiteIcon } from "../icons/LogoIcon";
+import { AlarmIcon } from "../icons/AlarmIcon";
+import { UserIcon } from "../icons/UserIcon";
 import { checkRequestFriend } from "@services/api/friend";
 import { useQuery } from "@tanstack/react-query";
 import { colors } from "@styles/common_style";
 import { isAlarmModalAtom } from "@recoil/modal";
 import { ReceiveFriend } from "@type/friend";
 import React, { ReactNode, useState } from "react";
-import { RightarrowIcon } from "./icons/ArrowIcons";
+import { RightarrowIcon } from "../icons/ArrowIcons";
 import Home from "public/icon/home.svg";
 import Mypage from "public/icon/me.svg";
 import Note from "public/icon/note.svg";
 import Notepad from "public/icon/notepad.svg";
 import Hamburger from "public/icon/hamburger.svg";
 import { Overlay } from "@styles/modal_layout";
-import { CloseIcon } from "./icons/CloseIcon";
+import { CloseIcon } from "../icons/CloseIcon";
 
 interface LayoutProps {
   darkMode: boolean;

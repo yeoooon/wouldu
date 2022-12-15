@@ -4,7 +4,7 @@ import DiarySidebar from "@components/page/diary/DiarySidebar";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";
 import { Container, Wrapper } from "../styles/layout";
-import { useGetFriend } from "@services/utils/useGetFriend";
+import { useGetFriend } from "@hooks/useGetFriend";
 import Loading from "@components/Loading";
 import Link from "next/link";
 import { motion } from "framer-motion";

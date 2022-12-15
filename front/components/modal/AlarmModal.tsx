@@ -10,7 +10,7 @@ import { AnimatePresence } from "framer-motion";
 import React from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { CloseIcon } from "./icons/CloseIcon";
+import { CloseIcon } from "../icons/CloseIcon";
 
 const AlarmModal = () => {
   const queryClient = useQueryClient();

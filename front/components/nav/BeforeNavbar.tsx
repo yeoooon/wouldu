@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
-import { LogoBlackIcon } from "./icons/LogoIcon";
+import { LogoBlackIcon } from "../icons/LogoIcon";
 
 const BeforeNavBar = () => {
   return (

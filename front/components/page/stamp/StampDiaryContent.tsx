@@ -3,8 +3,8 @@ import React from "react";
 import styled from "styled-components";
 import { today } from "@recoil/diary";
 import { useRecoilValue } from "recoil";
-import { useGetDiary } from "@services/utils/useGetDiary";
-import { useGetFriend } from "@services/utils/useGetFriend";
+import { useGetDiary } from "@hooks/useGetDiary";
+import { useGetFriend } from "@hooks/useGetFriend";
 
 const StampDiaryContent = () => {
   const { isConnected } = useGetFriend();

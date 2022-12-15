@@ -12,7 +12,7 @@ import { userAtom } from "../recoil/user";
 import { useRouter } from "next/router";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { isFindPasswordModalAtom } from "@recoil/modal";
-import FindPasswordModal from "@components/FindPasswordModal";
+import FindPasswordModal from "@components/modal/FindPasswordModal";
 import { kakaoInit } from "@services/utils/kakaoInit";
 
 const Login = () => {

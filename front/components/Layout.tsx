@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { loginStateSelector, userAtom } from "../recoil/user";
-import AfterNavbar from "./AfterNavbar";
-import AlarmModal from "./AlarmModal";
-import BeforeNavBar from "./BeforeNavbar";
-import SurveyModal from "./SurveyModal";
+import AfterNavbar from "./nav/AfterNavbar";
+import AlarmModal from "./modal/AlarmModal";
+import BeforeNavBar from "./nav/BeforeNavbar";
+import SurveyModal from "./page/mypage/modal/SurveyModal";
 
 export interface LayoutProps {
   children: React.ReactNode;

@@ -11,7 +11,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { CloseIcon } from "./icons/CloseIcon";
+import { CloseIcon } from "../../../icons/CloseIcon";
 
 const SurveyModal = () => {
   const queryClient = useQueryClient();

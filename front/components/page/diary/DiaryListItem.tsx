@@ -5,7 +5,7 @@ import { MonthDiaries } from "@type/diary";
 import DiaryListDay from "./DiaryListDay";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { clickedDiaryDateState, clickedDiaryMonthState, today } from "@recoil/diary";
-import { useGetDiaries } from "@services/utils/useGetDiaries";
+import { useGetDiaries } from "@hooks/useGetDiaries";
 import { diarywriteState } from "@recoil/diary";
 
 const DiaryListItem = () => {

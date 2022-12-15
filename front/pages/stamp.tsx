@@ -8,7 +8,7 @@ import { Box, Container, Wrapper } from "@styles/layout";
 import { GetServerSidePropsContext } from "next";
 import { useState } from "react";
 import styled from "styled-components";
-import { useGetFriend } from "@services/utils/useGetFriend";
+import { useGetFriend } from "@hooks/useGetFriend";
 import { useRecoilValue } from "recoil";
 import { MonthEmotionAtom } from "@recoil/stamp";
 import { emojiList } from "@services/utils/emojiList";

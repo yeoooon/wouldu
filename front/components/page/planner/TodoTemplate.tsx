@@ -1,6 +1,6 @@
 import { dayAtom } from "@recoil/planner";
 import { formatDate } from "@services/utils/formatDate";
-import usePlanQuery from "@services/utils/usePlanQuery";
+import usePlanQuery from "@hooks/usePlanQuery";
 import { Container } from "@styles/layout";
 import { Planner } from "@type/planner";
 import React, { useEffect, useState } from "react";

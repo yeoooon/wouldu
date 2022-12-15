@@ -1,4 +1,4 @@
-import { FindPasswordFormValue } from "@components/FindPasswordModal";
+import { FindPasswordFormValue } from "@components/modal/FindPasswordModal";
 import { removeCookie, setCookie } from "@services/utils/cookies";
 import { NicknameForm, PasswordForm, SurveyForm, UserJoinForm, UserLoginForm } from "@type/user";
 import axios from "axios";

@@ -1,5 +1,5 @@
 import { UserIcon } from "@components/icons/UserIcon";
-import SurveyModal from "@components/SurveyModal";
+import SurveyModal from "@components/page/mypage/modal/SurveyModal";
 import {
   isChangeNicknameModalAtom,
   isChangePasswordModalAtom,
