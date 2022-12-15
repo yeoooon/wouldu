@@ -161,6 +161,10 @@ const User = styled.div`
   gap: 10px;
   width: 120px;
   font-weight: 600;
+
+  @media screen and (max-width: 850px) {
+    width: 80px;
+  }
 `;
 const Mate = styled(User)``;
 const Dday = styled.div`
