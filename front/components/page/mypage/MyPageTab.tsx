@@ -9,6 +9,9 @@ import { mypageState } from "@recoil/mypage";
 const MyPageTab = () => {
   const [pageState, setPageState] = useRecoilState(mypageState);
 
+  useEffect(() => {
+    console.log("test");
+  }, []);
   return (
     <Tab>
       <p className={pageState === "mypage" ? "clicked" : ""} onClick={() => setPageState("mypage")}>

@@ -10,6 +10,7 @@ import { userAtom } from "@recoil/user";
 import { getUserInfo } from "@services/api/user";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@type/user";
+import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Box, Container } from "../../../styles/layout";
@@ -26,6 +27,9 @@ const MyInfo = () => {
 
   const { data: user } = useQuery<User>(["user", "info"], () => getUserInfo(userAtomData?.id!));
 
+  useEffect(() => {
+    console.log("test");
+  }, []);
   const handleClickNickname = () => {
     if (user?.socialId !== "kakao") {
       setIsChangeNicknameOpen(true);
