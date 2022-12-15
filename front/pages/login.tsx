@@ -82,9 +82,9 @@ const Login = () => {
             <IconBox social={LOGIN.KAKAO} onClick={handleClickKakao}>
               <Image src={"/icon/kakao_icon.svg"} width={20} height={20} alt="kakao" />
             </IconBox>
-            <IconBox social={LOGIN.GOOGLE}>
+            {/* <IconBox social={LOGIN.GOOGLE}>
               <Image src={"/icon/google_icon.svg"} width={20} height={20} alt="google" />
-            </IconBox>
+            </IconBox> */}
           </SocialBox>
         </SocialContainer>
         <EtcBox>
@@ -136,6 +136,9 @@ const LoginContainer = styled(Container)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 850px) {
+    width: 370px;
+  }
 `;
 
 const InputBox = styled(Box)`

@@ -99,11 +99,11 @@ const Join = () => {
                 <Image src={"/icon/kakao_icon.svg"} width={20} height={20} alt="kakao" />
               </IconBox>
             </Link>
-            <Link href={"/"}>
+            {/* <Link href={"/"}>
               <IconBox social={LOGIN.GOOGLE}>
                 <Image src={"/icon/google_icon.svg"} width={20} height={20} alt="google" />
               </IconBox>
-            </Link>
+            </Link> */}
           </SocialBox>
         </SocialContainer>
       </JoinContainer>
@@ -145,6 +145,10 @@ const JoinContainer = styled(Container)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media screen and (max-width: 850px) {
+    width: 370px;
+    align-items: center;
+  }
 `;
 
 const InputBox = styled(Box)`
