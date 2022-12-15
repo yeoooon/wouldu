@@ -88,6 +88,7 @@ const TodoItem = (plan: Planner) => {
 
 const ButtonBox = styled.div`
   width: 80px;
+  /* height: 50px; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -118,7 +119,7 @@ const TodoBox = styled(Box)`
   justify-content: space-between;
   padding: 1em 0.5em 1em 2em;
   width: 100%;
-  height: 100%;
+  height: 60px;
   margin-bottom: 1em;
   background-color: ${props => props.theme.color.purpleBox};
   border: 1px solid ${props => props.theme.color.borderPoint};
