@@ -93,6 +93,7 @@ const TodoItem = (plan: Planner) => {
 };
 
 const ButtonBox = styled.div`
+  width: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
