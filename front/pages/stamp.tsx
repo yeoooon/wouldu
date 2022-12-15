@@ -49,7 +49,7 @@ const Stamp = () => {
               나
             </Button>
             <Button onClick={handleToggle} id={"partner"} className={openStamp ? "active" : ""}>
-              상대방
+              친구
             </Button>
           </ButtonBox>
         )}

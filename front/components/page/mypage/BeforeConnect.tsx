@@ -31,7 +31,7 @@ const BeforeConnect = () => {
         </MatchCode>
       </div>
       <div className="button">
-        <button onClick={() => setIsCodeShow(true)}>상대방 연결 코드 입력</button>
+        <button onClick={() => setIsCodeShow(true)}>친구 연결 코드 입력</button>
       </div>
       <FriendConnectModal />
     </ContentArea>

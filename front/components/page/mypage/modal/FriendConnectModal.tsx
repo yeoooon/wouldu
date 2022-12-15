@@ -144,6 +144,10 @@ const DescArea = styled.div`
   align-items: center;
   justify-content: center;
   color: ${props => props.theme.color.fontMain};
+
+  @media screen and (max-width: 850px) {
+    width: 90%;
+  }
 `;
 
 const Form = styled.form`
@@ -179,6 +183,7 @@ const ConnectButton = styled.button`
 
 const Input = styled.input`
   display: flex;
+  text-align: center;
   flex-direction: center;
   justify-content: center;
   width: 3rem;
@@ -187,5 +192,9 @@ const Input = styled.input`
   border: none;
   font-size: ${props => props.theme.fontSize.textMd};
   box-shadow: 0 4px 5px ${colors.gray_300};
+  @media screen and (max-width: 850px) {
+    width: 50px;
+    height: 50px;
+  }
 `;
 export default FriendConnectModal;
