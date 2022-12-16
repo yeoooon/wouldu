@@ -45,7 +45,12 @@ const About = () => {
       </FirstPage>
       <SecondPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
         <ImageArea variants={cardVariants}>
-          <Image src={"/temporaryimage.png"} width={600} height={400} />
+          <DiaryImageBox1>
+            <Image src={"/diary1.png"} width={400} height={400}/>
+          </DiaryImageBox1>
+          <DiaryImageBox2>
+            <Image src={"/diary2.png"} width={400} height={400}/>
+          </DiaryImageBox2>
         </ImageArea>
         <TextArea variants={TextVariants}>
           <IconBox>
@@ -68,14 +73,25 @@ const About = () => {
           </IconBox>
         </TopArea>
         <BottomArea variants={cardVariants}>
-          <Image src={"/temporaryimage.png"} width={350} height={250} />
-          <Image src={"/temporaryimage.png"} width={350} height={250} />
-          <Image src={"/temporaryimage.png"} width={350} height={250} />
+        <FriendImageBox1>
+            <Image src={"/friend1.png"} width={400} height={250}/>
+          </FriendImageBox1>
+          <FriendImageBox2>
+            <Image src={"/friend2.png"} width={200} height={150}/>
+          </FriendImageBox2>
+          <FriendImageBox2>
+            <Image src={"/friend3.png"} width={400} height={250}/>
+          </FriendImageBox2>
         </BottomArea>
       </ThirdPart>
       <ForthPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
         <ImageArea variants={cardVariants}>
-          <Image src={"/temporaryimage.png"} width={600} height={400} />
+          <StampImageBox1>
+            <Image src={"/stamp1.png"} width={350} height={400}/>
+          </StampImageBox1>
+          <StampImageBox2>
+            <Image src={"/stamp2.png"} width={350} height={400}/>
+          </StampImageBox2>
         </ImageArea>
         <TextArea variants={TextVariants}>
           <IconBox>
@@ -87,7 +103,12 @@ const About = () => {
       </ForthPart>
       <FifthPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
         <ImageArea variants={cardVariants}>
-          <Image src={"/temporaryimage.png"} width={600} height={400} />
+          <PlannerImageBox1>
+            <Image src={"/planner1.png"} width={450} height={300}/>
+          </PlannerImageBox1>
+          <PlannerImageBox2>
+            <Image src={"/planner2.png"} width={350} height={250}/>
+          </PlannerImageBox2>
         </ImageArea>
         <TextArea variants={TextVariants}>
           <IconBox>
@@ -182,10 +203,44 @@ const FirstPage = styled(motion.div)`
     }
   }
 `;
+const DiaryImageBox1 = styled.div`
+  padding: 0.5em;
+  background-color: ${colors.gray_200};
+  margin-top: -15vh;
+  margin-right: -35vh;
+`;
+const DiaryImageBox2 = styled.div`
+  z-index: 5;
+  padding: 0.5em;
+  background-color: ${colors.gray_200};
+`;
+const StampImageBox1 = styled(DiaryImageBox1)`
+  margin-top: -10vh;
+  margin-right: -10vh;
+`;
+const StampImageBox2 = styled(DiaryImageBox2)``;
 const ImageArea = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+const FriendImageBox1 = styled.div`
+  padding: 0.5em;
+  background-color: ${colors.gray_200};
+`;
+const FriendImageBox2 = styled(FriendImageBox1)``;
+const FriendImageBox3 = styled(FriendImageBox1)``;
+const PlannerImageBox1 = styled.div`
+  padding: 0.5em;
+  background-color: ${colors.gray_200};
+  margin-top: -15vh;
+  margin-right: -15vh;
+`;
+const PlannerImageBox2 = styled.div`
+  z-index: 5;
+  padding: 0.5em;
+  background-color: ${colors.gray_200};
+  margin-bottom: -10vh;
 `;
 const NoteIcon = styled(Note)``;
 const NotePadIcon = styled(Notepad)``;

@@ -82,7 +82,9 @@ const SidebarContainer = styled(Container)`
     width: 90%;
   }
 `;
-const DiaryContainer = styled(SidebarContainer)``;
+const DiaryContainer = styled(SidebarContainer)`
+  padding: 2em 1em;
+`;
 const UnconnectedContainer = styled(SidebarContainer)`
   width: 90%;
   height: 88vh;
