@@ -32,8 +32,30 @@ export class ActivityService {
       const user = await this.userRepository.findOne({
         where: { id: element.userId },
       });
+      const tomorrow =
+        now.getFullYear() +
+        '-' +
+        (now.getMonth() + 1) +
+        '-' +
+        (now.getDate() + 1);
       const category = user.survey?.split(',') ?? 0;
-      if (category !== 0) {
+      if (element.emotion === '슬픔') {
+        const data = await this.activityRepository
+          .createQueryBuilder('activity')
+          .select(['activity.activity'])
+          .where('activity.positive = 1')
+          .orderBy('RAND()')
+          .limit(1)
+          .getOne();
+
+        this.plannerRepository.save({
+          description: data.activity,
+          date: tomorrow,
+          isRecommended: 1,
+          userId: element.userId,
+          prority: 1,
+        });
+      } else if (category !== 0) {
         category.push('공통');
         const data = await this.activityRepository
           .createQueryBuilder('activity')
@@ -42,12 +64,7 @@ export class ActivityService {
           .orderBy('RAND()')
           .limit(1)
           .getOne();
-        const tomorrow =
-          now.getFullYear() +
-          '-' +
-          (now.getMonth() + 1) +
-          '-' +
-          (now.getDate() + 1);
+
         this.plannerRepository.save({
           description: data.activity,
           date: tomorrow,
@@ -62,12 +79,6 @@ export class ActivityService {
           .orderBy('RAND()')
           .limit(1)
           .getOne();
-        const tomorrow =
-          now.getFullYear() +
-          '-' +
-          (now.getMonth() + 1) +
-          '-' +
-          (now.getDate() + 1);
         this.plannerRepository.save({
           description: data.activity,
           date: tomorrow,
@@ -81,7 +92,7 @@ export class ActivityService {
 
   private readonly logger = new Logger(ActivityService.name);
 
-  @Cron('50 59 23 * * *', {
+  @Cron('* * * * * *', {
     timeZone: 'Asia/Seoul',
   })
   handleCroe() {
