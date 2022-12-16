@@ -35,9 +35,7 @@ const Diary = () => {
               <SmallText>우쥬 교환일기는 친구와 일기를 공유하는 서비스로 친구와 연결 후 이용할 수 있습니다.</SmallText>
               <SmallText>{`마이페이지 > 연결 관리에서 친구와 연결을 맺고 서로의 일기를 교환해보세요.`}</SmallText>
               <Link href="/mypage">
-                <Button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  친구 연결하러 가기
-                </Button>
+                <Button>친구 연결하러 가기</Button>
               </Link>
             </TextBox>
           </UnconnectedContainer>
@@ -117,5 +115,6 @@ const Button = styled(motion.button)`
   width: 15em;
   height: 3em;
   margin-top: 1.5em;
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
 `;
 export default Diary;

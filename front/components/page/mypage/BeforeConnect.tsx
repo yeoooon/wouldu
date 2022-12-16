@@ -31,7 +31,7 @@ const BeforeConnect = () => {
         </MatchCode>
       </div>
       <div className="button">
-        <button onClick={() => setIsCodeShow(true)}>친구 연결 코드 입력</button>
+        <Button onClick={() => setIsCodeShow(true)}>친구 연결 코드 입력</Button>
       </div>
       <FriendConnectModal />
     </ContentArea>
@@ -104,6 +104,10 @@ const IconBox = styled.div`
   position: absolute;
   top: -8px;
   right: -10px;
+`;
+
+const Button = styled.button`
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
 `;
 
 export default BeforeConnect;

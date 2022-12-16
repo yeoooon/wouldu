@@ -100,6 +100,7 @@ const Button = styled.button`
   color: ${props => props.theme.color.fontSub};
   border-radius: 0;
   padding: 0 0.8em;
+  box-shadow: none;
   font-size: 10px;
   &:first-child {
     border-right: 1px solid ${props => props.theme.color.fontSub};
@@ -122,7 +123,8 @@ const TodoBox = styled(Box)`
   height: 60px;
   margin-bottom: 1em;
   background-color: ${props => props.theme.color.purpleBox};
-  border: 1px solid ${props => props.theme.color.borderPoint};
+  /* border: 1px solid ${props => props.theme.color.borderPoint}; */
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
 
   &:hover {
     ${ButtonBox} {
@@ -130,7 +132,7 @@ const TodoBox = styled(Box)`
     }
   }
   &.finish {
-    border: 1px solid ${props => props.theme.color.border};
+    /* border: 1px solid ${props => props.theme.color.border}; */
     background-color: ${props => props.theme.color.grayBox};
     ${Text} {
       font-style: italic;

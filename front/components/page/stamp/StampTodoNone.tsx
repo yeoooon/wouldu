@@ -22,6 +22,7 @@ const NoneContainer = styled(Container)`
   width: 80%;
   height: 100%;
   background-color: ${props => props.theme.color.purpleBox};
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
 `;
 const NoneBox = styled(Box)`
   flex-direction: column;

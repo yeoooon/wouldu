@@ -191,7 +191,7 @@ const Input = styled.input`
   border-radius: 8px;
   border: none;
   font-size: ${props => props.theme.fontSize.textMd};
-  box-shadow: 0 4px 5px ${colors.gray_300};
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
   @media screen and (max-width: 850px) {
     width: 50px;
     height: 50px;

@@ -61,7 +61,8 @@ const DiarySummary = styled(Box)`
   display: grid;
   grid-template-columns: 12% 88%;
   justify-content: flex-start;
-  border: 1px solid ${props => props.theme.color.borderPoint};
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
+  /* border: 1px solid ${props => props.theme.color.borderPoint}; */
 `;
 const Name = styled(Box)`
   background-color: ${props => props.theme.color.button};
@@ -76,7 +77,8 @@ const Content = styled(Box)`
 `;
 const PartnerDiarySummary = styled(DiarySummary)`
   background-color: ${props => props.theme.color.grayBox};
-  border: 1px solid ${props => props.theme.color.border};
+  /* border: 1px solid ${props => props.theme.color.border}; */
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
 `;
 const PartnerName = styled(Name)`
   background-color: ${props => props.theme.color.fontSub};
