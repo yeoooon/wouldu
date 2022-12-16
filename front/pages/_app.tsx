@@ -9,7 +9,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import Error from "@components/Error";
 import { RecoilRoot } from "recoil";
 import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Script from "next/script";
 
 declare global {
@@ -44,7 +44,7 @@ export default function App({ Component, pageProps }: AppProps<SeoPageProps>) {
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           <Hydrate state={pageProps.dehydratedState}>
             <GlobalStyle />
             <ErrorBoundary FallbackComponent={Error}>

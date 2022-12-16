@@ -2,10 +2,10 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { colors } from "../styles/common_style";
+import { colors } from "../../styles/common_style";
 import { Box } from "@styles/layout";
 import { AgreeButton, Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
-import { CloseIcon } from "./icons/CloseIcon";
+import { CloseIcon } from "../icons/CloseIcon";
 import { useRecoilState } from "recoil";
 import { isFindPasswordModalAtom } from "@recoil/modal";
 import { FindUserPassword } from "@services/api/user";
@@ -29,7 +29,6 @@ const FindPasswordModal = () => {
   const findPwSubmit = async (data: FindPasswordFormValue) => {
     FindUserPassword(data).then(status => {
       if (status === 201) {
-        // alert("메일 주소로 임시비밀번호가 발급되었습니다.");
         setIsEmailSent(true);
       } else {
         alert("올바른 이메일인지 확인해주세요.");
@@ -43,7 +42,7 @@ const FindPasswordModal = () => {
         <ModalWrapper>
           <ModalContainer height="300px" {...ModalVariant}>
             <Cancel onClick={() => setIsFindPasswordOpen(false)}>
-              <CloseIcon />
+              <CloseIcon width={15} height={15} />
             </Cancel>
             {isEmailSent ? (
               <CheckDesc>
@@ -103,6 +102,9 @@ const FindDesc = styled.p`
   font-size: ${props => props.theme.fontSize.textSm};
   margin-bottom: 2em;
   font-weight: 600;
+  @media screen and (max-width: 850px) {
+    font-size: ${props => props.theme.fontSize.textXs};
+  }
 `;
 
 const ErrorMessage = styled.p`

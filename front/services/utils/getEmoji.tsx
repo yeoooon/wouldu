@@ -1,5 +1,4 @@
 import { AnxiosIcon, EmbarassIcon, GladIcon, HurtIcon, SadIcon, UpsetIcon } from "@components/icons/EmotionIcon";
-import { E } from "chart.js/dist/chunks/helpers.core";
 
 export const getEmoji = (emotion: string) => {
   if (emotion === "기쁨") {

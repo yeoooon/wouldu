@@ -1,5 +1,4 @@
 import { LeftarrowIcon, RightarrowIcon } from "@components/icons/ArrowIcons";
-import usePlanQuery from "@services/utils/usePlanQuery";
 import { dayAtom } from "@recoil/planner";
 import { getMonthplan } from "@services/api/planner";
 import { Box } from "@styles/layout";
@@ -54,18 +53,6 @@ const Calendar = () => {
   const days = React.useMemo(() => (isLeapYear(year) ? DAYS_LEAP : DAYS), [year]);
   const monthDays = React.useMemo(() => days[month] + (startDay - 1), []);
 
-  //useMemo , useCallback
-
-  // const getStartDayOfMonth = React.useCallback((date: Date) => {
-  //   const startDate = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-  //   return startDate === 0 ? 7 : startDate;
-  // }, []);
-
-  const test = React.useCallback((year: number) => (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0, []);
-
-  // const days = React.useMemo(() => (isLeapYear(year) ? DAYS_LEAP : DAYS), [year]);
-  // const monthDays = React.useMemo(() => days[month] + (startDay - 1), []);
-
   return (
     <Frame>
       <Header>
@@ -75,10 +62,10 @@ const Calendar = () => {
         </MonthBox>
         <ButtonBox>
           <Button onClick={() => setDate(new Date(year, month - 1, day))}>
-            <LeftarrowIcon color={"#5C38FF"}/>
+            <LeftarrowIcon color={"#5C38FF"} />
           </Button>
           <Button onClick={() => setDate(new Date(year, month + 1, day))}>
-            <RightarrowIcon color={"#5C38FF"}/>
+            <RightarrowIcon color={"#5C38FF"} />
           </Button>
         </ButtonBox>
       </Header>
@@ -145,7 +132,6 @@ const MonthBox = styled(Box)`
 const Year = styled(Box)`
   font-size: ${props => props.theme.fontSize.textMd};
   margin: 0.5em;
-  /* color: ${props => props.theme.color.fontSub}; */
 `;
 const Month = styled(Box)`
   color: ${props => props.theme.color.fontMain};

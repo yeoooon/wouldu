@@ -1,8 +1,7 @@
-import { userAtom } from "@recoil/user";
-import { MatchCodeFormValue, requestType } from "@type/friend";
+import { requestType } from "@type/friend";
 import axios from "axios";
-import { useRecoilValue } from "recoil";
 import { axiosInstance } from "./axiosInstance";
+
 //친구요청 api
 export const requestFriend = async (friendCode: string) => {
   try {

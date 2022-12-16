@@ -1,6 +1,6 @@
 import { Wrapper } from "../styles/layout";
 import { useRecoilValue } from "recoil";
-import { loginStateSelector, userAtom } from "../recoil/user";
+import { loginStateSelector } from "../recoil/user";
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import About from "@components/page/about/About";

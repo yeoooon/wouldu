@@ -1,15 +1,14 @@
-import { isEmoAnalysisAtom, MonthEmotionAtom } from '@recoil/stamp';
-import { colorList, emojiList } from '@services/utils/emojiList';
-import { sumMonthEmotion } from '@services/utils/sumMonthEmotion';
-import { testEmotion } from '@services/utils/testEmotion';
-import { Box } from '@styles/layout';
-import Link from 'next/link';
-import React, { useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil';
-import styled, { css } from 'styled-components';
+import { isEmoAnalysisAtom, MonthEmotionAtom } from "@recoil/stamp";
+import { colorList, emojiList } from "@services/utils/emojiList";
+import { sumMonthEmotion } from "@services/utils/sumMonthEmotion";
+import { Box } from "@styles/layout";
+import Link from "next/link";
+import React, { useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import styled, { css } from "styled-components";
 
 const EmotionAnalysis = () => {
-  const [selectedEmotion, setSelectedEmotion] = useState<string>('기쁨');
+  const [selectedEmotion, setSelectedEmotion] = useState<string>("기쁨");
   const [isEmoAnalysisOpen, setIsEmoAnalysisOpen] = useRecoilState(isEmoAnalysisAtom);
   const MonthEmotionData = useRecoilValue(MonthEmotionAtom);
   const EmotionObj = sumMonthEmotion(MonthEmotionData);
@@ -22,42 +21,54 @@ const EmotionAnalysis = () => {
 
   return (
     <EmotionAnalsisBox>
-      {isEmoAnalysisOpen ?
-      <EmotionDetailBox bordercolor={colorList(selectedEmotion, 0.5)}>
-        <DetailContainer>
-          <DetailEmotion>
-            <DetailEmoji>{emojiList(selectedEmotion, 40)}</DetailEmoji>
-            <DetailTitleBox>
-              <DetailTitle>{selectedEmotion}</DetailTitle>  
-              <EmotionDetailPercent>{Math.floor(EmotionObj[selectedEmotion]/totalDays * 100)}%</EmotionDetailPercent>
-            </DetailTitleBox>    
-          </DetailEmotion>
-          <DetailTextBox>
-            <DetailText>일기를 쓴 <span>{totalDays}</span>일 중에  
-            <span>{selectedEmotion}</span>감정을 느낀 날은 <br/><span>{EmotionObj[selectedEmotion]}</span>일로 <span>{Math.floor(EmotionObj[selectedEmotion]/totalDays * 100)}%</span>입니다.</DetailText>
-          </DetailTextBox>
-          <ButtonBox>
-            <Button onClick={() => setIsEmoAnalysisOpen(false)}>전체 감정보기 →</Button>
-            <Link href="/planner">
-              <Button>오늘의 추천활동 보러가기 →</Button>
-            </Link>
-          </ButtonBox>
-        </DetailContainer>
-      </EmotionDetailBox>
-      :
-      <EmotionCoverBox>
-        {Object.entries(EmotionObj).map(([key, value]) => 
-          <EmotionBox key={key} bgcolor={colorList(key, 0.2)} bordercolor={colorList(key, 1)} onClick={() => handleClickDetail(key)}>
-            <Emoji>{emojiList(key, 18)}</Emoji>
-            <TextBox>
-              <Emotion>{key}</Emotion>
-              <EmotionPercent>{Math.floor(value/totalDays * 100)}%</EmotionPercent>
-            </TextBox>
-          </EmotionBox>
-        )}
-      </EmotionCoverBox>}
+      {isEmoAnalysisOpen ? (
+        <EmotionDetailBox bordercolor={colorList(selectedEmotion, 0.5)}>
+          <DetailContainer>
+            <DetailEmotion>
+              <DetailEmoji>{emojiList(selectedEmotion, 40)}</DetailEmoji>
+              <DetailTitleBox>
+                <DetailTitle>{selectedEmotion}</DetailTitle>
+                <EmotionDetailPercent>
+                  {Math.floor((EmotionObj[selectedEmotion] / totalDays) * 100)}%
+                </EmotionDetailPercent>
+              </DetailTitleBox>
+            </DetailEmotion>
+            <DetailTextBox>
+              <DetailText>
+                일기를 쓴 <span>{totalDays}</span>일 중에
+                <span>{selectedEmotion}</span>감정을 느낀 날은 <br />
+                <span>{EmotionObj[selectedEmotion]}</span>일로{" "}
+                <span>{Math.floor((EmotionObj[selectedEmotion] / totalDays) * 100)}%</span>입니다.
+              </DetailText>
+            </DetailTextBox>
+            <ButtonBox>
+              <Button onClick={() => setIsEmoAnalysisOpen(false)}>전체 감정보기 →</Button>
+              <Link href="/planner">
+                <Button>오늘의 추천활동 보러가기 →</Button>
+              </Link>
+            </ButtonBox>
+          </DetailContainer>
+        </EmotionDetailBox>
+      ) : (
+        <EmotionCoverBox>
+          {Object.entries(EmotionObj).map(([key, value]) => (
+            <EmotionBox
+              key={key}
+              bgcolor={colorList(key, 0.2)}
+              bordercolor={colorList(key, 1)}
+              onClick={() => handleClickDetail(key)}
+            >
+              <Emoji>{emojiList(key, 18)}</Emoji>
+              <TextBox>
+                <Emotion>{key}</Emotion>
+                <EmotionPercent>{Math.floor((value / totalDays) * 100)}%</EmotionPercent>
+              </TextBox>
+            </EmotionBox>
+          ))}
+        </EmotionCoverBox>
+      )}
     </EmotionAnalsisBox>
-  )
+  );
 };
 
 const EmotionAnalsisBox = styled(Box)`
@@ -76,11 +87,11 @@ const EmotionCoverBox = styled(Box)`
   flex-direction: column;
   background-color: ${props => props.theme.color.nav};
 `;
-const EmotionBox = styled(Box)<{bgcolor: string | null, bordercolor: string | null}>`
+const EmotionBox = styled(Box)<{ bgcolor: string | null; bordercolor: string | null }>`
   justify-content: space-between;
   padding: 0.5em 0.3em 0.5em 0.3em;
   width: 90%;
-  ${(props) =>
+  ${props =>
     css`
       &:hover {
         background: ${props.bgcolor};
@@ -104,7 +115,7 @@ const Emotion = styled.p`
 const EmotionPercent = styled(Emotion)`
   font-size: ${props => props.theme.fontSize.textMain};
 `;
-const EmotionDetailBox = styled(EmotionCoverBox)<{bordercolor: string | null}>`
+const EmotionDetailBox = styled(EmotionCoverBox)<{ bordercolor: string | null }>`
   background-color: ${props => props.theme.color.nav};
   border: 2px solid ${props => props.bordercolor};
   padding: 1em 1em 0.5em 1em;

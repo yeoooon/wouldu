@@ -1,29 +1,27 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled, { css } from "styled-components";
-import { Box, Container } from "../styles/layout";
+import { Box, Container } from "../../styles/layout";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { userAtom } from "../recoil/user";
+import { userAtom } from "../../recoil/user";
 import { removeCookie } from "@services/utils/cookies";
-import { LogoBlackIcon, LogoWhiteIcon } from "./icons/LogoIcon";
-import { AlarmIcon } from "./icons/AlarmIcon";
-import { UserIcon } from "./icons/UserIcon";
-import { checkRequestFriend, getFriend } from "@services/api/friend";
-import { useQuery, useQueryClient, QueryCache } from "@tanstack/react-query";
+import { LogoBlackIcon, LogoWhiteIcon } from "../icons/LogoIcon";
+import { AlarmIcon } from "../icons/AlarmIcon";
+import { UserIcon } from "../icons/UserIcon";
+import { checkRequestFriend } from "@services/api/friend";
+import { useQuery } from "@tanstack/react-query";
 import { colors } from "@styles/common_style";
 import { isAlarmModalAtom } from "@recoil/modal";
 import { ReceiveFriend } from "@type/friend";
-import React, { ReactNode, useEffect, useState } from "react";
-import { User } from "@type/user";
-import { getUserInfo } from "@services/api/user";
-import { RightarrowIcon } from "./icons/ArrowIcons";
+import React, { ReactNode, useState } from "react";
+import { RightarrowIcon } from "../icons/ArrowIcons";
 import Home from "public/icon/home.svg";
 import Mypage from "public/icon/me.svg";
 import Note from "public/icon/note.svg";
 import Notepad from "public/icon/notepad.svg";
 import Hamburger from "public/icon/hamburger.svg";
 import { Overlay } from "@styles/modal_layout";
-import { CloseIcon } from "./icons/CloseIcon";
+import { CloseIcon } from "../icons/CloseIcon";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -42,7 +40,6 @@ const mapMenuToIcon: { [key: string]: () => ReactNode } = {
 
 const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
   const setIsAlarmOpen = useSetRecoilState<boolean>(isAlarmModalAtom);
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
@@ -72,64 +69,62 @@ const AfterNavBar = ({ darkMode, setDarkMode }: LayoutProps) => {
   };
   return (
     <NavContainer>
-    <Nav open={isOpenMenu}>
-      <LogoBox>{darkMode ? <LogoWhiteIcon height={73}/> : <LogoBlackIcon height={73}/>}</LogoBox>
-      <UserBox>
-        <AlarmButton onClick={handleAlarmClick}>
-          <AlarmIcon width={18} height={18} />
-          {receiveFriends && receiveFriends?.length >= 1 && (
-            <AlarmNumber>
-              <p>{receiveFriends.length}</p>
-            </AlarmNumber>
-          )}
-        </AlarmButton>
-        <UserIcon width={60} height={60} />
-      </UserBox>
-      <TextBox1>{`${user?.nickname} 님`}</TextBox1>
-      <DarkModeBox>
-        <SwitchBox>
-          <input type="checkbox" onChange={toggleTheme} />
-          <RoundSlider className="slider"></RoundSlider>
-        </SwitchBox>
-      </DarkModeBox>
+      <Nav open={isOpenMenu}>
+        <LogoBox>{darkMode ? <LogoWhiteIcon height={73} /> : <LogoBlackIcon height={73} />}</LogoBox>
+        <UserBox>
+          <AlarmButton onClick={handleAlarmClick}>
+            <AlarmIcon width={18} height={18} />
+            {receiveFriends && receiveFriends?.length >= 1 && (
+              <AlarmNumber>
+                <p>{receiveFriends.length}</p>
+              </AlarmNumber>
+            )}
+          </AlarmButton>
+          <UserIcon width={60} height={60} />
+        </UserBox>
+        <TextBox1>{`${user?.nickname} 님`}</TextBox1>
+        <DarkModeBox>
+          <SwitchBox>
+            <input type="checkbox" onChange={toggleTheme} />
+            <RoundSlider className="slider"></RoundSlider>
+          </SwitchBox>
+        </DarkModeBox>
 
-      {/* navigation 구현 */}
-      <NavLink>
-        {navMenus.map((menu, index) => (
-          <Link href={navLinks[index]} key={index}>
-            <LinkButton 
-              className={router.pathname === navLinks[index] ? "active" : ""}
-              onClick={() => setIsOpenMenu(false)}
-            >
-              <IconBox>{mapMenuToIcon[menu]()}</IconBox>
-              <TextBox>
-                <a>{menu}</a>
-              </TextBox>
-              {router.pathname === navLinks[index] ? (
-                <ArrowBox>
-                  <RightarrowIcon color={"#5C38FF"} />
-                </ArrowBox>
-              ) : (
-                ""
-              )}
-            </LinkButton>
-          </Link>
-        ))}
-      </NavLink>
-      <a onClick={onClickLogout}>로그아웃</a>
-    </Nav>
-    <TopNav>
-      <IconBox onClick={() => setIsOpenMenu(cur => !cur)}>
-        {isOpenMenu ? <CloseIcon width={23} height={23}/> : <HamburgerIcon />}
-      </IconBox>
-      <Link href='/'>
-        <LogoBox>
-          {darkMode ? <LogoWhiteIcon height={50}/> : <LogoBlackIcon height={50}/>}
-        </LogoBox>
-      </Link>
-    </TopNav>
-    {isOpenMenu && <Overlay />}
-    </NavContainer>  
+        {/* navigation 구현 */}
+        <NavLink>
+          {navMenus.map((menu, index) => (
+            <Link href={navLinks[index]} key={index}>
+              <LinkButton
+                className={router.pathname === navLinks[index] ? "active" : ""}
+                onClick={() => setIsOpenMenu(false)}
+              >
+                <IconBox>{mapMenuToIcon[menu]()}</IconBox>
+                <TextBox>
+                  <a>{menu}</a>
+                </TextBox>
+                {router.pathname === navLinks[index] ? (
+                  <ArrowBox>
+                    <RightarrowIcon color={"#5C38FF"} />
+                  </ArrowBox>
+                ) : (
+                  ""
+                )}
+              </LinkButton>
+            </Link>
+          ))}
+        </NavLink>
+        <a onClick={onClickLogout}>로그아웃</a>
+      </Nav>
+      <TopNav>
+        <IconBox onClick={() => setIsOpenMenu(cur => !cur)}>
+          {isOpenMenu ? <CloseIcon width={23} height={23} /> : <HamburgerIcon />}
+        </IconBox>
+        <Link href="/">
+          <LogoBox>{darkMode ? <LogoWhiteIcon height={50} /> : <LogoBlackIcon height={50} />}</LogoBox>
+        </Link>
+      </TopNav>
+      {isOpenMenu && <Overlay />}
+    </NavContainer>
   );
 };
 
@@ -149,7 +144,7 @@ const LogoBox = styled(Box)`
     width: 20%;
   }
 `;
-const Nav = styled(Container)<{open:boolean}>`
+const Nav = styled(Container)<{ open: boolean }>`
   position: relative;
   flex-direction: column;
   width: 240px;
@@ -164,28 +159,28 @@ const Nav = styled(Container)<{open:boolean}>`
     display: none;
 
     ${props =>
-    props.open &&
-    css`
-      display: flex;
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 50%;
-      height: 100vh;
-      z-index: 200;
-      /* transform: translateX(100%);
+      props.open &&
+      css`
+        display: flex;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 50%;
+        height: 100vh;
+        z-index: 200;
+        /* transform: translateX(100%);
       transition: transform 0.5s ease-in-out;      */
-    `}
+      `}
     ${LogoBox} {
       display: none;
     }
   }
   @media screen and (max-width: 600px) {
     ${props =>
-    props.open &&
-    css`
-      width: 80%;
-    `}
+      props.open &&
+      css`
+        width: 80%;
+      `}
   }
 `;
 const NavLink = styled(Container)`

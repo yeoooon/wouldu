@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
-
 import styled from "styled-components";
 import React from "react";
 
 import { useRecoilState } from "recoil";
 import { mypageState } from "@recoil/mypage";
 
-const MypageTab = () => {
+const MyPageTab = () => {
   const [pageState, setPageState] = useRecoilState(mypageState);
 
   return (
@@ -47,4 +45,4 @@ const Tab = styled.div`
   }
 `;
 
-export default MypageTab;
+export default MyPageTab;

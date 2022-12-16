@@ -1,4 +1,4 @@
-import { Box, Container } from "@styles/layout";
+import { Box } from "@styles/layout";
 import React from "react";
 import styled from "styled-components";
 import StampDiaryContent from "./StampDiaryContent";

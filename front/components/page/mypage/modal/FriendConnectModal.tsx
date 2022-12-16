@@ -4,24 +4,18 @@ import { useRecoilState } from "recoil";
 import { isCodeModalAtom } from "@recoil/friend";
 import { FCodeType, MatchCodeFormValue } from "@type/friend";
 import { requestFriend } from "@services/api/friend";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_layout";
 import { CloseIcon } from "@components/icons/CloseIcon";
 import { AnimatePresence } from "framer-motion";
 import { ModalVariant, OverlayVariant } from "@styles/ModalVariants";
-import reset from "styled-reset";
+import { colors } from "@styles/common_style";
 
 const codeNum = [1, 2, 3, 4, 5, 6];
 const FriendConnectModal = () => {
   const [isCodeShow, setIsCodeShow] = useRecoilState(isCodeModalAtom);
-  const {
-    register,
-    handleSubmit,
-    setFocus,
-    reset,
-    formState: { errors },
-  } = useForm<MatchCodeFormValue>();
+  const { register, handleSubmit, setFocus, reset } = useForm<MatchCodeFormValue>();
 
   useEffect(() => {
     isCodeShow && setFocus("code1");
@@ -73,12 +67,12 @@ const FriendConnectModal = () => {
     <AnimatePresence>
       {isCodeShow && (
         <ModalWrapper>
-          <ModalContainer width="400px" height="200px" {...ModalVariant}>
+          <ModalContainer width="400px" height="250px" {...ModalVariant}>
             <Cancel onClick={closeModal}>
               <CloseIcon width={15} height={15} />
             </Cancel>
             <DescArea>
-              <Title>상대방의 연결 코드를 입력하세요.</Title>
+              <Title>친구의 연결 코드를 입력하세요.</Title>
               <Form onSubmit={handleSubmit(onSubmitHandler)}>
                 <InputArea>
                   <Input
@@ -150,9 +144,14 @@ const DescArea = styled.div`
   align-items: center;
   justify-content: center;
   color: ${props => props.theme.color.fontMain};
+
+  @media screen and (max-width: 850px) {
+    width: 90%;
+  }
 `;
 
 const Form = styled.form`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -161,6 +160,8 @@ const Form = styled.form`
 
 const InputArea = styled.div`
   display: flex;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 const Title = styled.p`
@@ -177,11 +178,23 @@ const ErrorMessage = styled.p`
 const ConnectButton = styled.button`
   width: 110px;
   padding: 0.5em 1em;
-  margin-top: 20px;
+  margin-top: 30px;
 `;
 
 const Input = styled.input`
-  width: 30px;
-  height: 30px;
+  display: flex;
+  text-align: center;
+  flex-direction: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 8px;
+  border: none;
+  font-size: ${props => props.theme.fontSize.textMd};
+  box-shadow: 0 4px 5px ${colors.gray_300};
+  @media screen and (max-width: 850px) {
+    width: 50px;
+    height: 50px;
+  }
 `;
 export default FriendConnectModal;

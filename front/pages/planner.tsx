@@ -1,10 +1,9 @@
 import Calendar from "@components/page/planner/Calendar";
 import TodoTemplate from "@components/page/planner/TodoTemplate";
-import { SeoPageProps } from "@components/Seo";
 import { GetServerSidePropsContext } from "next";
 import styled from "styled-components";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
-import { Container, Wrapper, Box } from "../styles/layout";
+import { Container, Wrapper } from "../styles/layout";
 
 const Planner = () => {
   return (

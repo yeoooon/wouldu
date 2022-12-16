@@ -1,8 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import styled from "styled-components";
-import { colors } from "@styles/common_style";
-import { LogoBlackIcon } from "./icons/LogoIcon";
+import { LogoBlackIcon } from "../icons/LogoIcon";
 
 const BeforeNavBar = () => {
   return (
@@ -28,6 +26,13 @@ const Header = styled.div`
 
   button {
     height: 70%;
+    box-shadow: none;
+
+    @media screen and (max-width: 850px) {
+      font-size: ${props => props.theme.fontSize.textMain};
+      height: 2.5em;
+      width: 11em;
+    }
   }
 
   display: flex;

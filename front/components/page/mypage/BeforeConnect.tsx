@@ -1,11 +1,8 @@
 import { CirclePlusIcon } from "@components/icons/CircleIcon";
 import { UserIcon } from "@components/icons/UserIcon";
 import { isCodeModalAtom } from "@recoil/friend";
-import { mypageState } from "@recoil/mypage";
 import { userAtom } from "@recoil/user";
-import Image from "next/image";
-import { useEffect } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Container } from "../../../styles/layout";
 import FriendConnectModal from "./modal/FriendConnectModal";
@@ -34,7 +31,7 @@ const BeforeConnect = () => {
         </MatchCode>
       </div>
       <div className="button">
-        <button onClick={() => setIsCodeShow(true)}>상대방 연결 코드 입력</button>
+        <button onClick={() => setIsCodeShow(true)}>친구 연결 코드 입력</button>
       </div>
       <FriendConnectModal />
     </ContentArea>

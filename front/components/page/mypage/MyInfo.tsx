@@ -1,5 +1,5 @@
 import { UserIcon } from "@components/icons/UserIcon";
-import SurveyModal from "@components/SurveyModal";
+import SurveyModal from "@components/page/mypage/modal/SurveyModal";
 import {
   isChangeNicknameModalAtom,
   isChangePasswordModalAtom,
@@ -124,6 +124,7 @@ const Button = styled.button`
   background: none;
   color: ${props => props.theme.color.fontMain};
   text-decoration: underline;
+  box-shadow: none;
   cursor: pointer;
   &:hover {
     background: none;
@@ -140,6 +141,7 @@ const UnderButtonBox = styled.div`
 `;
 const ButtonArea = styled(Box)``;
 const EditNicknameButton = styled.button`
+  box-shadow: none;
   padding: 0 1em;
   margin-top: 1.5em;
   border-radius: 0;
@@ -156,6 +158,7 @@ const EditPasswordButton = styled(EditNicknameButton)`
   border-left: 1px solid ${props => props.theme.color.fontMain};
 `;
 const DeleteUserButton = styled.button`
+  box-shadow: none;
   margin-top: 2em;
   background: none;
   font-size: ${props => props.theme.fontSize.textXs};

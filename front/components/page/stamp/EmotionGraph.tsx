@@ -1,11 +1,8 @@
-import { Box } from "@styles/layout";
 import React from "react";
 import styled from "styled-components";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { testEmotion, TestEmotionProps } from "@services/utils/testEmotion";
 import { sumMonthEmotion } from "@services/utils/sumMonthEmotion";
-import { CheckIcon } from "@components/icons/CheckIcon";
 import { GraphIcon } from "@components/icons/GraphIcon";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isEmoAnalysisAtom, MonthEmotionAtom } from "@recoil/stamp";

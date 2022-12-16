@@ -9,8 +9,8 @@ import { ModalWrapper, ModalContainer, Overlay, Cancel, AgreeButton, DenyButton 
 import { useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useCallback, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 const DeleteUserModal = () => {

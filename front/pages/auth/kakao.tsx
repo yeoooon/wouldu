@@ -1,10 +1,8 @@
 import { userAtom } from "@recoil/user";
-import { kakaoInit } from "@services/utils/kakaoInit";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { kakaoLogin } from "@services/api/user";
 import { useSetRecoilState } from "recoil";
-import { setCookie } from "@services/utils/cookies";
 import { User } from "@type/user";
 
 const KakaoAuth = () => {

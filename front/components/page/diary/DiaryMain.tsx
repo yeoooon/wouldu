@@ -1,13 +1,13 @@
-import { Box, Container } from '@styles/layout';
-import React, { useMemo } from 'react'
-import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
-import { diarywriteState, clickedDiaryDateState } from '../../../recoil/diary';
-import DiaryTextarea from './DiaryTextarea';
-import PartnerDiary from './PartnerDiary';
-import UserDiary from './UserDiary';
-import getDayString from '../../../services/utils/getDayString';
-import { useGetDiary } from '@services/utils/useGetDiary';
+import { Box, Container } from "@styles/layout";
+import React, { useMemo } from "react";
+import { useRecoilValue } from "recoil";
+import styled from "styled-components";
+import { diarywriteState, clickedDiaryDateState } from "../../../recoil/diary";
+import DiaryTextarea from "./DiaryTextarea";
+import PartnerDiary from "./PartnerDiary";
+import UserDiary from "./UserDiary";
+import getDayString from "../../../services/utils/getDayString";
+import { useGetDiary } from "@hooks/useGetDiary";
 
 interface TitleProps {
   title: string | undefined;
@@ -18,7 +18,7 @@ const DiaryMain = ({ title }: TitleProps) => {
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
 
   const yyyymmdd = useMemo(() => clickedDiaryDate?.substring(0, 10), [clickedDiaryDate]);
-  const [year, month, day] = yyyymmdd.split('-');
+  const [year, month, day] = yyyymmdd.split("-");
   const dayStr = getDayString(clickedDiaryDate);
 
   const { userDiary, partnerDiary } = useGetDiary(yyyymmdd);
@@ -27,18 +27,20 @@ const DiaryMain = ({ title }: TitleProps) => {
     <MainContainer>
       <TextBox>
         <Title>{title}</Title>
-        <Date>{year}년 {month}월 {day}일 {dayStr}요일</Date>
+        <Date>
+          {year}년 {month}월 {day}일 {dayStr}요일
+        </Date>
       </TextBox>
-      {isTextAreaOpen ?
-      <InsideContainer>
-        <DiaryTextarea />
-      </InsideContainer>
-       : 
-      <InsideContainer2>
-        <UserDiary diary={userDiary} />
-        <PartnerDiary diary={partnerDiary} />
-      </InsideContainer2>
-      }
+      {isTextAreaOpen ? (
+        <InsideContainer>
+          <DiaryTextarea />
+        </InsideContainer>
+      ) : (
+        <InsideContainer2>
+          <UserDiary diary={userDiary} />
+          <PartnerDiary diary={partnerDiary} />
+        </InsideContainer2>
+      )}
     </MainContainer>
   );
 };
@@ -78,6 +80,5 @@ const InsideContainer2 = styled(InsideContainer)`
   height: 80%;
   justify-content: space-evenly;
 `;
-
 
 export default DiaryMain;

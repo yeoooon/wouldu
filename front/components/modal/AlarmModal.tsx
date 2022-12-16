@@ -7,10 +7,10 @@ import { Cancel, ModalContainer, ModalWrapper, Overlay } from "@styles/modal_lay
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ReceiveFriend } from "@type/friend";
 import { AnimatePresence } from "framer-motion";
-import React, { useEffect } from "react";
+import React from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { CloseIcon } from "./icons/CloseIcon";
+import { CloseIcon } from "../icons/CloseIcon";
 
 const AlarmModal = () => {
   const queryClient = useQueryClient();
@@ -39,7 +39,6 @@ const AlarmModal = () => {
   });
 
   const handleAgreeClick = async (friendInfo: ReceiveFriend) => {
-    //confirmFriend
     const result = window.confirm("친구요청을 수락하시겠어요?");
     if (result) {
       acceptMutation.mutate(friendInfo);
@@ -61,7 +60,7 @@ const AlarmModal = () => {
         <ModalWrapper>
           <ModalContainer height="500px" {...ModalVariant}>
             <Cancel onClick={handleCancelClick}>
-              <CloseIcon />
+              <CloseIcon width={15} height={15} />
             </Cancel>
             <ContentArea>
               <Title>알림</Title>

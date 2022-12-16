@@ -1,5 +1,5 @@
 import { IconProps } from "@type/icon";
-import React, { SVGProps } from "react";
+import React from "react";
 
 export const CloseIcon = ({ width, height }: IconProps) => {
   return (
