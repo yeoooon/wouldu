@@ -8,18 +8,26 @@ import { ModalWrapper, Overlay } from "@styles/modal_layout";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SurveyForm, User } from "@type/user";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { CloseIcon } from "../../../icons/CloseIcon";
 
 const SurveyModal = () => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
   const [isSurveyModalOpen, setIsSurveyModalOpen] = useRecoilState<boolean>(isSurveyModalAtom);
 
   const { data: userInfo } = useQuery<User>(["user", "info"], () => getUserInfo(user?.id!));
   const [selectedCategory, setSelectedCategory] = useState<string[]>();
+
+  useEffect(() => {
+    if (router.asPath === "/stamp" && user?.isFirstLogin === 0) {
+      setIsSurveyModalOpen(true);
+    }
+  }, [router.asPath]);
 
   useEffect(() => {
     userInfo && setSelectedCategory(userInfo?.survey);

@@ -28,7 +28,7 @@ const Layout = ({ children, darkMode, setDarkMode }: LayoutProps) => {
           <AfterNavbar darkMode={darkMode} setDarkMode={setDarkMode} />
           <div>{children}</div>
           <AlarmModal />
-          {user?.isFirstLogin === 0 && <SurveyModal />}
+          {user && user?.isFirstLogin === 0 && <SurveyModal />}
         </LayoutWrapper>
       )}
       {isLoginState || (
