@@ -46,10 +46,10 @@ const About = () => {
       <SecondPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
         <ImageArea variants={cardVariants}>
           <DiaryImageBox1>
-            <Image src={"/diary1.png"} width={400} height={400}/>
+            <Image src={"/diary1.png"} width={350} height={350}/>
           </DiaryImageBox1>
           <DiaryImageBox2>
-            <Image src={"/diary2.png"} width={400} height={400}/>
+            <Image src={"/diary2.png"} width={350} height={350}/>
           </DiaryImageBox2>
         </ImageArea>
         <TextArea variants={TextVariants}>
@@ -73,15 +73,15 @@ const About = () => {
           </IconBox>
         </TopArea>
         <BottomArea variants={cardVariants}>
-        <FriendImageBox1>
+          <FriendImageBox1>
             <Image src={"/friend1.png"} width={400} height={250}/>
           </FriendImageBox1>
           <FriendImageBox2>
             <Image src={"/friend2.png"} width={200} height={150}/>
           </FriendImageBox2>
-          <FriendImageBox2>
+          <FriendImageBox3>
             <Image src={"/friend3.png"} width={400} height={250}/>
-          </FriendImageBox2>
+          </FriendImageBox3>
         </BottomArea>
       </ThirdPart>
       <ForthPart initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.5 }}>
@@ -228,8 +228,17 @@ const FriendImageBox1 = styled.div`
   padding: 0.5em;
   background-color: ${colors.gray_200};
 `;
-const FriendImageBox2 = styled(FriendImageBox1)``;
-const FriendImageBox3 = styled(FriendImageBox1)``;
+const FriendImageBox2 = styled(FriendImageBox1)`
+  @media screen and (max-width: 850px) {
+    z-index: 10;
+    margin-left: -50px;
+  }
+`;
+const FriendImageBox3 = styled(FriendImageBox1)`
+    @media screen and (max-width: 850px) {
+      margin-left: -50px;
+  }
+`;
 const PlannerImageBox1 = styled.div`
   padding: 0.5em;
   background-color: ${colors.gray_200};
@@ -241,6 +250,10 @@ const PlannerImageBox2 = styled.div`
   padding: 0.5em;
   background-color: ${colors.gray_200};
   margin-bottom: -10vh;
+
+  @media screen and (max-width: 850px) {
+    margin-bottom: 5vh;
+  }
 `;
 const NoteIcon = styled(Note)``;
 const NotePadIcon = styled(Notepad)``;
@@ -362,8 +375,9 @@ const ThirdPart = styled(motion.div)`
     }
   }
   @media screen and (max-width: 850px) {
-    display: grid;
-    grid-template-rows: 35% 65%;
+    height: 70vh;
+    display: flex;
+    flex-direction: column-reverse;
     gap: 30px;
 
     ${MainText} {
@@ -390,10 +404,9 @@ const ThirdPart = styled(motion.div)`
       }
     }
     ${BottomArea} {
-      flex-direction: column;
-      width: 80%;
+      width: 90%;
       gap: 1vh;
-      justify-self: center;
+      align-self: center;
     }
   }
 `;
