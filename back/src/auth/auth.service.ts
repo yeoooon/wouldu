@@ -92,7 +92,7 @@ export class AuthService {
         email: user.email,
         nickname: user.nickname,
         friendCode: user.friendCode,
-        isFirstLogin: 1,
+        isFirstLogin: 0,
       };
     } else {
       payload = { userId: data.id };
@@ -103,7 +103,7 @@ export class AuthService {
         email: data.email,
         nickname: data.nickname,
         friendCode: data.friendCode,
-        isFirstLogin: 0,
+        isFirstLogin: 1,
       };
     }
   }
