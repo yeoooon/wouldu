@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { diarywriteState, clickedDiaryDateState } from "../../../recoil/diary";
 import { postDiary } from "../../../services/api/diary";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { colors } from "@styles/common_style";
 
 const DiaryTextarea = () => {
   const setIsTextareaOpen = useSetRecoilState(diarywriteState);
@@ -50,6 +51,7 @@ const DiaryTextarea = () => {
           placeholder="오늘의 일기를 작성해주세요.
           수정, 삭제가 불가하니 신중하게 적어주세요 *^^*"
         />
+        <ErrorMessage>{errors?.content?.message}</ErrorMessage>
         <ButtonBox>
           <BackButton onClick={handleBackClick}>뒤로 가기</BackButton>
           <SaveButton type="submit">나의 일기 저장하기</SaveButton>
@@ -84,6 +86,11 @@ const Textarea = styled.textarea`
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   resize: none;
   overflow-y: auto;
+`;
+const ErrorMessage = styled.p`
+  color: ${colors.red};
+  align-self: flex-end;
+  font-size: ${props => props.theme.fontSize.textXs};
 `;
 const ButtonBox = styled(Box)`
   width: 100%;
