@@ -181,6 +181,7 @@ const ButtonBox = styled.div`
   flex-direction: column;
 `;
 const Button = styled.button`
+  box-shadow: none;
   padding: 0.3em 0 0 0;
   margin: 0;
   font-size: ${props => props.theme.fontSize.textXs};
