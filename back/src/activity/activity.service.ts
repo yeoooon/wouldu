@@ -95,8 +95,8 @@ export class ActivityService {
   @Cron('50 59 23 * * *', {
     timeZone: 'Asia/Seoul',
   })
-  handleCroe() {
+  handleCron() {
     this.getActivity();
-    this.logger.debug('Recommend new activity');
+    this.logger.log('Recommend new activity');
   }
 }
