@@ -67,6 +67,7 @@ const TextContainer = styled(Container)`
   justify-content: flex-start;
   width: 100%;
   height: 100%;
+  margin-top: 1em;
 `;
 const FormBox = styled.form`
   width: 100%;
@@ -86,6 +87,7 @@ const Textarea = styled.textarea`
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   resize: none;
   overflow-y: auto;
+  white-space: pre-line;
 `;
 const ErrorMessage = styled.p`
   color: ${colors.red};
@@ -102,4 +104,5 @@ const SaveButton = styled.button`
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `;
 const BackButton = styled(SaveButton)``;
+
 export default DiaryTextarea;
