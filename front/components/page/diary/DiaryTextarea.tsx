@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { diarywriteState, clickedDiaryDateState } from "../../../recoil/diary";
 import { postDiary } from "../../../services/api/diary";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { colors } from "@styles/common_style";
 
 const DiaryTextarea = () => {
   const setIsTextareaOpen = useSetRecoilState(diarywriteState);
