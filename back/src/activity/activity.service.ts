@@ -92,7 +92,7 @@ export class ActivityService {
 
   private readonly logger = new Logger(ActivityService.name);
 
-  @Cron('* * * * * *', {
+  @Cron('50 59 23 * * *', {
     timeZone: 'Asia/Seoul',
   })
   handleCroe() {
