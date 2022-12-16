@@ -120,6 +120,7 @@ export class UserService {
   }
 
   userData(user: User) {
+    if(user === undefined || user === null) return null;
     return {
       id: user.id,
       email: user.email,
