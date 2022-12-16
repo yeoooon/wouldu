@@ -161,6 +161,7 @@ const WeekBox = styled(Box)`
   width: 100%;
   height: 2vh;
   border-radius: 0;
+  padding-bottom: 15px;
   border-bottom: 1px solid ${props => props.theme.color.fontMain};
 `;
 const DayBox = styled(WeekBox)`

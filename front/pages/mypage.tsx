@@ -6,12 +6,11 @@ import MyPageTab from "@components/page/mypage/MyPageTab";
 import EditConnection from "@components/page/mypage/EditConnection";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { GetServerSidePropsContext } from "next";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { mypageState } from "@recoil/mypage";
 
 const Mypage = () => {
-  const pageState = useRecoilValue(mypageState);
-  useEffect(() => {});
+  const [pageState, setPageState] = useRecoilState(mypageState);
 
   return (
     <MypageArea>

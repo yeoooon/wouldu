@@ -6,13 +6,22 @@ import { GetServerSidePropsContext } from "next";
 import { Container, Wrapper } from "../styles/layout";
 import { useGetFriend } from "@hooks/useGetFriend";
 import Loading from "@components/Loading";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import Note from "public/icon/note.svg";
 import { colors } from "@styles/common_style";
+import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { mypageState } from "@recoil/mypage";
 
 const Diary = () => {
+  const router = useRouter();
   const { isConnected, isLoading, friendInfo } = useGetFriend();
+  const [pageState, setPageState] = useRecoilState(mypageState);
+
+  const handleClickConnect = () => {
+    setPageState("connect");
+    router.push("/mypage");
+  };
 
   return !isLoading ? (
     <>
@@ -34,11 +43,8 @@ const Diary = () => {
               <MainText style={{ marginBottom: 12 }}>일기를 작성하시려면 먼저 친구와 연결해 주세요.</MainText>
               <SmallText>우쥬 교환일기는 친구와 일기를 공유하는 서비스로 친구와 연결 후 이용할 수 있습니다.</SmallText>
               <SmallText>{`마이페이지 > 연결 관리에서 친구와 연결을 맺고 서로의 일기를 교환해보세요.`}</SmallText>
-              <Link href="/mypage">
-                <Button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  친구 연결하러 가기
-                </Button>
-              </Link>
+
+              <Button onClick={handleClickConnect}>친구 연결하러 가기</Button>
             </TextBox>
           </UnconnectedContainer>
         </DiaryWrapper2>
@@ -82,7 +88,9 @@ const SidebarContainer = styled(Container)`
     width: 90%;
   }
 `;
-const DiaryContainer = styled(SidebarContainer)``;
+const DiaryContainer = styled(SidebarContainer)`
+  padding: 2em 1em;
+`;
 const UnconnectedContainer = styled(SidebarContainer)`
   width: 90%;
   height: 88vh;
@@ -117,5 +125,6 @@ const Button = styled(motion.button)`
   width: 15em;
   height: 3em;
   margin-top: 1.5em;
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
 `;
 export default Diary;

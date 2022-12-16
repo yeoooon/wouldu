@@ -78,6 +78,7 @@ const PlannerLink = styled.button`
   background-color: ${props => props.theme.color.purpleBox};
   color: ${props => props.theme.color.fontMain};
   align-self: center;
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
 `;
 const ContentBox = styled(Box)`
   flex-direction: column;

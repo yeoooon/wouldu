@@ -13,7 +13,7 @@ const Suggesttodo = ({ plan }: { plan: Planner | undefined }) => {
         <Text>추천 활동</Text>
       </TitleBox>
       <CheckBox></CheckBox>
-      {plan ? <TodoItem {...plan} /> : <>추천 일정이 없습니다.</>}
+      {plan ? <TodoItem {...plan} /> : <NoneItem>추천 일정이 없습니다.</NoneItem>}
     </SuggestContainer>
   );
 };
@@ -40,6 +40,12 @@ const CheckBox = styled(Box)`
   position: absolute;
   left: -15px;
   cursor: pointer;
+`;
+
+const NoneItem = styled.div`
+  display: flex;
+  align-items: center;
+  height: 60px;
 `;
 
 export default Suggesttodo;

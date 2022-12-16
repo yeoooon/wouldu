@@ -59,7 +59,7 @@ const TodoCreate = () => {
               })}
             />
             <ErrorMessage>{errors?.description?.message}</ErrorMessage>
-            <button type="submit">입력</button>
+            <Button type="submit">입력</Button>
           </InsertForm>
         </CreateContainer>
       ) : (
@@ -87,7 +87,7 @@ const InsertForm = styled.form`
   z-index: 4;
   padding-top: 3em;
   padding-bottom: 3em;
-  border-top: 1px solid #e9ecef;
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -109,14 +109,22 @@ const BtnBox = styled(Box)`
   cursor: pointer;
 `;
 const Input = styled.input`
-  height: 30px;
+  height: 40px;
   margin: 1em;
   width: 100%;
+  border: none;
+  border-radius: ${props => props.theme.borderSize.borderSm};
+  box-shadow: 0 2px 3px ${props => props.theme.color.shadow};
+  padding-left: 20px;
 `;
 const ErrorMessage = styled.p`
   color: ${colors.red};
   align-self: flex-end;
   font-size: ${props => props.theme.fontSize.textXs};
 `;
-
+const Button = styled.button`
+  margin-top: 10px;
+  height: 36px;
+  font-size: ${props => props.theme.fontSize.textSm};
+`;
 export default TodoCreate;

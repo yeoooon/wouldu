@@ -169,6 +169,7 @@ const EmotionBox = styled(CalendarBox)`
   border-radius: ${props => props.theme.borderSize.borderSm};
   background-color: ${props => props.theme.color.purpleBox};
   justify-content: center;
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
 
   @media screen and (max-width: 850px) {
     display: flex;

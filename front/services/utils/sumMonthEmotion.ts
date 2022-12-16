@@ -1,10 +1,10 @@
-import { TestEmotionProps } from "./testEmotion";
+import { MonthEmotionProps } from "@type/stamp";
 
 export interface ResultProps {
   [key: string]: number;
 };
 
-export const sumMonthEmotion = (data : TestEmotionProps) => {
+export const sumMonthEmotion = (data : MonthEmotionProps) => {
   const EmotionArray = Object.values(data);
   const result:ResultProps= {};
 
