@@ -9,6 +9,7 @@ export type SeoPageProps = {
 const Seo = ({ pageTitle, pageDesc }: SeoPageProps) => {
   return (
     <Head>
+      <link rel="icon" href="tabicon.png" />
       <title>{pageTitle} | Hi Five</title>
       <meta property="og:title" content={pageTitle ? pageTitle : "우쥬"} key="ogtitle" />
       <meta property="og:description" content={pageDesc ? pageDesc : "교환일기 | 일정관리 "} key="ogdesc" />
