@@ -6,7 +6,7 @@
 ![로고](./front/public/mainlogo.png)
 
 - 개발 기간: 2022-11-14 ~ 2022-12-16
-- 서비스 링크: [https://kdt-ai5-team05.elicecoding.com](https://kdt-ai5-team05.elicecoding.com/)
+- 서비스 링크: ~~[https://kdt-ai5-team05.elicecoding.com](https://kdt-ai5-team05.elicecoding.com/)~~ (배포 중단)
 - 본 프로젝트의 구조를 더 자세히 알고 싶다면?
   - [백엔드 README](./back/README.md)
   - [프론트엔드 README](./front/README.md)
