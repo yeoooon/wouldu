@@ -1,52 +1,46 @@
-import { Box } from '@styles/layout';
-import React from 'react'
-import Image from 'next/image';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { diarywriteState, today, clickedDiaryDateState } from '@recoil/diary';
-import styled from 'styled-components';
-import { DiaryProps } from '@type/diary';
+import { Box } from "@styles/layout";
+import React from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { diarywriteState, today, clickedDiaryDateState } from "@recoil/diary";
+import styled from "styled-components";
+import { DiaryProps } from "@type/diary";
 import { UserIcon } from "@components/icons/UserIcon";
 
 const UserDiary = ({ diary }: DiaryProps) => {
-  const [isTextareaOpen, setIsTextareaOpen] = useRecoilState(diarywriteState);
+  const setIsTextareaOpen = useSetRecoilState(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
   const todayDate = useRecoilValue(today);
 
-  const handleToggle = () => setIsTextareaOpen(!isTextareaOpen);
+  const handleToggle = () => setIsTextareaOpen(true);
 
   return (
     <>
-    {diary?
-      <DiaryBox>
-        <ProfileBox>
-          <UserIcon width={30} height={30} />
-          <UserName>{diary.nickname}</UserName>
-        </ProfileBox>
-        <DiaryContent>
-          {diary.content}
-        </DiaryContent>
-      </DiaryBox>
-      :
-      <UnwrittenDiaryBox>
-        {clickedDiaryDate.substring(0, 10) === todayDate?
-          <>
-            <Text>
-              아직 일기가 작성되지 않았습니다.<br/>
-              오늘의 일기를 작성하여 친구와 공유해 보세요.
-            </Text>
-            <Button onClick={handleToggle}>
-              나의 일기 작성하러 가기
-            </Button>
-          </>
-          :
-          <>
-            <Text>
-              작성된 일기가 없습니다.
-            </Text>
-          </>    
-        }
-      </UnwrittenDiaryBox>
-    }
+      {diary ? (
+        <DiaryBox>
+          <ProfileBox>
+            <UserIcon width={30} height={30} />
+            <UserName>{diary.nickname}</UserName>
+          </ProfileBox>
+          <DiaryContent>{diary.content}</DiaryContent>
+        </DiaryBox>
+      ) : (
+        <UnwrittenDiaryBox>
+          {clickedDiaryDate.substring(0, 10) === todayDate ? (
+            <>
+              <Text>
+                아직 일기가 작성되지 않았습니다.
+                <br />
+                오늘의 일기를 작성하여 친구와 공유해 보세요.
+              </Text>
+              <Button onClick={handleToggle}>나의 일기 작성하러 가기</Button>
+            </>
+          ) : (
+            <>
+              <Text>작성된 일기가 없습니다.</Text>
+            </>
+          )}
+        </UnwrittenDiaryBox>
+      )}
     </>
   );
 };
@@ -54,11 +48,13 @@ const UserDiary = ({ diary }: DiaryProps) => {
 export const DiaryBox = styled(Box)`
   background-color: ${props => props.theme.color.purpleBox};
   width: 100%;
-  height: 48%;
+  height: 45%;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   flex-direction: column;
   justify-content: flex-start;
   padding: 2em;
+  line-height: 20px;
+  letter-spacing: 0.5px;
 `;
 
 export const UnwrittenDiaryBox = styled(DiaryBox)`
@@ -79,6 +75,7 @@ export const Button = styled.button`
 
 export const ProfileBox = styled(Box)`
   justify-content: flex-start;
+  margin-bottom: 15px;
   width: 100%;
   height: 20%;
 `;
@@ -89,9 +86,12 @@ export const UserName = styled.p`
 `;
 
 export const DiaryContent = styled(Box)`
+  width: 100%;
+  justify-content: flex-start;
   font-size: ${props => props.theme.fontSize.textSm};
-  padding: 1.5em 0;
+  padding: 10px 10px;
   overflow-y: auto;
+  white-space: pre-line;
 `;
 
 export default UserDiary;

@@ -1,17 +1,14 @@
 import { Box } from "@styles/layout";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { today } from "@recoil/diary";
 import { useRecoilValue } from "recoil";
-import { Diary } from "@type/diary";
-import { useGetDiary } from "@services/utils/useGetDiary";
-import { useGetFriend } from "@services/utils/useGetFriend";
+import { useGetDiary } from "@hooks/useGetDiary";
+import { useGetFriend } from "@hooks/useGetFriend";
 
 const StampDiaryContent = () => {
   const { isConnected } = useGetFriend();
-
   const todayDate = useRecoilValue(today);
-  
   const { userDiary, partnerDiary } = useGetDiary(todayDate);
 
   return (
@@ -19,13 +16,33 @@ const StampDiaryContent = () => {
       <DiarySummary>
         <Name>나</Name>
         <Content>
-            {!isConnected? <p>먼저 친구와 연결해 보세요!</p> : (userDiary !== undefined? userDiary?.content.substring(0, 15) : "작성된 일기가 없습니다.")}
-          </Content>
+          {!isConnected ? (
+            <p>먼저 친구와 연결해 보세요!</p>
+          ) : userDiary !== undefined ? (
+            userDiary?.content.length < 28 ? (
+              userDiary?.content
+            ) : (
+              userDiary?.content.substring(0, 28) + "..."
+            )
+          ) : (
+            "작성된 일기가 없습니다."
+          )}
+        </Content>
       </DiarySummary>
       <PartnerDiarySummary>
         <PartnerName>상대</PartnerName>
         <Content>
-          {!isConnected? <p>먼저 친구와 연결해 보세요!</p> : (partnerDiary !== undefined? partnerDiary?.content.substring(0, 15) : "작성된 일기가 없습니다.")}
+          {!isConnected ? (
+            <p>먼저 친구와 연결해 보세요!</p>
+          ) : partnerDiary !== undefined ? (
+            partnerDiary?.content.length < 28 ? (
+              partnerDiary?.content
+            ) : (
+              partnerDiary?.content.substring(0, 28) + "..."
+            )
+          ) : (
+            "작성된 일기가 없습니다."
+          )}
         </Content>
       </PartnerDiarySummary>
     </ContentBox>
@@ -44,7 +61,8 @@ const DiarySummary = styled(Box)`
   display: grid;
   grid-template-columns: 12% 88%;
   justify-content: flex-start;
-  border: 1px solid ${props => props.theme.color.borderPoint};
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
+  /* border: 1px solid ${props => props.theme.color.borderPoint}; */
 `;
 const Name = styled(Box)`
   background-color: ${props => props.theme.color.button};
@@ -59,7 +77,8 @@ const Content = styled(Box)`
 `;
 const PartnerDiarySummary = styled(DiarySummary)`
   background-color: ${props => props.theme.color.grayBox};
-  border: 1px solid ${props => props.theme.color.border};
+  /* border: 1px solid ${props => props.theme.color.border}; */
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
 `;
 const PartnerName = styled(Name)`
   background-color: ${props => props.theme.color.fontSub};

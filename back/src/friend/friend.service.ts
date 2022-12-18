@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -40,12 +41,14 @@ export class FriendService {
 
   async verifyRequest(fromUser: User, toUser: User) {
     if (!toUser || fromUser.id === toUser.id) {
-      throw new NotFoundException('유효하지 않은 코드입니다.');
+      throw new HttpException('유효하지 않은 코드입니다.', 481);
     }
 
     const isFromFriendExist = await this.findFriendId(fromUser.id);
-    if (isFromFriendExist !== null) {
-      throw new BadRequestException('from : 이미 친구가 있습니다.');
+    const isToFriendExist = await this.findFriendId(toUser.id);
+
+    if (isFromFriendExist !== null || isToFriendExist !== null) {
+      throw new HttpException('이미 친구가 있습니다.', 482);
     }
 
     const isFromFriendRequestExist = await this.findSendedFriendRequest(
@@ -53,16 +56,12 @@ export class FriendService {
     );
     isFromFriendRequestExist.forEach((request) => {
       if (request.toUserId === toUser.id && request.requestProgress === 0) {
-        throw new BadRequestException(
-          'from : 같은 유저에게 보낸 대기중인 요청이 있습니다.',
+        throw new HttpException(
+          '같은 유저에게 보낸 대기중인 요청이 있습니다.',
+          483,
         );
       }
     });
-
-    const isToFriendExist = await this.findFriendId(toUser.id);
-    if (isToFriendExist !== null) {
-      throw new BadRequestException('to : 이미 친구가 있는 유저입니다.');
-    }
   }
 
   async findReceivedFriendRequest(currentUserId: string) {
@@ -179,8 +178,9 @@ export class FriendService {
     });
 
     if (me === null) {
-      throw new NotFoundException('맺은 친구가 없습니다.');
+      return null;
     }
+
     const friend = await this.friendRepository
       .createQueryBuilder('friend')
       .select('friend.id')

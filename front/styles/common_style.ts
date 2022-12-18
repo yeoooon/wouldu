@@ -18,6 +18,7 @@ export enum colors {
   gray_900 = "#232323",
   red = "#FF4848",
   black = "#222",
+  black2 = "#27272d",
 }
 
 export enum fontSize {

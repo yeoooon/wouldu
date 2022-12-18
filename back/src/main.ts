@@ -14,6 +14,6 @@ async function bootstrap() {
     }),
   );
   setupSwagger(app);
-  await app.listen(8080);
+  await app.listen(process.env.BACKEND_PORT);
 }
 bootstrap();

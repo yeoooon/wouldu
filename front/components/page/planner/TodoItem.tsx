@@ -3,9 +3,9 @@ import { checkPlan, deletePlan, updatePlan } from "@services/api/planner";
 import { Box } from "@styles/layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 const TodoItem = (plan: Planner) => {
   const queryClient = useQueryClient();
@@ -45,12 +45,6 @@ const TodoItem = (plan: Planner) => {
   const handleRemoveTodo = async () => {
     deleteMutation.mutate(plan);
   };
-  const handleUpdateTodo = () => {
-    //description에 수정에 반영될 데이터 넣어주면됨.
-
-    setIsEditMode(true);
-    // updateMutation.mutate({ ...plan, description: "일정!" });
-  };
 
   const onUpdateSubmit = async ({ description }: { description: string }) => {
     updateMutation.mutate({ ...plan, description });
@@ -80,10 +74,12 @@ const TodoItem = (plan: Planner) => {
         <>
           <CheckBox onClick={handleToggle}>{plan.isCompleted ? <CircleCheckIcon /> : <CircleCheckBackIcon />}</CheckBox>
           <Text>{plan.description}</Text>
-          <ButtonBox>
-            <Button onClick={() => setIsEditMode(true)}>수정</Button>
-            <Button onClick={handleRemoveTodo}>삭제</Button>
-          </ButtonBox>
+          {plan?.isRecommended === 0 && (
+            <ButtonBox>
+              <Button onClick={() => setIsEditMode(true)}>수정</Button>
+              <Button onClick={handleRemoveTodo}>삭제</Button>
+            </ButtonBox>
+          )}
         </>
       )}
     </TodoBox>
@@ -91,6 +87,8 @@ const TodoItem = (plan: Planner) => {
 };
 
 const ButtonBox = styled.div`
+  width: 80px;
+  /* height: 50px; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,6 +100,7 @@ const Button = styled.button`
   color: ${props => props.theme.color.fontSub};
   border-radius: 0;
   padding: 0 0.8em;
+  box-shadow: none;
   font-size: 10px;
   &:first-child {
     border-right: 1px solid ${props => props.theme.color.fontSub};
@@ -112,17 +111,20 @@ const Button = styled.button`
     font-weight: 600;
   }
 `;
-const Text = styled.p``;
+const Text = styled.p`
+  width: 80%;
+`;
 
 const TodoBox = styled(Box)`
   position: relative;
   justify-content: space-between;
   padding: 1em 0.5em 1em 2em;
   width: 100%;
-  height: 4em;
+  height: 60px;
   margin-bottom: 1em;
   background-color: ${props => props.theme.color.purpleBox};
-  border: 1px solid ${props => props.theme.color.borderPoint};
+  /* border: 1px solid ${props => props.theme.color.borderPoint}; */
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
 
   &:hover {
     ${ButtonBox} {
@@ -130,7 +132,7 @@ const TodoBox = styled(Box)`
     }
   }
   &.finish {
-    border: 1px solid ${props => props.theme.color.border};
+    /* border: 1px solid ${props => props.theme.color.border}; */
     background-color: ${props => props.theme.color.grayBox};
     ${Text} {
       font-style: italic;

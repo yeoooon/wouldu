@@ -3,21 +3,22 @@ import styled from "styled-components";
 import { colors } from "../styles/common_style";
 import { useForm } from "react-hook-form";
 import { LOGIN, UserLoginForm } from "@type/user";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { requestLogin } from "../services/api/user";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/user";
 import { useRouter } from "next/router";
 import withGetServerSideProps from "@hocs/withGetServerSideProps";
 import { isFindPasswordModalAtom } from "@recoil/modal";
-import FindPasswordForm from "@components/FindPasswordForm";
+import FindPasswordModal from "@components/modal/FindPasswordModal";
+import { kakaoInit } from "@services/utils/kakaoInit";
 
 const Login = () => {
   const router = useRouter();
-  const [user, setUser] = useRecoilState(userAtom);
-  const [isFindPasswordOpen, setIsFindPasswordOpen] = useRecoilState(isFindPasswordModalAtom);
+  const setUser = useSetRecoilState(userAtom);
+  const setIsFindPasswordOpen = useSetRecoilState(isFindPasswordModalAtom);
   const {
     register,
     handleSubmit,
@@ -30,9 +31,17 @@ const Login = () => {
       const { id, accessToken, email, nickname, friendCode, isFirstLogin } = await requestLogin(data);
       if (accessToken) {
         setUser({ id, email, accessToken, nickname, friendCode, isFirstLogin });
-        router.push("/");
+        router.replace("/");
       }
     } catch (err) {}
+  };
+
+  const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+  const handleClickKakao = () => {
+    const kakao = kakaoInit();
+    kakao.Auth.authorize({
+      redirectUri: REDIRECT_URI,
+    });
   };
 
   return (
@@ -63,22 +72,16 @@ const Login = () => {
             />
             <ErrorMessage>{errors?.password?.message}</ErrorMessage>
           </InputBox>
-
-          <LoginButton>로그인</LoginButton>
+          <LoginButtonBox>
+            <LoginButton>로그인</LoginButton>
+          </LoginButtonBox>
         </form>
         <SocialContainer>
           <p>SNS 간편로그인 </p>
           <SocialBox>
-            <Link href={"/"}>
-              <IconBox social={LOGIN.KAKAO}>
-                <Image src={"/icon/kakao_icon.svg"} width={20} height={20} alt="kakao" />
-              </IconBox>
-            </Link>
-            <Link href={"/"}>
-              <IconBox social={LOGIN.GOOGLE}>
-                <Image src={"/icon/google_icon.svg"} width={20} height={20} alt="google" />
-              </IconBox>
-            </Link>
+            <IconBox social={LOGIN.KAKAO} onClick={handleClickKakao}>
+              <Image src={"/icon/kakao_icon.svg"} width={20} height={20} alt="kakao" />
+            </IconBox>
           </SocialBox>
         </SocialContainer>
         <EtcBox>
@@ -89,7 +92,7 @@ const Login = () => {
           </EtcTextBox>
           <EtcTextBox onClick={() => setIsFindPasswordOpen(true)}>비밀번호 찾기</EtcTextBox>
         </EtcBox>
-        {isFindPasswordOpen && <FindPasswordForm />}
+        <FindPasswordModal />
       </LoginContainer>
     </LoginWrap>
   );
@@ -117,6 +120,10 @@ const LoginTitle = styled.h2`
   font-size: ${props => props.theme.fontSize.textXl};
   height: 50px;
   margin-bottom: 20px;
+
+  @media screen and (max-width: 850px) {
+    font-size: 24px;
+  }
 `;
 
 const LoginContainer = styled(Container)`
@@ -126,6 +133,9 @@ const LoginContainer = styled(Container)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 850px) {
+    width: 370px;
+  }
 `;
 
 const InputBox = styled(Box)`
@@ -152,14 +162,22 @@ const LoginInput = styled.input`
   &:first-child {
     margin-bottom: 10px;
   }
+  @media screen and (max-width: 850px) {
+    width: 100%;
+  }
 `;
-
 const LoginButton = styled.button`
   margin-top: 20px;
   width: 500px;
   height: 50px;
-`;
 
+  @media screen and (max-width: 850px) {
+    width: 350px;
+  }
+`;
+const LoginButtonBox = styled(Box)`
+  width: 100%;
+`;
 const SocialContainer = styled(Container)`
   width: 100%;
   padding: 10px 10px;
@@ -169,6 +187,10 @@ const SocialContainer = styled(Container)`
   border: none;
   border-radius: 0;
   border-bottom: 1px solid ${props => props.theme.color.border};
+
+  @media screen and (max-width: 850px) {
+    width: 350px;
+  }
 `;
 const SocialBox = styled(Box)`
   display: flex;

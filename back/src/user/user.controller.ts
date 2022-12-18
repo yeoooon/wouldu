@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   Res,
+  Redirect,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -39,15 +40,13 @@ export class UserController {
 
   @Post('/email-verify')
   @ApiOperation({ summary: '이메일 인증 API' })
-  async verifyEmail(@Query() query): Promise<string> {
+  @Redirect(`http://kdt-ai5-team05.elicecoding.com/login`, 201)
+  async verifyEmail(@Query() query): Promise<Object> {
     const { signupVerifyToken } = query;
-    return await this.userService.verifyEmail(signupVerifyToken);
-  }
-
-  @Get()
-  @ApiOperation({ summary: '전체 회원 정보 조회 API' })
-  findAll() {
-    return this.userService.findAll();
+    await this.userService.verifyEmail(signupVerifyToken);
+    return {
+      url: `http://kdt-ai5-team05.elicecoding.com/login`,
+    };
   }
 
   @Get(':id')

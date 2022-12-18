@@ -1,15 +1,18 @@
 import { Wrapper } from "../styles/layout";
 import { useRecoilValue } from "recoil";
-import { loginStateSelector, userAtom } from "../recoil/user";
+import { loginStateSelector } from "../recoil/user";
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import About from "@components/page/about/About";
 import { useRouter } from "next/router";
 import { getCookie } from "@services/utils/cookies";
+import styled from "styled-components";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Home: NextPage = () => {
   const isLoginStateAtom = useRecoilValue(loginStateSelector);
   const [isLoginState, setIsLoginState] = useState<boolean>(false);
+  const queryClient = useQueryClient();
   const router = useRouter();
   useEffect(() => {
     setIsLoginState(isLoginStateAtom);
@@ -17,15 +20,20 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (isLoginState && getCookie("userToken")) {
-      // console.log(isLoginState);
       router.push("/stamp");
+    } else {
+      queryClient.clear();
     }
   }, [isLoginState]);
 
   return (
     <>
-      <Wrapper>{isLoginState || <About />}</Wrapper>
+      <NewWrapper>{isLoginState || <About />}</NewWrapper>
     </>
   );
 };
+
+const NewWrapper = styled(Wrapper)`
+  height: 440vh;
+`;
 export default Home;

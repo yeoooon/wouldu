@@ -2,7 +2,7 @@ import { CirclePlusIcon } from "@components/icons/CircleIcon";
 import { dayAtom } from "@recoil/planner";
 import { colors } from "@styles/common_style";
 import { Box, Container } from "@styles/layout";
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Planner } from "@type/planner";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -17,29 +17,26 @@ const TodoCreate = () => {
   const {
     register,
     handleSubmit,
-    resetField,
+    reset,
     formState: { errors },
   } = useForm<{ description: string }>();
   const queryClient = useQueryClient();
 
   const handleToggle = () => setOpen(!open);
 
-  //달력날짜에 프롭스로 받아서 변경될 예정
   const recoilDay = useRecoilValue<Date>(dayAtom);
   const pickDay: string = formatDate(recoilDay);
 
   const updateMutation = useMutation((data: Planner) => createPlan(data), {
     onSuccess: () => {
       const [year, month, day] = pickDay.split("-");
-      console.log(year, month);
       queryClient.invalidateQueries(["plan", year, month]);
     },
   });
   const onCreateSubmit = async (data: Planner) => {
-    // priority는 옵션임으로, 우선 1로 셋팅해놓음.
     updateMutation.mutate({ date: pickDay, ...data, priority: 1 });
     setOpen(false);
-    resetField("description");
+    reset();
   };
 
   return (
@@ -48,7 +45,7 @@ const TodoCreate = () => {
         <CreateContainer>
           <InsertForm onSubmit={handleSubmit(onCreateSubmit)}>
             <BtnBox onClick={handleToggle}>
-              <CircleCloseBox>
+              <CircleCloseBox onClick={() => reset()}>
                 <CirclePlusIcon />
               </CircleCloseBox>
             </BtnBox>
@@ -58,10 +55,11 @@ const TodoCreate = () => {
               {...register("description", {
                 required: true,
                 minLength: { value: 2, message: "2자 이상 입력해주세요." },
+                maxLength: { value: 20, message: "20자 이하 입력해주세요." },
               })}
             />
             <ErrorMessage>{errors?.description?.message}</ErrorMessage>
-            <button type="submit">입력</button>
+            <Button type="submit">입력</Button>
           </InsertForm>
         </CreateContainer>
       ) : (
@@ -80,16 +78,16 @@ const CreateContainer = styled(Container)`
   width: 100%;
   bottom: 0;
   position: absolute;
-`;
-const InsertForm = styled.form`
-  z-index: 4;
   background: ${props => props.theme.color.purpleBox};
-  padding-top: 3em;
-  padding-bottom: 3em;
-  border-top: 1px solid #e9ecef;
-  width: 100%;
   border: 1px solid ${props => props.theme.color.borderPoint};
   border-radius: ${props => props.theme.borderSize.borderSm};
+`;
+const InsertForm = styled.form`
+  width: 80%;
+  z-index: 4;
+  padding-top: 3em;
+  padding-bottom: 3em;
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -111,14 +109,22 @@ const BtnBox = styled(Box)`
   cursor: pointer;
 `;
 const Input = styled.input`
-  height: 2.5em;
+  height: 40px;
   margin: 1em;
-  width: 80%;
+  width: 100%;
+  border: none;
+  border-radius: ${props => props.theme.borderSize.borderSm};
+  box-shadow: 0 2px 3px ${props => props.theme.color.shadow};
+  padding-left: 20px;
 `;
 const ErrorMessage = styled.p`
   color: ${colors.red};
   align-self: flex-end;
   font-size: ${props => props.theme.fontSize.textXs};
 `;
-
+const Button = styled.button`
+  margin-top: 10px;
+  height: 36px;
+  font-size: ${props => props.theme.fontSize.textSm};
+`;
 export default TodoCreate;

@@ -1,18 +1,13 @@
-import { Box, Container } from '@styles/layout';
-import React, { useEffect, useState } from 'react'
-import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
-import { diarywriteState, clickedDiaryDateState } from '../../../recoil/diary';
-import DiaryTextarea from './DiaryTextarea';
-import PartnerDiary from './PartnerDiary';
-import UserDiary from './UserDiary';
-import getDayString from '../../../services/utils/getDayString';
-import { getDiary } from '@services/api/diary';
-import { useQuery } from '@tanstack/react-query';
-import DiaryListDay from './DiaryListDay';
-import { Diary } from '@type/diary';
-import { useGetFriend } from "@services/utils/useGetFriend";
-import { useGetDiary } from '@services/utils/useGetDiary';
+import { Box, Container } from "@styles/layout";
+import React, { useMemo } from "react";
+import { useRecoilValue } from "recoil";
+import styled from "styled-components";
+import { diarywriteState, clickedDiaryDateState } from "../../../recoil/diary";
+import DiaryTextarea from "./DiaryTextarea";
+import PartnerDiary from "./PartnerDiary";
+import UserDiary from "./UserDiary";
+import getDayString from "../../../services/utils/getDayString";
+import { useGetDiary } from "@hooks/useGetDiary";
 
 interface TitleProps {
   title: string | undefined;
@@ -22,8 +17,8 @@ const DiaryMain = ({ title }: TitleProps) => {
   const isTextAreaOpen = useRecoilValue(diarywriteState);
   const clickedDiaryDate = useRecoilValue(clickedDiaryDateState);
 
-  const yyyymmdd = clickedDiaryDate.substring(0, 10);
-  const [year, month, day] = yyyymmdd.split('-');
+  const yyyymmdd = useMemo(() => clickedDiaryDate?.substring(0, 10), [clickedDiaryDate]);
+  const [year, month, day] = yyyymmdd.split("-");
   const dayStr = getDayString(clickedDiaryDate);
 
   const { userDiary, partnerDiary } = useGetDiary(yyyymmdd);
@@ -32,18 +27,20 @@ const DiaryMain = ({ title }: TitleProps) => {
     <MainContainer>
       <TextBox>
         <Title>{title}</Title>
-        <Date>{year}년 {month}월 {day}일 {dayStr}요일</Date>
+        <Date>
+          {year}년 {month}월 {day}일 {dayStr}요일
+        </Date>
       </TextBox>
-      {isTextAreaOpen ?
-      <InsideContainer>
-        <DiaryTextarea />
-      </InsideContainer>
-       : 
-      <InsideContainer2>
-        <UserDiary diary={userDiary} />
-        <PartnerDiary diary={partnerDiary} />
-      </InsideContainer2>
-      }
+      {isTextAreaOpen ? (
+        <InsideContainer>
+          <DiaryTextarea />
+        </InsideContainer>
+      ) : (
+        <InsideContainer2>
+          <UserDiary diary={userDiary} />
+          <PartnerDiary diary={partnerDiary} />
+        </InsideContainer2>
+      )}
     </MainContainer>
   );
 };
@@ -52,15 +49,14 @@ const MainContainer = styled(Container)`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 2.5em;
+  padding: 0 25px;
+  justify-content: space-evenly;
 `;
 
 const TextBox = styled(Box)`
   flex-direction: column;
   width: 100%;
   align-items: flex-start;
-  margin-bottom: 1em;
-  padding: 0 0.5em;
 `;
 const Title = styled.h1`
   font-weight: bold;
@@ -79,9 +75,10 @@ const InsideContainer = styled(Container)`
   height: 100%;
 `;
 const InsideContainer2 = styled(InsideContainer)`
-  justify-content: space-between;
-  margin: 0;
+  flex-direction: column;
+  width: 100%;
+  height: 80%;
+  justify-content: space-evenly;
 `;
-
 
 export default DiaryMain;

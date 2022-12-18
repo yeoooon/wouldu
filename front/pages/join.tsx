@@ -3,8 +3,7 @@ import styled from "styled-components";
 import { colors } from "../styles/common_style";
 import { useForm } from "react-hook-form";
 import { LOGIN, UserJoinForm } from "@type/user";
-import { SeoPageProps } from "@components/Seo";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import { Box, Container, Wrapper } from "@styles/layout";
 import { userJoin } from "../services/api/user";
@@ -25,8 +24,6 @@ const Join = () => {
       if (status === 201) {
         alert("회원가입이 완료되었습니다. 가입한 이메일에 메일함을 확인해주세요.");
         Router.push("/login");
-      } else if (status === 422) {
-        alert("이미 가입된 이메일 입니다. 다른 이메일로 가입해 주세요.");
       }
     });
   });
@@ -75,6 +72,10 @@ const Join = () => {
               {...register("password", {
                 required: "비밀번호를 입력해주세요.",
                 minLength: { value: 8, message: "8자 이상 입력해주세요." },
+                pattern: {
+                  value: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/,
+                  message: "숫자,특수문자,영문 포함 8자리 이상 적어주세요.",
+                },
               })}
             />
             <ErrorMessage>{errors?.password?.message}</ErrorMessage>
@@ -99,11 +100,6 @@ const Join = () => {
             <Link href={"/"}>
               <IconBox social={LOGIN.KAKAO}>
                 <Image src={"/icon/kakao_icon.svg"} width={20} height={20} alt="kakao" />
-              </IconBox>
-            </Link>
-            <Link href={"/"}>
-              <IconBox social={LOGIN.GOOGLE}>
-                <Image src={"/icon/google_icon.svg"} width={20} height={20} alt="google" />
               </IconBox>
             </Link>
           </SocialBox>
@@ -135,6 +131,10 @@ const JoinTitle = styled.h2`
   font-size: ${props => props.theme.fontSize.textXl};
   height: 50px;
   margin-bottom: 20px;
+
+  @media screen and (max-width: 850px) {
+    font-size: 24px;
+  }
 `;
 
 const JoinContainer = styled(Container)`
@@ -143,6 +143,10 @@ const JoinContainer = styled(Container)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media screen and (max-width: 850px) {
+    width: 370px;
+    align-items: center;
+  }
 `;
 
 const InputBox = styled(Box)`
@@ -169,15 +173,22 @@ const JoinInput = styled.input`
   &:first-child {
     margin-bottom: 10px;
   }
+  @media screen and (max-width: 850px) {
+    width: 100%;
+  }
 `;
 
 const JoinButton = styled.button`
   margin-top: 20px;
   width: 500px;
   height: 50px;
+
+  @media screen and (max-width: 850px) {
+    width: 350px;
+  }
 `;
 
-const SocialContainer = styled(Container)`
+const SocialContainer = styled(Box)`
   width: 100%;
   padding: 10px 10px;
   margin-top: 30px;
@@ -185,6 +196,10 @@ const SocialContainer = styled(Container)`
   justify-content: space-between;
   border: none;
   border-radius: 0;
+
+  @media screen and (max-width: 850px) {
+    width: 350px;
+  }
 `;
 const SocialBox = styled(Box)`
   display: flex;

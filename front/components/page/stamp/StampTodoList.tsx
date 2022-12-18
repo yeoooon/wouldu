@@ -5,7 +5,7 @@ import StampTodoBox from "./StampTodoBox";
 import Link from "next/link";
 import { Planner } from "@type/planner";
 import { formatDate } from "@services/utils/formatDate";
-import usePlanQuery from "@services/utils/usePlanQuery";
+import usePlanQuery from "@hooks/usePlanQuery";
 import StampTodoNone from "./StampTodoNone";
 import { CheckIcon } from "@components/icons/CheckIcon";
 
@@ -15,7 +15,6 @@ const StampTodoList = () => {
   const { data: planData } = usePlanQuery(today);
 
   useEffect(() => {
-    console.log(planData);
     setTodos(planData);
   }, [planData]);
 
@@ -79,10 +78,11 @@ const PlannerLink = styled.button`
   background-color: ${props => props.theme.color.purpleBox};
   color: ${props => props.theme.color.fontMain};
   align-self: center;
+  box-shadow: 0 2px 3px ${props => props.theme.color.dark_shadow};
 `;
 const ContentBox = styled(Box)`
   flex-direction: column;
   justify-content: flex-start;
   overflow-y: auto;
 `;
-export default StampTodoList;
+export default React.memo(StampTodoList);

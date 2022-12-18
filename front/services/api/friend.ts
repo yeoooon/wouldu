@@ -1,16 +1,13 @@
-import { userAtom } from "@recoil/user";
-import { MatchCodeFormValue, requestType } from "@type/friend";
+import { requestType } from "@type/friend";
 import axios from "axios";
-import { useRecoilValue } from "recoil";
 import { axiosInstance } from "./axiosInstance";
+
 //친구요청 api
 export const requestFriend = async (friendCode: string) => {
-  console.log({ code: friendCode });
   try {
     const { status } = await axiosInstance.post("friend/request", { code: friendCode });
     return status; //201 성공
   } catch (err) {
-    console.log(err);
     if (axios.isAxiosError(err) && err?.response?.status) {
       return err.response.status;
     }
@@ -31,12 +28,9 @@ export const checkRequestFriend = async (side: requestType) => {
 export const getFriend = async () => {
   try {
     const { data } = await axiosInstance.get("friend");
-    console.log(data);
-
     return data;
   } catch (err) {
     if (axios.isAxiosError(err) && err?.response?.status) {
-      console.log(err.response.data);
       return err.response.data.statusCode;
     }
   }
@@ -70,6 +64,18 @@ export const rejectFriend = async (requestId: number) => {
 export const changeDiaryTitle = async (title: string) => {
   try {
     const { status } = await axiosInstance.put("friend/title", { title });
+    return status;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err?.response?.status) {
+      return err.response.status;
+    }
+  }
+};
+
+// 친구 끊기
+export const disconnectFriend = async () => {
+  try {
+    const { status } = await axiosInstance.delete("friend");
     return status;
   } catch (err) {
     if (axios.isAxiosError(err) && err?.response?.status) {

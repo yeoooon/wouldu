@@ -1,7 +1,16 @@
-import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  Request,
+  Get,
+  Query,
+} from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
+import { SocialLoginDTO } from './dto/social-login.dto';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 
 @Controller('auth')
@@ -17,5 +26,13 @@ export class AuthController {
   })
   async login(@Request() req, @Body() loginDTO: LoginDTO) {
     return this.authService.login(req.user);
+  }
+
+  @Get('social/kakao')
+  @ApiOperation({
+    summary: '소셜 로그인 - 카카오',
+  })
+  async kakao(@Query('code') code: string) {
+    return this.authService.kakao(code);
   }
 }

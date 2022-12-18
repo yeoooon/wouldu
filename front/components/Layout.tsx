@@ -1,12 +1,11 @@
-import { isAlarmModalAtom, isSurveyModalAtom } from "@recoil/modal";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { loginStateSelector, userAtom } from "../recoil/user";
-import AfterNavbar from "./AfterNavbar";
-import AlarmModal from "./AlarmModal";
-import BeforeNavBar from "./BeforeNavbar";
-import SurveyModal from "./SurveyModal";
+import AfterNavbar from "./nav/AfterNavbar";
+import AlarmModal from "./modal/AlarmModal";
+import BeforeNavBar from "./nav/BeforeNavbar";
+import SurveyModal from "./page/mypage/modal/SurveyModal";
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -16,16 +15,11 @@ export interface LayoutProps {
 const Layout = ({ children, darkMode, setDarkMode }: LayoutProps) => {
   const isLoginStateAtom = useRecoilValue(loginStateSelector);
   const [isLoginState, setIsLoginState] = useState<boolean>(false);
-  const isAlarmOpen = useRecoilValue(isAlarmModalAtom);
   const user = useRecoilValue(userAtom);
 
   useEffect(() => {
     setIsLoginState(isLoginStateAtom);
   }, [isLoginStateAtom]);
-
-  useEffect(() => {
-    console.log(user?.isFirstLogin);
-  }, [user]);
 
   return (
     <>
@@ -33,8 +27,8 @@ const Layout = ({ children, darkMode, setDarkMode }: LayoutProps) => {
         <LayoutWrapper>
           <AfterNavbar darkMode={darkMode} setDarkMode={setDarkMode} />
           <div>{children}</div>
-          {isAlarmOpen && <AlarmModal />}
-          {user?.isFirstLogin === 0 && <SurveyModal />}
+          <AlarmModal />
+          {user && user?.isFirstLogin === 0 && <SurveyModal />}
         </LayoutWrapper>
       )}
       {isLoginState || (
@@ -51,6 +45,11 @@ const LayoutWrapper = styled.div`
   display: grid;
   grid-template-columns: 240px 1fr;
   height: 720px;
+
+  @media screen and (max-width: 960px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 60px 1fr;
+  }
 `;
 
 export default Layout;

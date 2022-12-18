@@ -15,12 +15,16 @@ import { CreateDiaryDto } from './dto/create-diary.dto';
 import { Request, Response } from 'express';
 import { ReadDiaryDto } from './dto/read-diary.dto';
 import { DiaryDateDto } from './dto/diary-date.dto';
+import { FriendService } from 'src/friend/friend.service';
 
 @Controller('diary')
 @ApiTags('교환일기 API')
 @ApiBearerAuth('access-token')
 export class DiaryController {
-  constructor(private readonly diaryService: DiaryService) {}
+  constructor(
+    private readonly diaryService: DiaryService,
+    private readonly friendService: FriendService,
+  ) {}
 
   @Post()
   @ApiOperation({
@@ -45,44 +49,51 @@ export class DiaryController {
     @Res() response: Response,
   ) {
     const { period, date, month } = readDiaryDTO;
+    const userId = request.user['userId'];
+    let diaryList;
+
     if (period === 'daily') {
-      const diaryList = await this.diaryService.findDiaryByDate(
-        request.user['userId'],
-        date,
-      );
-      if (diaryList === null || diaryList.diaries.length === 0) {
-        return response.status(204).send();
-      }
-      return response.status(200).send(diaryList);
+      diaryList = await this.diaryService.findDiaryByDate(userId, date);
     } else if (period === 'monthly') {
-      const diaryList = await this.diaryService.findDiaryByMonth(
-        request.user['userId'],
-        month,
-      );
-      if (diaryList === null || diaryList.diaries.length === 0) {
-        return response.status(204).send();
-      }
-      return response.status(200).send(diaryList);
+      diaryList = await this.diaryService.findDiaryByMonth(userId, month);
     } else {
-      const diaryList = await this.diaryService.findDiaryList(
-        request.user['userId'],
-      );
-      if (diaryList === null) {
-        return response.status(204).send();
-      }
-      return response.status(200).send(diaryList);
+      diaryList = await this.diaryService.findDiaryList(userId);
     }
+
+    if (
+      diaryList?.message ||
+      diaryList === null ||
+      diaryList.diaries.length === 0
+    ) {
+      return response.status(204).send();
+    }
+
+    return response.status(200).send(diaryList);
   }
 
   @Get('emotions')
   @ApiOperation({
-    summary: '월단위 감점 API',
-    description:
-      'query로 year, month를 넣으면 해당 달의 일정이 있었던 날을 알려줌',
+    summary: '월단위 감정 API',
+    description: 'query로 year, month를 넣으면 해당 달의 감정 반환',
   })
   @UseGuards(AuthGuard('jwt'))
   emotions(@Req() request: Request, @Query() plannerDateDto: DiaryDateDto) {
     const userId = request.user['userId'];
     return this.diaryService.collectEmotions(userId, plannerDateDto);
+  }
+
+  @Get('friend/emotions')
+  @ApiOperation({
+    summary: '월단위 감정 API',
+    description: 'query로 year, month를 넣으면 해당 달의 친구 감정 반환',
+  })
+  @UseGuards(AuthGuard('jwt'))
+  async friendEmotions(
+    @Req() request: Request,
+    @Query() plannerDateDto: DiaryDateDto,
+  ) {
+    const userId = request.user['userId'];
+    const friend = await this.friendService.findFriend(userId);
+    return this.diaryService.collectEmotions(friend.toUserId, plannerDateDto);
   }
 }

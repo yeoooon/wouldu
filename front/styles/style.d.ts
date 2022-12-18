@@ -12,10 +12,13 @@ declare module "styled-components" {
       point: string;
       border: string;
       borderPoint: string;
+      shadow: string;
+      dark_shadow: string;
       fontMain: string;
       fontSub: string;
       white: string;
       fontPoint: string;
+      fontDark: string;
     };
     fontSize: {
       textXl: string;

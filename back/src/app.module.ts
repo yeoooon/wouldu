@@ -7,6 +7,8 @@ import { DiaryModule } from './diary/diary.module';
 import { PlannerModule } from './planner/planner.module';
 import { JwtModule } from '@nestjs/jwt';
 import { FriendModule } from './friend/friend.module';
+import { ActivityModule } from './activity/activity.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -25,11 +27,13 @@ import { FriendModule } from './friend/friend.module';
       // synchronize: true,
       ssl: { rejectUnauthorized: true },
     }),
+    ScheduleModule.forRoot(),
     UserModule,
     AuthModule,
     DiaryModule,
     PlannerModule,
     FriendModule,
+    ActivityModule,
   ],
 })
 export class AppModule {}

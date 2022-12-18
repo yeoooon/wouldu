@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -25,7 +20,6 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private emailService: EmailService,
-    private authService: AuthService,
     @InjectRepository(Friend)
     private friendRepository: Repository<Friend>,
     private dataSource: DataSource,
@@ -37,13 +31,16 @@ export class UserService {
     const user = new User();
     const { email, nickname, password, socialId, profileImgUrl } =
       createUserDto;
-    const emailExist = await this.checkUserExistsByEmail(email);
-    if (emailExist) {
-      throw new UnprocessableEntityException('이메일 중복');
+    const emailUser = await this.findOneByEmail(email);
+    if (emailUser?.registerProgress === 0) {
+      throw new HttpException('이메일 인증 중', 473);
+    }
+    if (emailUser) {
+      throw new HttpException('이메일 중복', 471);
     }
     const nicknameExist = await this.checkUserExistsByNickname(nickname);
     if (nicknameExist) {
-      throw new UnprocessableEntityException('닉네임 중복');
+      throw new HttpException('닉네임 중복', 472);
     }
     const signupVerifyToken = uuid.v4();
     user.email = email;
@@ -123,6 +120,7 @@ export class UserService {
   }
 
   userData(user: User) {
+    if(user === undefined || user === null) return null;
     return {
       id: user.id,
       email: user.email,
@@ -165,7 +163,7 @@ export class UserService {
     });
     const nicknameExist = await this.checkUserExistsByNickname(nickname);
     if (nicknameExist) {
-      throw new UnprocessableEntityException('닉네임 중복');
+      throw new HttpException('닉네임 중복', 472);
     }
     user.nickname = nickname;
 
@@ -184,7 +182,7 @@ export class UserService {
       user?.hashedPassword ?? '',
     );
     if (!isPasswordMatched) {
-      throw new HttpException('기존 비밀번호가 틀립니다', 401);
+      throw new HttpException('기존 비밀번호가 틀립니다', 491);
     }
     user.hashedPassword = await bcrypt.hash(newPassword, 10);
 
@@ -211,23 +209,25 @@ export class UserService {
     const friend = await this.friendRepository.findOne({
       where: { fromUserId: id },
     });
-    const friendId = friend.friendId;
+    const friendId = friend === null ? null : friend.friendId;
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      await this.diaryRepository
-        .createQueryBuilder('diary')
-        .delete()
-        .where('friendId=:friendId', { friendId })
-        .execute();
+      if (friendId !== null) {
+        await this.diaryRepository
+          .createQueryBuilder('diary')
+          .delete()
+          .where('friendId=:friendId', { friendId })
+          .execute();
 
-      await this.friendRepository
-        .createQueryBuilder('friend')
-        .delete()
-        .where('friendId=:friendId', { friendId })
-        .execute();
+        await this.friendRepository
+          .createQueryBuilder('friend')
+          .delete()
+          .where('friendId=:friendId', { friendId })
+          .execute();
+      }
 
       await this.userRepository.delete(id);
       return '회원 탈퇴 완료';
@@ -248,7 +248,7 @@ export class UserService {
     const newHashedPassword = await bcrypt.hash(newPassword, 10);
     user.hashedPassword = newHashedPassword;
     await this.userRepository.save(user);
-    await this.emailService.sendNewPassword(user.email, newPassword);
+    this.emailService.sendNewPassword(user.email, newPassword);
     return '비밀번호 찾기 완료';
   }
 }

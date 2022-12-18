@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { FriendService } from 'src/friend/friend.service';
+import { groupBy } from 'src/util/groupBy';
 import { DiaryDAO } from './dao/diary.dao';
 import { CreateDiaryDto } from './dto/create-diary.dto';
 import { DiaryDateDto } from './dto/diary-date.dto';
@@ -14,18 +15,20 @@ export class DiaryService {
     private readonly httpService: HttpService,
   ) {}
 
+  async saveEmotion(content: string, diaryId: number) {
+    const emotion = await this.httpService.axiosRef.get(
+      'http://kdt-ai5-team05.elicecoding.com:3306/?sentence=' + content,
+    );
+    this.diaryDAO.updateEmotion(emotion.data, diaryId);
+  }
+
   async create(currentUserId: string, createDiaryDto: CreateDiaryDto) {
     const diary = new Diary();
     const { content } = createDiaryDto;
 
-    const emotion = await this.httpService.axiosRef.get(
-      'http://kdt-ai5-team05.elicecoding.com:3000/?sentence=' + content,
-    );
-
     diary.friendId = await this.friendService.findFriendId(currentUserId);
     diary.userId = currentUserId;
     diary.content = content;
-    diary.emotion = emotion.data;
 
     const dt = new Date();
     diary.date =
@@ -36,7 +39,9 @@ export class DiaryService {
       throw new BadRequestException('오늘 일기를 이미 작성했습니다.');
     }
 
-    return this.diaryDAO.createOne(diary);
+    const createdDiary = await this.diaryDAO.createOne(diary);
+    this.saveEmotion(content, createdDiary.id);
+    return createdDiary;
   }
 
   async checkDiary(currentUserId: string, date: string) {
@@ -49,13 +54,13 @@ export class DiaryService {
 
   async findDiaryList(currentUserId: string) {
     const friend = await this.friendService.findFriend(currentUserId);
-    const friendId = friend.friendId;
-    const title = friend.title;
-    if (friendId === null) {
+    if (friend === null) {
       return {
         message: '맺은 친구가 없습니다.',
       };
     }
+    const friendId = friend.friendId;
+    const title = friend.title;
     const diaries = await this.diaryDAO.getMany('diary.friendId=:friendId', {
       friendId,
     });
@@ -72,13 +77,13 @@ export class DiaryService {
 
   async findDiaryByDate(currentUserId: string, date: string) {
     const friend = await this.friendService.findFriend(currentUserId);
-    const friendId = friend.friendId;
-    const title = friend.title;
-    if (friendId === null) {
+    if (friend === null) {
       return {
         message: '맺은 친구가 없습니다.',
       };
     }
+    const friendId = friend.friendId;
+    const title = friend.title;
     const diaries = await this.diaryDAO.getMany(
       'diary.friendId=:friendId and date=:date',
       {
@@ -94,13 +99,13 @@ export class DiaryService {
 
   async findDiaryByMonth(currentUserId: string, monthString: string) {
     const friend = await this.friendService.findFriend(currentUserId);
-    const friendId = friend.friendId;
-    const title = friend.title;
-    if (friendId === null) {
+    if (friend === null) {
       return {
         message: '맺은 친구가 없습니다.',
       };
     }
+    const friendId = friend.friendId;
+    const title = friend.title;
     const diaries = await this.diaryDAO.getMany(
       'diary.friendId=:friendId and date like :date',
       {
@@ -111,11 +116,13 @@ export class DiaryService {
 
     return {
       title: title,
-      diaries: diaries,
+      diaries: groupBy(diaries, (item) => {
+        return item.date;
+      }),
     };
   }
 
-  async collectEmotions(userId: string, diaryDateDto: DiaryDateDto) {
+  async collectEmotions(userId: string | null, diaryDateDto: DiaryDateDto) {
     return this.diaryDAO.getEmotions(userId, diaryDateDto);
   }
 }

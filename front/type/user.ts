@@ -13,6 +13,7 @@ export interface User {
   password?: string;
   confirmPassword?: string;
   survey?: string[];
+  socialId?: string;
   isFirstLogin?: number;
 }
 
@@ -33,5 +34,12 @@ export interface NicknameForm {
 
 export interface SurveyForm {
   id: string;
-  survey: string[];
-};
+  survey?: string[];
+}
+
+export interface kakaoForm {
+  grant_type: string;
+  client_id: string;
+  redirect_uri: string;
+  code: string;
+}
